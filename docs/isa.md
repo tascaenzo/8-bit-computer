@@ -19,11 +19,12 @@ Questo documento e la sorgente di verita per la progettazione della ISA. In ques
 - Gli indirizzi a 16 bit sono salvati in memoria in ordine little-endian: prima byte basso, poi byte alto.
 - La CPU dispone di 8 registri generali: `R0`...`R7`.
 - I registri generali sono codificati con 3 bit.
-- La ALU usa due registri operando dedicati: `A` e `B`.
-- Il registro `A` contiene il primo operando della ALU e riceve anche il risultato dell'operazione.
-- Il registro `B` contiene il secondo operando della ALU.
-- Il registro `A` puo leggere e scrivere sul bus dati; il registro `B` viene usato come registro temporaneo in ingresso alla ALU.
-- Per usare i registri generali con la ALU servono istruzioni di trasferimento tra `R0`...`R7` e i registri `A`/`B`.
+- La ALU usa due registri operando dedicati: `RA` e `RB`.
+- Il registro `RA` contiene il primo operando della ALU e riceve anche il risultato dell'operazione.
+- Il registro `RB` contiene il secondo operando della ALU.
+- Il registro `RA` puo leggere e scrivere sul bus dati; il registro `RB` viene usato come registro temporaneo in ingresso alla ALU.
+- Per usare i registri generali con la ALU servono istruzioni di trasferimento tra `R0`...`R7` e i registri `RA`/`RB`.
+- Non e ammesso il trasferimento diretto `MOV Rx, Ry` tra due registri generali.
 - La CPU espone i flag `C`, `Z`, `N`, `O`: carry/borrow, zero, negativo, overflow.
 - La ALU genera i segnali di flag in base all'operazione selezionata.
 - Il salvataggio dei flag nel registro flag e controllato dalla control unit durante il microcodice dell'istruzione.
@@ -245,31 +246,31 @@ Oltre ai registri generali, la ALU usa due registri dedicati:
 
 | Registro | Dimensione | Uso |
 | --- | ---: | --- |
-| `A` | 8 bit | primo operando della ALU e destinazione del risultato |
-| `B` | 8 bit | secondo operando della ALU |
+| `RA` | 8 bit | primo operando della ALU e destinazione del risultato |
+| `RB` | 8 bit | secondo operando della ALU |
 
 Il flusso operativo della ALU e:
 
 ```text
-registro generale -> A
-registro generale -> B
-ALU(A, B) -> A
-A -> registro generale
+registro generale -> RA
+registro generale -> RB
+ALU(RA, RB) -> RA
+RA -> registro generale
 ```
 
 Questa scelta deriva dall'hardware gia costruito:
 
-- `A` e `B` alimentano direttamente gli ingressi della ALU;
-- l'uscita della ALU viene salvata nuovamente in `A`;
-- `A` puo essere riportato sul bus dati tramite buffer;
-- `B` e un registro temporaneo usato come secondo ingresso della ALU;
-- per copiare un valore tra due registri generali si passa da `A`.
+- `RA` e `RB` alimentano direttamente gli ingressi della ALU;
+- l'uscita della ALU viene salvata nuovamente in `RA`;
+- `RA` puo essere riportato sul bus dati tramite buffer;
+- `RB` e un registro temporaneo usato come secondo ingresso della ALU;
+- per copiare un valore tra due registri generali si passa da `RA`.
 
 Esempio di copia tra registri generali:
 
 ```asm
-MOVA R0   ; R0 -> A
-MOVR R1   ; A  -> R1
+MOV RA, R0   ; R0 -> RA
+MOV R1, RA   ; RA -> R1
 ```
 
 ## Struttura dell'opcode
@@ -310,7 +311,7 @@ Proposta iniziale per i 3 bit alti:
 | `011` | `0x60-0x7F` | ALU | operazioni aritmetico-logiche |
 | `100` | `0x80-0x9F` | I/O | lettura input e scrittura output |
 | `101` | `0xA0-0xBF` | jump | salti assoluti e condizionati |
-| `110` | `0xC0-0xDF` | trasferimenti | passaggio dati tra registri generali, `A` e `B` |
+| `110` | `0xC0-0xDF` | trasferimenti | passaggio dati tra registri generali, `RA` e `RB` |
 | `111` | `0xE0-0xFF` | riservata | espansioni future |
 
 Questa tabella e una bozza. La cosa importante gia decisa e la separazione:
@@ -392,24 +393,24 @@ Operazioni ALU previste:
 | `SUB` | `0b1000` | sottrazione |
 | `CMP` | `0b1001` | confronto cablato nella ALU, produce i flag |
 
-Le istruzioni ALU non selezionano direttamente un registro generale. Operano sui registri dedicati `A` e `B`.
+Le istruzioni ALU non selezionano direttamente un registro generale. Operano sui registri dedicati `RA` e `RB`.
 
 Per le operazioni binarie:
 
 ```text
-A = A op B
+RA = RA op RB
 ```
 
 Per `NOT`:
 
 ```text
-A = NOT A
+RA = NOT RA
 ```
 
 Per `CMP`:
 
 ```text
-flag_signals = compare(A, B)
+flag_signals = compare(RA, RB)
 ```
 
 `CMP` seleziona la rete di confronto gia cablata nella ALU. La ALU esegue internamente la sottrazione necessaria al confronto e produce i segnali di flag. La control unit deve poi abilitare, nel microcodice di `CMP`, il salvataggio di questi segnali nel registro flag.
@@ -438,7 +439,7 @@ Le istruzioni che non devono salvare nuovi flag sono:
 
 - `NOP`, `HLT`;
 - `LDI`, `LDA`, `STA`;
-- `MOVA`, `MOVB`, `MOVR`;
+- `MOV RA, Rn`, `MOV RB, Rn`, `MOV Rn, RA`;
 - `IN`, `OUT`;
 - tutti i salti.
 
@@ -454,20 +455,20 @@ O = 0
 Per `ADD`:
 
 ```text
-A = A + B
+RA = RA + RB
 C = carry out unsigned
-Z = 1 se A e 0 dopo l'operazione
-N = bit 7 di A dopo l'operazione
+Z = 1 se RA e 0 dopo l'operazione
+N = bit 7 di RA dopo l'operazione
 O = overflow signed in complemento a due
 ```
 
 Per `SUB`:
 
 ```text
-A = A - B
+RA = RA - RB
 C = borrow unsigned
-Z = 1 se A e 0 dopo l'operazione
-N = bit 7 di A dopo l'operazione
+Z = 1 se RA e 0 dopo l'operazione
+N = bit 7 di RA dopo l'operazione
 O = overflow signed in complemento a due
 ```
 
@@ -475,19 +476,19 @@ Per `CMP`:
 
 ```text
 la ALU seleziona l'operazione cablata di confronto
-la logica di confronto equivale a valutare A - B
+la logica di confronto equivale a valutare RA - RB
 i segnali C, Z, N, O vengono prodotti dalla ALU
 la control unit salva questi segnali nel registro flag
-A non viene modificato
-B non viene modificato
+RA non viene modificato
+RB non viene modificato
 ```
 
 Con questa convenzione, dopo `CMP`:
 
-- `Z = 1` indica `A == B`;
-- `Z = 0` indica `A != B`;
-- `C = 1` indica `A < B` in confronto unsigned;
-- `C = 0` indica `A >= B` in confronto unsigned.
+- `Z = 1` indica `RA == RB`;
+- `Z = 0` indica `RA != RB`;
+- `C = 1` indica `RA < RB` in confronto unsigned;
+- `C = 0` indica `RA >= RB` in confronto unsigned.
 
 ## Trasferimenti tra registri generali e registri ALU
 
@@ -509,36 +510,45 @@ Sotto-operazioni proposte:
 
 | `ss` | Opcode bin | Assembly | Effetto |
 | --- | --- | --- | --- |
-| `00` | `0b11000rrr` | `MOVA Rn` | copia `Rn` in `A` |
-| `01` | `0b11001rrr` | `MOVB Rn` | copia `Rn` in `B` |
-| `10` | `0b11010rrr` | `MOVR Rn` | copia `A` in `Rn` |
+| `00` | `0b11000rrr` | `MOV RA, Rn` | copia `Rn` in `RA` |
+| `01` | `0b11001rrr` | `MOV RB, Rn` | copia `Rn` in `RB` |
+| `10` | `0b11010rrr` | `MOV Rn, RA` | copia `RA` in `Rn` |
 | `11` | `0b11011rrr` | riservata | disponibile per estensioni future |
 
 Queste istruzioni rispettano il circuito visto nei video:
 
 - un registro generale selezionato puo mettere il proprio valore sul bus dati;
-- `A` o `B` possono salvare il valore presente sul bus;
-- solo `A` puo essere usato per riportare il risultato della ALU sul bus dati;
-- per scrivere un risultato in un registro generale si copia `A` nel registro scelto.
+- `RA` o `RB` possono salvare il valore presente sul bus;
+- solo `RA` puo essere usato per riportare il risultato della ALU sul bus dati;
+- per scrivere un risultato in un registro generale si copia `RA` nel registro scelto.
+
+Non esiste una istruzione hardware `MOV Rn, Rm` per copiare direttamente tra due registri generali. Il blocco dei registri generali consente di selezionare un solo registro alla volta per lettura o scrittura, quindi la copia deve passare da `RA`.
+
+Esempio di copia tra registri generali:
+
+```asm
+MOV RA, R0
+MOV R1, RA
+```
 
 Esempio di somma:
 
 ```asm
 LDI R0, 10
 LDI R1, 20
-MOVA R0
-MOVB R1
+MOV RA, R0
+MOV RB, R1
 ADD
-MOVR R2
+MOV R2, RA
 ```
 
 Effetto:
 
 ```text
-A  = R0
-B  = R1
-A  = A + B
-R2 = A
+RA = R0
+RB = R1
+RA = RA + RB
+R2 = RA
 ```
 
 ## Input e output
@@ -596,10 +606,10 @@ Tabella condizioni:
 
 Per confronti unsigned dopo `CMP`:
 
-- `JZ` salta se `A == B`;
-- `JNZ` salta se `A != B`;
-- `JC` salta se `A < B`;
-- `JNC` salta se `A >= B`.
+- `JZ` salta se `RA == RB`;
+- `JNZ` salta se `RA != RB`;
+- `JC` salta se `RA < RB`;
+- `JNC` salta se `RA >= RB`.
 
 ## Bozza tabella opcode
 
@@ -618,10 +628,10 @@ La seguente tabella e una proposta iniziale. Gli opcode non sono ancora definiti
 | `NOR` | `0x63` | `0b01100011` | `IMP` | 1 | Seleziona operazione ALU `NOR` |
 | `NAND` | `0x64` | `0b01100100` | `IMP` | 1 | Seleziona operazione ALU `NAND` |
 | `XNOR` | `0x65` | `0b01100101` | `IMP` | 1 | Seleziona operazione ALU `XNOR` |
-| `NOT` | `0x66` | `0b01100110` | `IMP` | 1 | Esegue `A = NOT A` |
-| `ADD` | `0x67` | `0b01100111` | `IMP` | 1 | Esegue `A = A + B` |
-| `SUB` | `0x68` | `0b01101000` | `IMP` | 1 | Esegue `A = A - B` |
-| `CMP` | `0x69` | `0b01101001` | `IMP` | 1 | Confronta `A` e `B` tramite logica ALU cablata, salva i flag |
+| `NOT` | `0x66` | `0b01100110` | `IMP` | 1 | Esegue `RA = NOT RA` |
+| `ADD` | `0x67` | `0b01100111` | `IMP` | 1 | Esegue `RA = RA + RB` |
+| `SUB` | `0x68` | `0b01101000` | `IMP` | 1 | Esegue `RA = RA - RB` |
+| `CMP` | `0x69` | `0b01101001` | `IMP` | 1 | Confronta `RA` e `RB` tramite logica ALU cablata, salva i flag |
 | `IN Rn` | `0x80-0x87` | `0b10000rrr` | `IMP` | 1 | Copia input in `Rn` |
 | `OUT Rn` | `0x88-0x8F` | `0b10001rrr` | `IMP` | 1 | Copia `Rn` nel registro/periferica di output |
 | `JMP addr16` | `0xA0` | `0b10100000` | `ADDR16` | 3 | Carica il PC con un nuovo indirizzo |
@@ -633,9 +643,9 @@ La seguente tabella e una proposta iniziale. Gli opcode non sono ancora definiti
 | `JNN addr16` | `0xA6` | `0b10100110` | `ADDR16` | 3 | Salta se il flag negative non e attivo |
 | `JO addr16` | `0xA7` | `0b10100111` | `ADDR16` | 3 | Salta se il flag overflow e attivo |
 | `JNO addr16` | `0xA8` | `0b10101000` | `ADDR16` | 3 | Salta se il flag overflow non e attivo |
-| `MOVA Rn` | `0xC0-0xC7` | `0b11000rrr` | `IMP` | 1 | Copia `Rn` nel registro `A` |
-| `MOVB Rn` | `0xC8-0xCF` | `0b11001rrr` | `IMP` | 1 | Copia `Rn` nel registro `B` |
-| `MOVR Rn` | `0xD0-0xD7` | `0b11010rrr` | `IMP` | 1 | Copia `A` nel registro `Rn` |
+| `MOV RA, Rn` | `0xC0-0xC7` | `0b11000rrr` | `IMP` | 1 | Copia `Rn` nel registro `RA` |
+| `MOV RB, Rn` | `0xC8-0xCF` | `0b11001rrr` | `IMP` | 1 | Copia `Rn` nel registro `RB` |
+| `MOV Rn, RA` | `0xD0-0xD7` | `0b11010rrr` | `IMP` | 1 | Copia `RA` nel registro `Rn` |
 
 ## Confronti e salti condizionati
 
@@ -651,7 +661,7 @@ CMP
 JZ 0x0200
 ```
 
-In questo caso `CMP` confronta `A` e `B`. La ALU produce i segnali di flag usando la logica cablata di confronto; la control unit li salva nel registro flag. L'istruzione successiva, `JZ 0x0200`, controlla il flag `Z` salvato e salta all'indirizzo `0x0200` solo se quel flag e attivo.
+In questo caso `CMP` confronta `RA` e `RB`. La ALU produce i segnali di flag usando la logica cablata di confronto; la control unit li salva nel registro flag. L'istruzione successiva, `JZ 0x0200`, controlla il flag `Z` salvato e salta all'indirizzo `0x0200` solo se quel flag e attivo.
 
 Questa scelta evita di creare molte istruzioni ALU diverse per ogni confronto. La ALU produce i segnali di flag; la control unit decide quando salvarli e poi li usa per eseguire o ignorare il salto condizionato.
 
@@ -682,16 +692,16 @@ Layout in memoria:
 | `0x0002` | `0b0000000000000010` | `0x88` | `0b10001000` | opcode `OUT R0` |
 | `0x0003` | `0b0000000000000011` | `0x01` | `0b00000001` | opcode `HLT` |
 
-## Esempio ALU con registri A e B
+## Esempio ALU con registri RA e RB
 
 Assembly:
 
 ```asm
 ; R2 = R0 + R1
-MOVA R0
-MOVB R1
+MOV RA, R0
+MOV RB, R1
 ADD
-MOVR R2
+MOV R2, RA
 ```
 
 Codifica proposta:
@@ -705,10 +715,10 @@ Layout in memoria:
 
 | Indirizzo hex | Indirizzo bin | Valore hex | Valore bin | Significato |
 | --- | --- | --- | --- | --- |
-| `0x0000` | `0b0000000000000000` | `0xC0` | `0b11000000` | opcode `MOVA R0` |
-| `0x0001` | `0b0000000000000001` | `0xC9` | `0b11001001` | opcode `MOVB R1` |
+| `0x0000` | `0b0000000000000000` | `0xC0` | `0b11000000` | opcode `MOV RA, R0` |
+| `0x0001` | `0b0000000000000001` | `0xC9` | `0b11001001` | opcode `MOV RB, R1` |
 | `0x0002` | `0b0000000000000010` | `0x67` | `0b01100111` | opcode `ADD` |
-| `0x0003` | `0b0000000000000011` | `0xD2` | `0b11010010` | opcode `MOVR R2` |
+| `0x0003` | `0b0000000000000011` | `0xD2` | `0b11010010` | opcode `MOV R2, RA` |
 
 ## Esempio con indirizzo a 16 bit
 
@@ -745,7 +755,7 @@ Layout in memoria:
 ## Punti ancora da decidere
 
 - codifica definitiva degli opcode;
-- nomi definitivi delle istruzioni di trasferimento `MOVA`, `MOVB`, `MOVR`;
+- eventuale uso del range riservato `0b11011rrr` nei trasferimenti;
 - eventuali istruzioni di indirizzamento indiretto o indicizzato;
 - eventuali estensioni per input/output aggiuntivi;
 - eventuale supporto a confronti signed tramite combinazioni dei flag `N` e `O`.
