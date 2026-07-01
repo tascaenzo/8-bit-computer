@@ -217,6 +217,111 @@ LDI R0, 0x2A
 ldi r0, 0x2A
 ```
 
+### Label
+
+Le label sono nomi simbolici gestiti dall'assembler. Non sono istruzioni della CPU e non generano byte da sole.
+
+Una label identifica l'indirizzo della prossima istruzione o del prossimo dato:
+
+```asm
+loop:
+OUT R0
+JMP loop
+```
+
+In questo esempio `loop` viene sostituita dall'assembler con l'indirizzo a 16 bit dell'istruzione `OUT R0`.
+
+Le label possono essere usate con tutti gli operandi `addr16`:
+
+```asm
+JMP start
+JZ equal
+LDA R0, counter
+STA R0, result
+```
+
+Convenzioni iniziali:
+
+- una label termina con `:`;
+- una label deve iniziare con una lettera o `_`;
+- una label puo contenere lettere, numeri e `_`;
+- i nomi delle label sono case-insensitive, come mnemonic e registri;
+- non e ammesso definire due volte la stessa label.
+
+### Costanti simboliche
+
+Le costanti simboliche sono nomi gestiti dall'assembler per evitare numeri magici nel codice.
+
+Sintassi proposta:
+
+```asm
+.equ SCREEN, 0x8000
+.equ NEWLINE, 0x0A
+```
+
+Uso:
+
+```asm
+LDI R0, NEWLINE
+STA R0, SCREEN
+```
+
+`.equ` non genera byte macchina: associa solo un nome a un valore.
+
+### Direttive di memoria
+
+Le direttive di memoria servono a descrivere dati dentro lo stesso spazio di indirizzi usato da codice e dati.
+
+Queste direttive sono gestite dall'assembler e non sono istruzioni eseguite dalla CPU.
+
+Direttive proposte:
+
+| Direttiva | Effetto |
+| --- | --- |
+| `.org addr16` | imposta l'indirizzo corrente di assemblaggio |
+| `.byte value` | scrive un byte in memoria |
+| `.word value16` | scrive due byte little-endian |
+| `.space count` | riserva `count` byte inizializzati a `0x00` |
+
+Esempio:
+
+```asm
+.org 0x0000
+start:
+LDI R0, 0x01
+STA R0, counter
+HLT
+
+.org 0x0100
+counter:
+.byte 0x00
+```
+
+In questo esempio:
+
+- il programma inizia a `0x0000`;
+- la variabile `counter` viene posizionata a `0x0100`;
+- `STA R0, counter` viene assemblata come `STA R0, 0x0100`.
+
+### Variabili
+
+Nel linguaggio assembly una variabile e una label associata a una o piu celle di memoria.
+
+Esempio:
+
+```asm
+counter:
+.byte 0x00
+
+total:
+.byte 0x00
+
+address:
+.word 0x1234
+```
+
+La CPU non conosce il concetto di variabile: vede solo indirizzi di memoria. Il nome simbolico esiste solo nel sorgente assembly e viene risolto dall'assembler.
+
 ## Registri assembly
 
 La CPU dispone di 8 registri generali:
@@ -611,6 +716,27 @@ Per confronti unsigned dopo `CMP`:
 - `JC` salta se `RA < RB`;
 - `JNC` salta se `RA >= RB`.
 
+Esempio con label:
+
+```asm
+MOV RA, R0
+MOV RB, R1
+CMP
+JZ equal
+
+LDI R2, 0x00
+JMP done
+
+equal:
+LDI R2, 0x01
+
+done:
+OUT R2
+HLT
+```
+
+Le istruzioni `JZ equal` e `JMP done` vengono tradotte dall'assembler in salti `ADDR16`, sostituendo `equal` e `done` con i rispettivi indirizzi.
+
 ## Bozza tabella opcode
 
 La seguente tabella e una proposta iniziale. Gli opcode non sono ancora definitivi.
@@ -752,10 +878,63 @@ Layout in memoria:
 | `0x0004` | `0b0000000000000100` | `0xFF` | `0b11111111` | byte basso indirizzo `0x00FF` |
 | `0x0005` | `0b0000000000000101` | `0x00` | `0b00000000` | byte alto indirizzo `0x00FF` |
 
+## Esempio con variabile in memoria
+
+Assembly:
+
+```asm
+.org 0x0000
+LDI R0, 0x05
+STA R0, counter
+LDA R1, counter
+OUT R1
+HLT
+
+.org 0x0100
+counter:
+.byte 0x00
+```
+
+La label `counter` rappresenta l'indirizzo `0x0100`.
+
+Codifica proposta della parte codice:
+
+```text
+LDI R0, 0x05
+hex: 0x20 0x05
+bin: 0b00100000 0b00000101
+
+STA R0, counter
+hex: 0x48 0x00 0x01
+bin: 0b01001000 0b00000000 0b00000001
+
+LDA R1, counter
+hex: 0x41 0x00 0x01
+bin: 0b01000001 0b00000000 0b00000001
+
+OUT R1
+hex: 0x89
+bin: 0b10001001
+
+HLT
+hex: 0x01
+bin: 0b00000001
+```
+
+Il dato generato dalla direttiva `.byte` viene posizionato a `0x0100`:
+
+```text
+address: 0x0100
+value:   0x00
+bin:     0b00000000
+```
+
 ## Punti ancora da decidere
 
 - codifica definitiva degli opcode;
 - eventuale uso del range riservato `0b11011rrr` nei trasferimenti;
+- sintassi definitiva delle direttive assembler `.org`, `.byte`, `.word`, `.space`, `.equ`;
+- regole definitive per label, simboli e gestione degli errori;
 - eventuali istruzioni di indirizzamento indiretto o indicizzato;
 - eventuali estensioni per input/output aggiuntivi;
 - eventuale supporto a confronti signed tramite combinazioni dei flag `N` e `O`.
