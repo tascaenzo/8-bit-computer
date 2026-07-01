@@ -1,0 +1,319 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo e oggi
+continuiamo a parlare della CPU a 8 bit.
+Oggi parleremo del segnale di clock, ma
+prima di iniziare vi ricordo di
+iscrivervi al mio canale, lasciare un mi
+piace e commentare questo video per
+supportare il mio lavoro. Come prima
+cosa dobbiamo capire cos'è il segnale di
+clock e a cosa serve all'interno della
+nostra CPU.
+Diciamo che la nostra CPU può essere
+immaginata come una macchina che segue
+operazioni sequenzialmente. Il segnale
+di clock ci permette di sincronizzare
+tutta questa serie di operazioni.
+Dobbiamo immaginarlo come il metronomo
+che con il suo ticchettio va a scandire
+gli istanti di tempo all'interno della
+CPU. Qui ho disegnato un'onda quadra
+che, diciamo, è il segnale più
+utilizzato per generare un clock.
+Abbiamo su questo grafico nell'asse
+orizzontale eh il tempo e nell'asse
+verticale l'ampiezza.
+Abbiamo tutta una serie di parametri che
+vanno a caratterizzare il nostro
+segnale. Qui ho disegnato su questo
+segmento il periodo che è l'istante di
+tempo in cui il segnale fa
+un'oscillazione completa. Invece questo
+segmento più piccolo è il beauty cycle e
+rappresenta la percentuale di tempo in
+cui il segnale sta su il livello logico
+alto rispetto a tutto il periodo. Poi
+abbiamo la frequenza che si calcola con
+1/ t e si misura in herz e ci
+rappresenta il numero di oscillazioni
+che il segnale fa in un secondo. E poi
+ci sono queste freccette che indicano i
+fronti di salita del clock e di discesa
+del clock. Diciamo che questi sono gli
+istanti in cui il segnale switcha da un
+livello logico all'altro e sono
+importanti perché perché a noi ci
+servono per scandire gli istanti di
+tempo. È proprio in questi momenti che
+noi andiamo a eseguire delle operazioni
+all'interno della CPU. Ad esempio,
+quando implementeremo tutta la parte dei
+registri nell'istante di salita del
+clock, quindi sul fronte di salita del
+clock, noi andremo a memorizzare un dato
+su un registro.
+Esistono vari sistemi per generare
+un'onda quadra e quindi un segnale di
+clock. Uno dei circuiti più utilizzati è
+il 555 che può essere configurato come
+oscillatore. Però in questo video vorrei
+utilizzare un altro circuito. Vorrei
+utilizzare un trigger di Schmith per
+generare un'onda quadra. L'idea è quella
+di eh utilizzare la curva di carica e
+scarica di un condensatore. Però andiamo
+con ordine. Come prima cosa cerchiamo di
+capire cos'è un trigger di Schmith.
+Il trigger di Schmith è un circuito che
+ragiona a soglie. Avremo all'interno due
+soglie. Eh, quando noi andiamo a
+inserire in ingresso eh un segnale, se
+questo segnale sarà più alto della
+soglia, più alta del trigger Gmith, in
+uscita avremo un livello logico alto. Se
+invece il segnale in ingresso sarà più
+basso del della soglia più bassa del
+trigger G Schmith, avremo in uscita un
+livello logico basso. Possiamo capirlo
+meglio vedendo questo grafico qui.
+rappresentato un segnale analogico in
+ingresso al trigger e qui un segnale
+digitale che sarà l'uscita del trigger.
+Se vediamo in questa parte il segnale
+supera la soglia più alta del triggermit
+e quindi in uscita abbiamo un livello
+logico alto. Poi il segnale eh scende,
+sicuramente andrà sotto la soglia più
+bassa del trigger di Smith e qui abbiamo
+un livello logico basso e così via.
+Quindi, di fatto, con questo segnale in
+input abbiamo generato un'onda quadra.
+Ho detto che eh viene utilizzato anche
+per rigenerare un segnale digitale,
+perché questo qua potrebbe benissimo
+essere un segnale digitale che però è
+stato degradato dal rumore. Ad esempio,
+queste creste potrebbero essere del
+rumore additivo che si è aggiunto e
+comunque io vado a piallare e rigenerare
+questo segnale.
+Esistono vari modi per costruire un
+trigger G Schmith. Eh, uno dei circuiti
+più famosi è il comparatore di soglia
+che utilizza un amplificatore
+operazionale e due resistenze. Però noi
+non andremo a utilizzare questo
+circuito, bensì utilizzeremo il 7414
+che è un integrato in famiglia TTL che
+al suo interno contiene se trigger di
+Schmith, cosa da notare abbiamo in
+questo integrato l'uscita negata.
+Abbiamo anche il 74 HC14 che è lo stesso
+integrato a livello di piedi natura,
+però implementato in logica CIMOS. Noi
+andremo a utilizzare il 74 HC14 perché
+eh diciamo che la famiglia CIMOS dà
+delle uscite un po' più alte che si
+avvicinano più ai livelli di ingresso di
+alimentazione, quindi avremo un segnale
+che si avvicina a più di 5 V quando sarà
+nel livello logico alto e ho notato
+comunque un po' più stabile come con
+come configurazione in generale tutti i
+componenti che hanno
+la sigla HC all'interno
+sono la stessa reimplementazione del
+componente in logica TTL a livello di
+piedi di natura, però in logica CMOS.
+Qui ho disegnato invece il circuito che
+dovremmo effettivamente andare a
+realizzare. Qui abbiamo uno dei trigger
+di Schmith che saranno nel nostro 7414.
+Abbiamo l'uscita collegato al collegata
+all'ingresso tramite una resistenza di
+retroazione. Poi abbiamo un condensatore
+collegato tra l'ingresso e la massa. Che
+cosa succede? Succede che il
+condensatore avrà tutta una serie di
+cicli di carica e scarica grazie alla
+resistenza.
+Quindi avremo carica, scarica, carica e
+scarica. Questo segnale sarà
+all'ingresso del trigger e in uscita
+abbiamo un segnale di clock. Perché?
+Perché effettivamente eh quando eh il la
+curva di carica del condensatore andrà a
+superare la soglia più alta del trigger
+di Schmith, avremo un livello logico
+alto. Quando invece scenderà avremo un
+livello logico basso. Il problema di
+questo tipo di circuito è che
+effettivamente il clock non avrà un
+beauty cycle del 50%, però a noi non
+interessa perché abbiamo detto che
+andremo a sfruttare i fronti di salita
+del clock.
+Il vantaggio è che con solo due
+componenti, quindi il condensatore e la
+resistenza, noi possiamo andare a
+decidere quale sarà la frequenza eh del
+clock. La formula che ci permette di
+determinarlo è questa: f = 1/,
+RC. Ho fatto un paio di test alla fine
+ho utilizzato una resistenza da 470 ohm
+e un condensatore da 2,2 microfarad e
+dovrei avere circa 806 Hz. Poi noi
+andremo a collegare l'oscilloscopio,
+vediamo effettivamente eh che coso in
+uscita e eh quando sarà la frequenza.
+sicuramente non sarà mai 806 Hz perché
+abbiamo tutta una serie eh di tolleranze
+sia delle resistenze del capacitore che
+non ci daranno mai questo risultato,
+però dovremmo avvicinarci a questo
+valore.
+Infine, vediamo il circuito che
+realizzeremo effettivamente all'interno
+della nostra CPU. Abbiamo qui sotto il
+segnale di clock, il generatore del
+segnale di clock ed è il circuito che
+abbiamo appena visto con il trigger di
+Schmith, la resistenza di retroazione,
+il condensatore. Qui invece abbiamo un
+pulsante collegato a un secondo trigger
+di Schmith e la sua uscita collegato a
+questo switch, un interruttore a tre
+posizioni che ci permette di determinare
+l'origine del segnale di clock. Perché
+ho fatto questo? Diciamo che in tutte le
+fasi di sviluppo della CPU, quando
+dovremo fare i test, ci capiterà di
+dover generare degli impulsi di clock
+manualmente. Quindi eh l'idea è quella
+che quando premiamo questo pulsante
+partirà un impulso di clock che
+utilizzeremo all'interno dei test. Come
+funziona questo circuito? In sostanza
+abbiamo
+il pulsante collegato tramite questa
+resistenza di pullup. ricordo che
+l'uscita è negata, quindi quando io qua
+ho + 5 V, qui avrò un segnale di massa e
+eh quando invece premerò il pulsante
+manderò a massa eh questa parte,
+l'ingresso del trigger e quindi qua in
+uscita avrò un segnale di + 5 V. Noi
+andremo a sfruttare il fronte di salita
+del clock per andare a eseguire delle
+operazioni all'interno della CPU.
+A cosa serve questo condensatore?
+Diciamo che questo condensatore evita
+dei rimbalzi all'interno dell'ingresso e
+quindi mi permette di evitare eh tutta
+una serie di impulsi involontari che
+andrebbero a generare più di un segnale
+di clock e quindi diciamo questo
+condensatore fa da filtro per ripulire
+l'ingresso del trigger di Schmith. Viene
+anche chiamato condensatore di The
+Bounce.
+Vediamo un po' come ho realizzato
+il nostro generatore di clock
+all'interno della nostra CPU. Partiamo
+dal 741,
+questo integrato qui. Quindi sto
+utilizzando la versione logica HTTL, ho
+collegato la capacità da 2,2 microfarad
+e la resistenza da 470 ohm.
+Il il segnale generato l'ho collegato a
+uno dei capi di questo interruttore a
+tre posizioni. L'altro capo è collegato
+a questo interruttore per generare gli
+impulsi di clock manualmente. E poi
+questo cavo qui bianco eh è il nostro
+segnale di clock vero e proprio che è
+stato collegato all'oscilloscopio.
+Come possiamo vedere già il circuito è
+in funzione. Abbiamo un clock di 730 Hz,
+eh, e al di sotto degli 800 Hz, ma
+comunque più o meno ci siamo.
+Eh, abbiamo un beauty cycle che
+sicuramente non sarà del 50%, già si
+vede a occhio, ma il problema vero e
+proprio potrebbe essere che la tensione
+massima a cui arriva la nostra onda
+quadra è di circa 3 V, quindi siamo
+lontani dai 5 V. sicuramente non
+arriverà mai a 5 V, ma comunque è
+abbastanza basso il suo valore,
+ma in ogni caso è ancora sufficiente per
+determinare il valore di unologico,
+quindi il nostro unologico.
+Proviamo a selezionare come input invece
+il nostro pulsante. Quindi adesso,
+quando io premo questo pulsante dovrei
+generare un impulso di clock. Sarà
+difficile vederlo all'oscilloscopio,
+però dovremmo vedere una variazione
+all'interno dell'oscilloscopio. Vediamo
+se è vero. Sì, effettivamente vediamo
+che il nostro segnale ora è a più 5 V,
+quindi a livello logico alto.
+Ok, riusciamo anche a vedere la
+variazione all'interno
+dell'oscilloscopio, quindi anche questa
+questa parte funziona.
+Ho collegato la sonda dell'oscilloscopio
+a questo integrato che invece è un 74
+HC14, quindi è la controparte in logica
+CIMOS.
+Come possiamo vedere la frequenza è di
+circa 700 Hz, una frequenza un po' più
+bassa, però sto utilizzando una coppia
+di resistore condensatore diversa. su
+quest'ora ci torneremo.
+Poi abbiamo un beauty cycle che comunque
+si avvicina più al 50%, anche se ad
+occhio non sembra effettivamente del
+50%. Però la cosa più importante è che
+la tensione massima eh del segnale
+arriva a 4,7 V, quindi ci avviciniamo ai
+5 V in ingresso dati come alimentazione
+all'integrato,
+eh, e quindi abbiamo un livello logico
+alto, più netto, più definito.
+Cosa importante, non sto utilizzando la
+coppia
+condensatore e resistenza che utilizzavo
+prima perché effettivamente se io vado a
+calcolarmi la corrente che sta scorrendo
+all'ingresso di questo trigger di
+Schmith, quindi il 7414, quello in TTL,
+vedo che per la legge di home è di circa
+10.6 6 mamp che sembrano pochi, ma in
+realtà ehm per questo integrato, quindi
+quello in logica CMOS, sono tantissimi,
+andrei fuori il range e quindi non
+riuscirei a far funzionare, a far
+partire l'oscillatore con rischio anche
+di danneggiare il componente stesso,
+dato che la logica CMOS eh lavora con
+un'alta impedenza, ha bisogno di
+correnti molto più basse eh in ingresso.
+Per questo motivo sto utilizzando un
+condensatore da 10 nanofarad e una
+resistenza da 200 kohm e mi sta dando
+come uscita circa 700 Hz e va benissimo
+per il nostro caso d'uso. Quindi penso
+che utilizzerò effettivamente questo
+componente in logica CMOS, lo sostituirò
+a questo in logica TTL. Utilizzerò
+questa coppia eh resistenza
+condensatore.
+Alla fine ho sostituito il 7414
+con il 74 HC14, quindi sto utilizzando
+quello in logica CMOS. Ho collegato un
+po' meglio il circuito e direi che per
+questo video è tutto. Ci vediamo in un
+prossimo video. Un saluto. Vi ricordo di
+lasciare un mi piace e commentare questo

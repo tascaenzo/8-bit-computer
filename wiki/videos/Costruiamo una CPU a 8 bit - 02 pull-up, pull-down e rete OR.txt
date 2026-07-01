@@ -1,0 +1,228 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo. In questa
+serie di video continuiamo la
+costruzione della nostra CPU. Nel video
+precedente abbiamo analizzato
+l'operazione di endabbiamo realizzata
+all'interno di questo piccolo circuito
+grazie a questi due integrati che sono
+dei 7408.
+In questo video, prima di continuare con
+l'implementazione
+delle altre operazioni che eseguirà la
+nostra Alu, volevo vedere due importanti
+circuiti che sono il circuito di pull
+down e di pull up che ci permettono di
+collegare questi switch agli ingressi
+della rete end.
+Ho disegnato i due schemi del circuito
+di pullown e di pull up. Partiamo subito
+dal pullown che poi è quello che ho
+utilizzato effettivamente per collegare
+gli switch alla rete end. Possiamo
+vedere che qui abbiamo lo switch. Un pin
+nello switch è collegato a + 5 V.
+L'altro pin invece è collegato a massa
+tramite questa resistenza, nel nostro
+caso da 4.7 k. Qui invece andiamo a
+prenderci un punto che poi sarà
+collegato questo nodo all'ingresso della
+porta end e quindi sarà l'uscita del
+nostro circuito.
+Vediamo che quando lo switch è aperto,
+diciamo che in questo nodo abbiamo un
+segnale di massa circa 0 V che
+corrisponde al nostro zero logico.
+Invece quando io vado a chiudere lo
+switch, in questo punto avrò un segnale
+di + 5 V che corrisponde al nostro uno,
+quindi il nostro livello alto. Che cosa
+succede? Succede che quando io chiudo lo
+switch, grazie a questa resistenza,
+evito un corto circuito tra eh i + 5 V e
+la nostra massa. Quindi questa
+resistenza mi permette di avere una
+corrente controllata e quindi ho evitato
+un corto. Qui invece vediamo il circuito
+di pullup che possiamo vederlo come
+l'equivalente, diciamo, il circuito
+specchiato dove il nostro switch è
+collegato direttamente a massa per un
+pied su un piedino su un pin. Nell'altro
+pin invece è collegato a + 5 V sempre
+passando da questa resistenza a 4.7
+kohm. Quindi abbiamo, diciamo, lo stesso
+comportamento, solo che quando io chiudo
+lo switch qui avremmo direttamente un
+segnale di massa. Invece, quando io ho
+lo switch aperto, qui avremo un segnale
+di circa 5 V, un po' meno di 5 V, perché
+c'è una piccola caduta di tensione su
+questa resistenza. Ovviamente quando
+chiudo lo switch, anche qui questa
+resistenza mi evita un corto circuito e
+quindi mi permette di controllare la
+corrente che scorre all'interno del
+circuito. E diciamo che questi due
+circuiti sono molto importanti perché in
+ogni caso quando io c'ho un un integrato
+della famiglia TTL, che sono quelli che
+stiamo utilizzando per realizzare questo
+progetto, io ho bisogno di fermare
+l'ingresso a un valore predefinito che è
+0 o 1. Se io lascio flottante, quindi
+lascio scollegato uno degli ingressi del
+dell'integrato, c'è rischio che il
+valore che vado a leggere è
+inconsistente. Io non so se
+effettivamente è un valore unologico o
+zero.
+Proseguendo possiamo vedere invece
+l'operazione OR che è la successiva
+operazione che andiamo a implementare
+nella nostra alu. Questa operazione
+viene effettuata da questa porta che
+viene rappresentata da questo simbolo.
+Abbiamo due ingressi, l'ingresso A e
+l'ingresso B e un'uscita. Questa
+funzione è la funzione matematica che in
+algebra buleano ci rappresenta l'OR.
+Diciamo è molto tutto il circuito è
+analogo al circuito end che avevamo
+visto nel primo video. Abbiamo questa
+tabella di verità dove abbiamo gli
+ingressi A e B. Qui possiamo vedere che
+eh con la combinazione 00 abbiamo uno 0
+in uscita, 01 abbiamo un livello 1 10 1
+0 1 1 1 1 e qui sotto invece abbiamo il
+nostro buffer
+che ha il comportamento che avevamo
+visto in precedenza. Quindi quando
+l'enable è a livello basso noi abbiamo
+in uscita ciò che c'è in ingresso nella
+variabile A. Infatti, enable a 0 valore
+di a0 uscita 0. Enable a 0 valore di a1
+uscita 1. Invece se l'enable è 1, per
+qualsiasi valore di a avremo un'altra
+impedenza. Quindi abbiamo visto che
+comunque questo circuito di base è
+analogo a quello visto nel primo video
+con la porta end. cambia soltanto la
+porta logica che abbiamo inserito. Qui
+abbiamo il 7432 che è l'integrato che
+contiene quattro porte logiche di tipo
+OR e il solito 7424
+che contiene otto buffer dati.
+Ho scaricato il datashet del 7432 che
+sarà l'integrato che utilizzeremo per
+costruire la nostra rete OR. In questo
+caso ci serviranno due di questi
+integrati perché ognuno di questi
+contiene quattro porte logiche di tipo
+OR. Possiamo vedere che eh la
+piedinatura è di fatto analoga al 7408
+che avevamo utilizzato per la rete end.
+Infatti sul pin 14 abbiamo
+l'alimentazione,
+sul pin 7 abbiamo la massa e poi abbiamo
+su pinr
+porta logica con uscita sul pin 3. Pin 4
+e 5 gli ingressi della seconda porta
+logica con uscita su pin 6. Pin 10 e 9
+gli ingressi della terza porta OR con
+uscita sul pin 8 e infine pin 13 e 12
+ingresso dell'ultima porta logica con
+uscita sul pin 11. Qui abbiamo la
+tabella di verità che avevamo visto già
+in precedenza e poi abbiamo il 7424.
+Questo qua, eh, invece già l'avevamo
+visto, anche questo questo datashet
+avevamo visto e possiamo vedere che
+contiene otto eh buffer dati. Abbiamo
+sul pin 20 l'alimentazione, sul pina,
+poi abbiamo due segnali di enable che
+vanno a controllare queste due parti del
+della rete. Quindi questo segnale di
+enable sul pin 19 controlla questi
+quattro buffer che vediamo sulla parte
+alta dello schema. E invece sul pin 1
+abbiamo un altro segnale di enable che
+controlla questi altri quattro. Nel
+nostro caso specifico, noi andremo a
+ponticellare il pin 19 col pin 1, in
+modo da avere un unico segnale di enable
+che attivo spegne tutta la rete OR.
+Ho realizzato la rete OR che abbiamo
+visto su carta all'interno della della
+nostra alu.
+Ho inserito questi due integrati che
+contengono le nostre porte OR e poi ho
+inserito quest'altro integrato che
+contiene i nostri buffer dati.
+Brevemente vediamo i collegamenti.
+Tramite questi cavi bianchi che vediamo
+sia qui che qui ho messo in ho collegato
+in parallelo gli ingressi di questi due
+integrati, cioè le nostre porte OR, con
+gli ingressi delle porte endo. Questi
+due integrati, a loro volta questi sono
+parallelizzati, sono collegati con
+questi con questi switch che
+rappresentano la variabile A e la
+variabile B.
+Poi le uscite delle nostre porte OR sono
+questi cavi azzurrini che sono stati
+collegati agli ingressi del 7424,
+cioè i nostri buffer dati. Le uscite
+invece del buffer dati sono stati
+collegati direttamente al bass dati con
+questi cavi gialli.
+Attualmente vediamo che ho l'enable
+della 7424
+della porta OR a + 5 V e l'enable del
+7424
+della porta end della rete end a + 5 V.
+Cosa vuol dire? Vuol dire che entrambe
+le reti sono spente, perché anche se gli
+integrati stanno effettivamente
+producendo eh l'endor logico, questi due
+integrati, avendo il segnale Nebol a + 5
+V, stanno isolando fisicamente le reti
+dal dal bass dati che è questo.
+Se io adesso provo a spostare questo pin
+dal segnale di + 5 V alla massa, vediamo
+che si accende tutto il bass dati perché
+perché effettivamente la variabile A e
+la variabile B sono messe tutte a
+livello alto, tutti gli switch sono a
+livello alto ed effettivamente è ciò che
+mi aspetto dalla dalla porta OR quando
+ho due ingressi a livello alto.
+l'uscita sarà sempre a livello alto. Se
+provo ad esempio a spegnere sia la
+variabile A che la variabile B, piano
+piano si spegne tutto il nostro bass
+dati ed è ciò che mi aspetto. Facciamo
+un'altra prova. Proveremo ad esempio a
+ad alzare piano piano tutti i bitia B.
+Si dovrebbe accendere tutto il bass
+dati.
+Vediamo se è vero.
+Effettivamente si accendono tutti i bit.
+Ok. Ed è ciò che mi aspettavo.
+E lo stesso dovrebbe accadere con la
+variabile A.
+Ok. E in effetti anche qua ho tutto il
+bass dati acceso ed è ciò che mi
+aspetto.
+Diciamo che ora metterò in
+sovraimpressione durante tutta questa
+clip la tabella della verità della porta
+OR, così vi è più chiaro ciò che ciò che
+è stato fatto.
+Anche per questo video è tutto. Vi
+ricordo di lasciare un mi piace,
+commentare e iscrivervi al canale se vi
+interessa questo tipo di video e se
+volete supportare il mio canale YouTube.
+Boh.

@@ -1,0 +1,252 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo e oggi
+continuiamo a parlare della nostra CPU a
+8 bit. Nello scorso video abbiamo visto
+i circuiti sommatori. Abbiamo visto come
+utilizzare questo tipo di circuiti per
+eseguire somme e sottrazioni. Oggi
+vedremo la parte pratica realizzando il
+nostro ADER all'interno della nostra
+alu. Prima di iniziare vi invito a
+iscrivervi al canale, lasciare un mi
+piace e commentare questo video se
+trovate interessante questo progetto.
+Partiamo subito analizzando il dataset
+del componente 74283.
+Questo componente è di fatto un
+sommatore a 4 bit. Possiamo vedere
+brevemente la piedinatura. Partiamo
+subito col dire che nel pin 8 abbiamo la
+nostra massa, il pin 16 sarà il pin di
+alimentazione dove avremo i nostri 5 V e
+poi avremo pin 1 che sarà l'uscita
+sommatoria 2, pin 2 che sarà l'ingresso
+B2, pin 3 che sarà l'ingresso A2, pin 4
+che sarà l'uscita sommatoria 1, pin 5
+ingresso A1 pin 6 ingresso B1 pin 7C0
+sarebbe in in sostanza il carry input,
+quindi il riporto in ingresso. Poi già
+abbiamo detto pin 8 massa, pin 9 C4,
+quindi riporto in uscita, pincmatoria
+4, pin 11, B4, quindi ingresso B4, pin
+12, ingresso A4, pin 13, uscita
+sommatoria 3, pin 14 ingresso A3, pin 15
+ingresso B3 e poi pin 16 i + 5 V.
+Su questo componente bisogna capire qual
+è la coppia di ingressi e qual è
+l'uscita che avrà un peso maggiore
+all'interno della nostra somma.
+Sappiamo dal datashet che eh gli
+ingressi A4 e B4 saranno eh le gli
+ingressi delle variabili A e B con peso
+maggiore all'interno della somma e di
+conseguenza l'uscita sommatoria 4 sarà
+l'uscita con peso maggiore all'interno
+della somma. Per realizzare il nostro
+circuito avremo bisogno di 274283
+collegati in cascata in modo da avere
+una rete a 8 bit.
+Possiamo vedere il nostro circuito
+sommatore realizzato all'interno della
+nostra alu. Qui ho montato tutti gli
+integrati in questa board che ci
+consentono di effettuare le operazioni
+di somma e sottrazione. Vediamo 27486
+che sono le nostre porte XOR utilizzate
+per fare il complemento a due della
+variabile in ingresso B.
+Vediamo questi due componenti che sono
+274 283 che poi sono il cuore del nostro
+circuito, contengono i nostri sommatori
+a 4 bit. Ed infine abbiamo il 74244
+che contiene 8 buffer dati.
+Le uscite sono poi collegate al bass
+dati,
+cioè qui.
+E poi rispetto agli ultimi video ho
+fatto anche altre modifiche. In sostanza
+ho collegato questi due switch in
+maniera un po' più stabile perché prima
+erano volanti, eh, e quindi qui abbiamo
+le variabili A e B.
+Se vediamo brevemente eh i collegamenti,
+prendiamo l'uscita, l'ingresso B
+direttamente dagli switch tramite questi
+cavi e lo portiamo all'interno dello
+delle nostre porte Xor. Le uscite
+delloxor sono questi cavi viola che
+entrano all'interno dei sommatori, i
+nostri 74283.
+Poi questi cavi e questi cavi bianchi
+sono la variabile A che va direttamente
+nel sommatore.
+E le uscite sono questi cavi blu che
+vanno al ai nostri buffer dati. Le
+uscite buffer dati sono i cavi gialli
+che vanno al bass dati.
+Inoltre abbiamo anche questo LED che ci
+permette di capire se il risultato della
+nostra sommo sottrazione è andato in
+overflow. In pratica questo LED è
+collegato all'uscita carry out del
+secondoe.
+Abbiamo questo cavo qui che rappresenta
+l'enable. Enable della nostra rete è
+collegato al 74244,
+quindi ci permette di spegnere o
+accendere tutta la rete. Invece questo
+secondo cavo che vediamo qua, sempre
+arancione, è la nostra variabile K che
+ci permette di passare da somma a
+sottrazione.
+A questo punto possiamo fare qualche
+test per vedere se ciò che abbiamo
+implementato effettivamente funziona.
+Qui di fianco ho riportato un paio di
+esempi che proveremo a analizzare.
+Prima di iniziare però, piccola nota a
+margine, ho sostituito l'alimentatore
+che alimenta tutto il circuito con
+questo perché dà una tensione un po' più
+stabile in uscita.
+Direi di partire subito con la somma.
+Abbiamo eh la nostra alu già alimentata,
+eh la variabile A è a 0, la variabile B
+è a zero e quindi in uscita abbiamo
+tutto il bass dati spento ed
+effettivamente è ciò che ci aspettiamo.
+Partirei con il primo esempio, cioè
+sommiamo 1 + 1 che dà 2 ed
+effettivamente è ciò che abbiamo in
+uscita. abbiamo uno 0 che equivale a 2.
+Andiamo avanti con un altro esempio dove
+sommiamo 2 + 3,
+quindi
+variabile a a 2, variabile b a 3 e
+abbiamo in uscita 101 che effettivamente
+equivale a 5. Quindi anche questo questo
+test è corretto.
+Andiamo avanti. Proviamo a sommare 5 + 1
+che deve dare 6
+ed effettivamente abbiamo 1 10 in uscita
+ed è corretto.
+Proviamo 7 + 1.
+Anche questo questo esempio è corretto
+da in uscita 8.
+A questo punto andrei nell'ultimo
+esempio 255 + 1, che è un caso
+particolare.
+Ho messo la variabile A a 255
+alzando tutti i bit, mettendo tutti i
+bit a 1 e la variabile B a 1. In questo
+caso il risultato è 256, però 256 ha
+bisogno di un 9o bit per essere
+rappresentato, quindi con 8 biti non
+riusciamo a rappresentare questo valore.
+In effetti si è acceso questo LED rosso
+che abbiamo detto che indica l'overflow
+e ci sta dicendo che il risultato
+prodotto è inattendibile, quindi anche
+questo comportamento è corretto. ciò che
+ci aspet ci aspettavamo dalla nostra
+ALU.
+A questo punto i più attenti avranno
+notato che noi non possiamo
+rappresentare il numero 255 che abbiamo
+all'interno della variabile A, perché
+nel video precedente abbiamo detto che
+il bit più significativo, cioè questo, è
+il bit di segno che ha peso -128.
+Effettivamente questo è vero, però negli
+esempi che ho fatto ora eh sto
+considerando soltanto il range 0255
+per vedere se effettivamente funziona il
+nostro circuito sommatore che abbiamo
+realizzato qui. Nei prossimi video,
+specialmente quando andremo a
+implementare tutta la parte di flag
+della nostra alu, dobbiamo tenere in
+considerazione il range effettivo di
+lavoro, quindi come andremo a
+rappresentare effettivamente i nostri
+numeri all'interno della nostra alu e
+quindi bisognerà fare una serie di
+considerazioni anche sull'accensione del
+del flag di Overflow che è rappresentato
+da questo LED rosso perché dovrà tenere
+conto anche di altre variabili e quindi
+non potrà essere semplicemente
+l'uscita carry out del secondo
+sommatore. Come avviene ora
+possiamo passare ai test sulla
+sottrazione. Per fare ciò dobbiamo
+spostare la variabile K, questo cavo da
+massa + 5 V in modo da abilitare
+l'operazione di complemento A2
+all'interno della variabile B. Cioè
+questa, vi ricordo che viene fatta da
+questo Xor, questi 27486.
+E a questo punto abbiamo A e B a 0 e
+possiamo partire con un primo test. Ad
+esempio, facciamo 5 - 1.
+Ok, abbiamo 5 - 1 che fa 100.
+lo ritroviamo qui ed effettivamente è
+corretto. Andiamo avanti, proviamo a
+fare 6 - 3, quindi 1
+0 - 1
+e effettivamente fa 1 risultato e anche
+questo è corretto. Andiamo avanti,
+facciamo questo esempio. 13 - 1.
+Abbiamo in uscita 1 1 e anche questo è
+corretto. Questo valore rappresenta il
+15, quindi anche qui eh anche questo
+esempio è corretto. A questo punto
+passiamo all'ultimo caso, all'ultimo
+esempio. 0 - 1, che è un caso
+particolare.
+Se io vado a fare 0 - 1, ottengo tutto
+il bass dati acceso. Il bass dati acceso
+vorrebbe dire 255 se andiamo a
+considerare la rappresentazione che va
+da 0 a 255. Se invece vado a considerare
+questo bit quello più significativo come
+-128, quindi bit disegno, se io vado a
+fare la somma -128 + 64 + 32 e così via,
+fino ad arrivare a 1, ottengo come
+risultato -1. Quindi eh 1 1 1 1 1
+rappresenta 255, ma bensì -1. Anche qui
+il discorso è sempre quello che abbiamo
+fatto precedentemente.
+Ehm, alla fine noi dovremmo decidere
+quale rappresentazione dare all'interno
+della nostra CPU e eh a seconda di
+questo il numero in uscita, il risultato
+finale avrà un avrà un valore
+completamente diverso.
+Quindi anche questa questa parte la
+vedremo in un in un successivo video e
+dovremo anche fare delle considerazioni
+su questo flag che ci va a indicare se
+il risultato
+effettuato dall'adder è sbagliato o
+corretto. Diciamo che lo scopo di questo
+scopo di questo video era solo testare
+video era solo testare l'ADER, vedere
+l'ADER, vedere che effettivamente questo
+che effettivamente questo circuito
+circuito riusciva a fare le somme, le
+riusciva a fare le somme, le sottrazioni
+sottrazioni tramite anche l'operazione
+tramite anche l'operazione complementa 2
+complementa 2 e demandiamo a un prossimo
+e demandiamo a un prossimo video tutta
+video tutta la parte di logiche relative
+la parte di logiche relative anche alla
+anche alla alla rappresentazione
+alla rappresentazione all'interno
+all'interno dell'alu dei numeri e che
+dell'alu dei numeri e che cosa
+questo video direi che è tutto. Ci
+vediamo in un prossimo video. Vi ricordo
+di lasciare un mi piace, commentare e
+iscrivervi al canale. Un saluto.

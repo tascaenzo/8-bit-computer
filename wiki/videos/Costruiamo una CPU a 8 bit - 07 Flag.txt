@@ -1,0 +1,258 @@
+Salve a tutti e bentornati in questo
+nuovo video. Io sono Enzo e oggi
+continuiamo lo sviluppo della nostra CPU
+a 8 bit. Prima di iniziare vi ricordo di
+lasciare un mi piace, commentare questo
+video e iscrivervi al canale per
+supportare il mio lavoro.
+In questo video andiamo a parlare dei
+flag e cerchiamo di capire a che cosa
+servono e perché sono importanti
+all'interno di una CPU. Iniziamo subito
+col dire che i flag altro che dei bit
+che vengono generati a seguito di
+un'operazione di tipo aritmetico logico,
+quindi un'operazione eseguita dalla
+nostra Alu.
+La control Unit della nostra CPU andrà a
+leggere questi flag per intraprendere
+delle azioni in base a ciò che è stato
+prodotto dalla nostra ALU. Ad esempio,
+dopo un'operazione di confronto, potrà
+decidere se eseguire un salto
+condizionale oppure potrà capire se il
+risultato prodotto dall'alu è valido o
+meno, perché ci sono tutta una serie di
+condizioni, ad esempio la somma di due
+numeri che come risultato da un numero
+che esce fuori dal range di 8 bit,
+quindi non è rappresentabile in 8 bit.
+Eh, diciamo che questa è una condizione
+in cui il risultato generato dall'alu
+non è corretto e quindi la nostra
+control Unit sa che questo risultato è
+sbagliato, non deve essere preso in
+considerazione grazie alla lettura dei
+flag e infatti proprio per questo motivo
+i flag vengono anche chiamati flag di
+stato perché ci vanno a dare
+informazioni sullo stato dei risultati
+prodotti dalla nostra ALU. Ci sono tanti
+flag che possono essere implementati
+all'interno della nostra CPU, però io
+partirei con i flag di base che a mio
+avviso sono quelli che ci sono più utili
+per continuare lo sviluppo del nostro
+progetto. Sono quattro, partirei con
+Carry, negative, zero e overflow. Prima
+di iniziare però dobbiamo anche definire
+qual è il range di lavoro della nostra
+CPU, cioè il range di risultati che
+andremo a interpretare all'interno
+dell'uscita dell'output. Nell'ultimo
+video ci siamo lasciati con alcuni
+esempi di somme e sottrazioni dove
+discutevamo sul bit di segno che va a
+cambiare il valore di un di un
+risultato. Diciamo subito che il range
+di lavoro sarà da -128 a + 127, quindi
+il bit disegno sarà il bit più
+significativo del nostro basati.
+A questo punto io andrei ad analizzare i
+segnali che eh utilizzeremo per generare
+i nostri flag. Partiamo subito col col
+carry. Eh, diciamo che il carry per ora
+l'abbiamo prelevato dal 74283
+utilizzato nel circuito di Ader e così
+va bene per la somma perché ricordo che
+il Carry non si accende solo quando c'è
+un eventuale riporto.
+Il problema nasce quando abbiamo la
+sottrazione perché in caso di
+sottrazione, quindi quando utilizziamo
+il nostro circuito sommatore in
+complemento a due, il carry cambia di
+significato e infatti viene chiamato
+borrow, cioè ci va a indicare un
+eventuale riporto. Come facciamo a
+capire come calcolare il segnale di
+carry o Borop? In sostanza utilizziamo
+una porta XOR in cui andiamo a collegare
+l'uscita del 74283, quindi il carry out
+e la variabile K che ci permette di
+switchare tra condizione tra operazione
+di somma e sottrazione. Quindi qui
+avremo il risultato finale che sarà un
+carry in caso di somma e Borrov in caso
+di sottrazione.
+Per quanto riguarda invece il flag
+negative ci permette di determinare se
+un numero è positivo o negativo. Questo,
+diciamo, ce l'abbiamo immediatamente
+leggendo l'output
+7 o 7, che sarebbe il bito
+del bass dati, il nostro bit di disegno,
+quindi ce l'abbiamo in maniera facile,
+veloce e immediata. Invece il flag di
+zero lo otteniamo facendo un OR tra
+tutti gli output. presenti nel bass
+dati. Quindi facciamo l'OR da O1 ad O7.
+Qui per semplificare l'ho fatto su 4
+bit, ma comunque la rete analoga è un
+po' più grande e alla fine, dopo che
+abbiamo fatto tutti i singoli OR,
+facciamo inseriamo una porta not e
+abbiamo il flag zero che varrà uno
+soltanto quando tutti i bitanno
+a zero. E infine abbiamo il nostro flag
+di overflow.
+che ci permette di capire se eh il
+numero che stiamo leggendo all'interno
+del bass dati non è sbagliato perché non
+è rappresentabile all'interno del range
+di 8 bit. Per fare ciò abbiamo questa
+piccola rete logica formata da delle
+porte XOR, un not e un end input avrà
+B7, quindi eh il bito
+della variabile B. A7 il bit più
+significativo della variabile A, K che è
+il nostro selettore tra operazione di
+somma e sottrazione e O7 che è il bit di
+segno in uscita del bass dati. E qui ci
+troviamo il nostro risultato, quindi
+l'overflow.
+A questo punto io direi di passare alla
+pratica e vedere come ho implementato il
+nostro circuito, quindi i nostri flag.
+Partiamo subito da questi LED che vanno
+a rappresentare i flag. Ho inserito
+delle label. Abbiamo questo che sta
+abbiamo questa C che sta per carry
+borov, quindi è il nostro carry, N che
+sta per negative, Z che sta per zero e V
+che sta per overflow. Ognuno di questi
+LED è collegato a un flag. Abbiamo anche
+una resistenza da 200 ohm collegata in
+serie a LED. Poi partirei con il flag
+zero che viene calcolato prendendo le
+uscite dal bass dati, sono questi cavi
+gialli, entrano dentro questi due
+integrati che sono dei 74 32, quindi
+degli OR, viene fatto l'or bit a bit e
+l'uscita viene negata tramite questo
+note. Questo qua è il Note utilizzato
+nella rete not, appunto. Però, dato che
+ognuno di questi integrati c'ha sei
+porte not, avevo qua quattro porte not
+libere e le ho riciclate. Quindi riciclo
+questo integrato, dato che a dei Note
+liberi. Il Note poi viene riportato qui
+nel LED.
+Per quanto riguarda invece il flag
+negative, viene preso direttamente dal
+bito del bass dati che sarebbe questo
+cavo giallo.
+Poi abbiamo questi altri due integrati
+che sono un 7408 contenente un end e un
+74
+86 contenente degli Xor e vengono
+utilizzati sia per andare a costruirci
+la rete del dell'overflow, del flag di
+overflow, sia per calcolare il carry
+inserendo in XOR la variabile K che
+utilizziamo per switchare da somma e
+sottrazione. Piccola nota, per come oggi
+è costruito questo circuito, si
+andrebbero ad accendere i nostri flag
+anche quando vengono fatte vengono fatte
+altre operazioni, non per forza
+dall'alu, perché perché alcuni dei
+segnali sono prelevati direttamente dal
+bass dati. Questo in realtà non è un
+problema perché poi la Control Unit
+andrà a salvare questi flag all'interno
+di un registro e verranno salvati
+soltanto quando effettivamente c'è
+l'esigenza di salvarli, quindi quando
+avremo un'operazione effettuata
+effettivamente dall'alu.
+A questo punto possiamo partire con
+qualche test. Mi sono preparato qui di
+fianco una serie di test che sono quelli
+più significativi che ci mostrano un po'
+il funzionamento di tutti i flag nelle
+varie condizioni di utilizzo.
+Partiamo subito col dire che abbiamo la
+nostra alu accesa, la nostra CPU accesa,
+alimentata, siamo nella condizione di
+sottrazione perché il flag K, perché la
+variabile K è a + 5 V, la variabile A è
+0, la variabile B è a 0, quindi siamo
+nella situazione 0 - 0 che dà 0 e
+abbiamo il flag 0 acceso ed è corretto
+perché se fate caso in uscita abbiamo
+tutto tutto il bass dati spento e quindi
+siamo in una condizione di zero.
+Adesso se io provo a fare una
+sottrazione di due numeri uguali, ad
+esempio 1 - 1,
+ci troviamo nella stessa condizione,
+quindi bass dati, tutto spento, flag
+zero, acceso e diciamo che questo test è
+andato a buon fine, ciò che ci
+aspettavamo.
+Qui abbiamo invece un altro esempio.
+Siamo nella condizione in cui A è a 5, B
+è a 10 e siamo in sottrazione, quindi
+stiamo facendo 5 - 10. 5 - 10 ovviamente
+è un numero negativo, infatti abbiamo il
+flag n acceso, eh abbiamo anche accesa
+C, quindi siamo in una situazione di
+borrow, cioè abbiamo un prestito, il
+sommatore ha fatto un prestito
+dell'ultima cifra nella sottrazione e
+anche questo, diciamo, è ciò che ci
+aspettavamo e quindi anche quest'altro
+test è andato è andato bene.
+Altro esempio, siamo nella condizione in
+cui a è a -128, quindi un numero
+negativo e stiamo andando a sottrarre 1,
+quindi il risultato sarebbe -129, però
+-129 non è rappresentabile con con 8
+bit, quindi siamo in una condizione di
+overflow ed effettivamente è ciò che ci
+aspettiamo. Il flag di overflow è acceso
+e quindi funziona anche questa
+casistica.
+Passiamo a un altro esempio. Siamo
+sempre in una situazione di overflow.
+Stiamo facendo la somma tra 127
++ 1. Questo questa somma ci dovrebbe
+dare 128, però 128 non è rappresentabile
+all'interno della nostra CPU con 8 bit,
+considerando il bito come bit di segno.
+Infatti il risultato prodotto ci sta a
+indicare -128.
+Abbiamo il flag negative che è acceso
+perché giustamente il bit di segno è
+acceso, però il risultato prodotto
+dall'alo è inattendibile e ciò è
+indicato dal flag di overflow che
+giustamente si è attivato se è acceso.
+Quindi questa casistica è una casistica
+di overflow.
+Io direi che per questo video è tutto.
+Abbiamo visto un paio di esempi eh che
+vanno ad utilizzare un po' tutti i flag.
+Ci sono anche altri esempi. Io ho fatto
+tutta questa serie di test e sono andati
+tutti a buon fine. Direi che per questo
+video è tutto. Nel prossimo continuiamo
+a parlare dei flag ed andiamo ad
+esaminare le operazioni di compare,
+quindi a mag b, a< B o A = B. Già ho
+creato qua una label dove andrò a
+inserire altri LED e andiamo poi a
+esaminare tutta la parte di circuito di
+porte logiche necessarie per ottenere
+queste informazioni.

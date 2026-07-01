@@ -1,0 +1,382 @@
+Bentornati sul mio canale YouTube. Oggi
+continuiamo a parlare di flip flop e
+nello specifico analizziamo il flip flop
+di tipo D. Ma prima di iniziare vi
+ricordo di lasciare un mi piace,
+commentare questo video e iscrivervi al
+mio canale per supportare il mio lavoro.
+Nello scorso video ci siamo lasciati con
+il Flipfop SR. Abbiamo visto
+effettivamente il suo funzionamento e ne
+abbiamo anche realizzato uno. Uno dei
+problemi principali del Flipflop SR è la
+condizione 11 che in uscita ci dà uno
+stato di indeterminazione.
+Adesso il flip flop di tipo D va a
+risolvere alcuni dei problemi dell SR
+tra cui va a eliminare questa condizione
+di indeterminazione.
+Adesso noi vedremo tutta una serie di
+passaggi che ci porteranno da un flip
+flop SR a un flip flop di tipo D. Il
+primo step è quello di andare a
+eliminare questa condizione. Per
+eliminare questa condizione dobbiamo
+limitare gli ingressi da 2 a 1. Quindi
+creiamo d che può avere i valori 0 e 1.
+Quando D sarà a 0 Q sarà a 0. Quando D
+sarà a 1, Q sarà 1. Come facciamo a
+ottenere questa tabella di verità? di
+fatto andiamo a creare questo ingresso D
+colleghiamo direttamente a S e poi
+tramite una porta note lo riportiamo su
+R. Che cosa succede? Succede che se ad
+esempio io qua c'ho 0
+viene riportato su S e ehm diventa 1 su
+R perché passa dalla porta not. Quindi
+abbiamo condizione 01
+mi dà 0 in uscita, Q sarà 0. Quindi è
+rispettata questa condizione della
+tabella di verità. Se adesso io cancello
+eh questo ingresso
+e vado a settare la variabile 1, D sarà
+1, qui avrò 1, qui avrò 0, quindi set 1
+resetta a 0 mi dà in uscita 1.
+Quindi di fatto con questa piccola
+modifica vado a creare un flip flop più
+stabile perché ho eliminato la
+condizione di indeterminazione. Il
+problema è che questo flip flop non
+serve a niente perché comunque è un
+circuito logico al cui ingresso do 0 e
+all'uscita do 0, do 1 e l'uscita o un,
+quindi effettivamente non serve a
+granché. Però, ehm, da questo piccolo
+esempio possiamo passare a uno step
+successivo dove eh andiamo a eh
+eliminare mh la condizione in
+determinazione e in più andiamo a
+inserire un altro bit che sarà il bit di
+enable che mi permette di eh andare a
+memorizzare e abilitare la
+memorizzazione all'interno del flip
+flop. Qui sotto ho lo schema di fatto
+ho aggiunto due porte end. queste due
+porte end.
+Che cosa succede? Succede che abbiamo D,
+abbiamo l'enable e poi qui abbiamo un
+flip flop SR. Ho disegnato una tabella
+di verità che ci permette di capire il
+funzionamento. Le condizioni sono N0 D0
+abbiamo una condizione di memoria, N0 D1
+abbiamo una condizione di memoria enable
+A1 D a0 stiamo settando Q a0 quindi
+stiamo impostando il bit in uscita a 0
+N1 D1 abbiamo Q1, quindi abbiamo settato
+l'uscita 1
+e poi per passare effettivamente tornare
+in una condizione di memoria ci basta
+portare l'enable a zero. Qui di fianco
+ho disegnato anche i bit S ed R che
+sarebbero questi. Quindi questa do
+verità che cosa mi dice? Mi dice quando
+io in ingresso do una combinazione di
+enable D mi dà che cosa avrò
+all'ingresso del Flipop SR e che cosa
+avrò in uscita. A questo punto possiamo
+fare una serie di simulazioni di test
+per capire il funzionamento. Partiamo
+dal caso enable 0 di 0, quindi 0.
+Qui eh d va direttamente su questa porta
+end. L'enable va su entrambe le porte
+end
+che viene negato da questo note e quindi
+qua abbiamo uno. Ora qui di fianco
+abbiamo anche la tabella di verità della
+porta end. Eh, la prima porta end si
+trova nella condizione 00 00 mi dà 0 in
+uscita, quindi qua ho 0
+1 eh mi dà 0 in uscita anche qui, quindi
+sono una condizione SR00. La condizione
+00 nel flip flop SR è una condizione di
+memoria. In effetti lo vedevamo già
+dalla tabella di verità perché abbiamo
+enable a 0, D a 0, S trova a 0, R si
+trova a 0. sono nella condizione di
+memoria. Quindi effettivamente questa
+condizione è ehm è corretta, l'abbiamo
+visto un po' dalla simulazione. Posso
+continuare eh a eseguire tutti i test.
+Quindi, ad esempio, passo ehm enable a 0
+dia1. Vediamo che succede.
+Cancello tutto.
+D passa uno
+me lo ritrovo in questa porta logica.
+Qui ho zero, qui ho zero e qui ho zero.
+In effetti siamo esattamente nella nello
+stesso caso di prima, solo che eh è
+invertita la cosa perché prima avevamo
+uno 0 su questa porta logica, ora ce lo
+ritroviamo su questa, ma poco cambia.
+Eh, lend qua mi dà zero e qua mi dà
+zero. Quindi continuiamo ad avere una
+condizione di memoria perché 00 nell SR
+è una condizione di memoria. Invece le
+cose cambiano quando m vado a portare
+l'enable a uno. Quando vado ad abilitare
+l'enable. Cancelliamo tutto
+e facciamo un altro test.
+Facciamo finta che siamo nella
+condizione enable a 1 di a0.
+Qui ho
+qui ho 1, qui ho 1, qui ho 1. Partiamo.
+Condizione 1 1 mi dà 1, quindi qui avrò
+1. Condizione 0 1 mi dà 0, quindi qua
+avrò 0. Quindi ho il bit di set a 0, il
+bit di reset a 1. Quindi bit eh a 0, bit
+reset a 1. Effettivamente sto impostando
+in memoria in memoria il
+valore zero, quindi sto salvando zero in
+uscita e anche quindi questa condizione
+è corretta. Proviamo l'ultima casistica,
+cioè la casistica in cui l'enable è a 1
+e d è a 1. Quindi metto D a 1.
+Qui ho 1, qui ho 0, qui ho 1, qui ho 1.
+1 mi dà 1, quindi set va a 1. 0 mi dà
+zero, quindi il reset va a zero.
+Effettivamente in questa condizione il
+flip flop SR va a memorizzare
+in uscita uno, quindi qua avrò uno.
+Quindi in breve abbiamo abbiamo
+verificato tutte queste condizioni della
+tabella di verità e ci portiamo a casa
+il fatto che quando avrò l'enable
+abilitato io andrò a scrivere
+effettivamente nell'uscita ciò che ho
+nella variabile D in ingresso. E già
+questo comunque è un enorme vantaggio
+rispetto al flip flop SR perché comunque
+abbiamo più controllo, possiamo possiamo
+pilotare
+grazie all'ingresso di ciò che eh dovrò
+scrivere all'interno del Flipfop e poi
+grazie all'enable potrò decidere quando
+andare a fare una scrittura all'interno
+del flipfop.
+Adesso vorrei fare un piccolo
+ragionamento sul segnale di enable.
+Abbiamo visto le condizioni in cui
+l'enable è a 0 a 1, però vorrei capire
+che cosa succede se nel segnale di
+enable inserisco il nostro segnale di
+clock. In effetti se vado a introdurre
+il clock all'interno dell'enable,
+durante tutte le fasi in cui il clock
+sarà a un livello logico alto, ho il
+salvataggio dell'informazione, quindi
+ciò che c'ho su D.
+va memorizzato nel flip flop, invece
+quando sono sul livello logico basso
+c'ho memoria. Adesso lo step successivo
+è quello in cui ho il mio segnale di
+clock onda quadra che disegno qui.
+C'ho questo segnale di clock e voglio
+che il salvataggio dell'informazione
+avvenga soltanto nell'istante di tempo
+in cui il segnale switcha da un livello
+logico basso a un livello logico alto.
+Quindi abbiamo il cosiddetto fronte di
+salita del clock. Quindi in questa fase
+voglio eh salvare l'informazione. Per
+fare ciò ho bisogno di un altro circuito
+che mi genera eh un impulso. Adesso
+vediamo effettivamente come realizzare
+questo circuito.
+A questo punto dobbiamo introdurre
+questo circuito che è un generatore di
+impulso. Posso chiamarlo generatore di
+impulso. È formato da una porta end e
+una porta not. Come funziona? a uno
+degli ingressi della porta end ehm do il
+nostro clock. Nell'altro ingresso invece
+do il clock negato, quindi il clock
+viene prelevato, passa da questa porta
+not e viene introtto nel secondo
+ingresso. Questo circuito a prima vista
+è un po' controintuitivo perché se io
+analizzo la tabella di verità della
+porta End, qui l'ho disegnata e facciamo
+il caso, mettiamo il caso in cui
+all'ingresso A c'ho il clock,
+all'ingresso B c'ho il clock negato, le
+possibili condizioni di funzionamento di
+questo circuito sono queste due, cioè
+clock a 0 clock negato a 1 uscita 0,
+clock a 1 clock negato a 0 uscita 0.
+Quindi qua miaspetto che ho
+effettivamente sempre zero, sempre un
+livello logico basso in uscita.
+Effettivamente è corretto, però dobbiamo
+anche pensare che ogni porta logica
+introduce un piccolo ritardo. Che cosa
+vuol dire? Vuol dire che quando io mando
+il segnale di clock, subito avrò il
+segnale di clock all'interno della del
+primo ingresso della porta logica.
+Invece in questo secondo ingresso la
+negazione del clock arriva con un breve
+istante di ritardo perché ogni porta
+logica introduce un ritardo, cioè
+abbiamo un tempo che passa da quando
+arriva il segnale all'interno di questa
+porta logica a quando esce perché ci
+sono tutta una serie di delay dovuti
+alla propagazione del segnale
+all'interno del circuito, all'interno
+della porta logica. Vediamo un po'
+meglio all'interno di questo schema ciò
+che succede. Qui ho disegnato il segnale
+di clock e il segnale di clock negato. M
+a prima vista non non vediamo niente, ho
+ingigantito un po' le cose, ma se io
+vado a tracciare delle linee di
+intersezione, queste qua tratteggiate,
+che cosa succede? Eh, vedo che
+in effetti eh c'ho eh un piccolo istante
+di tempo. Qui possiamo vedere il nostro
+ritardo
+in cui m lo vediamo qua meglio, in cui
+c'ho l'intersezione
+tra il livello logico alto dei due
+ingressi. Perché? Perché in effetti eh
+qui eh switcio il clock switcha livello
+logico basso a livello logico alto. Il
+not introduce questo ritardo di
+propagazione del segnale, quindi per
+questo breve istante di tempo che ho qua
+tratteggiato, il segnale sarà a un
+livello logico alto e così in tutte
+queste fasi.
+Quindi queste fasi tratteggiate sono
+degli istanti di tempo in cui in effetti
+mi trovo in questa condizione che è la
+condizione 11 che mi dà in uscita uno.
+Se se vado a vedere eh c'ho degli
+impulsi
+che sono questi e sono i momenti di
+intersezione del clock. Quindi su tutto
+il grafico c'è solo queste istante di
+tempo in cui brevissimi in cui il
+segnale in uscita della porta end a
+livello logico uno. Ora qui sicuramente
+ho ingigantito tutto, però l'idea
+intuitiva è quella che se vado a
+schematizzare questo circuito
+all'interno di questa scatolina, se io
+in ingresso c'ho il clock con la mia
+onda quadro, in uscita c'avrò qualcosa
+del genere.
+Quindi da un'onda quadra passo degli
+istanti brevissimi in cui ho il livello
+logico uno e poi subito eh torno a zero.
+Eh questi istanti mi vanno a scandire eh
+il passaggio del clock dal livello
+logico basso a livello logico alto.
+Quindi di fatto vado a scandire il
+cosiddetto fronte di salita del clock.
+A questo punto vado a realizzare il flip
+flop di tipo D, quello finale, in cui ho
+il circuito che abbiamo appena visto,
+solo che nel segnale di enable ho
+collegato il nostro generatore di clock
+che abbiamo appena visto. Quindi ho il
+clock,
+il generatore di impulsi me lo trasforma
+in un impulso e va all'impulso
+all'interno dell'enable. Il risultato è
+questa tabella di verità in cui c'ho il
+clock. Quando è zero per qualunque
+valore di D avrò memoria. Quando sono
+nell'istante di salita di clock che
+viene indicato da questa freccetta, se D
+è a 0 ho salvato l'informazione 0 in
+uscita. Se D è a 1 ho salvato
+l'informazione 1 in uscita. Schematizzo
+il tutto. Questo flip flop lo
+schematizzo con questa scatolina in cui
+c'ho D che è il nostro ingresso, il
+clock e poi ho l'uscita Q e Q negata.
+Ora realizzerò questo circuito per scopo
+didattico all'interno della board e
+vedremo effettivamente se funziona
+tutto. Però già vi dico che generare un
+impulso di clock utilizzando il delay di
+una porta note è qualcosa di abbastanza
+instabile. Cioè sì, funziona ma non
+funziona benissimo. Può variare anche
+dalle condizioni di temperatura degli
+integrati e così via. Sicuramente quando
+poi andremo a realizzare i nostri
+registri utilizzerò degli integrati che
+eh implementano già dei flip flop di
+tipo D prendono delle accortezze
+maggiori per andare a scandire i fronti
+di salita del clock.
+Ho realizzato il flip flop di tipo D
+all'interno della della nostra board.
+Eh, sono partito dall'SR del video
+precedente. Ho aggiunto un 7408 che
+contiene le nostre porte hand. Al solito
+abbiamo il died che ci mostra l'uscita,
+cioè l'informazione salvata nel flip
+flop e poi c'è questo cavo bianco che ho
+collegato brutalmente a massa che può
+essere anche switchato da massa + 5 V
+che rappresenta il nostro ingresso D,
+quindi l'input del flip flop.
+Eh, per realizzare le porte not per
+evitare di inserire altri integrati, sto
+riciclando il 7402,
+cioè questo, e vado a utilizzare la
+casistica in cui A è a massa, quindi ho
+bloccato A a massa, e B quando sarà a 0
+avremo uno in uscita, quando sarà a un
+avremo Z0O in uscita. Ovviamente queste
+condizioni si escludono perché a fisso a
+a massa.
+Il flip flop già è alimentato, eh
+l'ingresso è a massa, però eh non
+abbiamo impulso di clock, infatti anche
+se lo metto a più 5 V l'uscita non
+varia. Adesso proviamo a inviare un un
+impulso di clock. Vediamo se
+effettivamente si accende il LED.
+Facciamo un test. Ok,
+con l'impulso di clock abbiamo salvato
+questa informazione. Abbiamo salvato uno
+in uscita. Adesso anche se messo a massa
+D non ho variazioni perché sono nella
+condizione di memoria. Proviamo a
+lanciare un altro impulso di clock e
+vediamo se si aggiorna l'uscita, perché
+ora di è a massa.
+Effettivamente si è spento il LED,
+quindi diciamo che funziona il circuito.
+Ovviamente il problema vero è che m a
+volte non va a prendere l'impulso di
+clock quando premo il bottone e faccio
+uno switch eh dallo stato di massa più 5
+V o viceversa. Perché? Perché
+effettivamente utilizzare il ritardo di
+un not per il generatore di impulsi per
+andare a discriminare i fronti di salita
+del clock è qualcosa di abbastanza
+instabile, quindi poi in un caso d'uso
+reale non non andrebbe utilizzato. In
+effetti nel prossimo video smonterò
+tutto questo circuito che comunque è
+provvisorio
+e andremo a utilizzare dei registri che
+contengono già allo rinterno dei flip
+flop di tipo D. Quindi direi che per
+oggi è tutto.
