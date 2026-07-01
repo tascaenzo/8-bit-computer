@@ -1,0 +1,419 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo e in questo
+video continuiamo lo sviluppo della
+nostra CPU 8 bit. Oggi parleremo di
+somma e sottrazione binaria. Prima di
+iniziare vi ricordo di lasciare un mi
+piace, commentare e iscrivervi al mio
+canale se trovate interessanti questa
+serie di video.
+Prima di passare alla definizione di
+somma, vorrei vedere come si effettua
+una conversione dal sistema binario al
+sistema decimale. Qui ho degli esempi di
+numeri binari con relativa conversione
+in decimale. Partiamo dal presupposto
+che noi ci troviamo all'interno di un
+sistema posizionale in base du. Che cosa
+vuol dire? Vuol dire che il valore di
+una cifra cambia a seconda della
+posizione in cui si trova all'interno
+del numero. Ad esempio 001
+è diverso da 00.
+Il primo vale 1, il secondo vale 2. Ma
+che cosa cambia? cambia la posizione
+dell'uno. Cambiando la posizione di
+questo 1 eh cambia effettivamente il
+valore che rappresenta quel numero. Come
+facciamo a capire qual è il peso di ogni
+singola cifra in base alla posizione?
+abbiamo questa piccola tabella dove
+andiamo noi a prendere la base, in
+questo caso 2, e l'eleviamo per la
+posizione partendo da zero. Quindi il
+primo numero sarà avrà un valore di 1
+perché perché abbiamo 2 elev 0 che fa 1.
+La seconda cifra invece varrà 2 elev 1
+che fa 2. La terza cifra varrà 2 elev 2
+che fa 4.
+La quarta cifra 2 elev che fa 8 e così
+via. Qui ho rappresentato soltanto 4
+bit.
+Quindi capiamo bene che la formula
+generale è base elevata alla posizione
+in cui si trova il numero partendo dalla
+posizione zero. Ma effettivamente
+partendo da questi esempi, come faccio
+poi a ottenere il valore decimale? È
+semplicissimo. Facciamo un esempio. 001.
+andrò a sommare il valore eh soltanto
+delle cifre che hanno uno. Quindi in
+questo caso abbiamo un solo 1 e ho la
+conversione in decimale che vale 1.
+Facciamo un esempio un po' più
+complicato. Ad esempio, prendiamo questo
+numero che vale 11
+1. In questo caso andrò a sommare 1 + 2
++ 8 che mi fa 11. salto il 4 perché ehm
+questa cifra vale zero, questo ho uno 0,
+quindi non vado a sommare il 4. E così
+via per tutti gli altri esempi, ad
+esempio 0 1
+vale 7 ed è ottenuto da 4 + 2 + 1.
+Diciamo con questa con questo trucchetto
+riusciamo facilmente a fare delle
+conversioni da binario a sistema binario
+a sistema decimale.
+A questo punto possiamo definire la
+somma. Prendiamo un caso semplice,
+quindi prendiamo soltanto 2 bit e
+vediamo che cosa succede sommando questi
+2 bit. Abbiamo essenzialmente queste
+quattro combinazioni: 0 + 0 che fa 0, 0
++ 1 che fa 1, 1 + 0 che fa 1 e infine 1
++ 1 che fa 0 con riporto di 1.
+Passiamo a degli esempi un po' più
+complessi in cui abbiamo 3 bit e
+sommiamo 10 + 1 1. Che cosa succede?
+Succede che 1 + 1 abbiamo detto che fa 0
+riporto di 1. Qui abbiamo 1 + 0 che fa 1
+più il riporto precedente che fa eh 0
+col riporto di 1. Qui abbiamo 1 + 0 più
+il riporto di 1 che fa 0 con riporto di
+1. Il risultato è questo che sarà 1
+qui di fianco abbiamo la conversione in
+numeri decimali. Stavamo sommando 5 + 3
+che fa 8 ed effettivamente se andiamo a
+vedere questo qui è un 8 in sistema
+binario.
+Qui abbiamo un altro esempio.
+Abbiamo 1 1
++ 1 1 quindi abbiamo 7 + 7 che fa 14.
+Come facciamo questo calcolo? Facciamo 1
++ 1 che fa 0 con riporto di 1. A questo
+punto abbiamo 1 + 1 che fa eh 0 con
+riporto di 1 più l'uno che ci
+riportavamo prima abbiamo un 1 e stiamo
+sempre riportando alla colonna
+successiva un altro 1. Qui abbiamo 1 + 1
+che fa 0 più il riporto della colonna
+precedente, quindi abbiamo 1 col riporto
+di 1 e qui segniamo il riporto di 1 e
+quindi abbiamo 1 1 0 che effettivamente
+fa 14 che è la somma di 7 + 7.
+A questo punto lo step successivo è
+quello di capire come effettuare
+l'operazione di somma tra 2 bit con
+delle porte logiche in sostanza. Qui di
+fianco ho rappresentato una tabella di
+verità che va a rappresentarmi la somma
+dove abbiamo l'ingresso A e l'ingresso B
+che sono i nostri due bit da sommare e
+come uscita abbiamo la somma EC che
+rappresenta il riporto.
+In effetti se vediamo questa tabella di
+verità vediamo che per la combinazione
+00 abbiamo la somma che è uguale a 0 e
+il riporto che è a 0.
+1 somma 1 e riporto a 0. 10 somma 1 e
+riporto a 0. 1 a 1 somma 0 con riporto a
+1.
+Qui di fianco vediamo un circuito
+formato da una porta Xor da una porta
+end. In effetti questo circuito ci va a
+dare proprio questo risultato, quindi
+possiamo effettuare la somma di 2 bit A
+e B tramite questo circuito. In sostanza
+abbiamo la variabile A che entra in un
+ingresso dell'oxor e un ingresso
+dell'end e la B che entra nell'altro
+ingresso dell'oxor e dell'end. l'uscita
+delloxor sarà la somma e invece l'uscita
+dell'end sarà eh il riporto.
+In effetti, se noi andiamo a a vedere
+questa tabella e andiamo a nascondere
+uno dei due output, ad esempio, nascondo
+il il riporto, effettivamente questa
+tabella di verità è la tabella di verità
+di un Oxor. Se invece mostro soltanto il
+riporto, questa qui diventa la tabella
+di verità di un di un end. Quindi,
+grazie a questo piccolo circuito, queste
+due porte logiche, riusciamo ad
+effettuare la somma binaria tra 2 bit.
+Questo circuito prende il nome di
+Alfader e si può rappresentare con
+questo simbolo dove abbiamo l'ingresso
+di A, l'ingresso di B, la somma tra A e
+B e eventuale riporto.
+Lo step successivo all'alfadder è il
+full ladder. Cos'è il full ladder? in
+sostanza è un sommatore dove in ingresso
+oltre ad avere la variabile A e la
+variabile B abbiamo anche un eventuale
+riporto della colonna precedente. Quindi
+in sostanza la tabella di verità diventa
+un po' più complessa perché abbiamo A, B
+e C in ingresso, ma come uscite abbiamo
+sempre la somma EC che sta sempre per il
+nostro riporto in uscita. Perché si
+utilizza la variabile C? In sostanza
+viene dall'inglese carry. Come
+costruiamo un fulladder? In sostanza ci
+bastano due alfadder e una porta or.
+Prendiamo il primo alfadder e inseriamo,
+diamo in ingresso la variabile A e la
+variabile B. L'uscita, la somma in
+uscita dal primo alfadder sarà uno degli
+ingressi del secondo Alfadder e poi
+avremo l'altro ingresso sarà collegato
+al riporto, all'eventuale riporto della
+colonna precedente.
+Le uscite del secondo Alfadder saranno
+la nostra somma finale più eh
+l'eventuale riporto che andrà in OR
+tramite la porta OR con il riporto del
+primo Alfader. E di fatto in questo modo
+abbiamo creato un full ladder che ci
+permette di andare a effettuare somme,
+considerando anche il riporto iniziale.
+Rappresentiamo il full ladder con questo
+con questo schema,
+questo simbolo in cui abbiamo ingresso
+A, ingresso B, riporto in ingresso,
+somma e riporto in uscita.
+A questo punto, dopo che abbiamo
+definito il fuller, possiamo iniziare a
+ragionare su un su un a 4 bit. Come
+facciamo a costruire questo tipo di
+circuito? In sostanza utilizziamo
+quattro full ladder collegati in
+cascata.
+Allora, qui abbiamo il primo full ladder
+dove sarà il riporto in ingresso che nel
+caso del primo full ladder sarà zero.
+Quindi collegheremo questo a massa,
+questo ingresso a massa. Poi avremo
+l'ingresso A1 e B1 che saranno i primi
+due bit da confrontare con uscita S1.
+L'uscita del riporto che rappresenta il
+riporto sarà l'ingresso del riporto del
+secondo full ladder. Quindi avremo il
+riporto e gli ingressi A2 e B2 che
+saranno i secondi bit da andare a
+sommare. Avremo l'uscita S2 e il nostro
+riporto. Il nostro riporto sarà
+l'ingresso anche del terzo full ladder.
+Dureremo i bit 3 e B3 e uscita S3.
+Infine l'ultimo full ladder avrà in
+ingresso A4 B4 e il riporto del full
+ladder precedente con uscita su S4.
+Questo sarà il riporto finale.
+Diciamo che eh grazie a questo schema in
+cascata possiamo creare dei sommatori
+che possono anche essere più grandi di 4
+bit perché comunque non abbiamo limiti,
+possiamo collegare in cascata tutti i
+sommatori che vogliamo. Piccola nota, in
+ingresso potremmo utilizzare, invece di
+un fulladder con cin a zero, potremmo
+utilizzare un alfadder, però è la
+medesima cosa. Ora noi non andremo a
+crearci i nostri alpad e poi fulladder
+partendo dalle porte logiche, ma bensì
+utilizziamo dei componenti che già
+contengono degli ADER, come ad esempio
+il 74283
+che contiene un un ADER a 4 bit, quindi
+abbiamo in sostanza questa rete
+all'interno già all'interno di questo di
+questo componente in logica HTTL.
+Detto ciò, a questo punto possiamo
+pensare che se colleghiamo le gli
+ingressi che vanno da A4 a A1 e da B4 a
+B1 all'interno della nostra alu e poi
+colleghiamo le uscite al bass dati
+facendole passare per un buffer dati,
+noi abbiamo realizzato il nostro
+sommatore e quindi l'operazione di AD. E
+ciò è anche vero, solo che con questa
+soluzione noi non riusciamo a effettuare
+delle sottrazioni. Quindi lo step
+successivo è adesso capire come con
+degli Ader possiamo realizzare queste
+sottrazioni e come rappresentare
+all'interno della nostra CPU un numero
+negativo.
+A questo punto capiamo come
+rappresentare un numero negativo
+all'interno della nostra C+. Abbiamo
+detto che siamo in un sistema
+posizionale dove la posizione di ogni
+singola cifra va a determinare il suo
+valore. Abbiamo visto che con 8 bit
+possiamo rappresentare fino a 256
+valori, infatti abbiamo la base che è 2
+elevato 8 il numero di bit che ci dà
+256.
+Quindi, se noi andiamo a considerare eh
+questa piccola tabella dove viene
+mostrato il valore di ogni singolo bit,
+abbiamo che il bit meno significativo,
+cioè quello a posizione 0 equivale a 1,
+fino a arrivare al quello più
+significativo che dà il suo valore è
+128. Abbiamo un range di valori che
+vanno da 0 fino a 255. In questo modo
+possiamo rappresentare quindi eh da 0
+fino al numero più alto 255.
+Ovviamente non 256 perché stiamo
+partendo appunto dallo zero, però i
+valori sono 256.
+Adesso, se noi vogliamo nel nostro
+sistema rappresentare numeri negativi,
+possiamo considerare il bit più
+significativo come bit di segno e
+attribuirgli il valore di -128 anziché
+128.
+Che cosa vuol dire? Vuol dire che con
+questo sistema riusciamo a rappresentare
+sempre 256 numeri, però il range va da
+-128 fino a 127.
+A questo punto dobbiamo considerare lo
+zero come un numero positivo perché nel
+caso in cui abbiamo tutti i bit a 0 -128
+sarà 0 e quindi eh a livello della
+nostra CPU il
+valore di zero eh sarà positivo. Come
+possiamo prendere un numero e avere il
+suo negativo? Lo facciamo grazie a
+un'operazione che si chiama complemento
+a du. Ho fatto qua un piccolo esempio
+che ci fa capire come funziona questa
+operazione. Prendiamo questo numero
+00101
+che equivale a 5 in decimale. Infatti
+abbiamo questo bit alla terza posizione
+che è 4 più quest'altro bit alla prima
+posizione che è 1. 4 + 1 fa 5. Per
+effettuare questa operazione complementa
+du andiamo a invertire tutti i bit.
+Quindi qui abbiamo 1, avremo uno 0. Qui
+avremo un perché avevamo uno 0. Qui
+abbiamo uno zero perché avevamo un 1 e
+poi tutto il resto sono a 1 perché sono
+tutti zeri. A questo punto questo valore
+che vedete qui si chiama complemento a
+1. Per arrivare al risultato finale,
+cioè il nostro complemento a 2, bisogna
+sommare a questo numero + 1. Facciamo la
+somma e abbiamo questo risultato che
+vediamo in giallo evidenziato in giallo
+che sarebbe 1 1 1 10 1 10 1 1. Questo
+qua equivale a -5. Infatti, se io vado a
+contare, vado a sommare -128 + 64 + 32 +
+16 + 8, il 4 lo saltiamo perché abbiamo
+0 + 2 + 1. Questa somma mi dà -5. E
+quindi io in questo modo, partendo dal
+numero 5, sono riuscito ad ottenere il
+-5 effettuando l'operazione di
+complemento a 2.
+A questo punto possiamo
+provare a effettuare una somma tra 7 e
+-5. In effetti noi sappiamo che a - b
+equivale a fare la somma di a + - b.
+Quindi, in sostanza, se io vado a fare
+la somma di 7 - 5, ho fatto di fatto una
+sottrazione, mi dovrebbe dare due come
+risultato. Vediamo se è vero. Ho
+rappresentato qui, ho messo in questo
+esempio il numero 7 che è 001
+1 + -5. Il -5 è il numero che abbiamo
+appena calcolato, quindi 1 1 1 10 1 1. E
+se vado a fare la somma bit a bit,
+vediamo che cosa otteniamo.
+1 + 1 fa 0 col riporto di 1. 1 + 1 più
+il riporto precedente fa 1 col riporto
+di 1. 1 + 1 + 0 fa 0 riporto di 1. 0 + 1
++ 1 fa 0 riporto di 1 e così via. In
+sostanza ci portiamo sempre avanti il
+riporto
+e alla fine abbiamo questo numero dove
+abbiamo questo che è il riporto finale e
+m ovviamente questo è un 9 bit perché
+andiamo fuori del range di 8 bit. Però
+se noi andiamo a escludere questo 9o bit
+e consideriamo solo gli 8 bit, otteniamo
+il valore 2. Infatti abbiamo 00
+che in effetti equivale al numero 2.
+Quindi con questa operazione con una
+semplice somma siamo riusciti a fare la
+sottrazione. Questo è molto importante
+perché ci permette di utilizzare dei
+sommatori per effettuare delle per
+effettuare delle sottrazioni. Quindi
+semplifica un po' la circuiteria della
+nostra CPU.
+L'ultimo step sarà quello di andare a
+costruire la rete finale capace di
+effettuare somme e sottrazioni. Come
+vedete ho disegnato la nostra rete,
+abbiamo i nostri full ladder.
+All'interno dei full ladder ho collegato
+la variabile A a ognuno degli ingressi e
+invece la variabile B l'ho fatta passare
+da una porta XOR dove eh a un capo un
+ingresso della porta XOR c'ho B.
+All'altro invece c'ho questa variabile K
+perché infatti tutti questi ingressi
+sono parallelizzati e collegati a questa
+variabile K che poi a sua volta è
+collegata anche al riporto iniziale del
+primo full ladder. In sostanza, che cosa
+succede? Succede che se K equivale a 0,
+l'XOR tra eh tra B e K darà come
+risultato B. E quindi sto che cosa sto
+facendo? Sto facendo la somma tra A e B,
+una somma classica. Eh, cin questo in
+questo caso è zero, quindi non ho
+problemi di riporto, sto mettendo zero
+come riporto iniziale e in uscita ho la
+somma. La somma poi viene fatta passare
+da questi bass dati che hanno da questi
+buffer che hanno i segnali di enable
+parallelizzati e quindi con queste
+enable al solito vado a accendere o
+spegnere la nostra rete. Il risultato
+della rete che sono queste variabili che
+vanno da S4 S1 è collegato al basi.
+Invece se io ho K1 che cosa succede? Ho
+loxore tra B e 1 e in effetti questo qua
+mi dà in uscita, come uscita della porta
+Xor il not db e quindi in sostanza ho
+fatto il complemento a un qui ho il
+complemento a 1, ma se vediamo c in
+questo caso vale 1, cioè k e quindi al
+primo full ladder sto aggiungendo + 1 e
+in sostanza facendo così vado
+effettivamente a fare la somma del
+complemento a 2 di b + a e di fatto così
+ho creato la sottrazione. Sto facendo la
+sottrazione tra a + - b e in uscita qui
+avrò nelle nostre uscite la sottrazione.
+Quindi con questa piccola rete, con
+questo piccolo circuito, vado a
+realizzare le operazioni di somma e
+sottrazione. Per decidere se fare una
+somma o una sottrazione mi basterà
+impostare K a 0. nel caso della somma e
+A1 nel caso della sottrazione. Io direi
+che per questo video è tutto, anche
+perché ci siamo dilungati molto con la
+spiegazione teorica. Nel prossimo
+andiamo a vedere effettivamente
+l'implementazione di questa rete
+all'interno della nostra ALU. Quindi vi
+ricordo di lasciare un mi piace,
+commentare e iscrivervi al canale se
+trovate interessanti questa serie di
+video.

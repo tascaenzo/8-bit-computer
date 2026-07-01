@@ -1,0 +1,300 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo. Oggi
+parleremo dei flip flop e vedremo come
+realizzare una cella di memoria. Ma
+prima di iniziare vi ricordo di lasciare
+un mi piace, commentare questo video e
+iscrivervi al mio canale in modo da
+supportare il mio lavoro.
+Negli scorsi video abbiamo visto come
+realizzare l'unità aritmeticologica
+della nostra CPU e nell'ultimo video
+abbiamo visto il segnale di clock. Lo
+step successivo è quello di implementare
+dei registri all'interno della CPU. I
+registri sono delle unità di memoria che
+vanno a salvare un'informazione.
+Noi vedremo dei registri 8 bit, quindi
+in grado di immagazzinare 8 bitione.
+Però prima di analizzare tutta la parte
+relativa ai registri dobbiamo capire
+come si può memorizzare un'informazione
+all'interno di un circuito digitale.
+nello specifico vedremo oggi i flip flop
+e vedremo il flip flop sr che è il tipo
+di flip flop più semplice e questo tipo
+di circuiti ci permettono di
+immagazzinare un bit. Quindi un flip
+flop può essere visto come una cella di
+memoria capace di memorizzare un singolo
+bit.
+Possiamo rappresentare il flip flop con
+questa scatolina in cui abbiamo gli
+ingressi S ed uscita Q. Nel Flipfop SR
+avremo anche l'uscita Q negata.
+SR sta per set reset. Questo tipo di
+circuito può essere realizzato tramite
+due porte logiche di tipo NOR. Come ogni
+circuito digitale c'ha una sua tabella
+di verità che ho disegnato qui e andremo
+ad analizzare.
+Avremo gli ingressi S ed Ruscita Q.
+L'uscita Q va a rappresentare il nostro
+bit memorizzato.
+Nel caso in cui vogliamo mantenere un
+bit in memoria, dovremo utilizzare la
+combinazione 00. Infatti ho scritto
+nella tabella di verità 00 memoria.
+Quindi, quando io agli ingressi eh do
+zero,
+avrò una memoria, avrò in memoria eh
+l'uscita,
+quindi Q non avrà nessuna variazione.
+Se invece eh voglio eh settare il bit
+zero, quindi facciamo finta che io qui
+c'ho il bit memorizzato a 1, sono nella
+condizione 00. Per settare eh il bitvo
+impostare il bit di set a 0 e il bit di
+resetta a 1 e quindi avrò eh resettato
+l'uscita e avrò eh l'uscita zero.
+Se invece sono in una condizione di
+memoria con il bit memorizzato
+a zero e voglio eh uno in uscita, dovrò
+impostare il bit di 7 a 1 e il bit di
+reset a 0. Invece la condizione SR11 è
+una condizione di indeterminazione e va
+evitata. L'ho segnata in giallo.
+Effettivamente questa condizione deve
+sempre essere evitata e non dobbiamo mai
+arrivare a questo tipo di condizione
+all'interno del flip flop.
+Dicevamo che possiamo realizzare il flip
+flop SR con due porte Nor. Qui c'è uno
+schema eh in cui abbiamo le due porte,
+ognuna avrà un ingresso R ed S e poi
+l'altro ingresso della porta NOR sarà
+preso dall'uscita. Quindi vediamo che
+abbiamo tra virgolette queste due porte
+Nor che vanno a incrociare le loro
+uscite e quindi abbiamo la porta NOR
+dove abbiamo il bit reset. L'altro
+ingresso sarà conegato preso dall'altra
+porta NOR, per questo abbiamo detto che
+incrociamo le uscite. Invece questa
+porta NOR avrà il bit di set e l'altro
+ingresso sarà dato dall'uscita della
+prima porta NOR dove abbiamo qui in
+uscita.
+Per capire il funzionamento del Flipfop
+SR dobbiamo fare un paio di test e
+verificare cosa succede all'interno del
+circuito comparando la tabella di verità
+della porta NOR. Qui ho disegnato la
+tabella del di verità del Flipfop SR e
+la tabella della porta NOR. Ricordo che
+la NOR è una OR negata, quindi l'unica
+combinazione che mi dà in uscita un
+livello logico alto è la combinazione
+00. Ho distinto due possibili eh
+situazioni. La situazione in cui il
+flipfop deve tenere in memoria
+l'informazione, quindi avrà gli ingressi
+a zero e la situazione di set reset che
+mi permette di impostare eh un'uscita,
+quindi di memorizzare il bit 1 o il bit
+0 in uscita.
+Partirei col testare le eh condizioni di
+memoria, quindi facciamo finta che eh ho
+agli ingressi 0 e 0, quindi S ed R sono
+impostate a zero. Ora io non so qual è
+la sua uscita, posso avere in uscita uno
+0 oppure un 1. Io in questo caso mi vado
+a segnare come uscita un invece in
+quest'altro caso mi vado a segnare in
+uscita 0.
+Cosa succede? M vediamo il funzionamento
+nel caso in cui ho uno in uscita.
+Allora, partiamo dal presupposto che
+questa uscita verrà riportato
+all'ingresso di questa porta logica.
+Quindi in questa porta logica come
+ingressi avrò 01. 01 secondo la tabella
+di verità della porta NOR mi dà 0 in
+uscita, quindi qui avrò zero. Ed
+effettivamente è sensato perché se
+questa è qunegata è su Q1 è normale che
+mi aspetti che qua ci sia zero. Questo 0
+viene riportato all'ingresso di questa
+porta logica. Quindi questa porta logica
+avrà 00 00 in uscita mi dà uno e quindi
+ho uno. Ed effettivamente eh sto
+mantenendo la memoria perché in questa
+condizione io ho memorizzato il bit 1,
+ho già in memoria il bit 1 e mantengo
+ehm la cella di memoria A1.
+Analizziamo invece il caso in cui sono
+nella condizione 00, però in uscita c'ho
+zero. In questo caso eh lo zero che ho
+in questa uscita mi rientra all'interno
+di questa porta logica. Quindi 00 nella
+porta NOR mi dice che in uscita ho uno,
+quindi qua ho uno. E anche in questo
+caso è sensato perché se Q è a 0 Q
+negata sarà 1. L'uno viene riportato
+all'ingresso di questa porta logica e
+qua ho la combinazione 01. La
+combinazione 01 mi dà 0 in uscita e
+anche questa casistica è sensata, quindi
+eh anche in questo caso ho 00 in
+ingresso e mantengo l'uscita a zero e
+quindi c'ho memoria.
+A questo punto dobbiamo testare le
+condizioni di set e reset.
+Partiamo dalla gasistica ehm 00.
+Quindi sono nella situazione di memoria.
+Qui in uscita ho salvato
+un'informazione. Ad esempio c'ho uno.
+Quindi siamo nella condizione di
+memoria. In uscita c'ho uno e voglio
+fare il reset del flip flop, quindi ciò
+che voglio ottenere è zero in uscita.
+Che cosa devo fare? Se vedo la tabella
+di verità mi dice che per eh resettare
+il flip flop avere zero in uscita, devo
+impostare il bit S a 0 e il bit R a 1.
+Quindi R che attualmente è a 0 va a 1.
+In questo caso che cosa succede? Abbiamo
+uno che eh è in ingresso a questa porta
+logica e siamo nella condizione 01.
+01 in uscita mi dà 0, quindi qua avrò 0.
+Questo 0 viene riportato a questo
+ingresso e sono nella condizione 10.
+condizione 10 mi dà in uscita 0 e quindi
+qua avrò zero. Effettivamente ho
+impostato eh il bito
+vado a cambiare i valori in ingresso di
+R ed Sà una breve transizione degli
+stati che eh mi vanno a cambiare lo
+stato poi finale di uscita. Ora che cosa
+succede? Sono in questa condizione in
+cui eh ho impostato
+il bit R1, il bit 7 a0. Ho zero in
+uscita.
+Cancello tutto per capire effettivamente
+che cosa succede mantenendo questo
+stato. Eh, questo zero viene riportato
+qua. Condizione 00. Condizione 00 mi dà
+uno in uscita.
+uno viene riportato all'interno di
+questa porta logica 1 mi dà 0. Quindi
+effettivamente questa è una situazione
+stabile perché comunque c'ho una
+transizione iniziale, però dopo
+raggiungo una condizione di stabilità
+che mi imposta il biter. Quindi a questo
+punto poi io posso tornare nella
+condizione 00 e avrò zero in memoria,
+quindi avrò memorizzato il bit eh 0.
+Vediamo brevemente un'altra casistica.
+Eh, facciamo finta che siamo nella
+condizione di memoria 00, il bit
+memorizzato è zero e io voglio settare
+il bit. Quindi ciò che voglio è che
+questo sia uno. Vedendo la tabella di
+verità del flip flop, so che per settare
+il bit Q1 devo impostare S1, quindi set
+a 1, reset a 0. Quindi che cosa succede?
+set diventa 1.
+Attualmente in uscita c'ho zero che era
+il bit che avevo memorizzato, questo
+viene riportato in questo ingresso,
+quindi sono nella condizione 10. 10 in
+uscita mi dà 0. Questo 0 rientra
+all'interno di questa porta logica.
+condizione 00 mi dà 1, quindi qua ho 1.
+Anche in questo caso, dopo che viene
+eseguita questa transizione
+qua, io non avrò più 0,
+ma avrò 1. 1 mi dà 0, quindi qua avrò 0
+e qua avrò 0. 00 al solito mi dà uno.
+Quindi anche questa è una condizione
+stabile. Ho diciamo sett
+flop e a questo punto posso andare nella
+condizione 00 che mi mantiene la
+memoria. In breve questo è il
+funzionamento del Flip Flop SR. Ora noi
+proviamo a vedere come realizzarlo e
+faremo un paio di test. Ovviamente poi
+all'interno della nostra CPU non andrò a
+realizzare i flip flop utilizzando le
+porte NOR perché esistono vari circuiti
+che vari integrati che già eh
+implementano questo tipo di flip flop,
+però a scopo didattico lo implementeremo
+per capire come funziona. Poi nella
+pratica i registri che utilizzeremo
+saranno dei registri che conterranno dei
+flip flop di tipo D, quindi non non
+saranno degli SR.
+Ho realizzato il flip flop SR che
+abbiamo visto su carta all'interno di
+questa board ho utilizzato un 7402 che
+abbiamo già visto in altri video, è un
+componente in logica HTL che contiene
+quattro porte NOR e poi ho utilizzato
+questi switch che mi permettono di
+andare a pilotare gli ingressi S ed R
+che sono collegati al alle porte end
+tramite delle resistenze di pullup.
+L'uscita Q è stata collegata a questo
+diodo LED ed è stato collegato una
+resistenza in serie al diodo LED per
+limitare la corrente.
+Siamo nella condizione di memoria 00. Ho
+già alimentato la scheda. A questo punto
+io andrei a provare un po' tutte le
+varie casistiche. Quindi mh proviamo a
+settare l'uscita uno. Per settare
+l'uscita uno impostiamo il bit di set
+a uno. Effettivamente
+si accende l'uscita, quindi abbiamo uno
+in uscita. Adesso proviamo a andare
+nella condizione di memoria, quindi
+impostare SR a 0.
+Ho messo SR a0 e effettivamente ho
+memoria. Infatti il bit in uscita è
+ancora uno, è rimasta uno. A questo
+punto la casistica che possiamo provare
+è quella di reset, quindi dobbiamo
+impostare in uscita zero.
+Vado a mettere il reset a 1,
+quindi sono in questa condizione 01.
+effettivamente si spegne eh il LED,
+quindi abbiamo zero in uscita e a questo
+punto andrei a switchare nella
+condizione di memoria, quindi abbasso
+nuovamente R e mi trovo gli ingressi
+entrambi a 0 SR a 0. Siamo in una
+condizione di memoria ed effettivamente
+ehm abbiamo salvato l'informazione.
+Ovviamente io non l'ho detto durante il
+video, ma l'ho dato per scontato, ma
+queste qua sono memorie di tipo
+volatile. Che cosa vuol dire? Vuol dire
+che funzionano fino a quando c'è eh
+alimentazione. Appena io tolgo
+l'alimentazione perdo l'informazione.
+Facciamo un esempio pratico. Rimettiamo
+eh a uno eh la memoria e provo a
+togliere corrente.
+Ho staccato l'alimentazione, si è spento
+il si è spento il flip flop, si è spento
+il bit in uscita. Se io do nuovamente
+alimentazione, ho perso la memoria,
+quindi dovrei eh risettare il bit per
+ehm accenderlo nuovamente.
+Direi che per questo video è tutto. Nel
+prossimo video vediamo il flip flop di
+tipo D, che poi sarà la base su cui
+andremo a costruire i registri della
+nostra CPU. M.

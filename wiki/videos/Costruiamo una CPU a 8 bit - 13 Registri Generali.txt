@@ -1,0 +1,412 @@
+Bentornati sul mio canale YouTube. Oggi
+continuiamo a parlare della CP 8 bit.
+Parleremo dei registri generali. Ma
+prima di iniziare vi ricordo di lasciare
+un mi piace, commentare questo video e
+iscrivervi al mio canale per supportare
+il mio lavoro.
+In questo video andiamo ad analizzare i
+registri della CPU. Come prima cosa
+capiamo effettivamente cos'è un
+registro. Abbiamo visto nei video
+precedenti i flip flop che eh sono di
+fatto delle celle di memoria che
+contengono un singolo bit di
+informazione.
+Invece i registri contengono più bit di
+informazione. Ad esempio, nel nostro
+caso d'uso specifico andremo ad
+analizzare dei registri 8 bit, quindi
+conterranno 8 bitzione.
+Esistono varie tipologie di registri
+all'interno della CPU. abbiamo dei
+registri generali che eh ci permettono
+di salvare, di congelare un'informazione
+che poi verrà utilizzata durante
+l'esecuzione di un programma e poi
+abbiamo dei registri specifici che hanno
+determinati compiti all'interno della
+CPU, come ad esempio eh possono
+contenere un indirizzo di memoria oppure
+l'istruzione che viene eseguita in quel
+momento e così via. Nel video di oggi
+andremo ad analizzare il componente
+74574
+che utilizzeremo per costruire dei
+registri a 8 bit e nello specifico
+andremo a vedere tutta la parte di
+registri generali della nostra CPU.
+Ho scaricato questo schema dal datashe
+del componente che ci permette di capire
+effettivamente cosa c'è dentro il 74574.
+Di fatto abbiamo otto ingressi che vanno
+da D0 a D7, otto uscite che vanno da Q0
+a Q7, un segnale di clock e un segnale
+di enable o enable.
+Diciamo che eh possiamo vederlo già
+dallo schema. Abbiamo otto flip flop di
+tipo D vanno da FF1 a FF8.
+A ogni flip flop è collegato una degli
+ingressi D
+che possiamo vedere qui. Poi abbiamo il
+clock che è parallelizzato su tutti i
+flip flop in modo che comunque al fronte
+di salita del clock abbiamo il
+salvataggio di un'informazione
+dell'informazione
+che sta transitando all'interno degli
+ingressi D. Poi abbiamo l'uscita Q che è
+collegata al flip flop, però passa
+tramite questo componente qui che di
+fatto è un buffer dati, quindi ci
+permette ci dà l'uscita trate, ci
+permette di mandare l'uscita ad alta
+impedenza e questo ci consente di
+collegare l'integrato direttamente al
+bass dati. In effetti da o Enable
+riusciamo a pilotare l'uscita trate del
+registro.
+Quindi mh questo qua ci semplifica un
+po' il lavoro perché avevamo visto su
+tutta la parte di di Alu che per ogni
+rete andavamo a collegare un 74 244 che
+conteneva dei buffer dati. In questo
+caso non c'è bisogno perché sono già
+all'interno del registro.
+Qui ho anche la pianinatura del
+componente. Vediamo che nel pin 1 c'ho
+il segnale o enable attivo basso. Pin 10
+la massa, pin 20 VCC, pin 11 il clock.
+Poi abbiamo dal pin 2 al pin 9, abbiamo
+tutti gli ingressi che vanno da da 1D a
+8D e dal pin 12 al pin 19 abbiamo le
+uscite.
+Qui sotto possiamo vedere la tabella di
+verità che ci permette di capire
+effettivamente come funziona il
+componente. Ho riportato enable clock D
+e Q. Possiamo vedere che durante i
+fronti di salita del clock abbiamo il
+salvataggio del dato all'interno del
+flip flop. Quindi se enable è a 0,
+fronte di salita del clock da1 abbiamo
+l'uscita Q1 e quindi abbiamo salvato
+questa informazione all'interno del flip
+flop. Invece se o enable sembra zero
+fronte di salita del clock di a 0
+abbiamo salvato zero all'interno del
+flip flop. Poi abbiamo le condizioni in
+cui eh o enable è a zero e qualsiasi
+valore del clock, ad eccezione del
+fronte di salita, abbiamo la condizione
+di memoria
+e infine eh con o enable messo a uno
+riusciamo a gestire il trate, quindi con
+o enable a un abbiamo un'alta impedenza
+in uscita su Q, quindi queste uscite
+saranno tutte ad alta impedenza.
+Lo step successivo è quello di capire
+come collegare i registri generali
+all'interno della nostra CPU. Qui ho
+disegnato un piccolo schema dove abbiamo
+il bass dati, i registri schematizzati
+con questa figura dove abbiamo il clock
+e lo enable. Abbiamo una freccetta
+bidirezionale collegata al basro
+può scrivere sul bass dati e può leggere
+dal bass dati e poi eh vabbè qui ho
+disegnato dei puntini, però comunque la
+rete continua fino ad arrivare a R7,
+quindi partiamo da R0 fino a R7, sono
+otto i nostri registri.
+Dobbiamo capire effettivamente quali
+sono i segnali che ci permettono di
+andare a selezionare uno degli otto
+registri e andare a selezionare
+l'operazione di scrittura e di lettura.
+Per fare questo facciamo una breve
+analisi dei segnali che ci serviranno.
+Abbiamo il segnale RV che sta per redght
+che sarà a uno se dovremmo fare una
+scrittura su un registro, a zero se
+dobbiamo fare una lettura in un
+registro. Poi abbiamo un segnale di
+selezione che ci permette di capire
+quale dei degli otto registri stiamo
+selezionando.
+Quindi, ad esempio, se seleziono R0,
+questo segnale sarà A1 e tutti gli altri
+saranno a zero. Invece se seleziona R7,
+questo segnale sarà 1, il cell di R7
+sarà 1 e tutti gli altri saranno a zero.
+Per fare questo utilizziamo un 74238
+che è un decoder de multiplexer. Abbiamo
+visto un componente simile quando
+abbiamo realizzato il codice operazione
+dell'alu. Lì avevamo visto il 74138
+che è analogo a questo, però funziona in
+logica negata.
+In dettaglio abbiamo 3 bit di selezione
+S0, S1 ed S2. Ricordo che con 3 bit
+riusciamo a pilotare otto registri
+perché 2 elevato 3 fa 8. Che cosa
+succede? Succede che quando, ad esempio,
+io vado a impostare S0, S1, S2 a 0 tutti
+e tre, quindi ho combinazione 00 0,
+andrà a + 5 V l'uscita Y0 che sarà
+effettivamente il segnale di selezione
+di R0. Infatti l'ho collegato a R0. Se
+invece, ad esempio, metto S0 A1, S1 A1,
+S2 A1, eh, quindi 1 1, mi si attiverà il
+la selezione del registro 7, quindi Y
+con 7 sarà + 5 V e tutti gli altri
+segnali saranno a massa 0 V.
+Sul pin 6 c'ho un enable, è importante
+perché comunque mi consente di abilitare
+tutto il blocco registri. Se l'enable è
+a + 5 V, eh, avrò il 74238 abilitato,
+quindi una delle uscite sarà più 5 V. Se
+invece io metto a massa m il pin 6, avrò
+tutte le uscite a massa, quindi non avrò
+selezionato nessun registro.
+A questo punto proverei a fare una
+simulazione per vedere effettivamente
+cosa succede sia nel caso di scrittura
+che di lettura di un registro. Partiamo
+col caso di lettura. M ho impostato
+revright a 0, il bit di selezione del
+registro R0 è a 1 perché la combinazione
+di ingressi del The Multiplexer è 00,
+quindi mi si attiva questa uscita Y con
+0. Partiamo da questa parte che comunque
+è comune a tutti i registri. Abbiamo
+questo endrittura
+lettura e il clock. Che cosa succede?
+Succede che qui abbiamo zero in questa
+casistica, quindi eh già sappiamo che
+per qualunque valore del clock eh l'END
+darà come uscita zero perché se uno
+degli ingressi è a zero in uscita avremo
+zero dall'end, quindi qui abbiamo zero.
+Poi abbiamo RRght
+note. Quindi questo Note va a impostare
+uno all'interno dell'ingresso di questa
+porta Nend e poi abbiamo il bit di
+selezione A1. Quindi il bit di selezione
+è collegato a questo ingresso della
+porta end e a questo della porta Nend. A
+questo punto il clock è collegato a
+questo end. Questo end si trova nella
+condizione 01 che in uscita ti dà 0.
+Invece il Nend nella condizione 11 da 0.
+Che cosa vuol dire? Vuol dire che lo
+enable a zero dà in uscita ehm il dato
+che è salvato all'interno dei flip flop
+del registro. Quindi nel bass dati ci
+ritroveremo il valore che è salvato
+all'interno del registro. il clock sarà
+sempre a zero, quindi non ci sarà mai un
+momento di eh scrittura all'interno del
+registro. Ed effettivamente è quello che
+desideravamo perché comunque noi
+vogliamo scrivere all'interno del bass
+dati il valore che è memorizzato in
+error zero. Di fatto stiamo facendo una
+lettura. Analogamente su tutte le su
+tutti gli altri registri, ad esempio, ho
+preso R7, che coso? Ho il bit di
+selezione a zero. Ho segnato i valori
+che mi ritroverò all'interno di queste
+porte end e nend. Ad esempio, nella nend
+avrò la condizione 01 che mi dà 1 con
+uno con un enable a 1 vuol dire che le
+uscite di R7 sono ad alta impedenza,
+quindi m l'alta impedenza va a
+proteggere il registro dai dati che
+stanno transitando il bass dati e poi
+avrò il clock a zero. Quindi anche in
+questo caso io non farò scritture
+all'interno di questo registro.
+A questo punto dobbiamo capire cosa
+succede invece in scrittura.
+Io direi di cancellare
+Rgright.
+Anzi, cancelliamo tutto. Lasciamo la
+selezione a un Rght lo impostiamo a uno.
+Che cosa succede? Succede che qui avrò
+uno, qui avrò il mio segnale di clock,
+avrò la mia onda quadra. Quindi quando
+eh l'onda quadra del clock sarà un
+livello logico alto, io qua mi ritroverò
+di fatto il clock
+e quindi qua ho la propagazione del mio
+segnale di clock. Eh, la selezione è
+ancora uno, quindi su questa porta
+logica apro uno. Anche su questa sono
+gli ingressi della Nend e dell'End. Eh,
+l'end tra il clock e uno mi ridà il
+clock in uscita
+e quindi diciamo che eh qui dentro
+c'avrò il clock. O enable invece si
+trova nella condizione ehm
+di eh siamo nella condizione 10 della
+porta Nend. La portaente in caso di uno
+mi dà uno. Quindi qua avremo un'uscita
+ad alta impedenza, il bass dati e il
+registro non scriverà nel bass dati
+perché comunque abbiamo un'alta
+impedenza. Quindi a questo punto succede
+che quando mi troverò sul fronte di
+salita del clock andrò a prendere il
+contenuto che ho all'interno del bass
+dati e lo salverò sul registro R0. A
+questo punto vediamo cosa succede invece
+eh su Ret o comunque su tutti gli altri
+registri.
+Allora, Rght abbiamo detto che ha uno,
+qui ho la sua negazione, quindi qua ho
+uno 0,
+il Nend sarà 00
+continua a darmi uno, quindi anche qui
+questo qua sarà l'uscita ad alta
+impedenza.
+Invece e nel Nend nell'end avrò uno zero
+il segnale di clock. Sicuramente grazie
+allo zero non avrò la la propagazione
+del clock, quindi non andrò mai a
+scrivere all'interno di questo registro.
+Ed effettivamente è quello che volevamo.
+A questo punto lo step successivo è
+quello di costruire questo schema,
+questo circuito all'interno della nostra
+CPU.
+Ho realizzato il blocco del registri, lo
+possiamo vedere all'interno di queste
+tre board 1000 fori.
+Abbiamo tutta la sezione dei registri
+che ho etichettato con queste label che
+vanno da R0 a R7. Qui sotto invece
+abbiamo tutta la parte di controllo dei
+registri, quindi abbiamo il 74
+238 che è il decoder multiplexer
+e con questi cavi bianchi che sono i
+selettori del registro, i tre bit che
+servono a selezionarmi il registro.
+Questo cavo arancione è l'enable di
+tutta la sezione dei registri. Poi
+abbiamo 27408
+che contengono le porte hand
+utilizzate per fare un po' tutte le
+logiche che abbiamo visto su carta.
+Invece questi due sono 27400
+contenenti le porte end. Abbiamo un
+transistor che ho utilizzato per
+costruire una porta not per evitare di
+inserire un altro integrato e va a
+negarmi il segnale red bright. Ho questo
+LED che è collegato al segnale redgright
+in modo che si accende quando devo fare
+una scrittura sul registro. Poi qui ho
+riportato dei LED che sono collegati
+direttamente al 74
+238 e mi permettono di capire quale
+registro è selezionato durante
+un'operazione a colpo d'occhio. Qui
+abbiamo un altro 7408,
+contiene l'end tra il segnale di clock e
+il segnale red bright. Poi eh ho
+collegato tutti gli ingressi e le uscite
+de degli otto registri al basi.
+Vediamo qua i collegamenti che vanno
+verso il bus dati. A questo punto direi
+che possiamo fare qualche test, possiamo
+provare a scrivere all'interno del bass
+dati generando un valore dal con l'alu e
+poi provare a salvare all'interno di uno
+dei registri questo valore e poi
+leggerlo e vedere se effettivamente
+abbiamo memorizzato il valore
+all'interno del registro.
+Spero che da questa inquadratura si
+riesce a vedere un po' tutto. Comunque
+qui abbiamo il nostro blocco dei
+registri. Questa invece è la nostra alu.
+Ho ricavato un segnale di enable che va
+a spegnere o accendere tutta l'alu
+collegando questo cavo agli enable dei
+74138
+che vanno a creare il codice operazione
+dell'alu. Per ora ho spento l'alu eh
+inserendo questo questo pin a + 5 V.
+Collegando questo pin a + 5 V. Invece
+nei registri eh abbiamo attualmente il
+LED rosso acceso, quindi siamo in una
+situazione di scrittura. Vado a
+selezionare il primo registro,
+lo seleziono da questi cavi che
+rappresentano i 3 bit di selezione.
+Piccola nota, ho segnato qui le label
+dei registri nominandole da R1 a R8.
+Quindi diciamo che utilizzerò questa
+nomenclatura durante questo video.
+Quindi R1 sarà il primo registro, R8
+sarà l'ultimo e non parto da R0.
+Proviamo a abilitare l'alu.
+Ho abilitato l'alu. Sto eseguendo
+l'operazione di not.
+Ho eh il bit meno significativo eh della
+variabile A spento. Viene fatto il Note
+e quindi me lo ritrovo acceso qui nel
+bass dati ed è corretto. Proviamo a
+salvare all'interno di R1 questo questa
+informazione. Quindi genero un impulso
+di clock. Dovrei aver salvato questo
+dato su R0 su R1. Vediamo se è vero.
+Spengo l'alu,
+passo da scrittura a lettura
+ed effettivamente
+mi si accende questo bit. Quindi è stato
+salvato è stata salvata l'operazione il
+risultato dell'operazione all'interno di
+R1 e viene visualizzato. Proviamo a fare
+qualche altro test, quindi torniamo in
+scrittura,
+riabilitiamo l'alu, selezioniamo ad
+esempio R R R R R R R R R2,
+salviamo questo questo dato su R2,
+quindi questi due bit accesi.
+fatto.
+Prendiamo ad esempio ora R3.
+Salviamo questo dato su R3, quindi 3 bit
+accesi.
+Fatto. Proviamo adesso a fare delle
+letture, quindi spegniamo l'alu,
+passiamo in lettura e già vediamo che su
+R3 abbiamo 3 bit accesi ed è corretto.
+Proviamo a passare su R2.
+Su R2 abbiamo 2 bit accesi, anche questo
+è corretto e invece su R1 dovremmo avere
+un bit acceso e in effetti è così.
+Quindi, diciamo, tutto il blocco
+registri funziona. Io ora ho fatto dei
+test su tutti e otto registri e stanno
+funzionando tutti correttamente. Voglio
+fare notare che se ad esempio io prendo
+un registro che non ho mai utilizzato,
+ad esempio, prendiamo R5, io ho questo
+valore salvato al suo interno, però io
+non posso sapere in anticipo che cosa ho
+all'interno di questo registro. In
+effetti, quando io non inizializzo un
+registro, eh non posso avere nessuna
+informazione sul dato salvato al suo
+interno. Per questo motivo, poi, quando
+poi la nostra CPU andrà a eseguire un
+codice assembly, dobbiamo inizializzare
+i registri che dobbiamo utilizzare come
+primo step per avere la certezza di di
+inserire un valore noto al loro interno.
+Direi che per questo video è tutto. Vi
+ricordo di lasciare un mi piace,
+commentare questo video e iscrivervi al
+mio canale per supportare il mio lavoro.

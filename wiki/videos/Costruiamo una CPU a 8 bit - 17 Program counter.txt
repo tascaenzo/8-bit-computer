@@ -1,0 +1,449 @@
+Bentornati sul mio canale YouTube. Per
+chi non mi conosce, io sono Enzo. Oggi
+continuiamo a parlare della CPU a 8 bit
+e vediamo il program counter. Ma prima
+di iniziare vi ricordo di lasciare un mi
+piace, commentare questo video e
+iscrivervi al mio canale per supportare
+il mio lavoro. Prima di vedere
+effettivamente come realizzare il
+program counter, facciamo un piccolo
+ripasso per capire il suo funzionamento
+e a che cosa serve. Diciamo subito che è
+un registro a 16 bit nel nostro caso che
+va a pilotare la memoria. Effettivamente
+lo possiamo vedere come una sorta di
+puntatore all'istruzione eh da eseguire
+della dalla CPU. Abbiamo due tipologie,
+due modalità di funzionamento. La prima
+che è quella sequenziale che poi è
+quella più utilizzata, nel quale il
+program counter viene incrementato di
+uno ogni istruzione da leggere. Ad
+esempio, leggo questa questa riga della
+memoria che contiene la prima parte
+dell'istruzione,
+faccio la lettura. Incremento il program
+counter di uno in modo che possa puntare
+alla seconda istruzione o meglio alla
+seconda parte dell'istruzione, faccio la
+lettura, incremento e così via. Questo,
+diciamo, è il funzionamento sequenziale,
+quindi io lo vedo come una sorta di
+contatore binario che ogni ciclo di
+clock, ad esempio, potrei decidere di
+incrementarlo
+e quindi mano a mano leggere eh tutto il
+programma che poi dovrà essere eseguito
+dalla CPU. Invece un'altra modalità di
+funzionamento è quella in cui carico un
+indirizzo specifico all'interno del
+program counter. Ad esempio, se io
+eseguo questa istruzione, questa
+istruzione prevede un salto
+condizionale, io devo saltare a questo
+indirizzo di memoria contenuto in queste
+due righe.
+Che cosa devo fare? Devo poter prendere
+questo indirizzo, caricarlo al program e
+poi il program counter salterà a quella
+specifica istruzione. Quindi, diciamo,
+queste due sono le modalità principali
+di funzionamento del program counter.
+Ora andiamo a vedere nel dettaglio
+effettivamente come realizzare il nostro
+program counter a 16 bit e poi
+successivamente proviamo a realizzare il
+circuito all'interno della nostra CPU.
+Per costruire il nostro program
+countzeremo l'integrato 74161.
+È un contatore binario a 4 bit che ci
+permette di contare dei numeri che vanno
+da 0 a 15.
+Possiamo vedere qui la piadinatura
+dell'integrato. Abbiamo nel pin 16 i + 5
+V e nel pin 8 la massa. Nel pin 1
+abbiamo un segnale clear che serve a
+fare il reset del valore memorizzato
+all'interno del contatore. È attivo
+basso, quindi resettiamo il contatore
+mettendo a massa questo piedino. Il
+piedino 2 è il clock, poi abbiamo
+piedini 3, 4 5 6 sono gli ingressi,
+quindi il nostro valore binario.
+Pin abbiamo questo segnale chiamato
+enable P che è un segnale di enable. Poi
+abbiamo il piedino 9 che è il load,
+serve a caricare il valore che c'è
+all'interno dei piedini A, B, C e D in
+uscita, quindi in QA, QB, QC e QD.
+Eh, poi abbiamo un altro enable chiamato
+enable T nel piedino 10. In output
+abbiamo qua QB, QC e QD che sono che è
+il nostro valore. Si trovano nei piedini
+14, 13, 12 e 11. Il piedino 15 è il
+carry out, quindi un eventuale riporto
+per fare una cascata e quindi andare poi
+a eh collegare altri 74161
+per creare dei contatori m che hanno più
+di 4 bit e poi abbiamo, come abbiamo già
+detto, più VCC che è la nostra
+alimentazione.
+Qui abbiamo la tabella di verità
+dell'integrato.
+Ciò che ci interessa sono quindi questi
+segnali. clear, lowad, enable P, enable
+T, il segnale di clock e poi questo è il
+valore atteso.
+Diciamo che per fare il reset e quindi
+portare eh QA QB, QC e QD a 0, basta che
+ehm mettiamo a massa il clear, non serve
+clock, quindi è istantaneo. Appena
+mettiamo a massa questo piedino, abbiamo
+tutti i bit resettati.
+Per caricare invece il valore che sta
+transitando su eh
+A, B, C e D, dobbiamo eh mettere il
+clear a 1, load a zer, perché
+effettivamente anche l'OAD è altivo
+attivo basso e poi è indifferente il
+valore di enable T ed enable P. Al
+fronte di salita del clock avremo fatto
+il caricamento del dato. Per fare
+l'incremento invece mettiamo il clear
+a1, load a 1, enable p ed enable t a 1.
+Al fronte di salita del clock abbiamo
+l'incremento di 1, quindi abbiamo
+incrementato il valore binario. Invece
+le altre combinazioni
+sono combinazioni memoria, mantengono il
+valore salvato all'interno
+dell'integrato.
+Ora, senza entrare troppo nello
+specifico, dal datashe ho stampato
+questa pagina che fa vedere un po' il
+funzionamento interno di questo
+integrato. Questi qua sono dei flip
+flop, sono dei flip flop di tipo D.
+Abbiamo poi tutta una parte di logica
+combinatoria che comunque va a
+permettere le enebole il count.
+Ciò che eh ci interessa, potrebbe
+interessarci è capire effettivamente
+come sono collegati enable T ed enable
+P. Diciamo già che devono essere tutti e
+due a uno per fare un incremento.
+Sappiamo che enable enable P va a
+abilitare comunque il conteggio. Enable
+T abilita pure il conteggio. In effetti
+sono entro all'interno di questa porta
+logica e poi se ci fate caso Enol T va
+anche a abilitarmi un eventuale riporto.
+Ora vediamo effettivamente come creare
+una cascata
+di 74161
+per arrivare a un program counter di 16
+bit, perché comunque abbiamo visto che
+un integrato m ci permette di contare da
+0 a 15. Nel totale serviranno 4 74161
+collegati in cascata per arrivare ai 16
+bit che ci occorrono.
+Qui abbiamo lo schema finale del nostro
+program.
+Ho collegato i 74161
+in cascata. Ho riportato la tabella
+finale del circuito, però brevemente
+vediamo i collegamenti.
+Allora, sul primo sul primo integrato ho
+messo a + 5 V enable T ed enable
+P, quindi sono fissi a + 5 V. Poi ho
+parallelizzato tutti i segnali di clock
+e il segnale clear. Il segnale di clock
+l'ho fatto passare da una porta end a
+cui ho collegato il clock e l'enable.
+Quindi, quando l'enable sarà attivo
+alto, passerà il clock e questo qua, in
+effetti ci permette poi di fare un
+incremento.
+Questo succede perché comunque ho deciso
+di eh tenere enable P a + 5 V.
+Effettivamente potevo anche ehm non
+utilizzare questo end, parallelizzare
+tutti gli enable P e utilizzare questo
+come unico segnale di enable. Comunque
+ho utilizzato invece questa strategia
+con la porta end e il segnale di clock.
+Poi che cosa vado a fare? Vado a
+prendermi il carry out del primo
+integrato e lo vado a mettere in input
+su enable T. Questo che cosa mi permette
+di fare? Mi permette di disabilitare il
+conteggio di questo integrato fino a
+quando questo non va in overflow. quando
+va in overflow e quindi abbiamo un
+riporto, si attiva questo, inizia a
+contare anche questo e quindi fino
+allora non ci sarà un incremento di
+questo. Questa cascata l'ho fatto un po'
+per tutti gli integrati fino ad arrivare
+all'ultimo. In effetti vediamo che il
+secondo integrato ha il carryout che
+entra all'interno di enable T, così nel
+terzo carry out che entra all'interno di
+Nable T dell'ultimo
+e così via. Abbiamo detto che il clear è
+parallelizzato, il clock è
+parallelizzato. A questo punto abbiamo
+questa tabella di verità che ci riassume
+che il clear è il load. Se se il clear è
+a zero, il load per qualunque valore del
+load e per qualunque valore dell'enable
+abbiamo un reset.
+Invece se abbiamo il clear a 1, il load
+a 0 e l'enable a 1 abbiamo il load.
+Quindi tutto ciò che sta transitando
+all'interno degli ingressi A, B, C e D
+verrà poi caricato in uscita. eh sarà
+salvata all'interno dei flip flop del
+contatore e poi abbiamo l'incremento in
+cui abbiamo clear a un load a un ed
+enable a un e quindi abbiamo
+l'incremento. Altra cosa da dire
+importante è che per come funziona
+questo integrato abbiamo l'ingresso A di
+ogni singolo eh contatore che è il bit
+meno significativo. Invece l'ingresso D
+è il bito e ovviamente lo stesso poi è
+riportato in uscita. Quindi QA è il bit
+eh meno significativo in uscita e QD è
+il bito
+in uscita. L'ultimo
+passaggio finale che poi ci porta al
+circuito effettivamente da realizzare è
+questo. Ho rappresentato il program
+counter tramite questo scatolotto. Qui
+dentro abbiamo la nostra cascata di
+74161.
+In effetti ho segnato 4* 74161 perché
+utilizziamo quattro integrati. Ora il
+discorso qual è? Questi 7461
+non gestiscono l'uscita TR state, quindi
+abbiamo sempre l'uscita. Per questo
+motivo il program counter l'ho fatto
+passare da dei buffer. Abbiamo 27424
+che già abbiamo visto nei video
+precedenti relativi all'alu. Comunque ci
+permettono di portare l'uscita dal tempo
+in modo da proteggere l'uscita del
+program counter da ciò che sta
+transitando sul sull'address
+sull'address bass che sono i nostri 16
+bit che poi vanno a pilotare la RAM.
+Ora abbiamo abbiamo visto anche nel
+video precedente che il program counter
+deve poter essere caricato dall'esterno.
+Abbiamo pensato, ho pensato
+effettivamente di andarmi a prendere gli
+8 biti dal bass dati che contengono in
+questo caso la parte di indirizzo
+suddivisa in parte alta e parte bassa.
+Eh, inserirli all'interno del MAR quando
+voglio fare un load. Poi il MAR eh che
+comunque contiene l'uscita tr state,
+utilizza dei 74574,
+è collegato all'address bit, scusate, al
+bass degli indirizzi. Quindi io posso
+decidere di mandare l'uscita
+direttamente al MAR oppure prendere
+l'uscita del MAR,
+metterla in ingresso nel program e fare
+un lowad di ciò che ho salvato nel MAR,
+quindi posso utilizzare il MAR come una
+sorta di variabile d'appoggio. Quindi,
+quando poi vado a fare un salto
+condizionale, la strategia è quella di
+caricare il MAR utilizzando eh un doppio
+caricamento, quindi dividendo i 16 bit
+in due gruppi da 8 bit, quindi avremo
+parte bassa del MAR e parte alta del
+MAR. Carico il MAR, prendo ciò che ho
+nel MAR successivamente e la carico nel
+program. A questo punto il MAR lo porto
+con uscita ad alta impedenza e attivo eh
+attivo l'uscita dei 7424
+del program counter che andranno a
+pilotare il bass
+degli indirizzi. E in effetti così
+abbiamo completato tutto il giro. Quindi
+questo è il circuito finale che dovremo
+realizzare all'interno della nostra
+board. Ricapitolando, abbiamo bisogno di
+27424,
+474161
+e poi 274574
+per il MAR, ma in realtà questo già è
+presente all'interno della nostra board,
+l'abbiamo realizzato nel video
+precedente.
+Ho realizzato il circuito che abbiamo
+visto su carta all'interno della CPU.
+Partiamo subito dal programo counter.
+Sono questi quattro integrati, li
+vedete, ho etichettato tutto. Sono i
+74161
+che nel loro insieme ci permettono di
+realizzare il program counter a 16 bit.
+sono collegati a loro volta con eh
+l'uscita del Mar che già avevamo visto
+nel video precedente. Comunque sono
+questi due integrati che dividono il MAR
+in parte alta e parte bassa per
+raggiungere i 16 bitzione.
+Abbiamo tutta una serie di segnali di
+controllo che sono questi cavi
+arancioni, questo cavo arancione e
+questo eh marrone.
+Poi le uscite del program counter che
+sono questi cavi verdi scuro verde
+scuro, passano da questi due integrati
+che sono i 7424
+che gestiscono l'alta impedenza.
+Eh l'uscita di questi integrati eh sono
+questi cavetti verde chiaro che sono
+collegati al bass degli indirizzi che
+sono questi 16 bit a cui sono poi
+collegati questi LED.
+Poi abbiamo tutta una serie di segnali
+di controllo che sono questi cavi che ho
+evitare di confondermi. Comunque abbiamo
+il load,
+abbiamo l'enable del dell'uscita del
+program,
+abbiamo vabbè, questi sono relativi al
+MAR, comunque selettorio di scrittura e
+lettura del MAR, enable del program,
+clear e poi l'uscita alta impedenza del
+MAR. A questo punto non resta che dare
+alimentazione al circuito e provare
+effettivamente a vedere se funziona il
+conteggio del program counter e poi
+provare a caricare qualcosa all'interno
+del program counter.
+Ho cambiato inquadratura in modo che
+possiamo vedere effettivamente il
+funzionamento del program counter e di
+tutto il circuito. Ne approfitto per
+dire che ho aggiunto questo pannello
+dove ci sono altre schede mille fori
+perché comunque avevo esaurito lo
+spazio. Sto esaurendo lo spazio.
+Facciamo un primo test. Nel primo test
+proviamo a dare degli impulsi di clock e
+vedere se effettivamente viene fatto un
+incremento del bass degli indirizzi.
+Quindi già ho dato alimentazione al
+circuito. Abbiamo l'output del program
+counter che è collegato direttamente al
+basso agli indirizzi perché questo
+piedino che va a controllarmi 7424
+è ammassa. Diamo un impulso di clock e
+da zero dovremmo passare a uno. Vediamo
+se è vero.
+Effettivamente è vero. Si è acceso il
+bit meno significativo del bass degli
+indirizzi da un altro clock.
+Siamo a due, siamo a 3 4 5 6 7 e così
+via. Quindi in effetti, se vediamo, sto
+continuando a andare impulsi di clock ed
+effettivamente il program counter sta
+avanzando, quindi e funziona il
+conteggio.
+Una cosa che bisogna provare,
+effettivamente io l'ho testata e non mi
+dà problemi, sono i casi più
+significativi, quindi vedere
+effettivamente quando, ad esempio, il
+primo progrunter si riempie, se al
+successivo impulso di clock il riporto
+viene portato viene propagato nel
+successivo program e quindi si
+incrementa il successivo program e così
+via. E questa questo test l'ho fatto.
+Come si fa? si fa caricando, diciamo,
+all'interno del program counter tutti i
+casi particolari che vanno a scatenare
+eh l'enable del successivo program.
+A questo punto vediamo se il clear
+funziona questo questo cavo qui. Se lo
+mando a massa istantaneamente si
+dovrebbe resettare il program counter.
+Effettivamente è vero. Quindi questa
+casistica funziona.
+A questo punto possiamo provare a
+caricare qualcosa all'interno del MAR e
+poi passarla all'interno del program
+counter. Come primo step e spegnerei il
+program counter, quindi porterei questo
+piedino, questo segnale di controllo a
+più 5 V, in modo che abbiamo l'alta
+impedenza sull'uscita del program
+counter.
+Abiliterei l'uscita del MAR, quindi
+questo cavo lo portiamo a massa.
+Proviamo a scrivere sul sul MAR. Eh,
+portiamo questi due enable che sono
+parte alta e passa parte bassa a + 5 V.
+Ho questo segnale che sta transitando
+all'interno del bass dati. Do un impulso
+di clock. Effettivamente ho fatto il
+salvataggio all'interno del MAR. Lo
+vediamo da qui abbiamo i bit accesi.
+Eh, ho fatto il caricamento sia nella
+parte alta che nella parte bassa
+simultaneamente
+mettendo questi due pin tutti e due a +5
+V. Poi nel caso reale non sarà così, ma
+eh dovremmo fare due passaggi perché
+dovremmo utilizzare eh caricare prima la
+parte bassa e poi la parte alta, però
+per per testare.
+A questo punto eh ciò che dobbiamo fare,
+il test che possiamo fare è quello di
+caricare all'interno del program counter
+questo valore. Abbiamo il MAR attivo,
+l'uscita del MAR è attiva.
+Che cosa facciamo? Facciamo che andiamo
+a prendere a prendere il load del
+program counter e lo mettiamo a massa
+per abilitarlo e diamo un impulso di
+clock.
+Ok?
+A questo punto, se tutto è venuto
+correttamente, dovrei avere questo
+valore all'interno del program counter.
+Quindi spegniamo il program counter
+e abilitiamo, cioè spegniamo il MAR e
+abilitiamo il program counter. In
+effetti già lo vedo, ho salvato
+l'informazione all'interno del program
+counter. A questo punto
+a questo punto possiamo provare a fare
+un incremento del program counter,
+quindi load lo metto a + 5 V.
+e do un impulso di clock. Effettivamente
+il program counter torna a contare dal
+dall'indirizzo che avevo salvato, quindi
+anche questa casistica è rispettata.
+Diciamo che per questo video è tutto. M
+nel prossimo video possiamo già provare
+a collegare la RAM che ho posizionato
+qui all'interno del del basso degli
+indirizzi e possiamo provare a fare
+delle scritture all'interno della RAM e
+delle letture dalla RAM e vedere
+effettivamente se tutto il giro funziona
+e se riusciamo a pilotare la nostra
+memoria centrale. Vi ricordo di lasciare
+un mi piace, commentare questo video e
+iscrivervi al mio canale per supportare
+il mio lavoro.

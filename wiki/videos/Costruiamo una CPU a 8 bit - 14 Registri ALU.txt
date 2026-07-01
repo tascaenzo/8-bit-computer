@@ -1,0 +1,468 @@
+Bentornati sul mio canale YouTube. Oggi
+continuiamo a parlare della CPU a 8 bit.
+In questo video vedremo come far
+interagire l'alu con i registri. Ma
+prima di iniziare vi ricordo di lasciare
+un mi piace, commentare questo video e
+iscrivervi al mio canale in modo da
+supportare il mio lavoro. In questo
+video partirei con una breve analisi di
+ciò che dobbiamo realizzare all'interno
+della nostra CPU. Ho disegnato un
+piccolo schema dove abbiamo il nostro
+bass dati a 8 bit, i registri generali
+che vanno da R0 R7, questo blocco qui
+che ho disegnato, che può scrivere e
+leggere sul bass dati. Infatti eh ho
+disegnato questa freccetta bidirezionale
+perché appunto possiamo scrivere e
+leggere sul bass dati e questa parte
+l'abbiamo già vista nello scorso video.
+Ciò che invece è nuovo e che dovremo
+realizzare in questo video è tutta
+questa sezione. con questi due registri
+RA e RB che sono collegati agli ingressi
+dell'alu. Diciamo che finora abbiamo
+testato l'alu tramite le variabili A e B
+rappresentate dagli switch che andavamo
+a pilotare per testare l'alu. Noi
+dovremmo rimuovere questa parte di
+switch e sostituirla da questi due
+registri, il registro A e registro B.
+L'idea qual è? L'idea di base è quella
+che all'interno del basati andremo a
+scrivere sul registro a il primo
+operando dell'alu. Il secondo operando
+verrà scritto nel registro B. L'uscita
+del dei due registri sarà l'input del
+dell'alu e poi l'uscita dell'alu, cioè
+il valore processato, verrà nuovamente
+salvato dentro R, quindi nuovamente
+all'interno del registro A. In
+[sbuffare] effetti possiamo anche vedere
+che il registro A può sia scrivere che
+leggere dal baso
+perché in questo schema l'idea è quella
+che dopo un'esecuzione da parte della
+nostra unità aritmeticologica noi
+potremmo prendere il valore di A e
+leggerlo dal basti e potenzialmente
+anche scriverlo su uno dei registri
+generali. Invece, eh, B sarà soltanto
+una sorta di variabile temporanea dove
+andremo a salvare il valore della
+variabile B che dovrà essere dato
+impasto all'alu. Altra cosa da notare
+sono i flag. I flag che sono prodotti
+dall'alu dovranno essere salvati
+all'interno di questo registro chiamato
+Rfleg. Diciamo che l'output di questo
+registro poi sarà dato impasto alla
+control unit che eseguirà una sorta
+eseguirà delle azioni in base a ciò che
+viene salvato all'interno del difag.
+Un'altra cosa che dobbiamo specificare
+su RA è che oltre a utilizzarlo come
+variabile temporanea per l'alu e come
+variabile per salvare il risultato
+dell'alu è quella che A potrebbe essere
+benissimo utilizzata per spostare il
+valore di due registri generali. Ad
+esempio, se io voglio spostare R0 eh su
+R1, non lo posso fare facilmente oggi
+perché perché come abbiamo costruito il
+blocco dei registri generali, posso
+selezionare soltanto un'operazione su un
+determinato registro, quindi lettura o
+scrittura e non posso contemporaneamente
+prendere il dato di R0, scriverlo sul
+bass dati e salvarlo su R1. Quindi ci
+serve un registro esterno al blocco dei
+registri generali e l'idea è quella di
+prendere ad esempio R0, spostarlo su RA,
+poi prendere RA e scriverlo su R1. In
+questo modo m con questo doppio
+passaggio ho spostato il valore di R0 su
+R1 e non ho complicato troppo la
+circuiteria della nostra della nostra
+CPU.
+In questa schermata ho rappresentato in
+dettaglio tutta la parte relativa alla
+costruzione dei registri A e registri B
+che dovremo andare a realizzare
+all'interno della CPU. Nel dettaglio ho
+evidenziato in giallo tutta la parte
+relativa ai dati, quindi abbiamo il bass
+dati, gli ingressi dei registri A e B
+che sono direttamente collegati al basi.
+Lo vediamo da questi collegamenti con
+queste freccette che comunque vanno a
+segnalare che eh abbiamo in ingresso i
+dati nei due registri, le due uscite di
+RA ed RB che vanno all'interno dell'alu
+della variabile A e della variabile B.
+Poi abbiamo l'output prodotto dall'alu
+che entra all'interno del bass dati e
+l'idea è quella di andarlo a salvare
+nuovamente all'interno di R. E poi ho
+anche ehm tracciato questo schema qui,
+questo collegamento qui in cui abbiamo
+l'uscita di Ra che viene ehm inserita
+all'interno del bass dati, però passa da
+questo buffer dati. Ovviamente stiamo
+parlando di segnali a 8 bit, quindi
+questo qua sarà un 7424
+perché avremo bisogno di eh otto buffer
+dati. Tutto il resto invece sono segnali
+di controllo. Per il momento tralascerei
+il registro dei flag che andrei ad
+analizzare successivamente quando
+andiamo poi a parlare dell'unità di
+controllo della nostra alu. Tutta questa
+parte invece formata da porte logiche,
+quindi queste tre porte End e questa
+porta Nend servono a gestire tutti i
+segnali di controllo dei registri e del
+buffer dati.
+Per realizzare questa sezione utilizzerò
+dei 74574
+per i registri A e B. Diciamo che
+effettivamente potevo utilizzare anche
+dei registri che non avevano uscita TR
+State, però dato che questi integrati
+hanno la stessa piedinatura,
+lo stesso pinout del delle variabili e
+degli switch delle variabili, mi
+semplificano un po' i collegamenti
+all'interno della CPU.
+In effetti sto sempre mandando l'uscita
+che c'è in RA e in RB agli ingressi
+dell'alu. Lo vediamo dallo enable che è
+ammassa per entrambi i registri.
+Invece per quanto riguarda il segnale di
+clock che dovrà essere attivo alto
+quando voglio salvare un dato o meglio
+dovrà essere sul fronte di salita del
+clock per salvare un data all'interno di
+questi registri. Utilizzo questa questa
+parte di circuito formato da Porte End.
+In sostanza ho il segnale di clock, il
+segnale redght avevamo visto nel video
+precedente e poi dei segnali di enable
+che vanno a selezionare uno dei due
+registri. Partiamo da questa da questa
+sezione abbiamo il clock re va in end,
+quindi quando Rght sarà uno qui avrò il
+segnale di clock in uscita. Invece
+queste due porte endn
+clock in ingresso e i segnali di enable
+nel secondo bit della porta logica. Che
+cosa vuol dire? Vuol dire che se enable
+è a 1 e revght a 1, qui avrò il segnale
+di clock. Da questa porta uscirà il
+segnale di clock e quindi avrò eh qui
+all'interno dell'ingresso clock del
+registro a il segnale de clock e quindi
+quando sarò sul fronte di salita del
+clock prenderò ciò che sta transitando
+all'interno del bass dati e verrà
+salvato all'interno del registro. Per
+quanto riguarda invece la lettura,
+dobbiamo considerare che può essere
+fatta solo sul registro A, per come
+abbiamo impostato l'architettura della
+nostra CPU. Abbiamo questa sezione,
+questa piccola rete formata da una porta
+Nend e da una porta not. Vado a dare
+all'ingresso del notale redght e eh dopo
+il not sarà dato alla alla porta Nend e
+enable invece sarà dato all'interno
+dell'ingresso della seconda porta Nend.
+In sostanza ci interessa questa
+condizione per la lettura, quella in cui
+na sarà 1 e redgright sarà 0. Questo
+circuito rispecchia questa tabella di
+verità. Quindi qui avrò il segnale
+enable che va ad abilitare questo buffer
+dati. Questo buffer dati è un 7424,
+quindi avrà al suo interno otto buffer
+dati che quando n sarà a zero
+prenderanno il valore in uscita di RA e
+lo andranno a scrivere nel bass dati.
+A questo punto direi di vedere come ho
+realizzato il circuito nella pratica.
+Partirei dai registri R ed RB che sono
+questi due integrati qui. Sono dei
+74574.
+In pratica ho eliminato gli switch che
+erano questi qua che erano proprio al
+loro posto. Li ho eliminati. Ho inserito
+questi due registri. Il registro A,
+l'uscita del registro A passa da questo
+integrato che è un 7424
+e poi tramite questi cavi gialli è
+collegato al bass dati.
+Per quanto riguarda invece i segnali di
+controllo sono gestiti da questi due
+integrati.
+Eh, questo qua è un 7400
+che contiene la porta Nend che va a
+controllare la la lettura del registro
+A. Invece questo è un 7408, già era
+presente all'interno
+del circuito perché già controllava
+tutta la parte dei registri generali. Le
+porte libere le ho utilizzate per andare
+a pilotare i segnali di clock di RA ed
+RB nelle fasi di scrittura. Da qui
+partono questi tre cavi che
+effettivamente poi vanno a collegarsi ai
+registri e al all'enable del 7424.
+Altra cosa che è stata fatta è quella di
+inserire questo switch che utilizziamo
+eh come una sorta di periferica di
+input, anche se molto rudimentale,
+perché ho collegato questo switch
+tramite delle resistenze di pullup a
+questo 7424
+e poi il 7424 è collegato al bass dati,
+sempre tramite questi cavi eh gialli.
+Ora succede che abbiamo questo enable
+che va ad abilitare questo integrato e
+in pratica quando io vado a mettere a
+massa questa enable ciò che sto
+selezionando all'interno dello switch me
+lo ritrovo nel bass dati e diciamo che
+questa diciamo questo approccio lo
+utilizziamo per andare a impostare dei
+valori all'interno dei registri RA RB o
+comunque all'interno dei registri
+generali.
+Direi che possiamo provare a impostare
+tramite questo switch un valore
+all'interno del bass dati, andarlo a
+salvare su RA ed RB, eseguire
+un'operazione con la nostra Alu e poi
+salvare eh il risultato all'interno di
+RA per testare un po' tutto il flusso
+che poi sarà quello utilizzato
+all'interno della CPU. Altra altro test
+che possiamo fare è quello di spostare
+eh un registro, il valore di un registro
+all'interno di un altro, passando sempre
+da RA, ad esempio, possiamo prendere R0
+e spostarlo su R1.
+Ho dato alimentazione alla CPU. Proviamo
+a fare qualche test. Come prima cosa
+proviamo a scrivere all'interno del
+registro RA, cioè questo qua. Come
+facciamo? Eh, diciamo che già siamo in
+scrittura perché questo LED rosso acceso
+mi va a indicare che abbiamo selezionato
+la scrittura. Abbiamo l'enable del
+registro a a + 5 V che sarebbe questo
+cavo qui. Dobbiamo scrivere all'interno
+del bass dati. Per fare ciò vado a
+prendere questo pin e lo metto a massa
+in modo da abilitare questo 7424
+e portare al bass dati ciò che
+impostiamo all'interno di questo switch.
+Come potete vedere mi si è acceso il
+bass dati. Ho impostato il bit più
+significativo a 1, quello successivo a
+0, poi a 1, poi a 0 e così via. Quindi
+ho alternato i bit. Proviamo a fare una
+scrittura, quindi do un impulso di clock
+e vediamo se abbiamo memorizzato
+all'interno di RA questo questo dato.
+Spegniamo
+questo 7424,
+quindi diciamo che abbiamo il bass dati
+libero vuoto e ci spostiamo da scrittura
+a lettura. Ok, sono in lettura ed
+effettivamente è stato salvata
+l'informazione all'interno di RA,
+infatti primo bit acceso e poi
+alternati.
+A questo punto già possiamo fare un
+primo test perché eh se vado ad
+abilitare l'alu e utilizzo vado a
+selezionare l'operazione di nott
+variabile in ingresso dell'alu. Quindi
+vediamo se abilitando l'alu
+in operazione di noti trovare questi bit
+invertiti, cioè il bito
+oggi acceso e poi sono alternati.
+Facendo il not più significativo
+dovrebbe essere spento, quello dopo
+acceso e così via. Allora, andiamo di
+nuovo in scrittura.
+Sono in scrittura.
+Vado ad abilitare l'alu. Già mi ero
+avevo impostato il codice operazione per
+andare sull'operazione di not ed
+effettivamente ehm diciamo il not lo
+ritrovo nel bass dati, infatti bit più
+più significativo spento, poi acceso,
+poi spento e così via. Quindi
+effettivamente è corretto.
+Per chiudere il giro proviamo a salvare
+questo risultato all'interno di RA.
+Basta dare un impulso di clock perché ho
+il registro RA ancora selezionato e sono
+in scrittura.
+Ok, ho dato un impulso di clock. So già
+che effettivamente ho salvato
+l'informazione all'interno di RA perché
+perché effettivamente ora ho acceso il
+bit più significativo, quello dopo
+spento e così via. Perché succede
+questo? Succede questo perché stiamo
+salvando il risultato all'interno di RA.
+R è collegato all'ingresso A dell'alu e
+faccio il note di ciò che ho appena
+salvato. Quindi ritorno nella situazione
+di prima. Già questo mi dice che ho
+eseguito il salvataggio, però m vediamo
+se è vero. Proviamo a spegnere l'unità
+aritmeticologica
+e accendiamo. Andiamo in lettura sul
+registro A. Vado in lettura sul registro
+A e ho la conferma che ho salvato
+l'operazione che era stata fatta
+dall'alu. In effetti ancora c'ho lo
+switch posizionato nella posizione in
+cui avevo salvato R, quindi primo bit
+acceso e effettivamente ora ho il primo
+bit spento, quindi siamo sicuri che
+abbiamo fatto il Note e l'abbiamo
+salvato all'interno di Ra.
+Altro test che possiamo fare è quello di
+eseguire un'operazione, però
+coinvolgiamo entrambi i registri, quindi
+sia RA che RB. A [sbuffare] questo punto
+spengo l'alu, cioè già avevo spento
+l'alu, posso mettermi in scrittura.
+A questo punto mettiamo tutti i bit a
+livello logico alto e andiamo in
+scrittura su RA. Ho scritto su RA.
+Adesso eh vado a spegnere RA e accendere
+RB e faccio una scrittura. Quindi ho
+salvato l'informazione
+con tutti i bit accesi sia su RA che RB.
+Spegniamo a questo punto questo, il
+nostro selettore, non variabile in
+ingresso sul bass dati.
+Proviamo
+ad abilitare l'alu.
+Andiamo nell'operazione di end. Sono
+nell'operazione di end e ho tutto il
+bass dati acceso. Ed è corretto perché
+comunque l'unica combinazione in
+endizione
+11 e io ho impostato RA ed RB con tutti
+i bit a un, quindi anche questo è
+corretto.
+A questo punto possiamo provare a fare
+un ultimo test, cioè quello di prendere
+il valore presente all'interno di un
+registro, ad esempio R0, e spostarlo su
+[sbuffare] R1. Per fare ciò dobbiamo
+passare dal registro RA, quindi in un
+primo step andremo in lettura su R0.
+Eh, quindi R0 andrà a scrivere il suo
+contenuto all'interno del bass dati e
+contemporaneamente con un fronte di
+salita di clock dovremo scrivere su RA.
+Il problema, qual è il problema? Che eh
+per come abbiamo impostato il circuito,
+abbiamo un unico segnale di controllo
+red wright che va a pilotare sia il
+blocco dei registri generali che i
+registri A e B e quindi
+contemporaneamente non possiamo fare una
+lettura sul sui registri generali e una
+scrittura su RA. Quindi mh capiamo bene
+che eh dobbiamo aggiungere un secondo
+segnale di controllo, diciamo un
+redgright specifico per R e per RB.
+Quindi, ehm, prima di procedere con
+questo test, vado a fare una modifica al
+nostro circuito e vado ad aggiungere
+questo secondo segnale di controllo.
+Alla fine avremo un Rght
+per i registri generali e un segnale red
+bright per il blocco registri A e B.
+Mi sono ricavato un secondo segnale red
+wright, questo LED che è attualmente
+spento che va a pilotare la lettura e la
+scrittura dei registri AEB. Invece
+questo che per ora attualmente è acceso
+è il segnale Red Wright che già avevamo
+visto e pilota ora soltanto i registri
+generali. Proviamo a questo punto a
+salvare un dato all'interno di R1 e poi
+spostarlo in R2 facendo il passaggio
+verso R che sarà una sorta di variabile
+temporanea. Come facciamo? Allora,
+innanzitutto scriviamo qualcosa
+all'interno di R1. Già sono in
+scrittura, ho selezionato R1. A questo
+punto vado a scrivere sul bass dati.
+Ho tutti i bit accesi tranne l'ultimo,
+quello meno significativo, spento.
+Salviamo questa informazione.
+Ok, ho fatto questo salvataggio. A
+questo punto andiamo in lettura.
+Questo lo spegniamo. Siamo in lettura su
+R1. Effettivamente abbiamo salvato
+l'informazione. Vediamo su R2 che cosa
+abbiamo.
+Ok, su R2 abbiamo questo dato eh che
+effettivamente è un dato casuale perché
+comunque non abbiamo inizializzato R2.
+Torniamo su R1,
+siamo in lettura su R1, andiamo in
+scrittura su RA. Quindi per fare per
+fare ciò andiamo a impostare eh da
+lettura a scrittura il segnale
+redgright.
+Mi si accende il LED, quindi siamo in
+scrittura.
+Abilitiamo R
+e diamo un impulso di clock. Ok, ho dato
+l'impulso di clock, quindi in teoria
+dovrei avere all'interno di Ra questa
+informazione.
+Facciamo adesso ehm una scrittura
+all'interno di R2. Come dobbiamo fare?
+Innanzitutto per sicurezza, spegniamo i
+registri A e B.
+Andiamo in lettura all'interno dei
+registri eh A e B e in scrittura
+e in scrittura all'interno dei registri
+generali. Quindi, eh, abilitiamo a
+questo punto RA. Nuovamente abbiamo la
+conferma che effettivamente nel R
+avevamo salvato il valore.
+Selezioniamo il registro R2 e a questo
+punto possiamo dare un impulso di clock.
+Ok, abbiamo dato un impulso di clock. A
+questo punto, se io vado a disabilitarmi
+Ra
+e eh vado in lettura su R2,
+effettivamente ehm ho salvato questa
+informazione che era quella che
+originariamente avevo su R0, quindi ho
+fatto questo passaggio. Ovviamente R0
+continua ad avere il suo valore, infatti
+se vado su R0 ancora ho il vecchio
+valore salvato perché comunque
+non ho poi fatto nessuna operazione di
+di reset, ad esempio, impostando tutti i
+bit a 0 su R0, ma comunque per il
+momento va bene e diciamo che abbiamo
+anche visto questo passaggio per
+spostare il valore di due registri
+generali. Direi che per questo video è
+tutto.

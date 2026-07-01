@@ -1,0 +1,293 @@
+Salve a tutti e benvenuti nel mio canale
+YouTube. Io sono Enzo e in questa serie
+di video realizzeremo una CPU. Prima di
+iniziare lasciate un mi piace, un
+commento e iscrivetevi al mio canale.
+Il primo componente che andiamo ad
+analizzare all'interno della nostra CPU
+è l'unità aritmeticologica,
+anche abbreviata con l'acronimo alu.
+Viene rappresentata da questo simbolo
+qua, da questa figura qui, ed è quel
+componente che ci permette di eseguire
+operazioni di tipo matematico logiche.
+All'interno della nostra CPU possiamo
+vedere che abbiamo due ingressi,
+l'ingresso A e l'ingresso B, un codice
+operazione e un'uscita out dove avremo
+il risultato tra l' tra la variabile A e
+la variabile B. Qui di fianco vediamo
+una piccola tabella che mette in
+correlazione il codice operazione con
+l'operazione effettiva che viene
+eseguita sulle variabili a e b. Ad
+esempio, in questa tabella che ho
+realizzato, se vediamo che se
+all'interno del codice operazione un
+codice a 4 bit inseriamo la combinazione
+00,
+avremo l'end bit a bit tra la variabile
+A e la variabile B.
+Con il codice 001
+avremo l'OR e così via avremo tutte le
+altre operazioni, quindi XOR, NOR, XNOR,
+Nend, not AD, subma e sottrazione e poi
+operazioni di confronto. Il codice
+operazione, nel nostro caso, è una
+variabile a 4 bit che ci permette di
+raggiungere un massimo di 16 operazioni
+dato dal dalla combinazione 2 elevato
+all 4 al numero di bit. Però
+effettivamente ehm se noi contiamo il
+numero di operazioni in questa tabella
+sono meno di 16. Per il momento va bene,
+però questo ci dà una, diciamo, ci dà un
+po' di flessibilità. Se vogliamo
+possiamo inserire implementare opere
+altre operazioni all'interno della della
+nostra alu.
+A questo punto possiamo analizzare la
+prima operazione che andremo a
+implementare all'interno della nostra
+alu che sarà l'End bit. Abbiamo visto
+nella tabella precedente che corrisponde
+al codice operazione 00
+e diciamo che questa funzione è
+possibile grazie a questo a questa porta
+logica rappresentata da questa figura
+che appunto è la porta logica di tipo
+endressi,
+l'ingresso A e l'ingresso B e un'uscita.
+Qui sotto vediamo una tabella che ci
+permette di capire la correlazione tra A
+e B che darà una determinata uscita. Ad
+esempio, se A e B equivalgono a 0,
+avremo un'uscita un 0. Invece 01 avremo
+0 1 0 e 1 ci darà come uscita un livello
+alto 1. È l'unica combinazione della
+porta logica end che ci dà un livello
+alto che che equivale poi al nostro
+unologico.
+Questa espressione invece è
+l'espressione in algebra buleano che
+rappresenta la porta end.
+Qui di fianco possiamo vedere una
+piccola rete a 4 bit formata da gli
+ingressi A e B che vanno da A1 ad A4 e
+da B1 a B4. Diciamo che poi nel nostro
+caso specifico sarà una rete formata da
+8 bit, però non cambia nulla. Per
+questioni di spazio ho preferito
+raffigurare una rete un po' più piccola.
+Possiamo vedere che di fatto abbiamo
+quattro porte logiche di tipo endo
+ingressi
+che vanno da A1 ad A4 e da B1 a B4.
+Ognuna di queste porte logiche seguirà
+l'end bit a bit
+e m darà in uscita il risultato.
+Questo risultato non è collegato
+direttamente all'uscita, ma passa da
+quest'altro componente che è un bufferi,
+che ci permette di proteggere l'uscita
+della porta logica dai segnali che
+stanno transitando nel bass dati, perché
+noi dobbiamo immaginare che qui m
+all'uscita l'uscita è collegata al bass
+dati dove possono transitare altri
+segnali elettrici e infatti abbiamo
+quest'altro piccolo componente che
+tramite questo segnale di enable
+che vediamo qua sopra ci permette di
+portare all'uscita ciò che è stato
+elaborato dalla porta end. Qui sotto
+vediamo la tabella verità di questo
+componente.
+Vediamo che abbiamo questo ingresso di
+enable con questo segno qui che ci
+permette di capire che funziona a logica
+negata. Quindi questo segnale di enable
+si attiva quando sarà al valore logico
+zero che corrisponde a un segnale di
+massa e vediamo che quando abbiamo
+l'enable a zero, ciò che abbiamo
+all'interno dell'ingresso Ao anche in
+uscita. Infatti enable a 0 uscita
+ingresso a a 0 uscita a 0 enable a 0
+ingresso a a 1 uscita a 1. Invece per
+tutti gli altri casi quindi enable a 1 e
+qualunque caso di a sia 1 che 0
+rappresentato da questa x avremo questo
+simbolo z che rappresenta un'alta
+impedenza. ci sta indicando che
+fisicamente è come se noi staccassimo
+l'uscita delle porte logiche dal bass
+dati che è qui e quindi proteggiamo m
+l'uscita delle porte logiche da segnali
+elettrici che potrebbero transitare
+all'interno del bass dati. in quel
+momento
+i componenti che ci permettono di
+realizzare questa piccola rete e sono il
+7408 che è un componente che contiene
+quattro porte logiche di tipo endoi
+abbiamo il 7424
+che è un componente che contiene otto
+buffer dati.
+Prima di entrare nel vivo del nostro
+progetto, vediamo un po' com'è stata
+organizzata la board, dove verrà
+sviluppato tutto il nostro progetto.
+Possiamo vedere che all'interno di
+questo pannello sono state incollate una
+serie di board 1000 fori dove andremo
+fisicamente a inserire i vari integrati
+che comporranno il nostro progetto.
+Abbiamo una scheda di alimentazione che
+andiamo a collegare. Questa scheda è
+molto comoda perché ci permette di
+alimentare tutto il circuito tramite un
+ingresso USB, quindi possiamo collegarci
+un classico alimentatore USB. Poi
+abbiamo quest'altra board che
+rappresenta il nostro bass dati, un bass
+dati a 8 bit, quindi che va dal bit meno
+significativo al più significativo e
+grazie ad esso riusciremo a vedere un
+po' tutti i dati che transitano
+all'interno della nostra CPU. Per
+aiutarci a debuggare, a sviluppare la
+nostra CPU nelle varie fasi, andremo a
+collegare ogni linea del bast dati, un
+diodo LED che sarà acceso nel caso il
+bit che sta transitando ha il valore di
+1 e spento nel caso il valore di zero,
+quindi il livello logico basso. Per
+aiutarci, diciamo, utilizziamo questa
+piccola board dove andrò a collegare
+tutti questi LED e tramite una
+resistenza da 220 ohm andrò a collegarle
+al a collegarli al bass dati.
+Ho collegato questa schedina dove
+abbiamo dei dito di LED e ogni LED è
+stato collegato a un pin del bass dati,
+a un bit del bass dati. Adesso ho dato
+alimentazione alla scheda e ho mandato a
++ 5 V il bit meno significativo del Bass
+dati. Quindi vediamo che sta transitando
+un livello logico alto e quindi abbiamo
+il nostro bit A1 e lo vediamo un po' dal
+dall LED corrispettivo acceso, così vale
+anche per tutti gli altri bit del del
+bass dati.
+Ho scaricato i datashet componente 7408
+e 7424.
+In particolare qui abbiamo la prima
+pagina di entrambi i datas sheet che
+contiene la la pianinatura del
+componente. Questi sono i componenti
+e possiamo vedere se analizziamo
+questi schemi che per il nostro
+progetto, dato che abbiamo bisogno di
+una rete 8 bit, avremo bisogno di due
+7408.
+Ogni 7408 contiene quattro porte logiche
+di tipo end.
+Abbiamo il segnale di alimentazione + 5
+V sul pin 15, eh sul pin 14, la massa
+sul pin 7 e poi qui possiamo vedere, ad
+esempio, A1 B1 sono pin 1 e pin 2 con
+uscita su pin 3. A2 e B2 pin 4 e pin
+uscita su pin 6.
+A3 e B4 rispettivamente pin 9 pin 10 con
+uscita su pin 8 e poi A4 B4 pin 12 e pin
+13 con uscita su pin 11.
+Qui abbiamo la tabella della verità che
+è analoga a quella che abbiamo visto in
+precedenza
+e poi abbiamo il 7424.
+Questo qua invece contiene già otto
+bffer dati.
+Vediamo che possiamo vedere che abbiamo
+due segnali di enable. Uno è il pin 19
+che controlla tutta questa parte
+del componente, questi quattro buffer
+dati e uno è il pin che controlla questi
+quattro. sono collegati in questo modo.
+Ad esempio, il pin 2 sarà il primo
+ingresso con uscita sul pin 18 e così
+via. La particolarità è che è come se
+questo componente fosse diviso in due
+parti con ognuno di esse controllabile
+dal pin 19 il pin 1. Nel nostro caso
+specifico, eh andremo a parallelizzare
+questi segnali di enable perché poi
+abbiamo bisogno noi di un unico segnale
+di enable che andrà a pilotare tutta la
+rete.
+Qui abbiamo la rappresentazione del
+circuito che abbiamo visto su carta.
+Abbiamo due integrati di tipo 7408 che
+sono questi due che contengono le otto
+porte logiche di tipo end.
+Abbiamo il 7424
+che è un buffer a 8 bit e possiamo
+vedere che gli ingressi eh del gli
+ingressi del 7408
+che vanno da1 ad A8 e da B1 a B8 sono
+state collegate sono stati collegati a
+questi due switch che rappresentano la
+variabile A e la variabile B.
+Quindi gli ingressi vengono collegati
+agli ingressi del dell'integrato, quindi
+alle nostre porte logiche. Le uscite,
+che sono questi cavi azzurri sono
+collegati al 7424
+che è questo.
+Poi le uscite del 7424
+sono collegate al bass dati
+tramite questi cavi. Vediamo le uscite
+sono questi cavi gialli.
+che poi dalla board vanno collegati
+direttamente al basi. Tramite questi
+cavi
+possiamo poi vedere il segnale di enable
+che avevamo sul pin e sul pin 19 che
+sono stati parallelizzati
+e tramite questo cavo
+è stato messo a massa l'enable. Quindi,
+quindi a questo punto, se io provo a
+mandare un segnale
+in ingresso alle variabili, ad esempio
+A8 e B8, mando un segnale alto, un
+livello logico alto, vediamo che si
+attiva l'ultimo bit perché perché
+comunque questa è l'unica combinazione
+logica, la combinazione 11, in cui
+abbiamo in uscita un valore alto.
+Infatti, se provo a spegnere una delle
+due variabili
+mandandola a massa,
+avremo il bit spento.
+Qui accendiamo e faccio anche notare il
+funzionamento del segnale di enable
+perché se dalla massa lo sposto a + 5 V
+avrò eh anche in questo caso spento
+spento la parte la rete endogiche
+stanno producendo in effetti il
+risultato di endi
+nulla in uscita.
+Rimetto l'enable a massa e abbiamo il
+nostro risultato. Possiamo brevemente
+fare una prova portando tutti i bitia A
+e B a 1 e dovremmo avere tutta la rete
+accesa, tutto il bass dati acceso.
+Infatti,
+vediamo che piano piano
+si accende tutto.
+Ok, c'è un contatto
+da sistemare sull'ultimo bit. Comunque
+abbiamo tutto il bass dati acceso.
+Per questo video è tutto. Vi ricordo di
+lasciare un mi piace e un commento se
+trovate interessanti questo genere di

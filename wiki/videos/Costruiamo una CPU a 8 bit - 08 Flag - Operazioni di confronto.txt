@@ -1,0 +1,220 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo e in questo
+video continuiamo la serie sulla CPU8
+bit e parliamo delle operazioni di
+confronto all'interno della nostra Alu.
+Prima di iniziare vi ricordo di lasciare
+un mi piace, commentare e iscrivervi al
+canale per supportare il mio lavoro.
+Quando ho iniziato questo progetto
+pensavo di eseguire tutte le operazioni
+di confronto, quindi a mag> B, A min B,
+A = B, utilizzando questo componente, il
+7485,
+che è un comparatore a 4 bit. Che cosa
+fa questo componente? prende in ingresso
+le variabili A e B e poi restituisce in
+output questi pin 5, 6 e 7 che saranno a
+valore logico 1 se la condizione è vera,
+a zero se invece non è vera. Quindi
+mettiamo due variabili in ingresso A e B
+uguali, avremo il pin 6 A1 a + 5 V. Se A
+è B avremo il pin 7 a + 5 V. Se A è B
+avremo il C. il pin 5 a + 5 V e tutti
+gli altri a massa daranno un'uscita di 0
+V.
+Però poi vedendo anche come sono
+costruite altre CPU e facendo anche una
+piccolo un piccolo ragionamento, ho
+capito che effettivamente eh possiamo
+ricavare queste informazioni riciclando
+il nostro circuito di ADER e quindi non
+serve utilizzare il 7485, ma possiamo
+fare dei ragionamenti sui flag di stato
+visti nel video precedente e da lì
+ricavarci questi confronti.
+A questo punto dobbiamo capire come
+utilizzare il nostro ADER per ricavarci
+flag a = B, A B e A>> B. Partiamo subito
+con l'uguaglianza che è il caso più
+semplice. Otteniamo questo flag facendo
+la sottrazione di a - b. In effetti, eh,
+a - b darà 0 soltanto quando a e b sono
+uguali. E quindi in questo caso noi
+leggendoci il flag zero riusciamo già a
+capire se A e B sono uguali quando
+andiamo a fare la loro sottrazione. E
+quindi diciamo che questa casistica è
+immediata a costo zero perché non
+dobbiamo utilizzare altri componenti, ci
+basta leggerci il flag Z.
+Passiamo alla condizione A B.
+Questa condizione la otteniamo andando
+ad analizzare i flag negative e
+overflow. Se noi mandiamo in Xorm
+N e V, l'uscita della porta XOR ci darà
+un segnale alto, quindi un segnale di +
+5 V nel caso in cui è vera la condizione
+A - B. Quindi anche questa casistica è
+abbastanza veloce. Con una con una sola
+porta Xor riusciamo a ottenere questo
+flag. A questo punto analizziamo
+l'ultimo caso A> B. Per ottenere il flag
+a mag utilizziamo sempre l'operazione di
+sottrazione, quindi A - B. E all'interno
+di questa rete logica che vediamo qui
+sotto diamo impasto il flag zero, il
+flag negative e il flag overflow. Il
+risultato di questa di questa rete
+logica sarà appunto il flag a mag.
+Se noi ci soffermiamo su come abbiamo
+costruito questo schema di porte
+logiche, possiamo capire che la
+condizione N XOR V che è data da questo
+pezzettino nello schema di fatto è
+questo flag a< B,
+quindi abbiamo A B il flag A di B negato
+perché abbiamo questo note dato in input
+a una porta end. L'altro ingresso della
+porta endazione
+del flag zero. Se noi facciamo un
+ragionamento eh capiamo che questa cosa
+ha senso perché se io so che il numero A
+non è uguale a B e contemporaneamente so
+che A non è minore di B, l'end tra
+queste due condizioni ci dice che A è
+mag proprio per una costruzione logica.
+Perché? Perché se queste due condizioni
+non si verificano, eh non sono
+verificate, sappiamo che
+obbligatoriamente A deve essere maggiore
+di B. E quindi con questo ragionamento
+capiamo anche come viene costruito
+questo circuito, questo schema logico.
+Piccola nota sulla costruzione di questi
+flag di confronto. Abbiamo detto che
+l'uaglianza ce l'abbiamo già a costo
+zero, perché andiamo a leggerci il flag
+Z.
+Per il flag A minore di B effettivamente
+ci serve una porta Xor.
+Invece per costruire la rete che ci dà
+il flag a mag utilizziamo l'XOR. Già ce
+l'abbiamo l'XOR di A - B, quindi questa
+parte di circuito viene riciclata sia
+per creare questo flag, sia per creare
+quest'altro.
+Lo andiamo a negare. Già abbiamo
+all'interno dell'ar una serie di porte
+logiche note che eh non utilizziamo,
+quindi non dobbiamo utilizzare
+componenti per tutta questa parte.
+Invece per quanto riguarda il flag zero
+non dobbiamo fare niente perché già
+abbiamo il not del flag zero. Nel video
+precedente abbiamo visto che il flag
+zero viene costruito facendo lor bit a
+bit di tutti i bit in uscita nel bass
+dati e poi infine lo neghiamo. Se io
+vado a prelevarmi il segnale prima di
+fare la negazione, di fatto c'ho Z
+negato e quindi prelevo da lì il segnale
+e lo do in pasto a una porta end.
+Quindi rispetto alla situazione in cui
+siamo oggi ci servirà ci servirà
+soltanto una porta Xor perché già
+abbiamo una serie di endziamo
+all'interno della nostra alu.
+Vediamo come ho realizzato nella pratica
+i nostri flag di confronto. Abbiamo
+questi tre LED che rappresentano A B, A
+B e A = B.
+Il primo, cioè il confronto, lo
+otteniamo collegando il LED direttamente
+al flag zero.
+Invece il secondo A B lo otteniamo
+facendo l'XOR tra N e V. Loxor viene
+fatto da questo integrato, è un 7486.
+Al momento sto utilizzando soltanto una
+delle porte XOR di questo integrato e
+l'uscita l'ho collegata a LED.
+Invece per quanto riguarda la condizione
+a magtegrato
+che contiene degli end, un 7408 che già
+avevo inserito nel video precedente
+quando ho costruito questi flag di base
+e all'interno di una di queste porte
+libere ho eh inserito negli ingressi il
+flag zero prima che lo andassi a negare,
+cioè qui dentro mi vado a prendere il
+flag zero, qui ho l'or bit a bit di
+tutto il bass dati.
+Poi l'OR passa all'interno di un not, di
+uno di questi not. Io prima di di
+passare da questo not ho preso il flag
+zero e l'ho riportato all'ingresso della
+porta endi.
+E poi abbiamo
+A B che avevamo calcolato grazie a
+questo integrato e prendo l'uscita e la
+riporto all'interno dell'end.
+All'interno dell'end. Poi dall'End vado
+direttamente a LED eh a magici abbiamo
+tutte queste tre casistiche. Dobbiamo
+anche dire che questo discorso di
+inserire la label e i LED è più un
+discorso più che altro visivo per vedere
+a colpo d'occhio cosa succede
+all'interno della nostra CPU. Poi quando
+andremo a realizzare effettivamente
+l'unità di controllo che dovrà gestire
+tutte le logiche della nostra CPU, non
+so se effettivamente utilizzerò questi
+segnali oppure andrò a fare eh delle
+valutazioni direttamente sui flag di
+base CN.
+Lo vedremo poi in un successivo video,
+però comunque secondo me è importante
+avere, dato questo è un progetto
+abbastanza didattico, avere a colpo
+d'occhio cosa sta effettivamente
+succedendo all'interno della nostra CPU.
+A questo punto direi che possiamo fare
+qualche test per vedere se
+effettivamente questi flag funzionano in
+maniera corretta.
+Partiamo subito col dire che già siamo
+in una condizione di sottrazione perché
+la nostra variabile K, questo cavo è a +
+5 V, quindi il selettore dell'adder ci
+sta eh mettendo nella condizione di
+sottrazione.
+Siamo in una condizione in cui A è a 0,
+b a 0. In effetti le variabili sono
+uguali, A è U = B e in effetti abbiamo
+il flag di uguaglianza acceso che poi
+coincide col flag zero.
+Facciamo un altro test.
+Eh, stiamo confrontando eh la variabile
+A che vale 1 con la variabile B che vale
+1 e abbiamo la medesima il medesimo
+risultato, quindi flag di uguaglianza e
+flag zero accesi. Ed effettivamente è
+corretto.
+Proviamo a fare un test. Eh, diciamo,
+ora qua siamo nella condizione a mag b
+perché a vale 1, b vale 0
+e in effetti anche questa casistica è
+corretta perché si accende il flag
+corretto a mag. Ultimo caso, eh siamo su
+una condizione in cui A vale 1, mettiamo
+B a 2 e in effetti eh si è acceso questo
+flag eh che ci indica che A è di B.
+Quindi, diciamo, abbiamo fatto tutti i
+test, abbiamo abbiamo eseguito un test
+per ogni singola condizione ed
+effettivamente la risposta è quella
+corretta, è quella che ci aspettavamo.
+Quindi direi che a questo punto per
+questo video è tutto. Vi saluto e ci
+vediamo in un prossimo

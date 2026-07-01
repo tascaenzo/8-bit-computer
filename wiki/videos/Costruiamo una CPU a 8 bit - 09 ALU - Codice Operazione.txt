@@ -1,0 +1,350 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo. Oggi
+continuiamo a parlare della nostra CPU a
+8 bit e nello specifico parliamo del
+codice operazione da implementare
+all'interno della nostra ALU. Ma prima
+di iniziare vi ricordo di iscrivervi al
+canale, lasciare un mi piace, commentare
+questo video per supportare il mio
+lavoro.
+Nel primo video sulla nostra CPU a 8 bit
+abbiamo analizzato questa figura che
+rappresenta la nostra alu. Avevamo detto
+che abbiamo le nostre variabili A e B in
+ingresso, un codice operazione e
+un'uscita. Il codice operazione permette
+di selezionare l'operazione da eseguire
+tra e B. In questo primo video avevamo
+all'epoca visto questa tabella di verità
+che ci permette di correlare a ogni
+codice operazione effettivamente
+l'operazione che svolgerà l'alu.
+Rispetto al primo video sono state fatte
+delle modifiche. Eh, la cosa principale
+è che non abbiamo questi tre codici
+operazione per le operazioni di
+confronto, ma avremo un'unica operazione
+di compare che genererà dei flag che ci
+permetteranno di capire lo stato del
+confronto tra la variabile A e la
+variabile B.
+Direi di partire subito analizzando il
+componente 74138
+che ci permette di realizzare il nostro
+codice operazione. Che cos'è questo
+componente? È un demultiplexer decoder.
+Che cosa è? Se noi andiamo a vedere la
+pietinatura di questo componente,
+vediamo che abbiamo 3 bit di selezione
+che andranno a realizzare il nostro
+codice operazione che sono A0, A1 e A2.
+Poi abbiamo una serie di enable e poi
+tutti questi pin che sono degli delle
+uscite che vanno da O0 a O7. In pratica,
+eh, variando il l'ingresso a 0 a con un
+e a con 2, si andrà a selezionare una di
+queste uscite. Normalmente queste uscite
+stanno su un livello di + 5 V, ma quando
+viene selezionata una di queste uscite
+vanno a massa. Il trucchetto qual è? è
+quello di andare a collegare eh queste
+uscite ai vari enable dei 7424
+eh che vanno ad abilitare, accendere o
+spegnere le varie reti della della
+nostra alu, quindi la rete end, la rete
+OR, il nostro ADER e così via. Qui di
+fianco abbiamo una tabella di verità che
+ci fa capire come funzionano queste
+uscite in correlazione con gli ingressi
+a 0, a 1 e a2. Qui vediamo ad esempio
+che se tutti i bit sono a livello logico
+basso, quindi 00,
+avremo l'uscita o con zero che sarà a
+livello logico basso e tutte le altre
+saranno a un livello logico alto. Quindi
+eh quando avrò a 0, a con 1 e a con 2,
+a0 o con 0, che sarebbe questa uscita,
+sarà a un livello di 0 V. quindi la
+nostra massa. E quindi se io ad esempio
+collego eh a questa uscita il 7424
+che controlla la nostra rete end, quando
+io avrò il codice operazione 00
+avrò abilitato la nostra rete end
+all'interno della nostra alu.
+Poi abbiamo questi enable, in pratica E1
+ed E2 possono essere sempre collegati a
+massa e possiamo utilizzare E3 per
+accendere o spegnere questo integrato e
+quindi abilitare questo integrato.
+quando E3 sarà a un valore di massa,
+tutte le nostre uscite che vanno da O0 a
+O7 avranno tutte un segnale di + 5 V e
+quindi sarà spento il nostro integrato,
+il nostro 74138.
+Qui abbiamo la tabella di verità
+completa, compresi gli input e 2 ed E3.
+E mh qua, se facciamo una breve analisi,
+a noi ci interessa poi alla fine eh la
+combinazione in cui E1 e2 sono a massa,
+E3 è un livello logico alto e poi
+abbiamo i nostri selettori di
+operazione.
+Finora abbiamo visto il componente 74138
+e abbiamo capito che con 3 bit di
+selezione possiamo gestire fino a otto
+possibili uscite, quindi possiamo
+gestire otto operazioni all'interno
+della nostra alu. Il problema vero è che
+se poi vado a contare le operazioni
+effettive che devo implementare
+all'interno della nostra alu di otto qui
+ho disegnato una tabella di verità con
+un codice operazione e l'operazione
+effettiva. Se io vado a contarle sono
+10, quindi vado a superare le otto
+possibili operazioni. Infatti il codice
+operazione è a 4 bit e non a 3 bit.
+Quindi, proprio per questo motivo, qui
+ho disegnato lo schema reale dove vado a
+utilizzare 274138,
+così porto il numero di uscite a 16 e
+quindi posso gestire 16 codici
+operazioni. Questo è una cosa positiva
+perché comunque nella nostra Alua, anche
+se non stiamo utilizzando al momento 16
+operazioni, ma ne abbiamo di meno,
+questo ci dà un piccolo margine per
+implementare in futuro nuove operazioni.
+A questo punto, analizzando lo schema
+che ho realizzato, vediamo i nostri
+274138
+dove ho collegato in parallelo tutti gli
+ingressi che vanno da A con 0, AON1 e
+AON2. Quindi questi ingressi sono
+collegati in parallelo. Poi abbiamo gli
+enable econ 1 ed e 2 di entrambi gli
+integrati collegati a massa e poi ho
+riportato qui sotto i tre bit di di
+selezione AON 2, AON1 e AON0. Ho
+aggiunto agon 3, che sarebbe il nostro
+quarto bit, il bit più significativo del
+codice operazione che è stato collegato
+agli enable di entrambi gli integrati
+con una piccola differenza. Su questo
+integrato passa da una porta note e poi
+va su l'enable con tre, invece su questo
+il secondo è collegato direttamente. Che
+cosa fa questo? Questo questo note serve
+a negare il bit. eh più significativo
+del codice operazione. Quindi se io ho
+qui un valore di 0, passa da questo not,
+lo nega e diventa 1 e eh abbiamo un
+segnale di + 5 V su questo pin di questo
+integrato e quindi avrò abilitato questo
+integrato. In parallelo, invece questo
+integrato sarà spento perché il l'enable
+econ 3 sarà a un valore di massa, dato
+che questo bit è spento, è a zero.
+Quindi avrò questo attivo e questo
+spento. Questo spento vuol dire tutti
+tutte le uscite che vanno da o con 0 o
+con 7 a + 5 V e quindi eh avrò, diciamo,
+spento questo integrato. Invece
+quest'altro integrato avrà una delle
+uscite a livello logico basso. Dipenderà
+ovviamente da la combinazione poi di A
+con 2, a con 1 e A con 0. Quindi diciamo
+che il bit più significativo va a
+selezionare uno dei due integrati.
+Facciamo un un esempio. Abbiamo
+l'operazione di end 00,
+quindi abbiamo 0 viene negato e diventa
+qui un dopo questo not e quindi abbiamo
+abilitato questo integrato. Questo
+invece sarà spento. Siamo nella
+condizione 00, quindi a con 0, a con 1 e
+a con 2 dell'integrato sono tutte e tre
+a 0 e quindi avrò questa uscita
+a massa e quindi questa uscita poi sarà
+collegata all'enable della rete end,
+quindi al 7424
+che controlla la rete endrò attivato la
+rete endi
+saranno spente e sarà spento anche il
+nostro ADER.
+Caso invece in cui, ad esempio, facciamo
+la sub in cui ho il bit più
+significativo del codice operazione A1,
+che cosa succede? In questo caso questo
+sarò sarà spento perché qui abbiamo uno,
+passa dal not e diventa zero e quindi
+questo è spento. Questo invece è attivo.
+Siamo su caso 00, quindi 30 e in questo
+caso avrò questa uscita abilitata e
+quindi questa uscita a massa e tutto il
+resto a più 5 V.
+Quindi ottenere i segnali che vanno a
+pilotare 7424
+delle reti end or xor nor xn e not è
+abbastanza semplice e immediato perché
+ognuno di essi viene prelevato
+direttamente da una delle uscite di
+questo 74138.
+Per quanto riguarda invece l'operazione
+di ad sub e compare, la situazione è un
+po' diversa. Bisogna fare un piccolo
+ragionamento sul segnale di enable
+perché eh diciamo che queste tre
+operazioni vanno a utilizzare il nostro
+ADER, quindi dobbiamo capire come
+gestire l'enable del 7424
+dell'adder. In pratica utilizziamo delle
+porte end. Faccio l'end tra tutti i bit
+di enable o con 7 che sarebbe eh
+l'operazione di ad o con 0 e o con 1 di
+questo secondo integrato che sarebbero
+sub e compir. Il risultato di questi end
+andrà ad abilitare il 7424
+della rete ADER. Bisogna anche
+considerare la variabile K che ci
+permette di switchare tra operazione di
+somma e operazione di sottrazione. Per
+calcolare K vado a prendermi dalla dal
+primo end
+le operazioni sub e compare, mi vado a
+prendere questo segnale, vado a negarlo
+e così ottengo la variabile K. Ricordo
+che nel caso di sottrazione compare K
+deve essere a + 5 V. Invece nel caso di
+somma vado a portare K a massa per eh
+disabilitare tutta la parte di
+complemento A2 della variabile B.
+Vediamo nella pratica come ho realizzato
+il codice operazione all'interno
+dell'alu.
+Partirei da questo switch a 4 bit che va
+a rappresentare il codice operazione. È
+stato collegato tramite un circuito di
+pullup a questi due integrati, agli
+ingressi di questi due integrati che
+sono dei 74138
+che contengono i nostri decoder
+multiplexer.
+Le uscite di questi integrati sono stati
+collegati, tramite questi cavi verdi e
+blu agli enable delle varie reti
+all'interno dell'alu, quindi ai 74244,
+ad esempio della porta della rete end,
+della rete OR e così via.
+Le uscite sono state anche riportate
+grazie a questi cavi marrone, anche su
+questi LED che ci permettono di capire
+quale operazione effettivamente è stata
+selezionata tramite lo switch e quindi
+il nostro codice operazione. Ad esempio,
+se io attivo l'operazione di endà
+questo LED corrispettivo all'End, così
+per l'or loxor e così via. Questo ci
+aiuta a livello visivo a capire quale
+operazione sta eseguendo l'alu, perché
+ovviamente è meno immediato andare a
+leggere un codice operazione rispetto a
+un LED. Per quanto riguarda invece eh le
+porte end e i Note che servono
+all'interno del circuito, ho riciclato i
+componenti che già utilizzavo per
+generare i flag. Nello specifico ho un
+7408
+che ha due porte che va a due porte end
+libere che vado a utilizzare per
+generare l'enable dell'ADER e il codice
+K. Eh, poi ho questo 7486
+che contiene degli XOR che ho utilizzato
+per eh generare i Note, uno che va nel
+per negare la variabile K, l'altro viene
+utilizzato per negare il bit più
+significativo del codice operazione che
+andrà a abilitare o spegnere questi due
+integrati, uno di questi due integrati.
+Come mai ho utilizzato il 7486 che
+contiene degli Xor per negare alcuni
+alcuni segnali? Diciamo che il motivo è
+mh che non mi andava ad inserire altri
+integrati perché avrebbero occupato
+altro spazio e non mi andava neanche di
+andare a cablare fili verso ad esempio
+questi Note che è vero ho qui dentro le
+Note liberi però dovevo stendere un po'
+di fili e avrei complicato un po' il
+cablaggio. La domanda a questo punto è
+come eh riesco a creare una porta Note
+con un Oxor? qui di fianco la tabella di
+verità del Loxore e possiamo vedere che
+se io vado a prendere una delle due
+variabili, ad esempio la variabile A, e
+la mando fissa a + 5 V,
+quando B sarà a 0 l'uscita sarà 1,
+quando B sarà a 1, l'uscita sarà 0.
+Quindi con questo trucchetto riesco a
+ricavare un not da un Oxor. Lo stesso
+vale se B è fissa a 5 V. E in questo
+caso se A è 0 o 1 in uscita e se A è A1
+o 0 in uscita.
+Ho dato alimentazione alla nostra ALU.
+Abbiamo il codice operazione con tutti i
+bit a zero ed effettivamente abbiamo
+selezionato l'operazione di end. La
+variabile A e la variabile B sono tutte
+a zero tranne il bit meno significativo
+a 1 e in uscita nel bass dati
+effettivamente on land. Se adesso metto
+il bit meno significativo del codice
+operazione A1, effettivamente sto
+switchando ad OR, quindi sto facendo
+l'OR tra la variabile A e la variabile
+B.
+Andiamo avanti. Sono nella casistica 00
+e siamo in una condizione di Xor.
+Effettivamente
+ho l'Xor tra la variabile A e la
+variabile B. Vado ancora avanti e sono
+nella condizione 00 1 e ho il NOR.
+Adesso invece siamo in Nend e la
+combinazione è 0100.
+Combinazione 01
+siamo in Xnor
+combinazione 010.
+Siamo in not
+agisce solo sulla variabile A. Tutto
+spento, tutto il bass dati acceso ed è
+corretto.
+Combinazione 01 1. Siamo in AD, quindi
+sto facendo la somma. Proviamo a mettere
+la variabile a a 1
+e in effetti c'ho due nel bass dati,
+quindi anche questo è corretto.
+Combinazione 1 siamo in sub. Sto facendo
+1 - 1 è da 0. Questo, anche questo è
+corretto. Proviamo
+a switchare. Ok, adesso sto facendo eh 3
+- 1 e da 2. Anche questo è corretto.
+Ultimo caso 1001,
+operazione di compare, ho la variabile A
+maggiore della variabile B e in effetti
+se acceso il flag di maggioranza e
+quindi anche questo è corretto.
+Ovviamente ora tutte le altre
+combinazioni
+in avanti non danno nessun nessun
+valore, quindi diciamo che l'alu è
+spenta. tutti gli enable della rete,
+tutti a un livello logico alto
+e in effetti diciamo che dopo il compare
+potrei utilizzare tutte le combinazioni
+successive per dire all'alu di non fare
+niente e quindi sospenderla, diciamo.
+Direi che anche per questo video è
+tutto. Ci vediamo in un prossimo video.
+Vi ricordo di lasciare un mi piace e
+commentare questo

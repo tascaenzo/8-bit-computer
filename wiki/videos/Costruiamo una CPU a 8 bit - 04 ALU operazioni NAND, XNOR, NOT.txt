@@ -1,0 +1,282 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo e in questo
+video continuiamo a sviluppare la nostra
+CPU 8 bit. Oggi nello specifico
+parleremo di operazione di Nendex NOR e
+not. Ma prima di iniziare vi invito a
+lasciare un mi piace, iscrivervi al
+canale e commentare questo video in modo
+da supportare il mio lavoro.
+Partiamo subito con la rete Nend.
+Possiamo vedere questo schema che
+dovrebbe essere familiare, dato che
+l'abbiamo visto ormai anche nei video
+precedenti, dove abbiamo la nostra porta
+logica, in questo caso appunto la rete,
+il buffer e l'uscita che poi è collegata
+al bass dati. Se vediamo qui di fianco
+abbiamo la figura che rappresenta la
+porta Nend. Questa figura di fatto è la
+stessa figura della porta logica end,
+però con un pallino finale perché di
+fatto il Nend non è altro che un end con
+uscita negata. Questa è l'espressione
+algebra buleano che ci permette di
+rappresentare la porta logica di tipo
+Nend. E qui sotto abbiamo la tabella di
+verità, abbiamo gli ingressi A e B e
+vediamo che per la combinazione 00
+abbiamo 1 in uscita 01 1 10 1
+0.
+Il componente della famiglia TTL che
+contiene dei delle porte di tipo nende è
+il 7400.
+In pratica contiene quattro porte di
+tipo Nend. Invece il 7424
+è il nostro buffer con enable che ci
+permette di abilitare o spegnere la
+rete. Infatti se l'enable è a un livello
+eh zero, quindi a massa, ciò che
+transita nella variabile A lo abbiamo in
+uscita. Invece se l'enable è a valore 1
+per qualunque valore in ingresso che ha
+A, avremmo in uscita un'alta impedenza.
+Ciò vuol dire che quando l'enable è a +
+5 V su tutti questi buffer dati, ciò che
+transita all'interno di questo bass
+dati, del bass dati, non arriva
+all'uscita della porta logica, quindi la
+stiamo proteggendo da eventuali segnali
+che stanno passando nel bass dati.
+Invece quando andiamo ad attivare,
+mettendo a massa questi enable, ciò che
+viene prodotto dalla porta Nend arriva
+qui in uscita.
+Facciamo un breve confronto tra porta
+end e porta nend. Qui di fianco abbiamo
+le due porte logiche con tabelle di
+verità e espressione in algebra buleano.
+Allora, vediamo subito che la figura è
+la medesima, solo che per il n abbiamo
+il pallino che indica la negazione
+dell'uscita. Come tabella di verità
+vediamo che dove nella endamo in uscita
+uno zero, nella nend abbiamo un 1 e
+viceversa. Ad esempio, combinazione 00
+in end
+01 da 0 in end e uno in end, 10 da 0 in
+end e uno in end e infine 1 da 1 in end
+e 0 in end. Possiamo qui di fianco anche
+vedere questo schema in cui abbiamo una
+porta end collegata a una porta not.
+Infatti questa rappresentazione
+equivale alla porta Nend. Abbiamo di
+fatto così costruito un un Nend.
+Continuiamo parlando della porta Xnor.
+La porta Xnor è rappresentata da questo
+simbolo. Di fatto è un uno un XXOR
+negato. Abbiamo questa tabella di verità
+che ci permette di capire al variare di
+A e B cosa otteniamo in uscita.
+combinazione 00 abbiamo in uscita 1 01
+1 1. Qui abbiamo la solita rete comporta
+Xnor, buffer e uscita collegata al bass
+dati. Qui sotto abbiamo il 7424
+che contiene otto buffer dati. Non mi
+soffermo dato che l'abbiamo appena
+visto, l'abbiamo appena analizzato. E
+poi qui abbiamo un 7426
+che è il componente che della famiglia
+TTL che contiene quattro portex nor.
+A questo punto è facile intuire che un
+XNOR non è altro che una porta Xor la
+cui uscita è collegato a un not, a una
+porta not. Qui di fianco ho disegnato
+una rete a 4 bit dove abbiamo una porta
+XOR la su la cui uscita è collegata a un
+not e poi abbiamo il nostro buffer dati.
+Perché ho fatto una rete in questo modo?
+Potevo usare un 74266,
+però non avendo questo componente ho
+pensato di utilizzare un 7486
+che contiene quattro porte Xor,
+collegare un 7404 che contiene 6 Note e
+poi a sua volta collegare il 7424
+che è il nostro classico buffer dati e
+di fatto così possiamo creare facilmente
+un una rete
+Xnor. Qui di fianco abbiamo la tabella
+di verità che comunque coincide alla
+tabella di verità di Unoxn e questa è la
+funzione in algebra
+buleano che rappresenta l'Oxnor.
+Prima di passare alla pratica vediamo
+l'ultima rete che è la rete not. In
+sostanza questa è una rete abbastanza
+semplice. La porta logica che è questa,
+questa figura qui, eh è molto semplice.
+Lo vediamo alla sua tabella di verità.
+In sostanza, se in ingresso A vale 0,
+abbiamo in uscita 1. Se vale 1, abbiamo
+in uscita 0. Questa è l'espressione
+l'algebra buleano che ci permette di
+fare il not. Il componente della
+famiglia TTL che contiene le porte notte
+è il 7404
+e nello specifico a 6 not.
+E poi abbiamo il 7424
+che è il nostro buffer dati. Vediamo la
+rete, abbiamo la variabile in ingresso
+porta note buffer con segnale di enable
+e poi abbiamo l'uscita con il bass dati.
+Guardiamo brevemente la piedinatura dei
+componenti 7400 e 7404.
+Iniziamo col 7400.
+Contiene quattro porte di ponentand.
+Sono collegate in questo modo: Pin 1 2
+ingressi della prima porta logica con
+uscita su pin 3.
+Ingressi della seconda porta logica con
+uscita su pin 6. Il pin 7 è la massa.
+Poi abbiamo pin 19 ingressi della terza
+porta logica con uscita su pin 8. 1312
+ingressi della quarta porta logica con
+uscita su pin 11 e poi pin 14 + 5
+volazione.
+Qui sotto invece abbiamo il 74004,
+contiene sei porte not. Abbiamo sul pin
+14 l'alimentazione, sul pin 7 la massa.
+Possiamo vedere che sul pin 1 abbiamo
+l'ingresso del primo note con uscita sul
+2, sul 3 ingresso del secondo note con
+uscita sul 4 e così via. Diciamo che eh
+per la nostra rete ci serviranno 8 not,
+quindi abbiamo bisogno in ogni caso
+sempre di 27404,
+anche se eh in ogni uno di questi
+integrati ci saranno due porte not
+utilizzate.
+Qui possiamo vedere la realizzazione
+delle nostre reti logiche e vediamo che
+abbiamo due 7400 che sono le nostre
+porte Nend.
+Eh, le uscite di questi due integrati
+sono collegati agli ingressi di questo
+che contiene i nostri buffer dati
+tramite questi cavi azzurri. Le uscite
+dei buffer dati sono collegate a questi
+cavi
+gialli che vanno poi collegati
+direttamente al bass dati.
+Poi abbiamo la retex nor. La retex nor
+abbiamo detto che la facciamo
+utilizzando l'XOR, questi due componenti
+qui. Le uscite delloxor, oltre a andare
+nel bufferati della rete Xor, vengono
+anche riportati in questi cavi verdi,
+questi due, queste coppie di cavi ed
+entrano all'interno dei 7404
+che sono dei not questi due.
+Le uscite, questi capi azzurri entrano
+nel bufferi. E le uscite del buffer dati
+vanno poi nel bus dati. Infine abbiamo
+il note. Per il Note abbiamo sempre
+27404 che contengono i nostri Note sono
+collegate alla variabile A tramite
+questi cavi verde scuro e verde chiaro.
+L'uscita sono i cavi azzurri che vanno
+al buffer dati e l'uscita del buffer
+dati sono i cavi gialli, questi qua, che
+vanno al bass dati.
+Partiamo col testare la rete Nend.
+Abbiamo l'enable del buffer dati a + 5
+V. Questo cavo qui. Lo spostiamo su un
+livello logico basso, quindi massa, e
+andiamo
+quindi ad abilitare la rete Nend.
+Effettivamente mi si mi sono accesi
+tutti i biti.
+È ciò che mi aspetto perché le variabili
+A e B sono sul livello logico zero.
+Combinazione 00 mi dà uno in uscita.
+Adesso noi andremo a testare tutte le
+possibili combinazioni di A e B. Eh, su
+questa parte al solito metterò eh la
+tabella di verità in modo da poter
+seguire facilmente. Comunque a questo
+punto dopo la combinazione 00
+la combinazione 01, cioè vado ad alzare
+i bitia B.
+Ok,
+siamo nel caso 01 e ancora questa questa
+combinazione mi dà come uscita un
+livello alto ed è ciò che effettivamente
+ho. A questo punto passiamo alla
+combinazione 10,
+quindi variabile a A1, variabile b a 0.
+Anche in questo caso mi aspetto un
+livello logico alto in uscita ed è ciò
+che abbiamo. Passiamo all'ultima
+combinazione, variabile A a A1,
+variabile B a 1. Questa è l'unica
+combinazione che in uscita mi dà un
+livello logico basso. Quindi, appena io
+inizierò a alzare tutti i bitia
+B, il nostro bass dati dovrebbe
+spegnersi. Vediamo se è vero.
+Ok, effettivamente
+si sta spegnendo piano piano ed è ciò
+che mi aspettavo. Quindi combinazione 11
+uscita 0.
+Andiamo a spegnere la nostra rete
+e possiamo passare alla rete XNOR.
+L'enable della rete XNOR è questo cavo
+qui che ha più 5 V. Prima di andarla ad
+abilitare, vado a riportarmi eh le
+variabili a e b a 0.
+Ok. Variabili A e B a 0. porto a massa
+l'enable della retex nor
+e c'ho tutto il bass dati a un.
+Effettivamente è ciò che mi aspetto.
+Vado avanti portando la variabile A a 0
+e la variabile B a 1.
+Questa combinazione mi deve dare
+un'uscita un'uscita bassa, un livello
+logico basso in uscita. ed è ciò eh che
+effettivamente abbiamo. Passiamo alla
+combinazione eh 10, quindi variabile a a
+1, variabile b a 0.
+Ok? Eh, in questa casistica mi aspetto
+in uscita un livello logico basso ed
+effettivamente è ciò che abbiamo. Adesso
+abbiamo l'ultima combinazione 11 che in
+uscita mi deve dare un livello logico
+alto.
+Ok? E quindi diciamo che anche la parte
+di retex nor faccio che ci aspettiamo,
+quindi funziona. Spegniamo anche questa
+rete
+e possiamo partire possiamo passare alla
+rete not.
+Per quanto riguarda la rete note,
+abbiamo questa enable, questo cavo qui.
+Allora, la variabile B non ci interessa
+perché comunque l'operazione viene fatta
+su una singola variabile che è la
+variabile A.
+Porto l'enable a massa,
+c'ho tutto il bass dati spento.
+Effettivamente è ciò che mi aspetto
+perché eh attualmente c'ho la variabile
+A a1. Provo piano piano a spegnerla e
+quindi dovrebbe accendersi il bass dati
+perché dovrei avere la negazione di A.
+Vediamo se è vero.
+Effettivamente è vero. Quindi anche la
+nostra rete Note funziona. Proviamo a
+metterla mettere la Nebola a + 5 V
+e effettivamente a + 5 V si spegne anche
+la rete not. Quindi diciamo che in
+questo video abbiamo visto la rete not,
+la rete Nend e la rete XNOR. A questo
+punto ci vediamo in un prossimo video.

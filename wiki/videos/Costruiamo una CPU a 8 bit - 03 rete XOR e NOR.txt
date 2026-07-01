@@ -1,0 +1,347 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo e oggi
+continuiamo a parlare di CPU 8 bit. In
+questo video vedremo l'operazione di XOR
+e di NOR e la implementeremo all'interno
+della nostra alu. Ma prima di iniziare
+vi ricordo di lasciare un mi piace,
+commentare e iscrivervi al canale per
+supportare il mio lavoro.
+Partiamo subito con l'analizzare la
+porta XOR. Vediamo qui una rete formata
+da quattro porte XOR, quindi una rete a
+4 bit e come abbiamo visto anche nei
+precedenti video, abbiamo la porta
+logica, in questo caso appunto l'XOR, il
+buffer e l'uscita. Abbiamo le nostre
+variabili A e B che vanno da A1, A2, A3,
+A4, B1, B2, B3 e B4.
+Poi abbiamo le uscite della della porta
+logica che entrano all'interno del
+nostro buffer dati. Al solito ricordo
+che il bufferati lo utilizziamo per
+proteggere l'uscita della porta logica
+da ciò che sta transitando all'interno
+del bass dati. Infatti, grazie a questo
+segnale di enable, possiamo spegnere o
+accendere tutta la tutta la rete.
+Vediamo qui di fianco il simbolo che che
+rappresenta la porta Xor e qui sotto
+abbiamo la tabella di verità in cui
+vediamo la combinazione di B che ci dà
+l'uscita.
+Allora, abbiamo ad esempio per il valore
+00 un'uscita 0 1 un'uscita 1 10 1 0.
+Questa è l'espressione in algebra
+buleano che ci rappresenta l'oxor. Il
+componente della famiglia TTL che ci
+permette di eseguire questa operazione è
+il 7486
+e contiene quattro porte XOR, quindi nel
+nostro caso d'uso pratico abbiamo
+bisogno di 27486
+per realizzare una una rete XOR a 8 bit.
+Vediamo brevemente anche il 7424
+che è il buffer che abbiamo utilizzato
+anche nei precedenti video dove abbiamo
+visto le altre operazioni logiche.
+Abbiamo il segnale di enable che
+funziona a logica negata, quindi quando
+il segnale di enable sarà a livello
+basso il nostro zero, la massa per
+intenderci, avremo in uscita ciò che
+abbiamo in ingresso, quindi enable a 0
+valore di a 0 uscita 0 enable a 0 valore
+di a 1 uscita 1. Invece nel caso in cui
+l'enable si trova a un livello alto per
+qualunque valore in ingresso di A
+rappresentato con questa X avremo in
+uscita un'alta impedenza.
+Quindi come abbiamo già detto con
+l'enable A1 abbiamo isolato l'uscita
+delle porte Exor da ciò che sta
+transitando sul bass dati.
+Proseguiamo con la porta NOR. Qui di
+fianco abbiamo la nostra rete a 4 bit
+con ingressi che vanno da A1 ad A4 e da
+B1 a B4, i nostri bufferi. E l'uscita.
+Questo simbolo rappresenta il NOR.
+Abbiamo l'ingresso A, l'ingresso B e
+l'uscita. Qui sotto abbiamo la tabella
+di verità e vediamo che per eh
+combinazione di B 00 abbiamo 1 in uscita
+01.
+Questa è l'espressione in algebra
+buleano che ci rappresenta il NOR. E poi
+abbiamo il componente 7402 che è il
+componente della famiglia TTL che
+contiene quattro porte NOR. Quindi per
+realizzare una rete 8 bit avremo bisogno
+di due 7402.
+Qui sotto invece abbiamo il 7424
+che è il buffer su cui non mi soffermerò
+dato che l'abbiamo appena analizzato.
+Invece vi vorrei fare vedere un piccolo
+confronto tra Porta OR e porta NOR.
+Se eh ci fate caso, qui ho disegnato
+entrambe le porte e vediamo che il
+simbolo della porta Nor di fatto è lo
+stesso simbolo della porta OR con questo
+pallino finale che rappresenta una
+negazione. In generale. Quando noi
+andiamo a vedere in una porta logica un
+pallino finale, vuol dire che questa
+porta logica ha l'uscita negata. Cosa
+vuol dire? Lo capiamo bene vedendo le
+tabelle di verità di entrambe le porte.
+Se ci concentriamo sulle uscite, vediamo
+che nella porta or dove avevamo in
+uscita 10, ci ritroviamo nella nor 1. Ad
+esempio 00 abbiamo 0 nella OR, 1 NOR e
+così via. 01 1 nella OR, 010 nella nor e
+quindi capiamo bene subito a colpo
+d'occhio vediamo che l'uscita è negata
+rispetto alla OR.
+Infatti, eh, questa porta NOR possiamo
+anche rappresentarla con questo schema,
+cioè prendiamo una porta OR, all'uscita
+colleghiamo una not e abbiamo ottenuto
+una porta NOR.
+Qui abbiamo anche la funzione
+in algebra buleano sia della porta OR
+che della porta NOR e vediamo che di
+fatto è la stessa funzione, però nella
+NOR abbiamo questo trattino alto sopra
+che indica una negazione, cioè è la
+somma di A e B negata.
+Ho stampato la prima pagina del datashet
+del dei componenti 7486 e 7402 in modo
+da analizzare la pedinatura di questi
+componenti.
+Vediamo, partiamo dal 7486 che, diciamo,
+ha uno schema molto simile alla porta OR
+e la porta end che abbiamo visto nei
+video precedenti.
+Infatti abbiamo nel pin 14 + 5 V, nel
+pin 7 la massa e poi le quattro porte
+logiche collegate in questa maniera. PIN
+1 e pin 2 ingressi della prima porta
+logica con uscita sul pin 3. PIN 4 e pin
+5 ingressi della seconda porta logica
+con uscita su pin 6, pin 10 e pin 9
+ingressi della terza porta logica con
+uscita su pin 8 e infine pin 12 pin 13
+ingressi della quarta porta logica con
+uscita su pin 11.
+Invece qui abbiamo il 7402.
+Questo componente diciamo è un po'
+diversa la piedinatura. Infatti, eh,
+vediamo subito che abbiamo sul pin 14 i
++ 5 V, sul pin 7 la massa, però eh le
+porte logiche sono montate in maniera
+diversa, infatti eh sul pin già ci
+troviamo l'uscita della prima porta
+logica. Invece qui avevamo un ingresso,
+quindi vediamo che effettivamente sono
+montate in maniera diversa. Pin 2 e pin
+3 sono gli ingressi della prima porta
+logica. Pin 5 e pin 6 sono gli ingresso
+della seconda porta logica con uscita su
+pin
+9 e 8 ingresso della terza porta logica
+con uscita su pin 10, pin 12 e pin 11
+ingressi della quarta porta logica con
+uscita su pin 13.
+Brevemente analizziamo anche il 7424.
+Abbiamo già visto questo schema in nei
+video precedenti, comunque facciamo un
+breve recap. Abbiamo più 5 V nel pin 20,
+massa nel pin, i nostri otto bufferati
+e possiamo vedere che quattro sono sulla
+parte alta del nostro componente e
+quattro sulla parte bassa, quindi questi
+piedini più bassi.
+Vediamo, sono collegati in questo modo.
+Ad esempio, ingresso del primo buffer su
+pin 2 con uscita su pin 18. Poi abbiamo
+eh ingresso, ad esempio, di questo
+buffer dati sul pin 17 con uscita sul
+pin 3. E poi diciamo che abbiamo questi
+due segnali di enable, pin 19 e pin 1,
+controllare. Mh il pin 19 controlla
+questi quattro buffer dati, il pin 1,
+questi quattro qui sotto. Nel nostro
+caso, poi andremo a cortocircuitare
+pin 19 e pin 1, in modo da da avere un
+unico segnale di enable che va a
+spegnere o accendere tutta la rete
+logica.
+Qui vediamo i circuiti analizzati su
+carta realizzati fisicamente.
+Vediamo che rispetto all'ultimo video
+dovevamo la la rete end e la rete OR
+sono state fatte delle modifiche.
+Innanzitutto ho rifatto i cablaggi
+perché, diciamo, eh era diventato molto
+confusionario tutto lo schema di di cavi
+e di cablaggi vecchio. Mi sono aiutato
+con queste fascette termorestringenti
+per raggruppare
+a gruppi di quattro tutti i vari cavi e
+diciamo ho utilizzato questo schema di
+colori. il diciamo tutti i cavi blu
+rappresentano le uscite delle porte
+logiche che vanno agli ingressi dei
+7424.
+Le uscite dei 7424, che sarebbero i
+nostri buffer dati, sono questi cavi
+gialli e vanno collegati direttamente al
+bass dati. Poi abbiamo eh queste coppie
+colorate di caviola
+eh verde e arancio eh grigio, che sono
+le variabili A e B che vanno agli
+ingressi delle porte logiche. Vediamo
+anche brevemente che ho etichettato
+tutto. Ad esempio, questi due componenti
+sono due componenti endo sono dei 7408.
+Eh, qui abbiamo due OR e sono de 7432,
+Xor 7486, NOR 7402.
+E poi eh questi cavi volanti che vediamo
+qui sono tutti i vari segnali di enable
+dei 7424
+che, diciamo, sono per il momento così
+cavi volanti, ma sono provvisori perché
+poi in futuro, quando andremo a
+completare la rete saranno poi collegati
+altri componenti nello specifico dei
+multiplexor o dei multiplexer che ci
+permettono di selezionare il codice
+operazione che sta eseguendo l'alu.
+Altra piccola modifica fatta è sugli
+switch. Prima stavamo utilizzando un
+circuito di pull down, sono passato a un
+circuito di pull up perché ho visto che
+è più stabile con la famiglia logica
+TTL. Diciamo non avevo utilizzato
+inizialmente un pull un pull up perché
+eh se vedete adesso gli switch sono
+collegati al contrario. Al contrario.
+Cosa intendo? Intendo che la numerazione
+è rivolta dal dal lato opposto, quindi
+avevo usato un pullown per cercare di
+rispettare anche la numerazione del
+degli switch, però dato che c'erano un
+po' di problemi di stabilità sul sul
+pullown e i TTL funzionano meglio con un
+segnale di pullup,
+ho invertito
+i collegamenti e ho girato gli switch.
+A questo punto io direi di iniziare a
+fare un primo test della rete XOR.
+Quindi abbiamo qua la rete XOR, abbiamo
+il 74244
+con il segnale enable che vediamo è
+questo cavo arancio che ha più 5 V,
+quindi la rete è spenta. Andrei a questo
+punto ad accenderla mettendo il segnale
+a massa e diciamo che in questa porzione
+di video metterò la tabella di verità
+delloxor in sovraimpressione, ma
+comunque per la combinazione 00 eh
+abbiamo in uscita uno zero. Ed
+effettivamente è ciò che abbiamo ora
+perché abbiamo tutto il buffer il bass
+dati spento e le variabili a e b sono a
+zero. Per la combinazione 10 invece
+dovremmo avere un in uscita un livello
+logico alto. Quindi adesso provo a
+mettere la variabile a ad uno e vediamo
+piano piano se il bass dati si accende.
+Ciò che ci aspettiamo.
+Effettivamente
+piano piano si accende il bass dati
+ed è coerente a ciò che ci aspettiamo.
+Se ora invece metto la variabile B ad 1,
+abbiamo la combinazione 1 e in questo
+caso la porta Xor dovrebbe darci un
+livello logico basso. Quindi adesso
+proviamo ad mettere a uno la variabile B
+e dovrebbe spegnersi il bass dati.
+Vediamo se è vero.
+Effettivamente è vero.
+L'ultimo caso da testare è quello in cui
+la variabile B è A1 e la variabile A è a
+0. Questo ci dovrebbe dare il bass date
+acceso perché questa combinazione 01 dà
+1 in uscita. Vediamo se è vero.
+Ok, effettivamente è ciò che ci
+aspettiamo. Abbiamo tutto il bass dati
+acceso e abbiamo la variabile A a 0 e la
+variabile B a 1.
+Ok? Possiamo a questo punto spegnere la
+la porta XOR, la rete XOR, rimettendo a
++ 5 V questo pin.
+E in effetti abbiamo spento il bass
+dati.
+E a questo punto possiamo testare la
+rete NOR.
+Abbiamo in questo caso la variabile A e
+la variabile B tutti e due a livello
+alto.
+Diciamo che questa combinazione ci
+dovrebbe dare in uscita uno 0. Eh,
+logico. Vediamo se è vero. Abilitiamo la
+rete Nor spostando questo pin dalla da
+più 5 volte a massa. Effettivamente
+abbiamo un'uscita a zero ed è ciò che ci
+aspettiamo. Abbiamo detto che la rete
+NOR è non è altro che un OR con uscita
+negata. Quindi se io adesso provo a
+mettere a + 5 V la l'enable
+e la rete NOR, spengo la NOR. e accendo
+la OR. Cosa mi aspetto? Mi aspetto che
+appena io sposto questo piedino da più 5
+volte a massa mi si accende tutto il
+buffer dati, il bass dati. Vediamo se è
+vero. Effettivamente è vero.
+Facciamo un altro test sulla NOR.
+Accendiamola
+e proviamo l'unica combinazione che ci
+dovrebbe dare un'uscita a livello alto,
+cioè la combinazione 00. Quindi spengo
+la variabile A, spengo la variabile B
+e ho un'uscita alta.
+Se io qui eh adesso switcho dal NOR
+all'OR, dovrei avere tutto il bass
+spento. Vediamo se è vero.
+Eh sì, effettivamente il bass dati
+spento.
+A questo punto proverei anche le altre
+due combinazioni che sarebbero variabile
+A ad 1 e variabile B a 0 che ci
+dovrebbero dare un'uscita bassa, quindi
+tutto il bass dati spento. Metto la
+variabile a a zer, c'è il bass dati
+spento.
+Passo alla rete OR, dovrei avere il bass
+dati acceso. Vediamo se è vero.
+Bass date è acceso.
+Facciamo l'altra prova. Siamo in OR.
+Metto la variabile B1.
+In OR c'ho un'uscita alta. In NOR dovrei
+avere un'uscita bassa. Vediamo se è
+vero.
+Mettiamo a + 5 volen
+enable della OR e ammassa l'enable della
+Nor. Effettivamente è ciò che ci
+aspettiamo. Quindi diciamo che da questo
+video cosa portiamo a casa? portiamo a
+casa eh all'interno della nostra ARU le
+operazioni di endor, Xor e Nor.
+Ho montato qualche altro componente che
+poi vedremo nel prossimo video e diciamo
+che per questo video è tutto. Vi ricordo
+di lasciare un mi piace, di iscrivervi
+al canale e commentare per supportare il
+mio lavoro. Ci vediamo a un prossimo
+video.
