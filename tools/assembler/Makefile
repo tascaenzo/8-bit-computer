@@ -28,8 +28,12 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 test: $(TARGET)
-	$(TARGET) --help
+	$(TARGET) tests/smoke.asm -o /tmp/cpu8asm-smoke
+	$(TARGET) tests/labels.asm -o /tmp/cpu8asm-labels
+	cmp tests/expected/smoke.hex /tmp/cpu8asm-smoke.hex
+	cmp tests/expected/labels.hex /tmp/cpu8asm-labels.hex
+	! $(TARGET) tests/invalid.asm -o /tmp/cpu8asm-invalid 2>/tmp/cpu8asm-invalid.err
+	grep "line 2:" /tmp/cpu8asm-invalid.err
 
 clean:
 	rm -rf $(BUILD_DIR)
-

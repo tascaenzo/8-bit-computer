@@ -81,29 +81,34 @@ typedef struct {
 
 ## `src/assembler.c`
 
-Questo file conterra il cuore dell'assembler.
+Questo file contiene il cuore dell'assembler.
 
-In futuro dovra:
+La versione attuale:
 
 - aprire il file assembly;
 - leggere tutte le righe;
-- usare il parser per capire cosa c'e scritto;
+- riconoscere label e direttive;
 - usare la tabella ISA per generare gli opcode;
 - riempire `Cpu8Program`.
 
-Per ora e ancora uno scaffold: apre il file, prepara il flusso e imposta `program->length = 0`.
+Usa due passate:
+
+1. La prima calcola indirizzi, label e costanti.
+2. La seconda genera davvero i byte macchina.
 
 ## `include/parser.h` e `src/parser.c`
 
 Il parser e il modulo che legge e interpreta il testo assembly.
 
-Per ora contiene solo la lettura di una riga:
+Per ora contiene la lettura sicura di una riga:
 
 ```c
 Cpu8Status cpu8_read_source_line(void *file, Cpu8SourceLine *line, int *has_line);
 ```
 
-In futuro dovra riconoscere righe come:
+Il riconoscimento di mnemonic, operandi e direttive e implementato in `src/assembler.c`.
+
+Esempi supportati:
 
 ```asm
 LDI R0, 0x2A
@@ -131,7 +136,7 @@ Il significato dei campi e:
 - `format`: formato dell'istruzione;
 - `uses_register`: indica se l'opcode contiene anche il codice di un registro.
 
-Questa tabella andra allineata a `docs/isa.md`, che e il documento di riferimento della ISA.
+Questa tabella deve restare allineata a `docs/isa.md`, che e il documento di riferimento della ISA.
 
 ## `include/output.h` e `src/output.c`
 
@@ -143,7 +148,7 @@ I formati previsti sono:
 - `.hex`: vista leggibile per controllare gli opcode;
 - `.h`: array C/C++ da usare in Arduino IDE.
 
-Per ora il modulo contiene solo la funzione vuota di scaffolding.
+La versione attuale scrive tutti e tre i formati.
 
 ## `include/errors.h` e `src/errors.c`
 
@@ -167,6 +172,14 @@ CPU8_ERROR_ASSEMBLE
 
 `cpu8_status_message` converte questi codici in messaggi leggibili.
 
+La versione attuale mantiene anche un dettaglio testuale dell'ultimo errore, per esempio:
+
+```text
+line 2: invalid MOV form; use MOV RA, Rn, MOV RB, Rn or MOV Rn, RA
+```
+
+Questo rende piu semplice capire dove correggere il file assembly.
+
 ## Concetti C da conoscere
 
 Per studiare questo progetto conviene conoscere:
@@ -183,14 +196,21 @@ Per studiare questo progetto conviene conoscere:
 
 ## Stato attuale
 
-Il progetto assembler e ancora uno scaffold.
+Il progetto assembler ha una prima versione funzionante.
 
-Funziona come struttura di base, ma non genera ancora byte macchina reali.
+Supporta:
+
+- `.code`;
+- `.data`;
+- `.byte`;
+- `.equ`;
+- label;
+- numeri decimali, esadecimali e binari;
+- istruzioni principali della ISA v0.1.
 
 Le prossime parti da implementare saranno:
 
-1. parsing di mnemonic e operandi;
-2. parsing dei numeri (`0x`, `0b`, decimale);
-3. codifica dei registri `R0`...`R7`, `RA`, `RB`;
-4. generazione degli opcode secondo `docs/isa.md`;
-5. output `.bin`, `.hex` e `.h`.
+1. controllo piu dettagliato dei casi limite;
+2. ulteriori test automatici per ogni istruzione della ISA;
+3. messaggi di errore ancora piu specifici per token e operandi;
+4. eventuali estensioni future della ISA.

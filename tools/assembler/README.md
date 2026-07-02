@@ -2,31 +2,90 @@
 
 Assembler in C per la CPU didattica a 8 bit.
 
-Questa prima versione e solo scaffolding: definisce struttura, moduli e punto di ingresso CLI. La logica completa di parsing e generazione binaria verra aggiunta nei prossimi passi.
+Questa prima versione implementa una pipeline minima ma funzionante: legge assembly, risolve label e costanti, genera byte macchina e scrive gli output `.bin`, `.hex` e `.h`.
 
 ## Obiettivo
 
 Il tool dovra trasformare programmi assembly in file caricabili nella ROM/EEPROM della CPU.
 
-Esempio futuro:
+Esempio:
 
 ```asm
+.code 0x0000
 LDI R0, 0x0A
-STA R0, 0x000E
+STA R0, counter
 OUT R0
 HLT
+
+.data 0x0010
+counter: .byte 0x00
 ```
 
-Output previsti:
+Output generati:
 
 - `.bin`: byte macchina raw;
 - `.hex`: dump leggibile per debug;
 - `.h`: array C/C++ da includere in uno sketch Arduino.
 
-## Build
+In caso di errore sintattico, l'assembler prova a indicare la riga:
+
+```text
+cpu8asm: line 2: invalid MOV form; use MOV RA, Rn, MOV RB, Rn or MOV Rn, RA
+```
+
+## Comandi Make
+
+I comandi possono essere eseguiti dalla root del repository usando `-C tools/assembler`.
+
+| Comando | Effetto |
+| --- | --- |
+| `make -C tools/assembler` | compila l'assembler |
+| `make -C tools/assembler test` | compila ed esegue i test |
+| `make -C tools/assembler clean` | elimina la cartella di build dell'assembler |
+
+Se sei gia dentro `tools/assembler`, i comandi equivalenti sono:
+
+```sh
+make
+make test
+make clean
+```
+
+### Build
+
+Compila l'eseguibile:
 
 ```sh
 make -C tools/assembler
+```
+
+Output:
+
+```text
+tools/assembler/build/cpu8asm
+```
+
+### Test
+
+Esegue la suite di test:
+
+```sh
+make -C tools/assembler test
+```
+
+Il test:
+
+- assembla `tests/smoke.asm`;
+- assembla `tests/labels.asm`;
+- confronta gli `.hex` generati con i file in `tests/expected`;
+- verifica che `tests/invalid.asm` fallisca con un errore che include il numero di riga.
+
+### Clean
+
+Rimuove i file compilati:
+
+```sh
+make -C tools/assembler clean
 ```
 
 ## Studio del codice
@@ -37,10 +96,26 @@ Per una spiegazione didattica dei file, dei moduli e del percorso consigliato di
 tools/assembler/STUDY_GUIDE.md
 ```
 
-## Uso previsto
+## Uso
+
+Se sei nella cartella `tools/assembler`:
 
 ```sh
-tools/assembler/build/cpu8asm examples/assembly/demo.asm -o build/demo
+build/cpu8asm ../../examples/assembly/demo.asm -o build/demo
+```
+
+Questo genera:
+
+```text
+build/demo.bin
+build/demo.hex
+build/demo.h
+```
+
+Dalla root del repository puoi usare lo stesso eseguibile con il path completo:
+
+```sh
+tools/assembler/build/cpu8asm examples/assembly/demo.asm -o tools/assembler/build/demo
 ```
 
 ## Struttura
@@ -61,6 +136,9 @@ tools/assembler/
 │   ├── output.c
 │   └── parser.c
 ├── tests/
+│   ├── expected/
+│   ├── invalid.asm
+│   ├── labels.asm
 │   └── smoke.asm
 ├── Makefile
 ├── STUDY_GUIDE.md

@@ -9,12 +9,11 @@
 /*
  * Dimensione massima temporanea del programma generato.
  *
- * Per ora lo scaffold limita l'output a 256 byte per mantenere semplice
- * l'implementazione iniziale. Quando decideremo la dimensione reale della
- * ROM/EEPROM, questo valore andra sostituito con un limite coerente con
- * l'hardware.
+ * La CPU usa un address bus a 16 bit, quindi lo spazio indirizzabile massimo
+ * e 65536 byte. L'assembler mantiene un'immagine completa della memoria: le
+ * zone non scritte restano a 0x00.
  */
-#define CPU8_MAX_PROGRAM_BYTES 256
+#define CPU8_MAX_PROGRAM_BYTES 65536
 
 /*
  * Rappresenta il programma gia assemblato.

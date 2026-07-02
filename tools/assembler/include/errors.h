@@ -1,6 +1,8 @@
 #ifndef CPU8_ERRORS_H
 #define CPU8_ERRORS_H
 
+#include <stddef.h>
+
 /*
  * Codici di stato condivisi da tutti i moduli.
  *
@@ -17,5 +19,14 @@ typedef enum {
 
 /* Converte un codice di errore in una stringa adatta per stderr. */
 const char *cpu8_status_message(Cpu8Status status);
+
+/* Salva un messaggio di errore piu specifico per il chiamante CLI. */
+void cpu8_set_error_detail(size_t line_number, const char *message);
+
+/* Restituisce l'ultimo errore dettagliato, oppure una stringa vuota. */
+const char *cpu8_error_detail(void);
+
+/* Azzera il dettaglio di errore prima di una nuova operazione. */
+void cpu8_clear_error_detail(void);
 
 #endif
