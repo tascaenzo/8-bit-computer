@@ -268,33 +268,31 @@ STA R0, SCREEN
 
 `.equ` non genera byte macchina: associa solo un nome a un valore.
 
-### Direttive di memoria
+### Sezioni codice e dati
 
-Le direttive di memoria servono a descrivere dati dentro lo stesso spazio di indirizzi usato da codice e dati.
+Le sezioni servono a rendere chiaro dove l'assembler deve posizionare codice e dati.
 
-Queste direttive sono gestite dall'assembler e non sono istruzioni eseguite dalla CPU.
+La CPU usa una architettura di Von Neumann: codice e dati condividono la stessa memoria. Quindi `.code` e `.data` non creano due memorie separate. Sono direttive dell'assembler, non istruzioni eseguite dalla CPU.
 
-Direttive proposte:
+Direttive ufficiali v0.1:
 
 | Direttiva | Effetto |
 | --- | --- |
-| `.org addr16` | imposta l'indirizzo corrente di assemblaggio |
-| `.byte value` | scrive un byte in memoria |
-| `.word value16` | scrive due byte little-endian |
-| `.space count` | riserva `count` byte inizializzati a `0x00` |
+| `.code addr16` | inizia una sezione codice dall'indirizzo indicato |
+| `.data addr16` | inizia una sezione dati dall'indirizzo indicato |
+| `.byte value` | scrive una variabile o costante dati a 8 bit |
 
 Esempio:
 
 ```asm
-.org 0x0000
+.code 0x0000
 start:
 LDI R0, 0x01
 STA R0, counter
 HLT
 
-.org 0x0100
-counter:
-.byte 0x00
+.data 0x0100
+counter: .byte 0x00
 ```
 
 In questo esempio:
@@ -303,24 +301,31 @@ In questo esempio:
 - la variabile `counter` viene posizionata a `0x0100`;
 - `STA R0, counter` viene assemblata come `STA R0, 0x0100`.
 
+Per la v0.1 non usiamo `.org` come sintassi ufficiale. `.code` e `.data` sono piu chiari in un progetto didattico.
+
 ### Variabili
 
-Nel linguaggio assembly una variabile e una label associata a una o piu celle di memoria.
+Nel linguaggio assembly v0.1 una variabile e una label associata a una singola cella di memoria da 8 bit.
+
+Questa scelta e coerente con l'hardware:
+
+- il data bus e a 8 bit;
+- i registri generali sono a 8 bit;
+- `LDA Rn, addr16` legge un byte;
+- `STA Rn, addr16` scrive un byte;
+- la ALU lavora su valori a 8 bit.
 
 Esempio:
 
 ```asm
-counter:
-.byte 0x00
-
-total:
-.byte 0x00
-
-address:
-.word 0x1234
+counter: .byte 0x00
+total:   .byte 0x00
+flag:    .byte 0x01
 ```
 
 La CPU non conosce il concetto di variabile: vede solo indirizzi di memoria. Il nome simbolico esiste solo nel sorgente assembly e viene risolto dall'assembler.
+
+Per la v0.1 non definiamo variabili a 16 bit. Valori a 16 bit potranno essere aggiunti in futuro come coppie di byte, ma non fanno parte della sintassi iniziale.
 
 ## Registri assembly
 
@@ -883,16 +888,15 @@ Layout in memoria:
 Assembly:
 
 ```asm
-.org 0x0000
+.code 0x0000
 LDI R0, 0x05
 STA R0, counter
 LDA R1, counter
 OUT R1
 HLT
 
-.org 0x0100
-counter:
-.byte 0x00
+.data 0x0100
+counter: .byte 0x00
 ```
 
 La label `counter` rappresenta l'indirizzo `0x0100`.
@@ -933,8 +937,8 @@ bin:     0b00000000
 
 - codifica definitiva degli opcode;
 - eventuale uso del range riservato `0b11011rrr` nei trasferimenti;
-- sintassi definitiva delle direttive assembler `.org`, `.byte`, `.word`, `.space`, `.equ`;
 - regole definitive per label, simboli e gestione degli errori;
+- eventuale supporto futuro a dati multi-byte;
 - eventuali istruzioni di indirizzamento indiretto o indicizzato;
 - eventuali estensioni per input/output aggiuntivi;
 - eventuale supporto a confronti signed tramite combinazioni dei flag `N` e `O`.

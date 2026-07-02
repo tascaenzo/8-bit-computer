@@ -61,7 +61,7 @@ int main(int argc, char **argv)
      */
     status = cpu8_assemble_file(&options, &program);
     if (status != CPU8_OK) {
-        fprintf(stderr, "cpu8asm: %s\n", cpu8_status_message(status));
+        fprintf(stderr, "cpu8asm: %s\n", cpu8_error_detail()[0] != '\0' ? cpu8_error_detail() : cpu8_status_message(status));
         return status;
     }
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
      */
     status = cpu8_write_outputs(options.output_prefix, &program);
     if (status != CPU8_OK) {
-        fprintf(stderr, "cpu8asm: %s\n", cpu8_status_message(status));
+        fprintf(stderr, "cpu8asm: %s\n", cpu8_error_detail()[0] != '\0' ? cpu8_error_detail() : cpu8_status_message(status));
         return status;
     }
 
