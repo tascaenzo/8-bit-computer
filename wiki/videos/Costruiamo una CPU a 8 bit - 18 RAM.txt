@@ -1,0 +1,348 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Oggi continuiamo la
+serie sulla CPU a 8 bit. Nel video di
+oggi proviamo a collegare la nostra RAM
+all'interno del nostro bass di indirizzi
+e proviamo a fare delle letture delle
+scritture. Prima di iniziare vi ricordo
+di lasciare un mi piace, commentare
+questo video e iscrivervi al mio canale
+per supportare il mio lavoro. Nello
+scorso video abbiamo visto il program
+counter, abbiamo collegato il program
+counter al basso degli indirizzi e fatto
+qualche test. Nel video di oggi invece
+voglio collegare il chip di RAM HM6256A
+all'interno del bass degli indirizzi e
+poi provare a fare qualche lettura e
+scrittura all'interno della RAM. Ricordo
+che questa è una static RAM, quindi al
+suo interno ci sono tutta una serie di
+flip flop,
+abbiamo 15 linee di indirizzo che
+permettono di pilotare la RAM che vanno
+da A0 ad A14.
+Poi abbiamo 8 bit in uscita o input
+all'interno del chip di RAM e poi
+abbiamo tutta una serie di segnali di
+controllo che mi permettono di abilitare
+il chip, abilitare la scrittura o
+gestire comunque l'alta impedenza in
+uscita o in ingresso.
+Brevemente vediamo che sul pin 28
+abbiamo l'alimentazione, i + 5 V, sul
+pin 14 abbiamo la massa, poi su tutti i
+vari pin abbiamo tutte tutti i vari
+ingressi del bass di indirizzi,
+eh abbiamo tutte gli ingressi e le
+uscite di input output, però ciò che ci
+interessa veramente poi sono tutti i
+vari segnali di controllo. Abbiamo sul
+pin 20 il segnale CS che mi permette di
+abilitare o meno il chip. Funziona
+logica negata, quindi se CS è a massa io
+avrò abilitato il chip, altrimenti
+se ha se ha più 5 V eh sarà
+disabilitato. Sul pin 22 abbiamo o
+enable che mi permette di pilotare
+l'uscita. In pratica, quando abbiamo
+enable a massa, eh c'ho in uscita su i
+pin che vanno da Io 0 ad io 7, eh le
+informazioni che sono selezionate
+all'interno della riga selezionata al
+basso degli indirizzi.
+Poi abbiamo il segnale Wright enable che
+mi permette di scrivere all'interno del
+della riga selezionata sempre dal basso
+degli indirizzi ciò che sta transitando
+all'interno eh dei pino
+che vanno quindi da io 0 ad io 7. Eh
+anche questo segnale bright enable
+ragiona a logica negata, quindi se
+bright enable è a zero, effettivamente
+faccio la scrittura. Se ha più 5 V mh
+invece non sono condizione di scrittura.
+Cosa da notare, questo chi è un chip
+asincrono, infatti non abbiamo un
+segnale di clock che va a pilotarmi la
+scrittura su un fronte di salita di
+clock, come ad esempio sui registri. La
+cosa importante è che comunque io per
+effettuare una scrittura devo passare il
+segnale bright enable eh da zero, quindi
+da un segnale di massa. Devo poi tornare
+a + 5 V per completare la scrittura.
+Quindi diciamo che quando faccio questo
+passaggio all'interno del segnale bright
+enable eseguo la scrittura all'interno
+del chip. Qui brevemente ho una tabella
+di verità che comunque va a riepilogare
+ciò che ho appena detto. Quindi abbiamo
+che se CS è A1 siamo in una modalità di
+standby, quindi abbiamo spento il chip e
+in uscita abbiamo un'alta impedenza. Se
+voglio fare eh se invece voglio
+disabilitare la lettura e quindi avere
+sempre in uscita l'alta impedenza,
+dovevo avere il segnale CS a 0 right
+enable a 1 e o enable a 1. Se voglio
+fare una lettura invece devo avere CS a0
+WR enable a 1 e o enable a 0. Per fare
+una scrittura invece devo avere CS a 0,
+wrable a 0 e o enable. In realtà qui è
+segnato per qualsiasi valore di enable,
+però va da sé che in realtà o enable in
+questo caso è meglio che sia a
+un perché comunque è meglio tenere
+un'alta impedenza per avere ehm per
+evitare di avere conflitti sui pinio su
+cui devo fare una lettura.
+La cosa importante è che Wright enable
+dopo essersi trovato nella situazione,
+nella condizione di massa passa a + 5 V
+per ultimare la scrittura.
+Vediamo ora la parte pratica. Rispetto
+all'ultimo video del program counter ho
+fatto diverse modifiche perché ho
+collegato la RAM, però oltre aver
+collegato la RAM in realtà ho anche
+inserito la ROM, l'istruction register e
+il memory data register. Però andiamo
+con ordine. Partiamo dalla RAM. è
+collegata al basso degli indirizzi
+tramite questi cavi rossi che vediamo
+qua. Ovviamente abbiamo solo 15 linee
+indirizzi nella RAM, quindi il bit è più
+significativo del basso degli indirizzi,
+non è collegato. Poi abbiamo le uscite
+della RAM, cioè tutta quella serie di
+pin input output della RAM che sono
+collegati a questi cavi grigi, questi
+qua e questi, che poi li possiamo
+vedere, vanno qui avanti e vanno a
+finire nel bass dati principale della
+CPU.
+E poi abbiamo i vari segnali di
+controllo, sono questi due cavi gialli.
+Uno è lo enable che serve ad abilitare e
+gestire l'alta impedenza in uscita e un
+altro è il segnale Wright enable per
+fare le scritture. Abbiamo anche il
+segnale CS che va a abilitare il chip.
+Non so se si vede questo cavo, questo
+cavo marrone che però ho collegato in
+maniera fissa alla massa perché comunque
+voglio che la mia RAM sia sempre eh
+attiva questo GP RAM.
+Poi abbiamo la nostra ROM, non l'abbiamo
+ancora vista nel dettaglio, però in
+generale abbiamo dei bass, una serie di
+pin di indirizzo, linee di indirizzo e
+sono parallelizzate con questi cavi rosa
+ai cavi rossi che poi quindi vanno a
+finire nel bass degli indirizzi. Poi
+abbiamo i pin input output che in realtà
+li utilizzeremo solo come output, dato
+che siamo in fase di lettura. nella Roma
+la utilizziamo solo come lettura e non
+la programmeremo in questo chip stesso
+e sono questi cavi di colore
+grigio
+che poi vanno sempre a finire nel basi.
+E poi infine abbiamo l'istruction
+register che ricordo è diciamo il il
+registro dove va a finire l'istruzione
+in esecuzione che viene prelevata dalla
+RAM durante la fase di fetch.
+ed è collegato, l'input è collegato,
+quindi ciò che dovrà essere salvato è
+collegato tramite questi cavi rossi al
+bass dati. L'output non l'ho collegato
+perché comunque dovrà andare nella
+control unit che dobbiamo ancora
+sviluppare. Poi abbiamo l'MDR che sta
+per memory data register, dovrebbe fare
+da ponte tra i dati all'interno della
+RAM e il resto della CPU. Diciamo che
+l'ho collegato, anche se ancora non lo
+andremo a utilizzare. Comunque abbiamo
+sempre questi cavi rossi collegati al
+bass dati che fanno da input. Poi
+abbiamo questo segnale che mi va a
+gestire ehm l'output, l'alta impedenza
+in output e poi abbiamo questi cavi eh
+fucsia, questa sorta di fucsia che sono
+collegati sempre al bastati e servono a
+visualizzare, a prendere e portare fuori
+ciò che ho salvato al suo interno.
+Una piccola nota, con la RAM ho perso un
+bel po' di tempo perché ho avuto delle
+difficoltà
+dopo che avevo collegato questo chip,
+non riuscivo poi a fare effettivamente
+delle scritture all'interno di esso e
+ehm dopo vari tentativi ho capito che in
+realtà era difettoso il chip. In effetti
+c'ho quest'altro chip di RAM che era
+quello che avevo utilizzato in
+precedenza che ha qualche problemino
+perché non riesco a fare le scritture al
+suo interno e c'ho sempre in uscita un
+segnale a livello logico alto per tutti
+gli indirizzi che andavo a selezionare.
+Dopo averci perso un po' di tempo ho
+provato effettivamente a cambiare chip
+perché avevo più di un chip di RAM e
+sostituendolo funziona tutto. Quindi
+questo qua lo mettiamo di lato e
+utilizziamo questo qua.
+A questo punto direi che possiamo
+provare a dare alimentazione, alimentare
+il circuito e fare delle letture e delle
+scritture all'interno della RAM e vedere
+se effettivamente tutto il giro funziona
+e se riusciamo a pilotare la RAM.
+Ho dato alimentazione al circuito.
+Faccio notare che il program counter
+parte con tutti i bit a livello logico
+alto. Se do un incremento mi sposto
+all'interno eh del dell'indirizzo zero.
+Attualmente la RAM sta pilotando
+l'uscita del bass dati.
+Controllo l'uscita tramite questo
+segnale o enable che quando è a massa
+porta l'uscita della RAM sul bass dati,
+quando è a + 5 V porta l'uscita della
+RAM ad alta impedenza.
+Se adesso io provo a dare gli impulsi di
+clock per incrementare il program
+counter, dovrei vedere i dati che sono
+salvati all'interno della RAM. Vediamo
+se è vero. In effetti ogni ciclo di
+clock viene fatto l'incremento del
+program counter e vedete il bass dati
+che ehm ha dei bit casuali. Questi bit
+sono le informazioni presenti
+all'interno della RAM perché comunque
+quando alimentiamo la nostra RAM avrà
+dei dati casuali eh la RAM salvata al
+suo interno. È lo stesso discorso che
+abbiamo fatto con i registri generali.
+In effetti è buona pratica quando
+utilizziamo un registro o una variabile
+inizializzarlo come prima cosa. Porto
+ehm la RAM, l'uscita della RAM ad alta
+impedenza e proviamo a salvare qualcosa
+all'interno della RAM. Come primo step
+resetto il program counter, quindi siamo
+nell'indirizzo zero. Abilito la mia
+variabile in uscita sul sul bass dati.
+Ho tutti i bit accesi. Il primo test è
+provare a scrivere all'interno
+dell'indirizzo zero della RAM questa
+informazione.
+Per farlo portiamo il segnale Wright
+enable a massa e poi da massa lo
+portiamo a + 5 V.
+Vediamo se abbiamo salvato
+l'informazione.
+In effetti è vero, all'indirizzo zero
+c'ho tutti i bit accesi. Se do un
+incremento invece c'ho altri dati.
+Facciamo un reset del program counter.
+dovrei di nuovo avere zero, eh dovrei
+avere di nuovo tutti i bit accesi. In
+effetti è vero.
+Quindi diciamo che questo test
+è riuscito, abbiamo salvato
+l'informazione.
+Proviamo a spegnere la RAM, cioè a
+disabilitare l'uscita della RAM.
+Spegniamo tutti i bit all'interno del
+bass dati dando input la nostra
+variabile di ingresso e proviamo a
+salvare questa informazione l'indirizzo
+zero. Di nuovo prendo il segnale pret
+enable, lo metto a massa e poi da massa
+lo metto a + 5 V.
+Ricordo che questi chip sono asincroni,
+quindi non hanno bisogno di un impulso
+di clock per il salvataggio, ma il ciclo
+di scrittura all'interno dell'indirizzo
+selezionato avviene grazie a questo
+segnale bright enable che da massa passa
+a + 5 V. In pratica il passaggio da
+massa + 5 V dice al chip che è finito
+quel quell'intervallo di scrittura, quel
+ciclo di scrittura e quindi va poi a
+salvare il dato effettivamente
+all'interno del chip.
+Vediamo effettivamente se adesso io
+spengo la variabile input sul bass dati
+e abilito la RAM,
+ho salvato quell'informazione. Se do
+incrementi c'ho altri dati e quindi è
+corretto. Facciamo un altro test.
+Resettiamo il program counter. Abbiamo
+detto che all'indirizzo zero ho già
+salvato tutti i bit spenti. Andiamo
+all'indirizzo 1 e salviamo il dato 1 in
+RAM.
+Ok, ho fatto il salvataggio. Dopo un
+altro incremento all'indirizzo due
+proviamo a salvare questi due bit.
+Andiamo avanti, do un incremento
+all'indirizzo 3, salvo questi 3 bit
+accesi.
+All'indirizzo 4
+accendo un altro bit,
+faccio il salvataggio.
+Incremento, indirizzo 5. Abilito,
+accendo un altro bit.
+Faccio il salvataggio,
+vado avanti. Indirizzo 6, abilito 6 bit.
+Faccio il salvataggio,
+incremento.
+Faccio il salvataggio in RAM.
+Indirizzo 8. Accendo tutto il bass dati.
+A questo punto spegniamo la variabile
+che stava pilotando il bass dati, il
+nostro dispositivo di input. Proviamo a
+mandare in uscita la RAM.
+Faccio un reset del program counter
+e adesso mano a mano che do un impulso
+di clock in sequenza dovrebbero
+accendersi tutti i LED perché comunque
+sono i valori che ho appena salvato.
+Vediamo se è vero.
+Un bit acceso, 2 bit accesi, 3 bit
+accesi, 4
+e 8. Quindi in effetti abbiamo fatto
+questo piccolo test, ma comunque è
+rappresentativo perché eh vengono
+effettivamente salvate le informazioni
+della RAM e poi vengono lette e quindi
+diciamo che il nostro chip di RAM
+funziona. Ehm diciamo questa è la base
+su cui noi dovremmo andare a fare delle
+scritture all'interno della RAM e delle
+letture. Ovviamente se do altri impulsi
+di clock, come potete vedere, ho i dati
+casuali che avevo all'interno del
+program count della della RAM
+all'indirizzo selezionato al program.
+Io direi che per questo video è tutto.
+Ci possiamo vedere in un prossimo video.
+Adesso
+dovremmo iniziare a parlare
+dell'istruction set della CPU e una
+volta
+costruito tutto l'istruction set
+dovremmo iniziare a ragionare sulla
+control Unit. Diciamo che questa è tutta
+la fase un po' più delicata e più
+complicata della costruzione della
+nostra CPU.
+Vi ricordo di lasciare un mi piace,
+commentare questo video per supportare
+il mio lavoro.

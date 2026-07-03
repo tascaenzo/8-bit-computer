@@ -1,0 +1,14 @@
+#ifndef CPU8_PROGRAM_H
+#define CPU8_PROGRAM_H
+
+#include <stdint.h>
+
+const uint8_t CPU8_PROGRAM[] = {
+    0x20,     0x0A,     0x48,     0x10,     0x00,     0x41,     0x10,     0x00,
+    0x88,     0x89,     0x01,     0x00,     0x00,     0x00,     0x00,     0x00,
+    0x00
+};
+
+const uint32_t CPU8_PROGRAM_SIZE = 17;
+
+#endif
