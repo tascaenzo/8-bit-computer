@@ -89,6 +89,15 @@ Sono previste tre categorie:
 | `IMM8` | 2 | `opcode immediate` | istruzioni con valore immediato a 8 bit |
 | `ADDR16` | 3 | `opcode addr_low addr_high` | istruzioni con indirizzo di memoria a 16 bit |
 
+Le istruzioni `ADDR16` occupano sempre 3 byte. Il primo byte e l'opcode, i due byte successivi sono l'indirizzo a 16 bit.
+
+Istruzioni `ADDR16` della ISA v0.1:
+
+| Categoria | Istruzioni | Uso dell'indirizzo |
+| --- | --- | --- |
+| memoria | `LDA Rn, addr16`, `STA Rn, addr16` | indirizzo della cella dati da leggere/scrivere |
+| salti | `JMP`, `JZ`, `JNZ`, `JC`, `JNC`, `JN`, `JNN`, `JO`, `JNO` | nuovo valore del `PC` se il salto viene eseguito |
+
 In binario:
 
 ```text
@@ -124,7 +133,7 @@ addr_high = bit 15..8
 Esempio:
 
 ```asm
-LDA 0x1234
+LDA R0, 0x1234
 ```
 
 viene codificata come:
@@ -411,7 +420,7 @@ In questo modo non serve generare tutte queste informazioni come uscite separate
 
 ## Macrocategorie
 
-Proposta iniziale per i 3 bit alti:
+Mappa dei 3 bit alti dell'opcode, in ordine binario:
 
 | Bit `ccc` | Hex range | Macrocategoria | Uso |
 | --- | --- | --- | --- |
@@ -424,14 +433,16 @@ Proposta iniziale per i 3 bit alti:
 | `110` | `0xC0-0xDF` | trasferimenti | passaggio dati tra registri generali, `RA` e `RB` |
 | `111` | `0xE0-0xFF` | riservata | espansioni future |
 
-Questa tabella e una bozza. La cosa importante gia decisa e la separazione:
+La regola generale e:
 
 ```text
 ccc   = macrocategoria
 xxxxx = campo interno riusabile
 ```
 
-## Campo registro
+Le sottocategorie sono documentate sotto mantenendo lo stesso ordine binario di `ccc`: `000`, `001`, `010`, `011`, `100`, `101`, `110`, `111`.
+
+## Campi comuni
 
 Per le istruzioni che lavorano su un registro, i 3 bit bassi dell'opcode codificano il registro.
 
@@ -470,7 +481,110 @@ ss  = 00   sotto-operazione base
 rrr = registro
 ```
 
-## Campo ALU
+## `ccc = 000` sistema / controllo
+
+Range:
+
+```text
+0b00000000 - 0b00011111
+0x00       - 0x1F
+```
+
+Sottocategorie:
+
+| Opcode bin | Hex | Assembly | Formato | Effetto |
+| --- | ---: | --- | --- | --- |
+| `0b00000000` | `0x00` | `NOP` | `IMP` | nessuna operazione |
+| `0b00000001` | `0x01` | `HLT` | `IMP` | ferma la CPU |
+| `0b00000010-0b00011111` | `0x02-0x1F` | riservata | - | espansioni future |
+
+Queste istruzioni non usano registri generali e non hanno operandi aggiuntivi.
+
+## `ccc = 001` load immediate
+
+Range:
+
+```text
+0b00100000 - 0b00111111
+0x20       - 0x3F
+```
+
+Schema:
+
+```text
+opcode = 001ssrrr
+```
+
+Sottocategorie:
+
+| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
+| --- | --- | ---: | --- | --- | --- |
+| `00` | `0b00100rrr` | `0x20-0x27` | `LDI Rn, imm8` | `IMM8` | carica un valore immediato a 8 bit in `Rn` |
+| `01` | `0b00101rrr` | `0x28-0x2F` | riservata | - | espansioni future |
+| `10` | `0b00110rrr` | `0x30-0x37` | riservata | - | espansioni future |
+| `11` | `0b00111rrr` | `0x38-0x3F` | riservata | - | espansioni future |
+
+Esempio:
+
+```text
+LDI R0, imm8 -> 0b00100000 -> 0x20
+LDI R7, imm8 -> 0b00100111 -> 0x27
+```
+
+## `ccc = 010` memoria
+
+Questa macrocategoria contiene istruzioni che accedono alla memoria tramite indirizzo assoluto a 16 bit.
+
+Le istruzioni attive di questa categoria richiedono sempre un operando `addr16` e quindi occupano 3 byte:
+
+```text
+opcode addr_low addr_high
+```
+
+Range:
+
+```text
+0b01000000 - 0b01011111
+0x40       - 0x5F
+```
+
+Schema:
+
+```text
+opcode = 010ssrrr
+```
+
+Sottocategorie:
+
+| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
+| --- | --- | ---: | --- | --- | --- |
+| `00` | `0b01000rrr` | `0x40-0x47` | `LDA Rn, addr16` | `ADDR16` | carica in `Rn` il byte letto da memoria |
+| `01` | `0b01001rrr` | `0x48-0x4F` | `STA Rn, addr16` | `ADDR16` | scrive `Rn` in memoria |
+| `10` | `0b01010rrr` | `0x50-0x57` | riservata | - | espansioni future |
+| `11` | `0b01011rrr` | `0x58-0x5F` | riservata | - | espansioni future |
+
+Gli indirizzi `addr16` sono sempre codificati in little-endian:
+
+```text
+opcode addr_low addr_high
+```
+
+Esempio con `LDA R2, 0x1234`:
+
+```text
+opcode    = 0x42       = 0b01000010
+addr_low  = 0x34       = 0b00110100
+addr_high = 0x12       = 0b00010010
+```
+
+## `ccc = 011` ALU
+
+Range:
+
+```text
+0b01100000 - 0b01111111
+0x60       - 0x7F
+```
 
 Per la macrocategoria ALU, i bit bassi dell'opcode possono essere usati per portare direttamente alla ALU il codice operazione.
 
@@ -488,20 +602,22 @@ Dove:
 
 I bit `aaaa`, cioe `IR[3:0]`, possono essere collegati tramite buffer al decoder del codice operazione della ALU.
 
-Operazioni ALU previste:
+Sottocategorie:
 
-| ALU op | Codice bin | Note |
-| --- | --- | --- |
-| `AND` | `0b0000` | rete AND |
-| `OR` | `0b0001` | rete OR |
-| `XOR` | `0b0010` | rete XOR |
-| `NOR` | `0b0011` | rete NOR |
-| `NAND` | `0b0100` | rete NAND |
-| `XNOR` | `0b0101` | rete XNOR |
-| `NOT` | `0b0110` | rete NOT |
-| `ADD` | `0b0111` | somma |
-| `SUB` | `0b1000` | sottrazione |
-| `CMP` | `0b1001` | confronto cablato nella ALU, produce i flag |
+| `m` | `aaaa` | Opcode bin | Hex | Assembly | Formato | Effetto |
+| --- | --- | --- | ---: | --- | --- | --- |
+| `0` | `0000` | `0b01100000` | `0x60` | `AND` | `IMP` | `RA = RA AND RB` |
+| `0` | `0001` | `0b01100001` | `0x61` | `OR` | `IMP` | `RA = RA OR RB` |
+| `0` | `0010` | `0b01100010` | `0x62` | `XOR` | `IMP` | `RA = RA XOR RB` |
+| `0` | `0011` | `0b01100011` | `0x63` | `NOR` | `IMP` | `RA = RA NOR RB` |
+| `0` | `0100` | `0b01100100` | `0x64` | `NAND` | `IMP` | `RA = RA NAND RB` |
+| `0` | `0101` | `0b01100101` | `0x65` | `XNOR` | `IMP` | `RA = RA XNOR RB` |
+| `0` | `0110` | `0b01100110` | `0x66` | `NOT` | `IMP` | `RA = NOT RA` |
+| `0` | `0111` | `0b01100111` | `0x67` | `ADD` | `IMP` | `RA = RA + RB` |
+| `0` | `1000` | `0b01101000` | `0x68` | `SUB` | `IMP` | `RA = RA - RB` |
+| `0` | `1001` | `0b01101001` | `0x69` | `CMP` | `IMP` | confronto cablato nella ALU, salva i flag |
+| `0` | `1010-1111` | `0b01101010-0b01101111` | `0x6A-0x6F` | riservata | - | espansioni future |
+| `1` | `0000-1111` | `0b01110000-0b01111111` | `0x70-0x7F` | riservata | - | espansioni future |
 
 Le istruzioni ALU non selezionano direttamente un registro generale. Operano sui registri dedicati `RA` e `RB`.
 
@@ -600,11 +716,120 @@ Con questa convenzione, dopo `CMP`:
 - `C = 1` indica `RA < RB` in confronto unsigned;
 - `C = 0` indica `RA >= RB` in confronto unsigned.
 
-## Trasferimenti tra registri generali e registri ALU
+## `ccc = 100` input / output
+
+La categoria `100` e usata per le istruzioni di I/O.
+
+Range:
+
+```text
+0b10000000 - 0b10011111
+0x80       - 0x9F
+```
+
+Schema proposto:
+
+```text
+opcode = 100ssrrr
+```
+
+Dove:
+
+- `100` identifica una istruzione di I/O;
+- `ss` identifica il tipo di I/O;
+- `rrr` identifica il registro generale `R0`...`R7`.
+
+Sottocategorie:
+
+| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
+| --- | --- | ---: | --- | --- | --- |
+| `00` | `0b10000rrr` | `0x80-0x87` | `IN Rn` | `IMP` | copia il valore della periferica di input in `Rn` |
+| `01` | `0b10001rrr` | `0x88-0x8F` | `OUT Rn` | `IMP` | copia `Rn` nel registro/periferica di output |
+| `10` | `0b10010rrr` | `0x90-0x97` | riservata | - | espansioni future |
+| `11` | `0b10011rrr` | `0x98-0x9F` | riservata | - | espansioni future |
+
+`IN` rappresenta l'input a 8 bit collegato al bus dati tramite buffer, come lo switch usato nei test hardware.
+
+`OUT` rappresenta un registro o periferica di output a 8 bit.
+
+## `ccc = 101` salti
+
+La categoria `101` e usata per i salti assoluti e condizionati.
+
+Tutte le istruzioni attive di questa categoria richiedono un operando `addr16` e quindi occupano 3 byte:
+
+```text
+opcode addr_low addr_high
+```
+
+Range:
+
+```text
+0b10100000 - 0b10111111
+0xA0       - 0xBF
+```
+
+Tutti i salti usano un indirizzo a 16 bit in formato little-endian. L'indirizzo rappresenta il valore da caricare nel `PC` se il salto viene eseguito.
+
+```text
+opcode addr_low addr_high
+```
+
+Tabella condizioni:
+
+| Mnemonic | Opcode hex | Opcode bin | Condizione |
+| --- | ---: | --- | --- |
+| `JMP addr16` | `0xA0` | `0b10100000` | sempre |
+| `JZ addr16` | `0xA1` | `0b10100001` | `Z = 1` |
+| `JNZ addr16` | `0xA2` | `0b10100010` | `Z = 0` |
+| `JC addr16` | `0xA3` | `0b10100011` | `C = 1` |
+| `JNC addr16` | `0xA4` | `0b10100100` | `C = 0` |
+| `JN addr16` | `0xA5` | `0b10100101` | `N = 1` |
+| `JNN addr16` | `0xA6` | `0b10100110` | `N = 0` |
+| `JO addr16` | `0xA7` | `0b10100111` | `O = 1` |
+| `JNO addr16` | `0xA8` | `0b10101000` | `O = 0` |
+| riservata | `0xA9-0xBF` | `0b10101001-0b10111111` | espansioni future |
+
+Per confronti unsigned dopo `CMP`:
+
+- `JZ` salta se `RA == RB`;
+- `JNZ` salta se `RA != RB`;
+- `JC` salta se `RA < RB`;
+- `JNC` salta se `RA >= RB`.
+
+Esempio con label:
+
+```asm
+MOV RA, R0
+MOV RB, R1
+CMP
+JZ equal
+
+LDI R2, 0x00
+JMP done
+
+equal:
+LDI R2, 0x01
+
+done:
+OUT R2
+HLT
+```
+
+Le istruzioni `JZ equal` e `JMP done` vengono tradotte dall'assembler in salti `ADDR16`, sostituendo `equal` e `done` con i rispettivi indirizzi.
+
+## `ccc = 110` trasferimenti
 
 Per usare la ALU con i registri generali servono istruzioni di trasferimento esplicite.
 
-Schema proposto per la macrocategoria `110`:
+Range:
+
+```text
+0b11000000 - 0b11011111
+0xC0       - 0xDF
+```
+
+Schema:
 
 ```text
 opcode = 110ssrrr
@@ -616,14 +841,14 @@ Dove:
 - `ss` identifica il tipo di trasferimento;
 - `rrr` identifica il registro generale `R0`...`R7`.
 
-Sotto-operazioni proposte:
+Sottocategorie:
 
-| `ss` | Opcode bin | Assembly | Effetto |
-| --- | --- | --- | --- |
-| `00` | `0b11000rrr` | `MOV RA, Rn` | copia `Rn` in `RA` |
-| `01` | `0b11001rrr` | `MOV RB, Rn` | copia `Rn` in `RB` |
-| `10` | `0b11010rrr` | `MOV Rn, RA` | copia `RA` in `Rn` |
-| `11` | `0b11011rrr` | riservata | disponibile per estensioni future |
+| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
+| --- | --- | ---: | --- | --- | --- |
+| `00` | `0b11000rrr` | `0xC0-0xC7` | `MOV RA, Rn` | `IMP` | copia `Rn` in `RA` |
+| `01` | `0b11001rrr` | `0xC8-0xCF` | `MOV RB, Rn` | `IMP` | copia `Rn` in `RB` |
+| `10` | `0b11010rrr` | `0xD0-0xD7` | `MOV Rn, RA` | `IMP` | copia `RA` in `Rn` |
+| `11` | `0b11011rrr` | `0xD8-0xDF` | riservata | - | espansioni future |
 
 Queste istruzioni rispettano il circuito visto nei video:
 
@@ -661,86 +886,22 @@ RA = RA + RB
 R2 = RA
 ```
 
-## Input e output
+## `ccc = 111` riservata
 
-La categoria `100` e usata per le istruzioni di I/O.
-
-Schema proposto:
+Range:
 
 ```text
-opcode = 100ssrrr
+0b11100000 - 0b11111111
+0xE0       - 0xFF
 ```
 
-Dove:
+Tutto il range `111xxxxx` e riservato per espansioni future.
 
-- `100` identifica una istruzione di I/O;
-- `ss` identifica il tipo di I/O;
-- `rrr` identifica il registro generale `R0`...`R7`.
+Sottocategorie:
 
-Sotto-operazioni proposte:
-
-| `ss` | Opcode bin | Assembly | Effetto |
-| --- | --- | --- | --- |
-| `00` | `0b10000rrr` | `IN Rn` | copia il valore della periferica di input in `Rn` |
-| `01` | `0b10001rrr` | `OUT Rn` | copia `Rn` nel registro/periferica di output |
-| `10` | `0b10010rrr` | riservata | disponibile per estensioni future |
-| `11` | `0b10011rrr` | riservata | disponibile per estensioni future |
-
-`IN` rappresenta l'input a 8 bit collegato al bus dati tramite buffer, come lo switch usato nei test hardware.
-
-`OUT` rappresenta un registro o periferica di output a 8 bit.
-
-## Salti
-
-La categoria `101` e usata per i salti assoluti e condizionati.
-
-Tutti i salti usano un indirizzo a 16 bit in formato little-endian:
-
-```text
-opcode addr_low addr_high
-```
-
-Tabella condizioni:
-
-| Mnemonic | Opcode hex | Opcode bin | Condizione |
-| --- | ---: | --- | --- |
-| `JMP addr16` | `0xA0` | `0b10100000` | sempre |
-| `JZ addr16` | `0xA1` | `0b10100001` | `Z = 1` |
-| `JNZ addr16` | `0xA2` | `0b10100010` | `Z = 0` |
-| `JC addr16` | `0xA3` | `0b10100011` | `C = 1` |
-| `JNC addr16` | `0xA4` | `0b10100100` | `C = 0` |
-| `JN addr16` | `0xA5` | `0b10100101` | `N = 1` |
-| `JNN addr16` | `0xA6` | `0b10100110` | `N = 0` |
-| `JO addr16` | `0xA7` | `0b10100111` | `O = 1` |
-| `JNO addr16` | `0xA8` | `0b10101000` | `O = 0` |
-
-Per confronti unsigned dopo `CMP`:
-
-- `JZ` salta se `RA == RB`;
-- `JNZ` salta se `RA != RB`;
-- `JC` salta se `RA < RB`;
-- `JNC` salta se `RA >= RB`.
-
-Esempio con label:
-
-```asm
-MOV RA, R0
-MOV RB, R1
-CMP
-JZ equal
-
-LDI R2, 0x00
-JMP done
-
-equal:
-LDI R2, 0x01
-
-done:
-OUT R2
-HLT
-```
-
-Le istruzioni `JZ equal` e `JMP done` vengono tradotte dall'assembler in salti `ADDR16`, sostituendo `equal` e `done` con i rispettivi indirizzi.
+| Campo `xxxxx` | Opcode bin | Hex range | Uso |
+| --- | --- | ---: | --- |
+| `00000-11111` | `0b11100000-0b11111111` | `0xE0-0xFF` | riservato |
 
 ## Bozza tabella opcode
 
