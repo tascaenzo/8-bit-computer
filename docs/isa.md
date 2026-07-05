@@ -481,6 +481,19 @@ ss  = 00   sotto-operazione base
 rrr = registro
 ```
 
+### Codifica registri nel campo `rrr`
+
+| Registro | `rrr` | Binario completo con base `xxxxx000` |
+| --- | --- | --- |
+| `R0` | `0b000` | `xxxxx000` |
+| `R1` | `0b001` | `xxxxx001` |
+| `R2` | `0b010` | `xxxxx010` |
+| `R3` | `0b011` | `xxxxx011` |
+| `R4` | `0b100` | `xxxxx100` |
+| `R5` | `0b101` | `xxxxx101` |
+| `R6` | `0b110` | `xxxxx110` |
+| `R7` | `0b111` | `xxxxx111` |
+
 ## `ccc = 000` sistema / controllo
 
 Range:
@@ -531,6 +544,19 @@ LDI R0, imm8 -> 0b00100000 -> 0x20
 LDI R7, imm8 -> 0b00100111 -> 0x27
 ```
 
+Tabella estesa `LDI`:
+
+| Istruzione | Opcode hex | Opcode bin | Byte successivo |
+| --- | ---: | --- | --- |
+| `LDI R0, imm8` | `0x20` | `0b00100000` | `iiiiiiii` |
+| `LDI R1, imm8` | `0x21` | `0b00100001` | `iiiiiiii` |
+| `LDI R2, imm8` | `0x22` | `0b00100010` | `iiiiiiii` |
+| `LDI R3, imm8` | `0x23` | `0b00100011` | `iiiiiiii` |
+| `LDI R4, imm8` | `0x24` | `0b00100100` | `iiiiiiii` |
+| `LDI R5, imm8` | `0x25` | `0b00100101` | `iiiiiiii` |
+| `LDI R6, imm8` | `0x26` | `0b00100110` | `iiiiiiii` |
+| `LDI R7, imm8` | `0x27` | `0b00100111` | `iiiiiiii` |
+
 ## `ccc = 010` memoria
 
 Questa macrocategoria contiene istruzioni che accedono alla memoria tramite indirizzo assoluto a 16 bit.
@@ -576,6 +602,32 @@ opcode    = 0x42       = 0b01000010
 addr_low  = 0x34       = 0b00110100
 addr_high = 0x12       = 0b00010010
 ```
+
+Tabella estesa `LDA`:
+
+| Istruzione | Opcode hex | Opcode bin | Byte successivi |
+| --- | ---: | --- | --- |
+| `LDA R0, addr16` | `0x40` | `0b01000000` | `addr_low addr_high` |
+| `LDA R1, addr16` | `0x41` | `0b01000001` | `addr_low addr_high` |
+| `LDA R2, addr16` | `0x42` | `0b01000010` | `addr_low addr_high` |
+| `LDA R3, addr16` | `0x43` | `0b01000011` | `addr_low addr_high` |
+| `LDA R4, addr16` | `0x44` | `0b01000100` | `addr_low addr_high` |
+| `LDA R5, addr16` | `0x45` | `0b01000101` | `addr_low addr_high` |
+| `LDA R6, addr16` | `0x46` | `0b01000110` | `addr_low addr_high` |
+| `LDA R7, addr16` | `0x47` | `0b01000111` | `addr_low addr_high` |
+
+Tabella estesa `STA`:
+
+| Istruzione | Opcode hex | Opcode bin | Byte successivi |
+| --- | ---: | --- | --- |
+| `STA R0, addr16` | `0x48` | `0b01001000` | `addr_low addr_high` |
+| `STA R1, addr16` | `0x49` | `0b01001001` | `addr_low addr_high` |
+| `STA R2, addr16` | `0x4A` | `0b01001010` | `addr_low addr_high` |
+| `STA R3, addr16` | `0x4B` | `0b01001011` | `addr_low addr_high` |
+| `STA R4, addr16` | `0x4C` | `0b01001100` | `addr_low addr_high` |
+| `STA R5, addr16` | `0x4D` | `0b01001101` | `addr_low addr_high` |
+| `STA R6, addr16` | `0x4E` | `0b01001110` | `addr_low addr_high` |
+| `STA R7, addr16` | `0x4F` | `0b01001111` | `addr_low addr_high` |
 
 ## `ccc = 011` ALU
 
@@ -752,6 +804,32 @@ Sottocategorie:
 
 `OUT` rappresenta un registro o periferica di output a 8 bit.
 
+Tabella estesa `IN`:
+
+| Istruzione | Opcode hex | Opcode bin |
+| --- | ---: | --- |
+| `IN R0` | `0x80` | `0b10000000` |
+| `IN R1` | `0x81` | `0b10000001` |
+| `IN R2` | `0x82` | `0b10000010` |
+| `IN R3` | `0x83` | `0b10000011` |
+| `IN R4` | `0x84` | `0b10000100` |
+| `IN R5` | `0x85` | `0b10000101` |
+| `IN R6` | `0x86` | `0b10000110` |
+| `IN R7` | `0x87` | `0b10000111` |
+
+Tabella estesa `OUT`:
+
+| Istruzione | Opcode hex | Opcode bin |
+| --- | ---: | --- |
+| `OUT R0` | `0x88` | `0b10001000` |
+| `OUT R1` | `0x89` | `0b10001001` |
+| `OUT R2` | `0x8A` | `0b10001010` |
+| `OUT R3` | `0x8B` | `0b10001011` |
+| `OUT R4` | `0x8C` | `0b10001100` |
+| `OUT R5` | `0x8D` | `0b10001101` |
+| `OUT R6` | `0x8E` | `0b10001110` |
+| `OUT R7` | `0x8F` | `0b10001111` |
+
 ## `ccc = 101` salti
 
 La categoria `101` e usata per i salti assoluti e condizionati.
@@ -886,6 +964,45 @@ RA = RA + RB
 R2 = RA
 ```
 
+Tabella estesa `MOV RA, Rn`:
+
+| Istruzione | Opcode hex | Opcode bin |
+| --- | ---: | --- |
+| `MOV RA, R0` | `0xC0` | `0b11000000` |
+| `MOV RA, R1` | `0xC1` | `0b11000001` |
+| `MOV RA, R2` | `0xC2` | `0b11000010` |
+| `MOV RA, R3` | `0xC3` | `0b11000011` |
+| `MOV RA, R4` | `0xC4` | `0b11000100` |
+| `MOV RA, R5` | `0xC5` | `0b11000101` |
+| `MOV RA, R6` | `0xC6` | `0b11000110` |
+| `MOV RA, R7` | `0xC7` | `0b11000111` |
+
+Tabella estesa `MOV RB, Rn`:
+
+| Istruzione | Opcode hex | Opcode bin |
+| --- | ---: | --- |
+| `MOV RB, R0` | `0xC8` | `0b11001000` |
+| `MOV RB, R1` | `0xC9` | `0b11001001` |
+| `MOV RB, R2` | `0xCA` | `0b11001010` |
+| `MOV RB, R3` | `0xCB` | `0b11001011` |
+| `MOV RB, R4` | `0xCC` | `0b11001100` |
+| `MOV RB, R5` | `0xCD` | `0b11001101` |
+| `MOV RB, R6` | `0xCE` | `0b11001110` |
+| `MOV RB, R7` | `0xCF` | `0b11001111` |
+
+Tabella estesa `MOV Rn, RA`:
+
+| Istruzione | Opcode hex | Opcode bin |
+| --- | ---: | --- |
+| `MOV R0, RA` | `0xD0` | `0b11010000` |
+| `MOV R1, RA` | `0xD1` | `0b11010001` |
+| `MOV R2, RA` | `0xD2` | `0b11010010` |
+| `MOV R3, RA` | `0xD3` | `0b11010011` |
+| `MOV R4, RA` | `0xD4` | `0b11010100` |
+| `MOV R5, RA` | `0xD5` | `0b11010101` |
+| `MOV R6, RA` | `0xD6` | `0b11010110` |
+| `MOV R7, RA` | `0xD7` | `0b11010111` |
+
 ## `ccc = 111` riservata
 
 Range:
@@ -903,9 +1020,10 @@ Sottocategorie:
 | --- | --- | ---: | --- |
 | `00000-11111` | `0b11100000-0b11111111` | `0xE0-0xFF` | riservato |
 
-## Bozza tabella opcode
+## Tabella opcode riassuntiva
 
-La seguente tabella e una proposta iniziale. Gli opcode non sono ancora definitivi.
+La seguente tabella riassume gli opcode attivi, mantenendo l'ordine binario delle macrocategorie `ccc`.
+Le tabelle estese delle singole istruzioni sono nelle sezioni precedenti, dove si vede il valore completo per ogni registro.
 
 | Mnemonic | Opcode hex | Opcode bin | Formato | Byte | Descrizione |
 | --- | ---: | --- | --- | ---: | --- |
