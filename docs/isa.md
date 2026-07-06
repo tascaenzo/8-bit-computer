@@ -855,18 +855,18 @@ opcode addr_low addr_high
 
 Tabella condizioni:
 
-| Mnemonic | Opcode hex | Opcode bin | Condizione |
-| --- | ---: | --- | --- |
-| `JMP addr16` | `0xA0` | `0b10100000` | sempre |
-| `JZ addr16` | `0xA1` | `0b10100001` | `Z = 1` |
-| `JNZ addr16` | `0xA2` | `0b10100010` | `Z = 0` |
-| `JC addr16` | `0xA3` | `0b10100011` | `C = 1` |
-| `JNC addr16` | `0xA4` | `0b10100100` | `C = 0` |
-| `JN addr16` | `0xA5` | `0b10100101` | `N = 1` |
-| `JNN addr16` | `0xA6` | `0b10100110` | `N = 0` |
-| `JO addr16` | `0xA7` | `0b10100111` | `O = 1` |
-| `JNO addr16` | `0xA8` | `0b10101000` | `O = 0` |
-| riservata | `0xA9-0xBF` | `0b10101001-0b10111111` | espansioni future |
+| Mnemonic | Opcode hex | Opcode bin | Condizione | Dopo `CMP` unsigned |
+| --- | ---: | --- | --- | --- |
+| `JMP addr16` | `0xA0` | `0b10100000` | sempre | - |
+| `JZ addr16` | `0xA1` | `0b10100001` | `Z = 1` | salta se `RA == RB` |
+| `JNZ addr16` | `0xA2` | `0b10100010` | `Z = 0` | salta se `RA != RB` |
+| `JC addr16` | `0xA3` | `0b10100011` | `C = 1` | salta se `RA < RB` |
+| `JNC addr16` | `0xA4` | `0b10100100` | `C = 0` | salta se `RA >= RB` |
+| `JN addr16` | `0xA5` | `0b10100101` | `N = 1` | - |
+| `JNN addr16` | `0xA6` | `0b10100110` | `N = 0` | - |
+| `JO addr16` | `0xA7` | `0b10100111` | `O = 1` | - |
+| `JNO addr16` | `0xA8` | `0b10101000` | `O = 0` | - |
+| riservata | `0xA9-0xBF` | `0b10101001-0b10111111` | espansioni future | - |
 
 Per confronti unsigned dopo `CMP`:
 
