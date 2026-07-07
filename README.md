@@ -2,16 +2,44 @@
 
 Repository di supporto alla serie didattica YouTube in cui viene progettata e costruita una CPU a 8 bit partendo dai blocchi logici fondamentali.
 
-In questa fase il repository contiene solo materiale documentale: trascrizioni autogenerate dei video e articoli tecnici derivati dagli argomenti gia trattati nella serie.
+In questa fase il repository contiene documentazione, una prima ISA, esempi assembly, un assembler in C e strumenti di supporto per programmare le memorie della CPU.
 
 ## Contenuto
 
 ```text
 .
+├── docs/
+├── examples/
+│   └── assembly/
+├── tools/
+│   ├── assembler/
+│   └── eeprom-programmer/
 ├── wiki/
 │   ├── blog/
 │   └── videos/
 └── README.md
+```
+
+### `docs`
+
+Contiene la documentazione tecnica della CPU, inclusa la definizione della ISA.
+
+### `examples/assembly`
+
+Contiene programmi assembly didattici usati per provare l'assembler e spiegare le istruzioni della CPU.
+
+### `tools/assembler`
+
+Contiene `cpu8asm`, l'assembler in C che traduce i programmi assembly in byte macchina.
+
+### `tools/eeprom-programmer`
+
+Contiene sketch e documentazione per programmare EEPROM parallele usate dalla CPU, come la AT28C64.
+
+La guida passo passo per il programmatore AT28C64 con Arduino Mega e in:
+
+```text
+docs/at28c64-arduino-mega-programmer.md
 ```
 
 ### `wiki/videos`
