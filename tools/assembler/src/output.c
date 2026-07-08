@@ -52,6 +52,42 @@ static Cpu8Status write_hex(const char *path, const Cpu8Program *program)
     return CPU8_OK;
 }
 
+static void write_binary_byte(FILE *file, uint8_t value)
+{
+    int bit;
+
+    for (bit = 7; bit >= 0; bit--) {
+        fputc((value & (uint8_t)(1U << bit)) ? '1' : '0', file);
+    }
+}
+
+static Cpu8Status write_bits(const char *path, const Cpu8Program *program)
+{
+    size_t i;
+    FILE *file = fopen(path, "w");
+
+    if (file == NULL) {
+        return CPU8_ERROR_IO;
+    }
+
+    for (i = 0; i < program->length; i++) {
+        if (fprintf(file, "%04zX: ", i) < 0) {
+            fclose(file);
+            return CPU8_ERROR_IO;
+        }
+
+        write_binary_byte(file, program->bytes[i]);
+
+        if (fprintf(file, "  ; 0x%02X\n", program->bytes[i]) < 0) {
+            fclose(file);
+            return CPU8_ERROR_IO;
+        }
+    }
+
+    fclose(file);
+    return CPU8_OK;
+}
+
 static Cpu8Status write_header(const char *path, const Cpu8Program *program)
 {
     size_t i;
@@ -112,6 +148,15 @@ Cpu8Status cpu8_write_outputs(const char *output_prefix, const Cpu8Program *prog
         return status;
     }
     status = write_hex(path, program);
+    if (status != CPU8_OK) {
+        return status;
+    }
+
+    status = build_path(path, sizeof(path), output_prefix, ".bits");
+    if (status != CPU8_OK) {
+        return status;
+    }
+    status = write_bits(path, program);
     if (status != CPU8_OK) {
         return status;
     }

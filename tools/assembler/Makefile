@@ -31,7 +31,9 @@ test: $(TARGET)
 	$(TARGET) tests/smoke.asm -o /tmp/cpu8asm-smoke
 	$(TARGET) tests/labels.asm -o /tmp/cpu8asm-labels
 	cmp tests/expected/smoke.hex /tmp/cpu8asm-smoke.hex
+	cmp tests/expected/smoke.bits /tmp/cpu8asm-smoke.bits
 	cmp tests/expected/labels.hex /tmp/cpu8asm-labels.hex
+	cmp tests/expected/labels.bits /tmp/cpu8asm-labels.bits
 	! $(TARGET) tests/invalid.asm -o /tmp/cpu8asm-invalid 2>/tmp/cpu8asm-invalid.err
 	grep "line 2:" /tmp/cpu8asm-invalid.err
 

@@ -146,6 +146,7 @@ I formati previsti sono:
 
 - `.bin`: byte raw da caricare in ROM/EEPROM;
 - `.hex`: vista leggibile per controllare gli opcode;
+- `.bits`: vista binaria testuale per controllare i bit `D7`...`D0`;
 - `.h`: array C/C++ da usare in Arduino IDE.
 
 La versione attuale scrive tutti e tre i formati.

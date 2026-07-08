@@ -2,7 +2,7 @@
 
 Assembler in C per la CPU didattica a 8 bit.
 
-Questa prima versione implementa una pipeline minima ma funzionante: legge assembly, risolve label e costanti, genera byte macchina e scrive gli output `.bin`, `.hex` e `.h`.
+Questa prima versione implementa una pipeline minima ma funzionante: legge assembly, risolve label e costanti, genera byte macchina e scrive gli output `.bin`, `.hex`, `.bits` e `.h`.
 
 ## Obiettivo
 
@@ -25,7 +25,14 @@ Output generati:
 
 - `.bin`: byte macchina raw;
 - `.hex`: dump leggibile per debug;
+- `.bits`: dump binario testuale per debug visivo;
 - `.h`: array C/C++ da includere in uno sketch Arduino.
+
+Esempio di riga `.bits`:
+
+```text
+0000: 00100000  ; 0x20
+```
 
 In caso di errore sintattico, l'assembler prova a indicare la riga:
 
@@ -77,7 +84,7 @@ Il test:
 
 - assembla `tests/smoke.asm`;
 - assembla `tests/labels.asm`;
-- confronta gli `.hex` generati con i file in `tests/expected`;
+- confronta gli `.hex` e `.bits` generati con i file in `tests/expected`;
 - verifica che `tests/invalid.asm` fallisca con un errore che include il numero di riga.
 
 ### Clean
@@ -109,6 +116,7 @@ Questo genera:
 ```text
 build/demo.bin
 build/demo.hex
+build/demo.bits
 build/demo.h
 ```
 
