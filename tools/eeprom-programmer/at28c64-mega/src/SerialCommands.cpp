@@ -10,6 +10,7 @@
 
 static char lineBuffer[SERIAL_LINE_BUFFER_SIZE];
 static uint8_t lineLength = 0;
+static bool protectedHexWrites = false;
 
 static void printHexByte(uint8_t value)
 {
@@ -117,7 +118,7 @@ static bool equalsIgnoreCase(const char *left, const char *right)
     return *left == '\0' && *right == '\0';
 }
 
-static void commandWrite(uint16_t address, uint8_t value)
+static void commandWrite(uint16_t address, uint8_t value, bool protectedWrite)
 {
     /*
      * Ogni scrittura viene verificata subito rileggendo lo stesso indirizzo.
@@ -127,11 +128,10 @@ static void commandWrite(uint16_t address, uint8_t value)
         return;
     }
 
-    if (!eepromWriteByte(address, value)) {
-        Serial.print(F("ERR write timeout at "));
-        printHexAddress(address);
-        Serial.println();
-        return;
+    if (protectedWrite) {
+        eepromWriteByteProtected(address, value);
+    } else {
+        eepromWriteByte(address, value);
     }
 
     uint8_t readBack = eepromReadByte(address);
@@ -199,9 +199,16 @@ static void commandFill(uint16_t start, uint16_t end, uint8_t value)
     }
 
     for (uint16_t address = start; address <= end; address++) {
-        if (!eepromWriteByte(address, value)) {
-            Serial.print(F("ERR write timeout at "));
+        eepromWriteByte(address, value);
+
+        uint8_t readBack = eepromReadByte(address);
+        if (readBack != value) {
+            Serial.print(F("ERR verify at "));
             printHexAddress(address);
+            Serial.print(F(" expected "));
+            printHexByte(value);
+            Serial.print(F(" got "));
+            printHexByte(readBack);
             Serial.println();
             return;
         }
@@ -215,6 +222,9 @@ void serialCommandsPrintHelp()
     Serial.println(F("AT28C64 programmer commands:"));
     Serial.println(F("  0000: 20          write cpu8asm .hex line"));
     Serial.println(F("  W 0000 20         write byte"));
+    Serial.println(F("  P 0000 20         protected write byte"));
+    Serial.println(F("  M W               hex lines use normal write"));
+    Serial.println(F("  M P               hex lines use protected write"));
     Serial.println(F("  R 0000            read byte"));
     Serial.println(F("  D 0000 0010       dump count bytes"));
     Serial.println(F("  F 0000 00FF FF    fill inclusive range"));
@@ -248,7 +258,7 @@ static void handleCpu8HexLine(char *line)
         return;
     }
 
-    commandWrite(address, (uint8_t)value);
+    commandWrite(address, (uint8_t)value, protectedHexWrites);
 }
 
 static void handleCommand(char *line)
@@ -285,8 +295,32 @@ static void handleCommand(char *line)
                 Serial.println(F("ERR usage: W addr byte"));
                 return;
             }
-            commandWrite(a, (uint8_t)b);
+            commandWrite(a, (uint8_t)b, false);
             return;
+
+        case 'P':
+            if (!parseHexValue(&cursor, &a) || !parseHexValue(&cursor, &b) || !validateByte(b)) {
+                Serial.println(F("ERR usage: P addr byte"));
+                return;
+            }
+            commandWrite(a, (uint8_t)b, true);
+            return;
+
+        case 'M': {
+            char mode = (char)toupper(*skipSpaces(cursor));
+            if (mode == 'W') {
+                protectedHexWrites = false;
+                Serial.println(F("OK hex write mode normal"));
+                return;
+            }
+            if (mode == 'P') {
+                protectedHexWrites = true;
+                Serial.println(F("OK hex write mode protected"));
+                return;
+            }
+            Serial.println(F("ERR usage: M W|P"));
+            return;
+        }
 
         case 'R':
             if (!parseHexValue(&cursor, &a)) {

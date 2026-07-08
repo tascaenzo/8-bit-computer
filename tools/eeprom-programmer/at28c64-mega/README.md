@@ -17,9 +17,15 @@ docs/at28c64-arduino-mega-programmer.md
 | `at28c64-mega.ino` | inizializza seriale e bus EEPROM, poi chiama il gestore comandi nel `loop` |
 | `include/ProgrammerConfig.h` | configurazione pin, baud rate, dimensione EEPROM e timing |
 | `include/EepromBus.h` | interfaccia del modulo che controlla la EEPROM |
-| `src/EepromBus.cpp` | gestisce pin, bus indirizzi, bus dati, lettura, scrittura e data polling |
+| `src/EepromBus.cpp` | gestisce pin, bus indirizzi, bus dati, lettura, scrittura e attesa del ciclo interno |
 | `include/SerialCommands.h` | interfaccia del parser dei comandi seriali |
 | `src/SerialCommands.cpp` | gestisce parsing, validazione, dump, fill e formato `.hex` di `cpu8asm` |
+
+Per una guida di studio didattica dei sorgenti, leggere:
+
+```text
+tools/eeprom-programmer/at28c64-mega/STUDY_GUIDE.md
+```
 
 ## Perche Arduino Mega
 
@@ -68,6 +74,13 @@ Collegamenti alimentazione:
 - `GND` EEPROM a `GND`;
 - condensatore da `100 nF` tra `VCC` e `GND`, vicino alla EEPROM.
 
+Per AT28C64B in package PDIP-28:
+
+- pin `28` = `VCC`;
+- pin `14` = `GND`;
+- pin `27` = `WE`;
+- pin `26` = `NC`, non collegare.
+
 ## Formati supportati via seriale
 
 Apri il monitor seriale a `115200 baud`, con terminatore newline.
@@ -87,6 +100,9 @@ Ogni riga scrive un byte all'indirizzo indicato.
 
 ```text
 W 0000 20
+P 0000 20
+M P
+M W
 R 0000
 D 0000 0010
 F 0000 00FF FF
@@ -97,6 +113,9 @@ Significato:
 | Comando | Effetto |
 | --- | --- |
 | `W addr byte` | scrive un byte |
+| `P addr byte` | scrive un byte usando la sequenza Software Data Protection |
+| `M P` | usa la scrittura protetta per le righe `.hex` incollate dopo il comando |
+| `M W` | torna alla scrittura normale per le righe `.hex` |
 | `R addr` | legge un byte |
 | `D start count` | stampa un dump di `count` byte |
 | `F start end byte` | riempie un intervallo inclusivo |
@@ -127,6 +146,13 @@ allo sketch Arduino. Ogni riga `addr: byte` programma un byte della EEPROM.
 - Durante la scrittura, i pin dati Arduino devono essere `OUTPUT`.
 - `OE` deve restare alto durante la scrittura.
 - L'impulso di scrittura viene dato portando `WE` basso per pochi microsecondi.
-- Lo sketch attende la fine della scrittura tramite data polling su `D7`.
+- Dopo ogni scrittura lo sketch attende un ritardo fisso conservativo e poi verifica rileggendo il byte.
+- Il condensatore da `100 nF` tra `VCC` e `GND` della EEPROM e fortemente consigliato anche se il circuito sembra funzionare senza.
+- Se una EEPROM AT28C64B ha la Software Data Protection attiva, prova il comando
+  `P addr byte` invece di `W addr byte` per scrivere un singolo byte.
+- Se `P` funziona, invia `M P` prima di incollare un file `.hex`; le righe
+  `0000: 20` useranno la scrittura protetta finche non invii `M W`.
+- Usa `P`/`M P` solo quando serve: per una EEPROM non protetta e cablata
+  correttamente bastano `W` e le righe `.hex` normali.
 
 Non collegare la EEPROM anche alla CPU mentre la programmi, a meno che i bus della CPU siano sicuramente in alta impedenza.

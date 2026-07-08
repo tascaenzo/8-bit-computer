@@ -85,11 +85,11 @@ scrittura -> pin Arduino in OUTPUT
 
 ### Segnali di controllo
 
-| Segnale | Significato | Uso nello sketch |
-| --- | --- | --- |
-| `CE` | Chip Enable | abilita la EEPROM |
-| `OE` | Output Enable | abilita l'uscita dati durante la lettura |
-| `WE` | Write Enable | genera l'impulso di scrittura |
+| Segnale | Significato   | Uso nello sketch                         |
+| ------- | ------------- | ---------------------------------------- |
+| `CE`    | Chip Enable   | abilita la EEPROM                        |
+| `OE`    | Output Enable | abilita l'uscita dati durante la lettura |
+| `WE`    | Write Enable  | genera l'impulso di scrittura            |
 
 In lettura:
 
@@ -109,55 +109,172 @@ WE = impulso basso
 
 Il datasheet specifica che la lettura avviene con `CE` e `OE` bassi e `WE` alto; per la scrittura viene avviato un ciclo con impulso basso su `WE` o `CE`, tenendo `OE` alto.
 
-## Data polling
+## Schema teorico del bus
+
+Vista logica del collegamento:
+
+```text
+Arduino Mega                         AT28C64B
+
+pin 22..34  -----------------------> A0..A12
+                                     bus indirizzi
+
+pin 35..42  <----------------------> I/O0..I/O7
+                                     bus dati bidirezionale
+
+pin 43      -----------------------> CE
+pin 44      -----------------------> OE
+pin 45      -----------------------> WE
+
+5V          -----------------------> VCC pin 28
+GND         -----------------------> GND pin 14
+100 nF      -----------------------> tra VCC e GND, vicino al chip
+```
+
+Il bus dati cambia direzione:
+
+```text
+lettura:
+  EEPROM -> Arduino
+  pin dati Arduino = INPUT
+
+scrittura:
+  Arduino -> EEPROM
+  pin dati Arduino = OUTPUT
+```
+
+## Diagrammi temporali teorici
+
+Nei diagrammi seguenti `0` significa livello basso e `1` significa livello alto.
+`ADDR` e `DATA` devono essere stabili prima dell'impulso di scrittura.
+
+### Lettura
+
+```text
+tempo  --->
+
+ADDR  ----< indirizzo valido >--------------------------
+DATA  ZZZZ< dato dalla EEPROM >ZZZZZZZZZZZZZZZZZZZZZZZZ
+
+CE    1111\____________________/1111111111111111111111
+OE    111111\________________/111111111111111111111111
+WE    111111111111111111111111111111111111111111111111
+
+fase       imposta addr   abilita uscite   leggi dato
+```
+
+Sequenza:
+
+1. Arduino mette i pin dati in `INPUT`.
+2. Arduino imposta `A0`...`A12`.
+3. Arduino porta `CE=0` e `OE=0`.
+4. La EEPROM pilota `I/O0`...`I/O7`.
+5. Arduino legge il byte.
+6. Arduino riporta `OE=1` e `CE=1`.
+
+### Scrittura byte normale
+
+```text
+tempo  --->
+
+ADDR  ----< indirizzo valido >--------------------------
+DATA  ----< dato valido >-------------------------------
+
+OE    111111111111111111111111111111111111111111111111
+CE    1111\____________________/1111111111111111111111
+WE    11111111\______/11111111111111111111111111111111
+
+fase       addr+dato stabili  impulso WE   ciclo interno
+```
+
+Sequenza:
+
+1. Arduino imposta `A0`...`A12`.
+2. Arduino mette i pin dati in `OUTPUT`.
+3. Arduino mette il byte su `I/O0`...`I/O7`.
+4. Arduino tiene `OE=1`, per non far pilotare il bus alla EEPROM.
+5. Arduino porta `CE=0`.
+6. Arduino genera un impulso basso su `WE`.
+7. Arduino riporta `WE=1` e `CE=1`.
+8. La EEPROM programma internamente la cella.
+9. Lo sketch aspetta un tempo fisso e poi rilegge per verificare.
+
+### Scrittura con Software Data Protection
+
+La AT28C64B puo avere la Software Data Protection attiva. In quel caso una
+scrittura normale puo essere ignorata. Per scrivere comunque un byte, bisogna
+prima inviare una sequenza speciale:
+
+```text
+tempo  --->
+
+write 1:  address 1555, data AA
+write 2:  address 0AAA, data 55
+write 3:  address 1555, data A0
+write 4:  address XXXX, data DD
+
+WE        _|--|__|--|__|--|__|--|_
+CE        _|--|__|--|__|--|__|--|_
+OE        111111111111111111111111
+
+DD = byte reale da programmare
+XXXX = indirizzo reale da programmare
+```
+
+I primi tre cicli non sono dati del programma: sono il codice di sblocco.
+Il quarto ciclo e la scrittura reale del byte.
+
+## Attesa e verifica della scrittura
 
 La scrittura interna della EEPROM non e istantanea. Dopo l'impulso su `WE`, il chip impiega alcuni millisecondi per completare realmente la programmazione della cella.
 
-Lo sketch usa il data polling su `I/O7`:
+Questa versione dello sketch usa una strategia volutamente semplice:
 
 1. scrive il byte;
-2. mette il bus dati in lettura;
-3. legge ripetutamente lo stesso indirizzo;
-4. considera completata la scrittura quando il bit `I/O7` letto corrisponde al bit 7 del byte scritto.
+2. aspetta un ritardo fisso conservativo;
+3. rilegge lo stesso indirizzo;
+4. stampa `OK` solo se il byte letto coincide con quello scritto.
 
-Questo evita di usare un ritardo fisso troppo lungo dopo ogni byte.
+La AT28C64B dichiara un ciclo di scrittura massimo di circa `10 ms`; lo sketch usa un margine leggermente piu alto per funzionare bene anche su breadboard.
 
 ## Pinout fisico AT28C64B PDIP-28
 
 Questa tabella e riferita al package PDIP/SOIC a 28 pin, vista dall'alto. Prima di saldare o cablare controlla comunque il datasheet del chip che hai in mano.
 
 | Pin EEPROM | Segnale | Pin Arduino Mega |
-| ---: | --- | ---: |
-| 1 | `NC` | non collegare |
-| 2 | `A12` | `34` |
-| 3 | `A7` | `29` |
-| 4 | `A6` | `28` |
-| 5 | `A5` | `27` |
-| 6 | `A4` | `26` |
-| 7 | `A3` | `25` |
-| 8 | `A2` | `24` |
-| 9 | `A1` | `23` |
-| 10 | `A0` | `22` |
-| 11 | `I/O0` | `35` |
-| 12 | `I/O1` | `36` |
-| 13 | `I/O2` | `37` |
-| 14 | `GND` | `GND` |
-| 15 | `I/O3` | `38` |
-| 16 | `I/O4` | `39` |
-| 17 | `I/O5` | `40` |
-| 18 | `I/O6` | `41` |
-| 19 | `I/O7` | `42` |
-| 20 | `CE` | `43` |
-| 21 | `A10` | `32` |
-| 22 | `OE` | `44` |
-| 23 | `A11` | `33` |
-| 24 | `A9` | `31` |
-| 25 | `A8` | `30` |
-| 26 | `WE` | `45` |
-| 27 | `NC` | non collegare |
-| 28 | `VCC` | `5V` |
+| ---------: | ------- | ---------------: |
+|          1 | `NC`    |    non collegare |
+|          2 | `A12`   |             `34` |
+|          3 | `A7`    |             `29` |
+|          4 | `A6`    |             `28` |
+|          5 | `A5`    |             `27` |
+|          6 | `A4`    |             `26` |
+|          7 | `A3`    |             `25` |
+|          8 | `A2`    |             `24` |
+|          9 | `A1`    |             `23` |
+|         10 | `A0`    |             `22` |
+|         11 | `I/O0`  |             `35` |
+|         12 | `I/O1`  |             `36` |
+|         13 | `I/O2`  |             `37` |
+|         14 | `GND`   |            `GND` |
+|         15 | `I/O3`  |             `38` |
+|         16 | `I/O4`  |             `39` |
+|         17 | `I/O5`  |             `40` |
+|         18 | `I/O6`  |             `41` |
+|         19 | `I/O7`  |             `42` |
+|         20 | `CE`    |             `43` |
+|         21 | `A10`   |             `32` |
+|         22 | `OE`    |             `44` |
+|         23 | `A11`   |             `33` |
+|         24 | `A9`    |             `31` |
+|         25 | `A8`    |             `30` |
+|         26 | `NC`    |    non collegare |
+|         27 | `WE`    |             `45` |
+|         28 | `VCC`   |             `5V` |
 
-Metti un condensatore da `100 nF` tra `VCC` e `GND`, il piu vicino possibile alla EEPROM.
+Metti un condensatore da `100 nF` tra `VCC` e `GND`, il piu vicino possibile alla EEPROM. In pratica va messo tra il pin `28` e il pin `14` della EEPROM.
+
+Attenzione: nel package PDIP-28 della AT28C64B il pin `26` e `NC`; `WE` e il pin fisico `27`.
 
 ## Installazione Arduino CLI
 
@@ -240,14 +357,14 @@ arduino-cli board list
 Esempio di porta su macOS:
 
 ```text
-/dev/cu.usbmodem1101
+/dev/cu.usbmodem21101
 ```
 
 Carica lo sketch:
 
 ```sh
 arduino-cli upload \
-  -p /dev/cu.usbmodem1101 \
+  -p /dev/cu.usbmodem21101 \
   --fqbn arduino:avr:mega \
   tools/eeprom-programmer/at28c64-mega
 ```
@@ -260,11 +377,126 @@ Lo sketch usa `115200 baud`.
 
 ```sh
 arduino-cli monitor \
-  -p /dev/cu.usbmodem1101 \
+  -p /dev/cu.usbmodem21101 \
   --config baudrate=115200
 ```
 
 Il monitor deve usare newline come terminatore riga.
+
+## Procedura completa: da assembly a EEPROM
+
+Questa e la sequenza operativa completa per prendere un file `.asm` e scriverlo nella AT28C64.
+
+### 1. Scrivere o scegliere il programma assembly
+
+Esempio:
+
+```text
+examples/assembly/demo.asm
+```
+
+### 2. Compilare l'assembler
+
+Dalla root del repository:
+
+```sh
+make -C tools/assembler
+```
+
+### 3. Generare il file `.hex`
+
+```sh
+tools/assembler/build/cpu8asm examples/assembly/demo.asm -o tools/assembler/build/demo
+```
+
+Questo genera:
+
+```text
+tools/assembler/build/demo.bin
+tools/assembler/build/demo.hex
+tools/assembler/build/demo.bits
+tools/assembler/build/demo.h
+```
+
+Per il programmatore Arduino il file piu comodo e:
+
+```text
+tools/assembler/build/demo.hex
+```
+
+### 4. Compilare lo sketch del programmatore
+
+```sh
+arduino-cli compile \
+  --fqbn arduino:avr:mega \
+  tools/eeprom-programmer/at28c64-mega
+```
+
+### 5. Trovare la porta di Arduino Mega
+
+```sh
+arduino-cli board list
+```
+
+Esempio:
+
+```text
+/dev/cu.usbmodem21101
+```
+
+### 6. Caricare lo sketch su Arduino Mega
+
+```sh
+arduino-cli upload \
+  -p /dev/cu.usbmodem21101 \
+  --fqbn arduino:avr:mega \
+  tools/eeprom-programmer/at28c64-mega
+```
+
+Sostituisci `/dev/cu.usbmodem21101` con la porta reale mostrata da `arduino-cli board list`.
+
+### 7. Aprire il monitor seriale
+
+```sh
+arduino-cli monitor \
+  -p /dev/cu.usbmodem21101 \
+  --config baudrate=115200
+```
+
+### 8. Inviare il contenuto del `.hex`
+
+Apri il file:
+
+```text
+tools/assembler/build/demo.hex
+```
+
+e invia le righe nel monitor seriale. Il formato e:
+
+```text
+0000: 20
+0001: 0A
+0002: 48
+0003: 10
+0004: 00
+```
+
+Lo sketch risponde con una riga `OK` per ogni byte scritto e verificato:
+
+```text
+OK 0000: 20
+OK 0001: 0A
+```
+
+### 9. Verificare la EEPROM
+
+Per leggere i primi `0x10` byte:
+
+```text
+D 0000 0010
+```
+
+Il dump deve corrispondere alle prime righe del file `.hex` generato da `cpu8asm`.
 
 ## Comandi supportati
 
@@ -283,13 +515,16 @@ Ogni riga scrive un byte nella EEPROM.
 
 ### Comandi manuali
 
-| Comando | Esempio | Effetto |
-| --- | --- | --- |
-| `W addr byte` | `W 0000 20` | scrive un byte |
-| `R addr` | `R 0000` | legge un byte |
-| `D start count` | `D 0000 0010` | stampa un dump |
+| Comando            | Esempio          | Effetto               |
+| ------------------ | ---------------- | --------------------- |
+| `W addr byte`      | `W 0000 20`      | scrive un byte        |
+| `P addr byte`      | `P 0000 20`      | scrive con Software Data Protection |
+| `M W`              | `M W`            | usa scrittura normale per le righe `.hex` |
+| `M P`              | `M P`            | usa scrittura protetta per le righe `.hex` |
+| `R addr`           | `R 0000`         | legge un byte         |
+| `D start count`    | `D 0000 0010`    | stampa un dump        |
 | `F start end byte` | `F 0000 00FF FF` | riempie un intervallo |
-| `HELP` | `HELP` | mostra l'aiuto |
+| `HELP`             | `HELP`           | mostra l'aiuto        |
 
 I numeri sono in esadecimale. Il prefisso `0x` e opzionale.
 
@@ -351,17 +586,29 @@ OK 0000: AA
 D 0000 0010
 ```
 
+Se `W` fallisce con errori di verifica ma `R` legge comunque valori plausibili, prova un singolo byte con la sequenza Software Data Protection:
+
+```text
+P 0000 20
+R 0000
+```
+
+Se `P` funziona e `W` no, la EEPROM ha probabilmente la protezione software attiva.
+In quel caso invia prima `M P`, poi incolla il contenuto del file `.hex`.
+Per tornare alla scrittura normale, invia `M W`.
+
+Usa `P`/`M P` solo quando serve: sulla AT28C64B la sequenza protetta puo lasciare la Software Data Protection attiva. Con una EEPROM non protetta e cablata correttamente, il comando normale `W` e le righe `.hex` bastano.
+
 Solo dopo questo test conviene inviare un programma completo prodotto da `cpu8asm`.
 
 ## Errori comuni
 
-| Problema | Possibile causa |
-| --- | --- |
-| Lettura sempre `FF` | `CE` o `OE` non arrivano bassi, bus dati scollegato, EEPROM non alimentata |
-| Lettura sempre `00` | bus dati in corto, collegamenti dati invertiti, chip non alimentato correttamente |
-| `ERR write timeout` | `WE` non collegato, protezione scrittura attiva, alimentazione instabile |
-| Verifica fallita dopo scrittura | linee dati scambiate, indirizzi scambiati, tempi o contatti instabili |
-| Upload Arduino fallisce | porta sbagliata o board non selezionata |
+| Problema                        | Possibile causa                                                                   |
+| ------------------------------- | --------------------------------------------------------------------------------- |
+| Lettura sempre `FF`             | `CE` o `OE` non arrivano bassi, bus dati scollegato, EEPROM non alimentata        |
+| Lettura sempre `00`             | bus dati in corto, collegamenti dati invertiti, chip non alimentato correttamente |
+| Verifica fallita dopo scrittura | `WE` sul pin sbagliato, condensatore `100 nF` mancante, linee dati scambiate, protezione software attiva, indirizzi scambiati, contatti instabili |
+| Upload Arduino fallisce         | porta sbagliata o board non selezionata                                           |
 
 ## Limiti della versione attuale
 

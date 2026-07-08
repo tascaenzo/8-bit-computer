@@ -9,7 +9,13 @@ void eepromBusBegin();
 /* Legge un byte dalla EEPROM. Il chiamante deve passare un indirizzo valido. */
 uint8_t eepromReadByte(uint16_t address);
 
-/* Scrive un byte e attende il completamento tramite data polling. */
-bool eepromWriteByte(uint16_t address, uint8_t value);
+/* Scrive un byte, attende il ciclo interno e lascia la verifica al chiamante. */
+void eepromWriteByte(uint16_t address, uint8_t value);
+
+/*
+ * Scrive un byte usando la sequenza Software Data Protection della AT28C64B.
+ * Serve per EEPROM che hanno la protezione software gia attiva.
+ */
+void eepromWriteByteProtected(uint16_t address, uint8_t value);
 
 #endif
