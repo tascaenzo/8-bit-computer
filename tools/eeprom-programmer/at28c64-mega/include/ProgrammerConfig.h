@@ -40,10 +40,12 @@ static const uint8_t PIN_WE = 45;
 
 /*
  * Timing conservativi per byte write.
- * Il ciclo interno della EEPROM viene poi controllato con data polling su I/O7.
+ * Dopo l'impulso su WE lo sketch aspetta un tempo fisso e poi verifica
+ * rileggendo il byte. La AT28C64B dichiara un ciclo di scrittura massimo di
+ * 10 ms; 15 ms lascia margine su breadboard.
  */
 static const uint8_t READ_SETTLE_US = 1;
-static const uint8_t WRITE_PULSE_US = 2;
-static const uint16_t WRITE_TIMEOUT_MS = 20;
+static const uint8_t WRITE_PULSE_US = 10;
+static const uint8_t WRITE_SETTLE_MS = 15;
 
 #endif

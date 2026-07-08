@@ -48,35 +48,20 @@ static uint8_t readDataBus()
     return value;
 }
 
-static bool waitForWriteComplete(uint16_t address, uint8_t expected)
+static void pulseWriteByte(uint16_t address, uint8_t value)
 {
-    uint32_t start = millis();
-
-    /*
-     * Data polling: durante il ciclo interno di scrittura I/O7 restituisce il
-     * complemento del bit 7 scritto. Quando I/O7 torna uguale al valore atteso,
-     * la EEPROM ha completato la programmazione del byte.
-     */
-    setDataBusInput();
     setAddress(address);
+    setDataBusOutput();
+    writeDataBus(value);
 
-    while ((uint32_t)(millis() - start) < WRITE_TIMEOUT_MS) {
-        digitalWrite(PIN_CE, LOW);
-        digitalWrite(PIN_WE, HIGH);
-        digitalWrite(PIN_OE, LOW);
-        delayMicroseconds(READ_SETTLE_US);
+    digitalWrite(PIN_OE, HIGH);
+    digitalWrite(PIN_CE, LOW);
 
-        uint8_t value = readDataBus();
+    digitalWrite(PIN_WE, LOW);
+    delayMicroseconds(WRITE_PULSE_US);
+    digitalWrite(PIN_WE, HIGH);
 
-        digitalWrite(PIN_OE, HIGH);
-        digitalWrite(PIN_CE, HIGH);
-
-        if ((value & 0x80) == (expected & 0x80)) {
-            return true;
-        }
-    }
-
-    return false;
+    digitalWrite(PIN_CE, HIGH);
 }
 
 void eepromBusBegin()
@@ -117,24 +102,25 @@ uint8_t eepromReadByte(uint16_t address)
     return value;
 }
 
-bool eepromWriteByte(uint16_t address, uint8_t value)
+void eepromWriteByte(uint16_t address, uint8_t value)
 {
     /*
      * Ciclo di scrittura byte: indirizzo e dati stabili, OE alto, poi impulso
      * basso su WE. Dopo il fronte di risalita la EEPROM programma internamente.
      */
-    setAddress(address);
-    setDataBusOutput();
-    writeDataBus(value);
+    pulseWriteByte(address, value);
+    delay(WRITE_SETTLE_MS);
+}
 
-    digitalWrite(PIN_OE, HIGH);
-    digitalWrite(PIN_CE, LOW);
-
-    digitalWrite(PIN_WE, LOW);
-    delayMicroseconds(WRITE_PULSE_US);
-    digitalWrite(PIN_WE, HIGH);
-
-    digitalWrite(PIN_CE, HIGH);
-
-    return waitForWriteComplete(address, value);
+void eepromWriteByteProtected(uint16_t address, uint8_t value)
+{
+    /*
+     * Software Data Protection byte program sequence for AT28C64B.
+     * On the 8K address bus, datasheet command addresses map to 1555 and 0AAA.
+     */
+    pulseWriteByte(0x1555, 0xAA);
+    pulseWriteByte(0x0AAA, 0x55);
+    pulseWriteByte(0x1555, 0xA0);
+    pulseWriteByte(address, value);
+    delay(WRITE_SETTLE_MS);
 }
