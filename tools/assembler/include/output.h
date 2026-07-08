@@ -10,6 +10,7 @@
  * La versione finale dovra produrre almeno:
  * - .bin: bytes raw per ROM/EEPROM;
  * - .hex: dump leggibile per debug;
+ * - .bits: dump binario testuale per debug visivo;
  * - .h: array C/C++ usabile da Arduino IDE.
  */
 Cpu8Status cpu8_write_outputs(const char *output_prefix, const Cpu8Program *program);
