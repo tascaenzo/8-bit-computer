@@ -1,0 +1,443 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Oggi continuiamo a
+parlare della CPU a 8 bit. Parleremo
+dell'istruction set. Ma prima di
+iniziare vi ricordo di lasciare un mi
+piace, commentare questo video e
+iscrivervi al mio canale per supportare
+il mio lavoro. Nei video precedenti,
+quando abbiamo parlato di memoria,
+abbiamo detto che le istruzioni che puoi
+eseguire il nostro computer, la nostra
+CPU, avranno un numero di bit che andrà
+a differire a seconda dell'operazione.
+Quindi abbiamo operazioni che hanno 3
+byte, quindi 24 bit.
+In pratica hanno i primi 8 bit che
+identificano la tipologia di operazione
+e poi i successivi 16 bit che sono un
+indirizzo di memoria che servirà proprio
+per l'esecuzione dell'operazione.
+Poi abbiamo istruzioni che hanno un
+codice operazione a 8 bit e un immediato
+a 8 bit, quindi un totale di 16 bit, 2
+byte. E poi istruzioni più semplici che
+con un solo byte, quindi 8 bit di
+informazioni, possono essere
+rappresentate, quindi avranno solo i
+primi 8 bit che rappresentano il codice
+operazione. Ora noi in questo video
+andremo a dettagliare tutte queste
+operazioni e andremo a definire l'ISA.
+ISA è un acronimo che sta per
+instruction set architecture. Diciamo
+quindi che abbiamo i primi 8 bit comune
+a tutte le tipologie di istruzione.
+L'idea è quella di dividere questi 8 bit
+in due sottogruppi.
+Ho diviso in questi due sottogruppi i
+primi 8 bit. Abbiamo i primi 3 bit che
+ho identificato con la lettera C.
+sta per category che vanno a
+rappresentare una sottocategoria
+dell'istruzione
+e poi abbiamo i successivi 5 bit che
+sono specifici e dipendono dal tipo di
+operazione, quindi dipenderanno
+effettivamente dai primi 3 bit. Diciamo
+che per capire meglio ho fatto questa
+piccola tabella riassuntiva dove vado ad
+analizzare i primi tre bit e vado già a
+creare una sorta di macrocategorie di
+istruzioni. Partiamo. Se i primi tre bit
+sono a zero, quindi CC C e 00,
+si tratta di operazioni di sistema
+comunque di controllo. Ad esempio,
+abbiamo l'Alt che ferma la CPU oppure
+no, OP che dice alla CPU di non fare
+nulla, di non fare nessuna operazione.
+Poi abbiamo le istruzioni che iniziano
+con 001 e servono a caricare un
+immediato all'interno di un registro.
+Poi abbiamo le operazioni 010 che fanno
+riferimento alla memoria, servono a fare
+il salvataggio e il caricamento di dati
+presenti nella memoria verso dei
+registri o viceversa.
+Poi abbiamo 0 1 sono tutte le
+operazioni, tutte le istruzioni legate
+all'unità aritmeticologica.
+100 sono istruzioni legate all'input e
+all'output, quindi a futuri dispositivi
+di input e output da collegare al nostro
+computer. 8 bit. Poi abbiamo 10, sono
+tutte le istruzioni di jump, quindi
+salto condizionali oppure salti.
+E poi abbiamo 10. Eh, questa categoria
+serve a gestire tutte tutti i
+trasferimenti tra i registri generali e
+i registri RA ed RB. E infine abbiamo
+111 che in realtà attualmente non è
+utilizzata, però può essere utilizzata
+per future espansioni. Ora proviamo a
+snocciolare ogni singola macrocategoria,
+ogni singola categoria e vediamo
+effettivamente quali operazioni, quali
+istruzioni andrà effettivamente a
+includere.
+Andiamo ad analizzare tutte le
+operazioni relative al sistema. hanno i
+primi 3 bit a zero. Ho raffigurato
+questa tabella che va comunque a
+riassumere tutte le operazioni
+eseguibili. Abbiamo un codice operazione
+in binario, abbiamo poi la conversione
+esadecimale, una stringa che va a
+rappresentare l'istruzione assembly che
+poi utilizzeremo in un programma
+assembler e poi abbiamo un una
+descrizione.
+Partiamo subito quindi con no che sta
+per nessuna operazione. In pratica dice
+alla CPU che eh per quella esecuzione
+dovrà stare ferma, non dovrà fare nulla
+ed ha come codice, quindi i primi 8 bit
+dell'istruzione sono tutti a zero. Poi
+passiamo all'istruzione di Alt che ferma
+la CPU. Questa questa istruzione ha i
+primi 7 bit a 0 e l'ultimo bit a 1. Lo
+vediamo qui. Piccola nota 0b è la
+rappresentazione indica stiamo
+utilizzando la rappresentazione binaria,
+invece 0x è lo stesso numero, però
+rappresentato in esadecimale. Invece
+tutti gli altri indirizzi, tutti gli
+tutte le altre combinazioni
+che vanno da uno-0 come bit finali a
+tutti uno sono riservate, quindi non non
+vengono utilizzate oggi, però possono
+essere utilizzate in futuro se decidiamo
+di espandere il set di istruzioni e
+decidiamo che all'interno della
+categoria di sistema dovranno esserci
+altre operazioni.
+Andiamo avanti. Per il codice 001,
+quindi i primi 3 bit con codice 001,
+abbiamo tutte le istruzioni che fanno
+riferimento al caricamento di un
+immediato all'interno del registro. Qui
+ho fatto una piccola suddivisione del
+del codice operazione, quindi dei primi
+8 bit. Abbiamo i primi 3 bit che sono
+sempre fissi a 001.
+Poi ci sono altri due bit che ho
+chiamato SS, dovrebbe essere una sorta
+di sottocategorie subcategory, e poi
+abbiamo altri 3 bit RR che vanno a
+identificare il registro coinvolto e poi
+ci sono i successivi 8 bit che sono il
+valore immediato. Diciamo che SS, quindi
+la subcategory,
+non la utilizziamo, o meglio,
+utilizziamo sulla combinazione 00,
+quindi tutte le altre sono riservate,
+non vengono utilizzate ad oggi. E qui
+abbiamo una piccola tabella riassuntiva
+che va a definire l'istruzione assembly,
+il codice esadimale corrisp
+corrispettivo e il codice in binario.
+Analizziamo la prima, abbiamo LDI che
+sta per load immediato. Andiamo a
+prendere il registro R0 che sarà il
+registro di destinazione e caricheremo
+il valore immediato. IMM8. Qui dobbiamo
+immaginare un valore numerico che sarà
+l'immediato e corrisponde a questi bit.
+In pratica, se poi noi andiamo a vedere
+eh il codice binario generato, vediamo
+che abbiamo 001
+che corrisponde ai primi 3 bit, 0 che
+corrisponde ai secondi 2 bit sono la
+subcategory che abbiamo detto che è
+sempre fissa a zero. E poi abbiamo gli
+ultimi 3 bit che saranno i registri. Se
+ci fate caso, partendo da R0 a finire
+R7, l'unica cosa che cambia sono gli
+ultimi 3 bit che identificano il
+registro. Quindi partiamo da 00 e
+finiamo con 11 1 che identifica R7. Il
+primo registro è R0, quindi partiamo da
+R0 e finiamo su R7. Sono un totale di
+otto registri generali.
+Passiamo alle operazioni, alle
+istruzioni relative alla memoria. In
+questo caso i primi 3 bit saranno su
+010.
+Ho mantenuto lo stesso impianto relativo
+al caricamento degli immediati, quindi
+abbiamo i primi 3 bit che saranno fissi
+a 010,
+i successivi 2 bit che vanno a
+rappresentarmi la subcategory e poi
+abbiamo 3 bit che rappresentano il
+registro e infine 16 bit che vanno a
+rappresentarmi l'indirizzo di memoria
+coinvolto. In questa casistica eh i due
+bit SS vengono utilizzati perché prima
+erano fissi a zero. Qui ho una piccola
+tabella riassuntiva che mi dice a
+seconda dei bit SS e che tipo di eh
+istruzioni vado a eseguire. Abbiamo che
+nel caso in cui SS è a 0, quindi 00,
+avremo tutte le istruzioni che prevedono
+il caricamento all'interno di un
+registro generale di un dato presente in
+memoria. Quindi, che cosa vado a fare?
+Vado a leggere all'interno
+dell'indirizzo di memoria rappresentato
+da questi 16 bit. Faccio la lettura e
+vado a salvarmi l'informazione
+all'interno del registro generale.
+Invece la casistica 01 è il caso
+inverso, quindi vado a fare una
+scrittura all'interno della memoria,
+quindi leggo ciò che è presenta
+all'interno di questo registro e lo
+salvo all'interno dell'indirizzo di
+memoria rappresentato da questi 16
+bitzione.
+Tutte le altre casistiche, quindi 10 e
+1, non sono utilizzate, quindi li
+possiamo usare per espansioni future.
+Qui abbiamo due sottotabelle che vanno a
+snocciolare i casi SS00 e 01. Partiamo
+con il caso ehm 00. Il caso 00, quindi
+abbiamo detto che eh si tratta di eh
+prendere un'informazione
+presente all'interno di una cella di
+memoria e salvarla all'interno di un
+registro. L'istruzione assembly sarà
+LDA, quindi load,
+load address, quindi abbiamo R0 che è il
+registro generale in questo caso e poi
+abbiamo i 16 bit
+all'indirizzo. Questo è il corrispettivo
+in esadecimale e questo è il
+corrispettivo in binario, quindi codice
+macchina.
+Vabbè, c'è poco da dire. Abbiamo 010 che
+è la prima, sono i primi 3 bit fissi.
+Poi abbiamo i successivi 2 bit 00 che
+sono i bit relativi alla sottocategoria
+e poi il registro che identifica 00 e eh
+andiamo avanti con 001 010 e così via
+fino ad arrivare all'ultimo registro che
+sarà 11 1. Invece da questo lato abbiamo
+l'istruzione STA che serve, come abbiamo
+detto, a caricare all'interno della
+memoria ciò che abbiamo salvato
+all'interno di un registro.
+Abbiamo sempre eh l'istruzione STA
+registro e indirizzo a 16 bit, codice
+esadecimale e codice binario che poi è
+quello che ci interessa.
+In pratica abbiamo 010 che è fisso, sono
+i primi 3 bit di categoria, 01 che sarà
+sempre fisso per questa tabella e va a
+rappresentare la subcategory. E poi
+abbiamo i registri, quindi abbiamo 00
+R0 001 R1 e così via fino ad arrivare a
+111 1 che rappresenta R7.
+Passiamo alle istruzioni relative
+all'alu. Come codice avranno 011.
+Qui ho un breve sunt in cui abbiamo i
+primi tre bit che sono fissi a 011.
+Abbiamo questo Bit X che in realtà non
+utilizziamo, lo lasciamo fisso a zero. È
+una sorta di subcategory che comunque
+abbiamo sempre lasciato a zero nel caso
+di istruzioni relative all'alu. E poi
+abbiamo questi 4 bit che vanno a
+pilotare direttamente
+eh la nostra alu. Quindi è il vecchio
+codice operazione che di cui parlavo nei
+primi video che va a identificare quale
+operazione deve fare l'alu. Oggi abbiamo
+uno switch che andiamo a pilotare per
+selezionare l'operazione dell'alu. In
+realtà in futuro dovremo staccare lo
+switch e collegarlo all'interno di
+questi 4 bit.
+Qui abbiamo una tabella riassuntiva di
+tutte le operazioni. Faccio un breve
+recap sul funzionamento della nostra
+alu. Nella nella nostra architettura
+abbiamo detto che
+l'alu farà l'operazione selezionata da
+questi 4 bit e farà saranno gli ingressi
+RA ed RB. Poi l'uscita sarà salvata
+nuovamente in RA. Ad esempio, prendiamo
+l'END, abbiamo 011 che ricordo sono i
+bitia. 0 che è il nostro x e poi i 4 bit
+0 che rappresentano l'istruzione end. E
+il risultato sarà che all'interno del
+registro RA avrò l'end tra RA ed RB.
+Passiamo all'istruzione OR che avrà come
+codice 001
+e farà l'OR tra RA ed RB e il risultato
+sarà salvato in RA e così via. Quindi
+XOR che sarà 0010,
+NOR che sarà eh 0011,
+Nend che sarà 0100,
+Snor e così via. Abbiamo tutte le
+istruzioni.
+Eh, piccola nota, il Note che che è 0110
+ha bisogno di un solo operando, quindi R
+sarà uguale al not di RA.
+Poi vabbè, abbiamo ad sub compare. Per
+il compare dobbiamo generare dei flag e
+dobbiamo salvare questi flag all'interno
+di un di un registro. E poi tutto il
+resto sono ehm operazioni riservate,
+quindi abbiamo tutte le combinazioni con
+x
+a 1 e eh tutte le combinazioni restanti
+perché comunque non abbiamo completato
+tutte le combinazioni con x a 0 e quindi
+possiamo espandere anche la nostra alu,
+quindi potremmo pensare di implementare
+future operazioni all'interno della
+nostra alu.
+A questo punto parliamo dei salti. Il
+codice
+di categoria è 101,
+quindi avremo 101 fisso per tutte le
+combinazioni presenti in questa tabella.
+Poi avremo 5 bit che vanno a
+rappresentare eh i vari le varie
+tipologie di salto e poi avremo i 16 bit
+successivi che vanno a rappresentare
+l'indirizzo di memoria a cui bisognerà
+saltare.
+Partiamo dal jump.
+Abbiamo questo codice assembly jump
+suseguito dall'indirizzo di memoria 16
+bit e questo qua ci dice che la CPU
+arrivata a questa istruzione deve
+seguire il salto indipendentemente da
+eventuali condizioni o stato di flag.
+Abbiamo il codice binario che è 101 e
+poi tutti i bit a 0, tutti i 5 bit
+successivi a zero. Poi abbiamo
+eh JZ che sta per jump, quindi salterà
+soltanto se eh il flag 0 è a 1. Questa
+condizione in pratica si verifica quando
+RA è uguale RB, quindi è la condizione
+di uguaglianza quando facciamo il
+compare tra due variabili che darà come
+risultato il Flex 0 a 1. Questa è
+l'istruzione binaria 10 1
+poi abbiamo JNZ che sta per jump if not
+zero, quindi salta se m il confronto non
+dà zero. In pratica vuol dire che RA è
+diverso da RB e viene valutato il flag
+zero che in questo caso deve essere
+uguale a 0 per effettuare il salto.
+Poi abbiamo JC che sta per jump if
+carry. In pratica ehm salta solo se si
+verifica un eventuale riporto, quindi C
+= 1, ed equivale a una condizione in cui
+il registro A è minore registro B. Poi
+abbiamo JNC jump if not carry che in
+pratica sarebbe m salta se C è uguale a
+0, quindi carry ugale
+ad RA mag o uguale di RB. Poi abbiamo JN
+che sta per jump if negative, quindi
+salta se eh il risultato è negativo. Che
+cosa vuol dire? Vuol dire che il bit
+negative è uguale a 1. Risultato
+negativo.
+JNN sta per jump if not negative. è
+l'opposto del precedente, quindi salta
+se n è uguale a 0, quindi il risultato
+non è negativo.
+Poi abbiamo eh Jof overflow, salta se
+c'è stato un overflow e valuta il flag
+di overflow che deve essere a uno. JNO
+che sta per jump if no overflow vuol
+dire che ehm si salta se il bit di
+overflow, il flag di overflow è a zero,
+quindi non c'è stato overflow. Tutte le
+altre combinazioni invece sono
+riservate, quindi espansione futura.
+sui salti dobbiamo fare anche un'altra
+considerazione. Possiamo dire che come
+prima versione dell'ISA, quindi
+Struction Set Architecture, potrebbe
+andare questa tabella, però in realtà eh
+possiamo anche espandere questa tabella
+perché potremmo anche considerare più di
+un flag contemporaneamente e
+considerando più di un flag
+contemporaneamente potremmo gestire
+altre casistiche, però eventualmente
+tutta questa parte la vediamo poi quando
+sviluppiamo la control unit e vediamo se
+aumentare il numero di
+di istruzioni della nostra CPU. Tanto
+abbiamo già detto che abbiamo una serie
+di bit riservati, quindi una serie di
+combinazioni che ci permettono di
+espandere in futuro questo set di
+istruzioni.
+A questo punto vediamo i trasferimenti.
+Codice di categoria CC = 10. In pratica
+sono tutte quelle operazioni che
+riguardano il registri RA ed RB. In
+questo caso abbiamo quindi i primi 3 bit
+che sono fissi a 1, poi abbiamo 2 bit
+subcategory SS e un registro coinvolto,
+quindi 3 bit che mi selezionano il
+registro. Qui ho una tabella
+riassuntiva, ad esempio eh SS00,
+facciamo la copia di un registro
+generale in R. Abbiamo quindi 1 che è mh
+costante per tutti, per tutte le
+combinazioni, 00 che è la casistica SS e
+poi il registro coinvolto.
+Poi abbiamo SSA01
+M è la copia di RN in RB, quindi stiamo
+copiando un registro generale in RB.
+Infine, poi abbiamo l'ultimo caso che è
+la copia di R in RN e abbiamo come SS
+10. Tutte le altre combinazioni invece
+sono riservate, quindi non vengono
+utilizzate. Queste sono le istruzione
+assembly, quindi abbiamo move RA in RN,
+move RB in RN, move RN in RA, diciamo
+sono abbastanza esplicative, quindi
+abbastanza facili da intuire.
+A questo punto l'unica combinazione che
+rimane è quella relativa al alle
+periferiche di input output che non
+abbiamo visto nel dettaglio. Non le
+abbiamo viste perché ancora non ho ben
+definito questo set di istruzioni e le
+vedremo più avanti quando inizieremo poi
+a pensare a come far dialogare la nostra
+CPU con l'esterno.
+Io direi che per questo video è tutto.
+In un prossimo video vedremo
+effettivamente come realizzare un
+programma, scrivere un programma
+assembly per la nostra CPU e poi
+proviamo a creare una sorta di
+compilatore che va a prendere l'assembly
+e lo traduce in un binario. Questo
+binario poi dovrà essere inserito
+all'interno di una eprom che eh poi
+eseguirà la nostra CPU. Quindi vi
+ricordo di iscrivervi al mio canale
+YouTube, lasciare un mi piace e
+commentare questo video per supportare
+il mio lavoro. Un saluto.
