@@ -52,5 +52,4 @@ no_overflow:
 LDI R2, 0x07
 
 done:
-OUT R2
 HLT

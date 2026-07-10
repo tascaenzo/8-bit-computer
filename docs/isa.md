@@ -2,11 +2,11 @@
 
 Bozza della Instruction Set Architecture della CPU didattica a 8 bit.
 
-Questa specifica descrive il formato delle istruzioni visto finora nella serie: CPU a 8 bit, architettura di Von Neumann, memoria unica per codice e dati, bus dati a 8 bit e bus indirizzi a 16 bit.
+Questa specifica descrive l'architettura visibile al software, la semantica delle istruzioni e la loro codifica macchina: CPU a 8 bit, architettura di Von Neumann, memoria unica per codice e dati, bus dati a 8 bit e bus indirizzi a 16 bit.
 
 ## Stato del documento
 
-Questo documento e la sorgente di verita per la progettazione della ISA. In questa fase non riguarda l'implementazione dell'assembler: prima si stabiliscono formato istruzioni, registri, opcode e comportamento semantico.
+Questo documento e la sorgente di verita per la progettazione della ISA. La sintassi dei file `.asm`, le label e le direttive sono documentate separatamente nella [specifica del linguaggio assembly](assembly-language.md). La compilazione e l'utilizzo dello strumento sono descritti nel [README dell'assembler](../tools/assembler/README.md).
 
 ## Decisioni confermate
 
@@ -145,198 +145,7 @@ opcode 0b00110100 0b00010010
 
 Questa scelta e coerente con il fatto che `MAR` viene caricato dal bus dati in due passaggi: prima la parte bassa, poi la parte alta.
 
-## Formati assembly
-
-### Istruzione implicita
-
-```asm
-HLT
-```
-
-Formato:
-
-```text
-[opcode]
-```
-
-### Istruzione con immediato a 8 bit
-
-```asm
-LDI R0, 0x2A
-```
-
-Formato:
-
-```text
-[opcode] [immediate]
-```
-
-### Istruzione con indirizzo a 16 bit
-
-```asm
-LDA R0, 0x1234
-```
-
-Formato:
-
-```text
-[opcode] [addr_low] [addr_high]
-```
-
-## Convenzioni assembly
-
-Queste convenzioni definiscono la sintassi assembly associata alla ISA.
-
-### Numeri
-
-Formati numerici supportati:
-
-| Sintassi | Base | Esempio      |
-| -------- | ---: | ------------ |
-| `0xNN`   |   16 | `0x2A`       |
-| `$NN`    |   16 | `$2A`        |
-| `0bNNNN` |    2 | `0b10101010` |
-| `NN`     |   10 | `42`         |
-
-Per evitare ambiguita, negli esempi ufficiali si preferisce `0x`.
-
-Esempio equivalente:
-
-```text
-0x2A = 0b00101010 = 42
-```
-
-### Commenti
-
-I commenti iniziano con `;`.
-
-```asm
-; carica 42 nel registro R0
-LDI R0, 0x2A
-```
-
-### Maiuscole e minuscole
-
-Mnemonic e nomi dei registri sono case-insensitive.
-
-Queste due righe sono equivalenti:
-
-```asm
-LDI R0, 0x2A
-ldi r0, 0x2A
-```
-
-### Label
-
-Le label sono nomi simbolici gestiti dall'assembler. Non sono istruzioni della CPU e non generano byte da sole.
-
-Una label identifica l'indirizzo della prossima istruzione o del prossimo dato:
-
-```asm
-loop:
-OUT R0
-JMP loop
-```
-
-In questo esempio `loop` viene sostituita dall'assembler con l'indirizzo a 16 bit dell'istruzione `OUT R0`.
-
-Le label possono essere usate con tutti gli operandi `addr16`:
-
-```asm
-JMP start
-JZ equal
-LDA R0, counter
-STA R0, result
-```
-
-Convenzioni iniziali:
-
-- una label termina con `:`;
-- una label deve iniziare con una lettera o `_`;
-- una label puo contenere lettere, numeri e `_`;
-- i nomi delle label sono case-insensitive, come mnemonic e registri;
-- non e ammesso definire due volte la stessa label.
-
-### Costanti simboliche
-
-Le costanti simboliche sono nomi gestiti dall'assembler per evitare numeri magici nel codice.
-
-Sintassi proposta:
-
-```asm
-.equ SCREEN, 0x8000
-.equ NEWLINE, 0x0A
-```
-
-Uso:
-
-```asm
-LDI R0, NEWLINE
-STA R0, SCREEN
-```
-
-`.equ` non genera byte macchina: associa solo un nome a un valore.
-
-### Sezioni codice e dati
-
-Le sezioni servono a rendere chiaro dove l'assembler deve posizionare codice e dati.
-
-La CPU usa una architettura di Von Neumann: codice e dati condividono la stessa memoria. Quindi `.code` e `.data` non creano due memorie separate. Sono direttive dell'assembler, non istruzioni eseguite dalla CPU.
-
-Direttive ufficiali v0.1:
-
-| Direttiva      | Effetto                                           |
-| -------------- | ------------------------------------------------- |
-| `.code addr16` | inizia una sezione codice dall'indirizzo indicato |
-| `.data addr16` | inizia una sezione dati dall'indirizzo indicato   |
-| `.byte value`  | scrive una variabile o costante dati a 8 bit      |
-
-Esempio:
-
-```asm
-.code 0x0000
-start:
-LDI R0, 0x01
-STA R0, counter
-HLT
-
-.data 0x0100
-counter: .byte 0x00
-```
-
-In questo esempio:
-
-- il programma inizia a `0x0000`;
-- la variabile `counter` viene posizionata a `0x0100`;
-- `STA R0, counter` viene assemblata come `STA R0, 0x0100`.
-
-Per la v0.1 non usiamo `.org` come sintassi ufficiale. `.code` e `.data` sono piu chiari in un progetto didattico.
-
-### Variabili
-
-Nel linguaggio assembly v0.1 una variabile e una label associata a una singola cella di memoria da 8 bit.
-
-Questa scelta e coerente con l'hardware:
-
-- il data bus e a 8 bit;
-- i registri generali sono a 8 bit;
-- `LDA Rn, addr16` legge un byte;
-- `STA Rn, addr16` scrive un byte;
-- la ALU lavora su valori a 8 bit.
-
-Esempio:
-
-```asm
-counter: .byte 0x00
-total:   .byte 0x00
-flag:    .byte 0x01
-```
-
-La CPU non conosce il concetto di variabile: vede solo indirizzi di memoria. Il nome simbolico esiste solo nel sorgente assembly e viene risolto dall'assembler.
-
-Per la v0.1 non definiamo variabili a 16 bit. Valori a 16 bit potranno essere aggiunti in futuro come coppie di byte, ma non fanno parte della sintassi iniziale.
-
-## Registri assembly
+## Registri visibili alle istruzioni
 
 La CPU dispone di 8 registri generali:
 
@@ -855,47 +664,18 @@ opcode addr_low addr_high
 
 Tabella condizioni:
 
-| Mnemonic     | Significato sigla           |  Opcode hex | Condizione        | Operazione mnemonica dopo `CMP RA, RB` unsigned |
-| ------------ | --------------------------- | ----------: | ----------------- | ----------------------------------------------- |
-| `JMP addr16` | **Jump**                    |      `0xA0` | sempre            | salta sempre                                    |
-| `JZ addr16`  | **Jump if Zero**            |      `0xA1` | `Z = 1`           | `RA == RB`                                      |
-| `JNZ addr16` | **Jump if Not Zero**        |      `0xA2` | `Z = 0`           | `RA != RB`                                      |
-| `JC addr16`  | **Jump if Carry**           |      `0xA3` | `C = 1`           | `RA < RB`                                       |
-| `JNC addr16` | **Jump if No Carry**        |      `0xA4` | `C = 0`           | `RA >= RB`                                      |
-| `JN addr16`  | **Jump if Negative**        |      `0xA5` | `N = 1`           | risultato negativo                              |
-| `JNN addr16` | **Jump if Not Negative**    |      `0xA6` | `N = 0`           | risultato non negativo                          |
-| `JO addr16`  | **Jump if Overflow**        |      `0xA7` | `O = 1`           | overflow presente                               |
-| `JNO addr16` | **Jump if No Overflow**     |      `0xA8` | `O = 0`           | nessun overflow                                 |
-| riservata    | opcode non ancora assegnati | `0xA9-0xBF` | espansioni future | nessuna operazione attuale                      |
-
-Dove:
-
-- `J` significa **Jump**, cioè “salta”.
-- `Z` significa **Zero**.
-- `NZ` significa **Not Zero**.
-- `C` significa **Carry**.
-- `NC` significa **No Carry**.
-- `N` significa **Negative**.
-- `NN` significa **Not Negative**.
-- `O` significa **Overflow**.
-- `NO` significa **No Overflow**.
-
-Esempio:
-
-```asm
-CMP RA, RB
-JZ uguali
-JC minore
-JNC maggiore_o_uguale
-```
-
-Interpretazione:
-
-```text
-JZ  → RA == RB
-JC  → RA < RB
-JNC → RA >= RB
-```
+| Mnemonic     |  Opcode hex | Opcode bin              | Condizione        | Dopo `CMP` unsigned |
+| ------------ | ----------: | ----------------------- | ----------------- | ------------------- |
+| `JMP addr16` |      `0xA0` | `0b10100000`            | sempre            | -                   |
+| `JZ addr16`  |      `0xA1` | `0b10100001`            | `Z = 1`           | salta se `RA == RB` |
+| `JNZ addr16` |      `0xA2` | `0b10100010`            | `Z = 0`           | salta se `RA != RB` |
+| `JC addr16`  |      `0xA3` | `0b10100011`            | `C = 1`           | salta se `RA < RB`  |
+| `JNC addr16` |      `0xA4` | `0b10100100`            | `C = 0`           | salta se `RA >= RB` |
+| `JN addr16`  |      `0xA5` | `0b10100101`            | `N = 1`           | -                   |
+| `JNN addr16` |      `0xA6` | `0b10100110`            | `N = 0`           | -                   |
+| `JO addr16`  |      `0xA7` | `0b10100111`            | `O = 1`           | -                   |
+| `JNO addr16` |      `0xA8` | `0b10101000`            | `O = 0`           | -                   |
+| riservata    | `0xA9-0xBF` | `0b10101001-0b10111111` | espansioni future | -                   |
 
 Per confronti unsigned dopo `CMP`:
 
@@ -903,27 +683,6 @@ Per confronti unsigned dopo `CMP`:
 - `JNZ` salta se `RA != RB`;
 - `JC` salta se `RA < RB`;
 - `JNC` salta se `RA >= RB`.
-
-Esempio con label:
-
-```asm
-MOV RA, R0
-MOV RB, R1
-CMP
-JZ equal
-
-LDI R2, 0x00
-JMP done
-
-equal:
-LDI R2, 0x01
-
-done:
-OUT R2
-HLT
-```
-
-Le istruzioni `JZ equal` e `JMP done` vengono tradotte dall'assembler in salti `ADDR16`, sostituendo `equal` e `done` con i rispettivi indirizzi.
 
 ## `ccc = 110` trasferimenti
 
@@ -1111,15 +870,14 @@ Assembly:
 ```asm
 ; carica 10 in R0 e ferma la CPU
 LDI R0, 0x0A
-OUT R0
 HLT
 ```
 
 Codifica proposta:
 
 ```text
-hex: 0x20 0x0A 0x88 0x01
-bin: 0b00100000 0b00001010 0b10001000 0b00000001
+hex: 0x20 0x0A 0x01
+bin: 0b00100000 0b00001010 0b00000001
 ```
 
 Layout in memoria:
@@ -1128,8 +886,7 @@ Layout in memoria:
 | ------------- | -------------------- | ---------- | ------------ | --------------------- |
 | `0x0000`      | `0b0000000000000000` | `0x20`     | `0b00100000` | opcode `LDI R0, imm8` |
 | `0x0001`      | `0b0000000000000001` | `0x0A`     | `0b00001010` | immediato             |
-| `0x0002`      | `0b0000000000000010` | `0x88`     | `0b10001000` | opcode `OUT R0`       |
-| `0x0003`      | `0b0000000000000011` | `0x01`     | `0b00000001` | opcode `HLT`          |
+| `0x0002`      | `0b0000000000000010` | `0x01`     | `0b00000001` | opcode `HLT`          |
 
 ## Esempio ALU con registri RA e RB
 
@@ -1191,62 +948,10 @@ Layout in memoria:
 | `0x0004`      | `0b0000000000000100` | `0xFF`     | `0b11111111` | byte basso indirizzo `0x00FF` |
 | `0x0005`      | `0b0000000000000101` | `0x00`     | `0b00000000` | byte alto indirizzo `0x00FF`  |
 
-## Esempio con variabile in memoria
-
-Assembly:
-
-```asm
-.code 0x0000
-LDI R0, 0x05
-STA R0, counter
-LDA R1, counter
-OUT R1
-HLT
-
-.data 0x0100
-counter: .byte 0x00
-```
-
-La label `counter` rappresenta l'indirizzo `0x0100`.
-
-Codifica proposta della parte codice:
-
-```text
-LDI R0, 0x05
-hex: 0x20 0x05
-bin: 0b00100000 0b00000101
-
-STA R0, counter
-hex: 0x48 0x00 0x01
-bin: 0b01001000 0b00000000 0b00000001
-
-LDA R1, counter
-hex: 0x41 0x00 0x01
-bin: 0b01000001 0b00000000 0b00000001
-
-OUT R1
-hex: 0x89
-bin: 0b10001001
-
-HLT
-hex: 0x01
-bin: 0b00000001
-```
-
-Il dato generato dalla direttiva `.byte` viene posizionato a `0x0100`:
-
-```text
-address: 0x0100
-value:   0x00
-bin:     0b00000000
-```
-
 ## Punti ancora da decidere
 
 - codifica definitiva degli opcode;
 - eventuale uso del range riservato `0b11011rrr` nei trasferimenti;
-- regole definitive per label, simboli e gestione degli errori;
-- eventuale supporto futuro a dati multi-byte;
 - eventuali istruzioni di indirizzamento indiretto o indicizzato;
 - eventuali estensioni per input/output aggiuntivi;
 - eventuale supporto a confronti signed tramite combinazioni dei flag `N` e `O`.

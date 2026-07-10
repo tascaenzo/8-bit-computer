@@ -6,7 +6,7 @@
 ; - usare JC per il caso RA < RB;
 ; - usare il percorso rimanente per il caso RA >= RB.
 ;
-; Valori di output:
+; Valore finale salvato in R2:
 ; - 0x00 se R0 == R1;
 ; - 0x01 se R0 < R1;
 ; - 0x02 se R0 >= R1.
@@ -34,5 +34,4 @@ less_than:
 LDI R2, 0x01
 
 done:
-OUT R2
 HLT

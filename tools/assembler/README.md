@@ -4,6 +4,11 @@ Assembler in C per la CPU didattica a 8 bit.
 
 Questa prima versione implementa una pipeline minima ma funzionante: legge assembly, risolve label e costanti, genera byte macchina e scrive gli output `.bin`, `.hex`, `.bits` e `.h`.
 
+Documentazione di riferimento:
+
+- [`docs/assembly-language.md`](../../docs/assembly-language.md) descrive la sintassi accettata;
+- [`docs/isa.md`](../../docs/isa.md) definisce semantica, formati e opcode della CPU.
+
 ## Obiettivo
 
 Il tool dovra trasformare programmi assembly in file caricabili nella ROM/EEPROM della CPU.
@@ -14,10 +19,9 @@ Esempio:
 .code 0x0000
 LDI R0, 0x0A
 STA R0, counter
-OUT R0
 HLT
 
-.data 0x0010
+.data
 counter: .byte 0x00
 ```
 
@@ -84,6 +88,7 @@ Il test:
 
 - assembla `tests/smoke.asm`;
 - assembla `tests/labels.asm`;
+- assembla `tests/auto_sections.asm`, verificando `.code` e `.data` senza indirizzo;
 - confronta gli `.hex` e `.bits` generati con i file in `tests/expected`;
 - verifica che `tests/invalid.asm` fallisca con un errore che include il numero di riga.
 

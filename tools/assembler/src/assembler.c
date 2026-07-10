@@ -331,7 +331,8 @@ static Cpu8Status parse_statement(char *text, Cpu8Statement *statement)
  * Gestisce le direttive dell'assembler.
  *
  * Le direttive non sono istruzioni della CPU:
- * - .code/.data cambiano l'indirizzo corrente;
+ * - .code cambia l'indirizzo corrente, usando 0x0000 come default;
+ * - .data usa un indirizzo esplicito oppure il primo byte libero;
  * - .byte scrive un byte nella memoria generata;
  * - .equ crea una costante simbolica.
  */
@@ -340,9 +341,34 @@ static Cpu8Status encode_directive(Cpu8AssemblyContext *context, const Cpu8State
     uint16_t value;
     Cpu8Status status;
 
-    if (strcmp(statement->mnemonic, ".CODE") == 0 || strcmp(statement->mnemonic, ".DATA") == 0) {
-        if (statement->operand_count != 1) {
-            return fail_at_line(context, CPU8_ERROR_PARSE, ".byte value must fit in 8 bit");
+    if (strcmp(statement->mnemonic, ".CODE") == 0) {
+        if (statement->operand_count > 1) {
+            return fail_at_line(context, CPU8_ERROR_PARSE, ".code accepts zero or one address");
+        }
+
+        value = 0;
+        if (statement->operand_count == 1) {
+            status = resolve_value(context, statement->operands[0], &value);
+            if (status != CPU8_OK) {
+                return status;
+            }
+        }
+
+        context->address = value;
+        if (context->address > context->max_written) {
+            context->max_written = context->address;
+        }
+        return CPU8_OK;
+    }
+
+    if (strcmp(statement->mnemonic, ".DATA") == 0) {
+        if (statement->operand_count > 1) {
+            return fail_at_line(context, CPU8_ERROR_PARSE, ".data accepts zero or one address");
+        }
+
+        if (statement->operand_count == 0) {
+            context->address = context->max_written;
+            return CPU8_OK;
         }
 
         status = resolve_value(context, statement->operands[0], &value);
@@ -359,7 +385,7 @@ static Cpu8Status encode_directive(Cpu8AssemblyContext *context, const Cpu8State
 
     if (strcmp(statement->mnemonic, ".BYTE") == 0) {
         if (statement->operand_count != 1) {
-            return fail_at_line(context, CPU8_ERROR_PARSE, ".equ requires name and value");
+            return fail_at_line(context, CPU8_ERROR_PARSE, ".byte requires one value");
         }
 
         if (context->pass == 1) {
@@ -367,8 +393,11 @@ static Cpu8Status encode_directive(Cpu8AssemblyContext *context, const Cpu8State
         }
 
         status = resolve_value(context, statement->operands[0], &value);
-        if (status != CPU8_OK || value > 0xFF) {
-            return CPU8_ERROR_PARSE;
+        if (status != CPU8_OK) {
+            return status;
+        }
+        if (value > 0xFF) {
+            return fail_at_line(context, CPU8_ERROR_PARSE, ".byte value must fit in 8 bit");
         }
 
         return write_byte(context, (uint8_t)value);
@@ -376,7 +405,7 @@ static Cpu8Status encode_directive(Cpu8AssemblyContext *context, const Cpu8State
 
     if (strcmp(statement->mnemonic, ".EQU") == 0) {
         if (statement->operand_count != 2) {
-            return CPU8_ERROR_PARSE;
+            return fail_at_line(context, CPU8_ERROR_PARSE, ".equ requires name and value");
         }
 
         if (context->pass == 1) {
