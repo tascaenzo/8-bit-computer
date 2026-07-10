@@ -22,7 +22,10 @@ In questa fase il repository contiene documentazione, una prima ISA, esempi asse
 
 ### `docs`
 
-Contiene la documentazione tecnica della CPU, inclusa la definizione della ISA.
+Contiene la documentazione tecnica della CPU:
+
+- [`docs/isa.md`](docs/isa.md) definisce architettura, istruzioni e opcode;
+- [`docs/assembly-language.md`](docs/assembly-language.md) definisce la sintassi dei programmi assembly.
 
 ### `examples/assembly`
 

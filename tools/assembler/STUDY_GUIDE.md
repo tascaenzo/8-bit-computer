@@ -10,14 +10,13 @@ Un programma assembly e testo leggibile:
 
 ```asm
 LDI R0, 0x0A
-OUT R0
 HLT
 ```
 
 L'assembler deve trasformarlo in byte:
 
 ```text
-0x20 0x0A 0x88 0x01
+0x20 0x0A 0x01
 ```
 
 Il lavoro dell'assembler puo essere diviso in passaggi:
@@ -136,7 +135,7 @@ Il significato dei campi e:
 - `format`: formato dell'istruzione;
 - `uses_register`: indica se l'opcode contiene anche il codice di un registro.
 
-Questa tabella deve restare allineata a `docs/isa.md`, che e il documento di riferimento della ISA.
+Questa tabella deve restare allineata a `docs/isa.md`, che e il documento di riferimento per semantica e opcode. Le regole lessicali, le label e le direttive sono invece definite in `docs/assembly-language.md`.
 
 ## `include/output.h` e `src/output.c`
 
@@ -201,8 +200,8 @@ Il progetto assembler ha una prima versione funzionante.
 
 Supporta:
 
-- `.code`;
-- `.data`;
+- `.code` con indirizzo esplicito oppure default `0x0000`;
+- `.data` con indirizzo esplicito oppure collocazione automatica;
 - `.byte`;
 - `.equ`;
 - label;

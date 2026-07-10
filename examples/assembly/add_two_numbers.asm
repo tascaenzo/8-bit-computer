@@ -4,8 +4,7 @@
 ; - caricare due valori nei registri generali R0 e R1;
 ; - copiarli nei registri operandi della ALU, RA e RB;
 ; - eseguire ADD;
-; - copiare il risultato da RA a R2;
-; - inviare il risultato in output.
+; - copiare il risultato da RA a R2.
 
 .code 0x0000
 LDI R0, 7
@@ -16,5 +15,4 @@ MOV RB, R1
 ADD
 MOV R2, RA
 
-OUT R2
 HLT
