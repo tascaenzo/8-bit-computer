@@ -66,12 +66,12 @@ Anche se i chip fisici usati nei primi test possono avere meno linee indirizzo, 
 
 Dalle trascrizioni risultano questi registri rilevanti per il formato istruzioni:
 
-| Registro | Dimensione | Ruolo |
-| --- | ---: | --- |
-| `PC` | 16 bit | Program Counter, punta al prossimo byte da leggere |
-| `MAR` | 16 bit | Memory Address Register, pilota l'address bus |
-| `IR` | 8 bit | Instruction Register, contiene l'opcode |
-| `MDR` | 8 bit | Memory Data Register, contiene dati letti/scritti in memoria |
+| Registro | Dimensione | Ruolo                                                        |
+| -------- | ---------: | ------------------------------------------------------------ |
+| `PC`     |     16 bit | Program Counter, punta al prossimo byte da leggere           |
+| `MAR`    |     16 bit | Memory Address Register, pilota l'address bus                |
+| `IR`     |      8 bit | Instruction Register, contiene l'opcode                      |
+| `MDR`    |      8 bit | Memory Data Register, contiene dati letti/scritti in memoria |
 
 `PC` e `MAR` sono registri a 16 bit, ma vengono caricati tramite data bus a 8 bit. Per questo sono divisi logicamente in parte bassa e parte alta.
 
@@ -83,20 +83,20 @@ In base all'opcode, la CPU sa quanti byte aggiuntivi deve leggere durante la fas
 
 Sono previste tre categorie:
 
-| Formato | Byte totali | Struttura | Uso |
-| --- | ---: | --- | --- |
-| `IMP` | 1 | `opcode` | istruzioni senza operando |
-| `IMM8` | 2 | `opcode immediate` | istruzioni con valore immediato a 8 bit |
-| `ADDR16` | 3 | `opcode addr_low addr_high` | istruzioni con indirizzo di memoria a 16 bit |
+| Formato  | Byte totali | Struttura                   | Uso                                          |
+| -------- | ----------: | --------------------------- | -------------------------------------------- |
+| `IMP`    |           1 | `opcode`                    | istruzioni senza operando                    |
+| `IMM8`   |           2 | `opcode immediate`          | istruzioni con valore immediato a 8 bit      |
+| `ADDR16` |           3 | `opcode addr_low addr_high` | istruzioni con indirizzo di memoria a 16 bit |
 
 Le istruzioni `ADDR16` occupano sempre 3 byte. Il primo byte e l'opcode, i due byte successivi sono l'indirizzo a 16 bit.
 
 Istruzioni `ADDR16` della ISA v0.1:
 
-| Categoria | Istruzioni | Uso dell'indirizzo |
-| --- | --- | --- |
-| memoria | `LDA Rn, addr16`, `STA Rn, addr16` | indirizzo della cella dati da leggere/scrivere |
-| salti | `JMP`, `JZ`, `JNZ`, `JC`, `JNC`, `JN`, `JNN`, `JO`, `JNO` | nuovo valore del `PC` se il salto viene eseguito |
+| Categoria | Istruzioni                                                | Uso dell'indirizzo                               |
+| --------- | --------------------------------------------------------- | ------------------------------------------------ |
+| memoria   | `LDA Rn, addr16`, `STA Rn, addr16`                        | indirizzo della cella dati da leggere/scrivere   |
+| salti     | `JMP`, `JZ`, `JNZ`, `JC`, `JNC`, `JN`, `JNN`, `JO`, `JNO` | nuovo valore del `PC` se il salto viene eseguito |
 
 In binario:
 
@@ -191,12 +191,12 @@ Queste convenzioni definiscono la sintassi assembly associata alla ISA.
 
 Formati numerici supportati:
 
-| Sintassi | Base | Esempio |
-| --- | ---: | --- |
-| `0xNN` | 16 | `0x2A` |
-| `$NN` | 16 | `$2A` |
-| `0bNNNN` | 2 | `0b10101010` |
-| `NN` | 10 | `42` |
+| Sintassi | Base | Esempio      |
+| -------- | ---: | ------------ |
+| `0xNN`   |   16 | `0x2A`       |
+| `$NN`    |   16 | `$2A`        |
+| `0bNNNN` |    2 | `0b10101010` |
+| `NN`     |   10 | `42`         |
 
 Per evitare ambiguita, negli esempi ufficiali si preferisce `0x`.
 
@@ -285,11 +285,11 @@ La CPU usa una architettura di Von Neumann: codice e dati condividono la stessa 
 
 Direttive ufficiali v0.1:
 
-| Direttiva | Effetto |
-| --- | --- |
+| Direttiva      | Effetto                                           |
+| -------------- | ------------------------------------------------- |
 | `.code addr16` | inizia una sezione codice dall'indirizzo indicato |
-| `.data addr16` | inizia una sezione dati dall'indirizzo indicato |
-| `.byte value` | scrive una variabile o costante dati a 8 bit |
+| `.data addr16` | inizia una sezione dati dall'indirizzo indicato   |
+| `.byte value`  | scrive una variabile o costante dati a 8 bit      |
 
 Esempio:
 
@@ -351,22 +351,22 @@ Servono 3 bit per selezionare un registro:
 ```
 
 | Registro | Codice bin | Codice dec |
-| --- | --- | ---: |
-| `R0` | `0b000` | 0 |
-| `R1` | `0b001` | 1 |
-| `R2` | `0b010` | 2 |
-| `R3` | `0b011` | 3 |
-| `R4` | `0b100` | 4 |
-| `R5` | `0b101` | 5 |
-| `R6` | `0b110` | 6 |
-| `R7` | `0b111` | 7 |
+| -------- | ---------- | ---------: |
+| `R0`     | `0b000`    |          0 |
+| `R1`     | `0b001`    |          1 |
+| `R2`     | `0b010`    |          2 |
+| `R3`     | `0b011`    |          3 |
+| `R4`     | `0b100`    |          4 |
+| `R5`     | `0b101`    |          5 |
+| `R6`     | `0b110`    |          6 |
+| `R7`     | `0b111`    |          7 |
 
 Oltre ai registri generali, la ALU usa due registri dedicati:
 
-| Registro | Dimensione | Uso |
-| --- | ---: | --- |
-| `RA` | 8 bit | primo operando della ALU e destinazione del risultato |
-| `RB` | 8 bit | secondo operando della ALU |
+| Registro | Dimensione | Uso                                                   |
+| -------- | ---------: | ----------------------------------------------------- |
+| `RA`     |      8 bit | primo operando della ALU e destinazione del risultato |
+| `RB`     |      8 bit | secondo operando della ALU                            |
 
 Il flusso operativo della ALU e:
 
@@ -422,16 +422,16 @@ In questo modo non serve generare tutte queste informazioni come uscite separate
 
 Mappa dei 3 bit alti dell'opcode, in ordine binario:
 
-| Bit `ccc` | Hex range | Macrocategoria | Uso |
-| --- | --- | --- | --- |
-| `000` | `0x00-0x1F` | sistema / controllo | `NOP`, `HLT`, istruzioni senza operando speciale |
-| `001` | `0x20-0x3F` | load immediate | caricamento immediato in registro |
-| `010` | `0x40-0x5F` | memoria | load/store tra memoria e registri |
-| `011` | `0x60-0x7F` | ALU | operazioni aritmetico-logiche |
-| `100` | `0x80-0x9F` | I/O | lettura input e scrittura output |
-| `101` | `0xA0-0xBF` | jump | salti assoluti e condizionati |
-| `110` | `0xC0-0xDF` | trasferimenti | passaggio dati tra registri generali, `RA` e `RB` |
-| `111` | `0xE0-0xFF` | riservata | espansioni future |
+| Bit `ccc` | Hex range   | Macrocategoria      | Uso                                               |
+| --------- | ----------- | ------------------- | ------------------------------------------------- |
+| `000`     | `0x00-0x1F` | sistema / controllo | `NOP`, `HLT`, istruzioni senza operando speciale  |
+| `001`     | `0x20-0x3F` | load immediate      | caricamento immediato in registro                 |
+| `010`     | `0x40-0x5F` | memoria             | load/store tra memoria e registri                 |
+| `011`     | `0x60-0x7F` | ALU                 | operazioni aritmetico-logiche                     |
+| `100`     | `0x80-0x9F` | I/O                 | lettura input e scrittura output                  |
+| `101`     | `0xA0-0xBF` | jump                | salti assoluti e condizionati                     |
+| `110`     | `0xC0-0xDF` | trasferimenti       | passaggio dati tra registri generali, `RA` e `RB` |
+| `111`     | `0xE0-0xFF` | riservata           | espansioni future                                 |
 
 La regola generale e:
 
@@ -462,16 +462,16 @@ I bit `rrr`, cioe `IR[2:0]`, possono essere collegati tramite buffer alla logica
 
 Esempio:
 
-| Istruzione | Opcode hex | Opcode bin |
-| --- | ---: | --- |
-| `LDI R0, imm8` | `0x20` | `0b00100000` |
-| `LDI R1, imm8` | `0x21` | `0b00100001` |
-| `LDI R2, imm8` | `0x22` | `0b00100010` |
-| `LDI R3, imm8` | `0x23` | `0b00100011` |
-| `LDI R4, imm8` | `0x24` | `0b00100100` |
-| `LDI R5, imm8` | `0x25` | `0b00100101` |
-| `LDI R6, imm8` | `0x26` | `0b00100110` |
-| `LDI R7, imm8` | `0x27` | `0b00100111` |
+| Istruzione     | Opcode hex | Opcode bin   |
+| -------------- | ---------: | ------------ |
+| `LDI R0, imm8` |     `0x20` | `0b00100000` |
+| `LDI R1, imm8` |     `0x21` | `0b00100001` |
+| `LDI R2, imm8` |     `0x22` | `0b00100010` |
+| `LDI R3, imm8` |     `0x23` | `0b00100011` |
+| `LDI R4, imm8` |     `0x24` | `0b00100100` |
+| `LDI R5, imm8` |     `0x25` | `0b00100101` |
+| `LDI R6, imm8` |     `0x26` | `0b00100110` |
+| `LDI R7, imm8` |     `0x27` | `0b00100111` |
 
 In questo esempio:
 
@@ -483,16 +483,16 @@ rrr = registro
 
 ### Codifica registri nel campo `rrr`
 
-| Registro | `rrr` | Binario completo con base `xxxxx000` |
-| --- | --- | --- |
-| `R0` | `0b000` | `xxxxx000` |
-| `R1` | `0b001` | `xxxxx001` |
-| `R2` | `0b010` | `xxxxx010` |
-| `R3` | `0b011` | `xxxxx011` |
-| `R4` | `0b100` | `xxxxx100` |
-| `R5` | `0b101` | `xxxxx101` |
-| `R6` | `0b110` | `xxxxx110` |
-| `R7` | `0b111` | `xxxxx111` |
+| Registro | `rrr`   | Binario completo con base `xxxxx000` |
+| -------- | ------- | ------------------------------------ |
+| `R0`     | `0b000` | `xxxxx000`                           |
+| `R1`     | `0b001` | `xxxxx001`                           |
+| `R2`     | `0b010` | `xxxxx010`                           |
+| `R3`     | `0b011` | `xxxxx011`                           |
+| `R4`     | `0b100` | `xxxxx100`                           |
+| `R5`     | `0b101` | `xxxxx101`                           |
+| `R6`     | `0b110` | `xxxxx110`                           |
+| `R7`     | `0b111` | `xxxxx111`                           |
 
 ## `ccc = 000` sistema / controllo
 
@@ -505,11 +505,11 @@ Range:
 
 Sottocategorie:
 
-| Opcode bin | Hex | Assembly | Formato | Effetto |
-| --- | ---: | --- | --- | --- |
-| `0b00000000` | `0x00` | `NOP` | `IMP` | nessuna operazione |
-| `0b00000001` | `0x01` | `HLT` | `IMP` | ferma la CPU |
-| `0b00000010-0b00011111` | `0x02-0x1F` | riservata | - | espansioni future |
+| Opcode bin              |         Hex | Assembly  | Formato | Effetto            |
+| ----------------------- | ----------: | --------- | ------- | ------------------ |
+| `0b00000000`            |      `0x00` | `NOP`     | `IMP`   | nessuna operazione |
+| `0b00000001`            |      `0x01` | `HLT`     | `IMP`   | ferma la CPU       |
+| `0b00000010-0b00011111` | `0x02-0x1F` | riservata | -       | espansioni future  |
 
 Queste istruzioni non usano registri generali e non hanno operandi aggiuntivi.
 
@@ -530,12 +530,12 @@ opcode = 001ssrrr
 
 Sottocategorie:
 
-| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
-| --- | --- | ---: | --- | --- | --- |
-| `00` | `0b00100rrr` | `0x20-0x27` | `LDI Rn, imm8` | `IMM8` | carica un valore immediato a 8 bit in `Rn` |
-| `01` | `0b00101rrr` | `0x28-0x2F` | riservata | - | espansioni future |
-| `10` | `0b00110rrr` | `0x30-0x37` | riservata | - | espansioni future |
-| `11` | `0b00111rrr` | `0x38-0x3F` | riservata | - | espansioni future |
+| `ss` | Opcode bin   |   Hex range | Assembly       | Formato | Effetto                                    |
+| ---- | ------------ | ----------: | -------------- | ------- | ------------------------------------------ |
+| `00` | `0b00100rrr` | `0x20-0x27` | `LDI Rn, imm8` | `IMM8`  | carica un valore immediato a 8 bit in `Rn` |
+| `01` | `0b00101rrr` | `0x28-0x2F` | riservata      | -       | espansioni future                          |
+| `10` | `0b00110rrr` | `0x30-0x37` | riservata      | -       | espansioni future                          |
+| `11` | `0b00111rrr` | `0x38-0x3F` | riservata      | -       | espansioni future                          |
 
 Esempio:
 
@@ -546,16 +546,16 @@ LDI R7, imm8 -> 0b00100111 -> 0x27
 
 Tabella estesa `LDI`:
 
-| Istruzione | Opcode hex | Opcode bin | Byte successivo |
-| --- | ---: | --- | --- |
-| `LDI R0, imm8` | `0x20` | `0b00100000` | `iiiiiiii` |
-| `LDI R1, imm8` | `0x21` | `0b00100001` | `iiiiiiii` |
-| `LDI R2, imm8` | `0x22` | `0b00100010` | `iiiiiiii` |
-| `LDI R3, imm8` | `0x23` | `0b00100011` | `iiiiiiii` |
-| `LDI R4, imm8` | `0x24` | `0b00100100` | `iiiiiiii` |
-| `LDI R5, imm8` | `0x25` | `0b00100101` | `iiiiiiii` |
-| `LDI R6, imm8` | `0x26` | `0b00100110` | `iiiiiiii` |
-| `LDI R7, imm8` | `0x27` | `0b00100111` | `iiiiiiii` |
+| Istruzione     | Opcode hex | Opcode bin   | Byte successivo |
+| -------------- | ---------: | ------------ | --------------- |
+| `LDI R0, imm8` |     `0x20` | `0b00100000` | `iiiiiiii`      |
+| `LDI R1, imm8` |     `0x21` | `0b00100001` | `iiiiiiii`      |
+| `LDI R2, imm8` |     `0x22` | `0b00100010` | `iiiiiiii`      |
+| `LDI R3, imm8` |     `0x23` | `0b00100011` | `iiiiiiii`      |
+| `LDI R4, imm8` |     `0x24` | `0b00100100` | `iiiiiiii`      |
+| `LDI R5, imm8` |     `0x25` | `0b00100101` | `iiiiiiii`      |
+| `LDI R6, imm8` |     `0x26` | `0b00100110` | `iiiiiiii`      |
+| `LDI R7, imm8` |     `0x27` | `0b00100111` | `iiiiiiii`      |
 
 ## `ccc = 010` memoria
 
@@ -582,12 +582,12 @@ opcode = 010ssrrr
 
 Sottocategorie:
 
-| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
-| --- | --- | ---: | --- | --- | --- |
+| `ss` | Opcode bin   |   Hex range | Assembly         | Formato  | Effetto                                 |
+| ---- | ------------ | ----------: | ---------------- | -------- | --------------------------------------- |
 | `00` | `0b01000rrr` | `0x40-0x47` | `LDA Rn, addr16` | `ADDR16` | carica in `Rn` il byte letto da memoria |
-| `01` | `0b01001rrr` | `0x48-0x4F` | `STA Rn, addr16` | `ADDR16` | scrive `Rn` in memoria |
-| `10` | `0b01010rrr` | `0x50-0x57` | riservata | - | espansioni future |
-| `11` | `0b01011rrr` | `0x58-0x5F` | riservata | - | espansioni future |
+| `01` | `0b01001rrr` | `0x48-0x4F` | `STA Rn, addr16` | `ADDR16` | scrive `Rn` in memoria                  |
+| `10` | `0b01010rrr` | `0x50-0x57` | riservata        | -        | espansioni future                       |
+| `11` | `0b01011rrr` | `0x58-0x5F` | riservata        | -        | espansioni future                       |
 
 Gli indirizzi `addr16` sono sempre codificati in little-endian:
 
@@ -605,29 +605,29 @@ addr_high = 0x12       = 0b00010010
 
 Tabella estesa `LDA`:
 
-| Istruzione | Opcode hex | Opcode bin | Byte successivi |
-| --- | ---: | --- | --- |
-| `LDA R0, addr16` | `0x40` | `0b01000000` | `addr_low addr_high` |
-| `LDA R1, addr16` | `0x41` | `0b01000001` | `addr_low addr_high` |
-| `LDA R2, addr16` | `0x42` | `0b01000010` | `addr_low addr_high` |
-| `LDA R3, addr16` | `0x43` | `0b01000011` | `addr_low addr_high` |
-| `LDA R4, addr16` | `0x44` | `0b01000100` | `addr_low addr_high` |
-| `LDA R5, addr16` | `0x45` | `0b01000101` | `addr_low addr_high` |
-| `LDA R6, addr16` | `0x46` | `0b01000110` | `addr_low addr_high` |
-| `LDA R7, addr16` | `0x47` | `0b01000111` | `addr_low addr_high` |
+| Istruzione       | Opcode hex | Opcode bin   | Byte successivi      |
+| ---------------- | ---------: | ------------ | -------------------- |
+| `LDA R0, addr16` |     `0x40` | `0b01000000` | `addr_low addr_high` |
+| `LDA R1, addr16` |     `0x41` | `0b01000001` | `addr_low addr_high` |
+| `LDA R2, addr16` |     `0x42` | `0b01000010` | `addr_low addr_high` |
+| `LDA R3, addr16` |     `0x43` | `0b01000011` | `addr_low addr_high` |
+| `LDA R4, addr16` |     `0x44` | `0b01000100` | `addr_low addr_high` |
+| `LDA R5, addr16` |     `0x45` | `0b01000101` | `addr_low addr_high` |
+| `LDA R6, addr16` |     `0x46` | `0b01000110` | `addr_low addr_high` |
+| `LDA R7, addr16` |     `0x47` | `0b01000111` | `addr_low addr_high` |
 
 Tabella estesa `STA`:
 
-| Istruzione | Opcode hex | Opcode bin | Byte successivi |
-| --- | ---: | --- | --- |
-| `STA R0, addr16` | `0x48` | `0b01001000` | `addr_low addr_high` |
-| `STA R1, addr16` | `0x49` | `0b01001001` | `addr_low addr_high` |
-| `STA R2, addr16` | `0x4A` | `0b01001010` | `addr_low addr_high` |
-| `STA R3, addr16` | `0x4B` | `0b01001011` | `addr_low addr_high` |
-| `STA R4, addr16` | `0x4C` | `0b01001100` | `addr_low addr_high` |
-| `STA R5, addr16` | `0x4D` | `0b01001101` | `addr_low addr_high` |
-| `STA R6, addr16` | `0x4E` | `0b01001110` | `addr_low addr_high` |
-| `STA R7, addr16` | `0x4F` | `0b01001111` | `addr_low addr_high` |
+| Istruzione       | Opcode hex | Opcode bin   | Byte successivi      |
+| ---------------- | ---------: | ------------ | -------------------- |
+| `STA R0, addr16` |     `0x48` | `0b01001000` | `addr_low addr_high` |
+| `STA R1, addr16` |     `0x49` | `0b01001001` | `addr_low addr_high` |
+| `STA R2, addr16` |     `0x4A` | `0b01001010` | `addr_low addr_high` |
+| `STA R3, addr16` |     `0x4B` | `0b01001011` | `addr_low addr_high` |
+| `STA R4, addr16` |     `0x4C` | `0b01001100` | `addr_low addr_high` |
+| `STA R5, addr16` |     `0x4D` | `0b01001101` | `addr_low addr_high` |
+| `STA R6, addr16` |     `0x4E` | `0b01001110` | `addr_low addr_high` |
+| `STA R7, addr16` |     `0x4F` | `0b01001111` | `addr_low addr_high` |
 
 ## `ccc = 011` ALU
 
@@ -656,20 +656,20 @@ I bit `aaaa`, cioe `IR[3:0]`, possono essere collegati tramite buffer al decoder
 
 Sottocategorie:
 
-| `m` | `aaaa` | Opcode bin | Hex | Assembly | Formato | Effetto |
-| --- | --- | --- | ---: | --- | --- | --- |
-| `0` | `0000` | `0b01100000` | `0x60` | `AND` | `IMP` | `RA = RA AND RB` |
-| `0` | `0001` | `0b01100001` | `0x61` | `OR` | `IMP` | `RA = RA OR RB` |
-| `0` | `0010` | `0b01100010` | `0x62` | `XOR` | `IMP` | `RA = RA XOR RB` |
-| `0` | `0011` | `0b01100011` | `0x63` | `NOR` | `IMP` | `RA = RA NOR RB` |
-| `0` | `0100` | `0b01100100` | `0x64` | `NAND` | `IMP` | `RA = RA NAND RB` |
-| `0` | `0101` | `0b01100101` | `0x65` | `XNOR` | `IMP` | `RA = RA XNOR RB` |
-| `0` | `0110` | `0b01100110` | `0x66` | `NOT` | `IMP` | `RA = NOT RA` |
-| `0` | `0111` | `0b01100111` | `0x67` | `ADD` | `IMP` | `RA = RA + RB` |
-| `0` | `1000` | `0b01101000` | `0x68` | `SUB` | `IMP` | `RA = RA - RB` |
-| `0` | `1001` | `0b01101001` | `0x69` | `CMP` | `IMP` | confronto cablato nella ALU, salva i flag |
-| `0` | `1010-1111` | `0b01101010-0b01101111` | `0x6A-0x6F` | riservata | - | espansioni future |
-| `1` | `0000-1111` | `0b01110000-0b01111111` | `0x70-0x7F` | riservata | - | espansioni future |
+| `m` | `aaaa`      | Opcode bin              |         Hex | Assembly  | Formato | Effetto                                   |
+| --- | ----------- | ----------------------- | ----------: | --------- | ------- | ----------------------------------------- |
+| `0` | `0000`      | `0b01100000`            |      `0x60` | `AND`     | `IMP`   | `RA = RA AND RB`                          |
+| `0` | `0001`      | `0b01100001`            |      `0x61` | `OR`      | `IMP`   | `RA = RA OR RB`                           |
+| `0` | `0010`      | `0b01100010`            |      `0x62` | `XOR`     | `IMP`   | `RA = RA XOR RB`                          |
+| `0` | `0011`      | `0b01100011`            |      `0x63` | `NOR`     | `IMP`   | `RA = RA NOR RB`                          |
+| `0` | `0100`      | `0b01100100`            |      `0x64` | `NAND`    | `IMP`   | `RA = RA NAND RB`                         |
+| `0` | `0101`      | `0b01100101`            |      `0x65` | `XNOR`    | `IMP`   | `RA = RA XNOR RB`                         |
+| `0` | `0110`      | `0b01100110`            |      `0x66` | `NOT`     | `IMP`   | `RA = NOT RA`                             |
+| `0` | `0111`      | `0b01100111`            |      `0x67` | `ADD`     | `IMP`   | `RA = RA + RB`                            |
+| `0` | `1000`      | `0b01101000`            |      `0x68` | `SUB`     | `IMP`   | `RA = RA - RB`                            |
+| `0` | `1001`      | `0b01101001`            |      `0x69` | `CMP`     | `IMP`   | confronto cablato nella ALU, salva i flag |
+| `0` | `1010-1111` | `0b01101010-0b01101111` | `0x6A-0x6F` | riservata | -       | espansioni future                         |
+| `1` | `0000-1111` | `0b01110000-0b01111111` | `0x70-0x7F` | riservata | -       | espansioni future                         |
 
 Le istruzioni ALU non selezionano direttamente un registro generale. Operano sui registri dedicati `RA` e `RB`.
 
@@ -699,12 +699,12 @@ flag_signals = compare(RA, RB)
 
 La CPU usa quattro flag principali:
 
-| Flag | Nome | Significato |
-| --- | --- | --- |
-| `C` | Carry / Borrow | riporto in somma oppure prestito in sottrazione/confronto |
-| `Z` | Zero | il risultato e `0b00000000` |
-| `N` | Negative | il bit 7 del risultato e `1` |
-| `O` | Overflow | overflow aritmetico con numeri signed in complemento a due |
+| Flag | Nome           | Significato                                                |
+| ---- | -------------- | ---------------------------------------------------------- |
+| `C`  | Carry / Borrow | riporto in somma oppure prestito in sottrazione/confronto  |
+| `Z`  | Zero           | il risultato e `0b00000000`                                |
+| `N`  | Negative       | il bit 7 del risultato e `1`                               |
+| `O`  | Overflow       | overflow aritmetico con numeri signed in complemento a due |
 
 La ALU produce i segnali di flag. Il registro flag li memorizza solo quando la control unit abilita il caricamento dei flag.
 
@@ -793,12 +793,12 @@ Dove:
 
 Sottocategorie:
 
-| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
-| --- | --- | ---: | --- | --- | --- |
-| `00` | `0b10000rrr` | `0x80-0x87` | `IN Rn` | `IMP` | copia il valore della periferica di input in `Rn` |
-| `01` | `0b10001rrr` | `0x88-0x8F` | `OUT Rn` | `IMP` | copia `Rn` nel registro/periferica di output |
-| `10` | `0b10010rrr` | `0x90-0x97` | riservata | - | espansioni future |
-| `11` | `0b10011rrr` | `0x98-0x9F` | riservata | - | espansioni future |
+| `ss` | Opcode bin   |   Hex range | Assembly  | Formato | Effetto                                           |
+| ---- | ------------ | ----------: | --------- | ------- | ------------------------------------------------- |
+| `00` | `0b10000rrr` | `0x80-0x87` | `IN Rn`   | `IMP`   | copia il valore della periferica di input in `Rn` |
+| `01` | `0b10001rrr` | `0x88-0x8F` | `OUT Rn`  | `IMP`   | copia `Rn` nel registro/periferica di output      |
+| `10` | `0b10010rrr` | `0x90-0x97` | riservata | -       | espansioni future                                 |
+| `11` | `0b10011rrr` | `0x98-0x9F` | riservata | -       | espansioni future                                 |
 
 `IN` rappresenta l'input a 8 bit collegato al bus dati tramite buffer, come lo switch usato nei test hardware.
 
@@ -806,29 +806,29 @@ Sottocategorie:
 
 Tabella estesa `IN`:
 
-| Istruzione | Opcode hex | Opcode bin |
-| --- | ---: | --- |
-| `IN R0` | `0x80` | `0b10000000` |
-| `IN R1` | `0x81` | `0b10000001` |
-| `IN R2` | `0x82` | `0b10000010` |
-| `IN R3` | `0x83` | `0b10000011` |
-| `IN R4` | `0x84` | `0b10000100` |
-| `IN R5` | `0x85` | `0b10000101` |
-| `IN R6` | `0x86` | `0b10000110` |
-| `IN R7` | `0x87` | `0b10000111` |
+| Istruzione | Opcode hex | Opcode bin   |
+| ---------- | ---------: | ------------ |
+| `IN R0`    |     `0x80` | `0b10000000` |
+| `IN R1`    |     `0x81` | `0b10000001` |
+| `IN R2`    |     `0x82` | `0b10000010` |
+| `IN R3`    |     `0x83` | `0b10000011` |
+| `IN R4`    |     `0x84` | `0b10000100` |
+| `IN R5`    |     `0x85` | `0b10000101` |
+| `IN R6`    |     `0x86` | `0b10000110` |
+| `IN R7`    |     `0x87` | `0b10000111` |
 
 Tabella estesa `OUT`:
 
-| Istruzione | Opcode hex | Opcode bin |
-| --- | ---: | --- |
-| `OUT R0` | `0x88` | `0b10001000` |
-| `OUT R1` | `0x89` | `0b10001001` |
-| `OUT R2` | `0x8A` | `0b10001010` |
-| `OUT R3` | `0x8B` | `0b10001011` |
-| `OUT R4` | `0x8C` | `0b10001100` |
-| `OUT R5` | `0x8D` | `0b10001101` |
-| `OUT R6` | `0x8E` | `0b10001110` |
-| `OUT R7` | `0x8F` | `0b10001111` |
+| Istruzione | Opcode hex | Opcode bin   |
+| ---------- | ---------: | ------------ |
+| `OUT R0`   |     `0x88` | `0b10001000` |
+| `OUT R1`   |     `0x89` | `0b10001001` |
+| `OUT R2`   |     `0x8A` | `0b10001010` |
+| `OUT R3`   |     `0x8B` | `0b10001011` |
+| `OUT R4`   |     `0x8C` | `0b10001100` |
+| `OUT R5`   |     `0x8D` | `0b10001101` |
+| `OUT R6`   |     `0x8E` | `0b10001110` |
+| `OUT R7`   |     `0x8F` | `0b10001111` |
 
 ## `ccc = 101` salti
 
@@ -855,18 +855,47 @@ opcode addr_low addr_high
 
 Tabella condizioni:
 
-| Mnemonic | Opcode hex | Opcode bin | Condizione | Dopo `CMP` unsigned |
-| --- | ---: | --- | --- | --- |
-| `JMP addr16` | `0xA0` | `0b10100000` | sempre | - |
-| `JZ addr16` | `0xA1` | `0b10100001` | `Z = 1` | salta se `RA == RB` |
-| `JNZ addr16` | `0xA2` | `0b10100010` | `Z = 0` | salta se `RA != RB` |
-| `JC addr16` | `0xA3` | `0b10100011` | `C = 1` | salta se `RA < RB` |
-| `JNC addr16` | `0xA4` | `0b10100100` | `C = 0` | salta se `RA >= RB` |
-| `JN addr16` | `0xA5` | `0b10100101` | `N = 1` | - |
-| `JNN addr16` | `0xA6` | `0b10100110` | `N = 0` | - |
-| `JO addr16` | `0xA7` | `0b10100111` | `O = 1` | - |
-| `JNO addr16` | `0xA8` | `0b10101000` | `O = 0` | - |
-| riservata | `0xA9-0xBF` | `0b10101001-0b10111111` | espansioni future | - |
+| Mnemonic     | Significato sigla           |  Opcode hex | Condizione        | Operazione mnemonica dopo `CMP RA, RB` unsigned |
+| ------------ | --------------------------- | ----------: | ----------------- | ----------------------------------------------- |
+| `JMP addr16` | **Jump**                    |      `0xA0` | sempre            | salta sempre                                    |
+| `JZ addr16`  | **Jump if Zero**            |      `0xA1` | `Z = 1`           | `RA == RB`                                      |
+| `JNZ addr16` | **Jump if Not Zero**        |      `0xA2` | `Z = 0`           | `RA != RB`                                      |
+| `JC addr16`  | **Jump if Carry**           |      `0xA3` | `C = 1`           | `RA < RB`                                       |
+| `JNC addr16` | **Jump if No Carry**        |      `0xA4` | `C = 0`           | `RA >= RB`                                      |
+| `JN addr16`  | **Jump if Negative**        |      `0xA5` | `N = 1`           | risultato negativo                              |
+| `JNN addr16` | **Jump if Not Negative**    |      `0xA6` | `N = 0`           | risultato non negativo                          |
+| `JO addr16`  | **Jump if Overflow**        |      `0xA7` | `O = 1`           | overflow presente                               |
+| `JNO addr16` | **Jump if No Overflow**     |      `0xA8` | `O = 0`           | nessun overflow                                 |
+| riservata    | opcode non ancora assegnati | `0xA9-0xBF` | espansioni future | nessuna operazione attuale                      |
+
+Dove:
+
+- `J` significa **Jump**, cioè “salta”.
+- `Z` significa **Zero**.
+- `NZ` significa **Not Zero**.
+- `C` significa **Carry**.
+- `NC` significa **No Carry**.
+- `N` significa **Negative**.
+- `NN` significa **Not Negative**.
+- `O` significa **Overflow**.
+- `NO` significa **No Overflow**.
+
+Esempio:
+
+```asm
+CMP RA, RB
+JZ uguali
+JC minore
+JNC maggiore_o_uguale
+```
+
+Interpretazione:
+
+```text
+JZ  → RA == RB
+JC  → RA < RB
+JNC → RA >= RB
+```
 
 Per confronti unsigned dopo `CMP`:
 
@@ -921,12 +950,12 @@ Dove:
 
 Sottocategorie:
 
-| `ss` | Opcode bin | Hex range | Assembly | Formato | Effetto |
-| --- | --- | ---: | --- | --- | --- |
-| `00` | `0b11000rrr` | `0xC0-0xC7` | `MOV RA, Rn` | `IMP` | copia `Rn` in `RA` |
-| `01` | `0b11001rrr` | `0xC8-0xCF` | `MOV RB, Rn` | `IMP` | copia `Rn` in `RB` |
-| `10` | `0b11010rrr` | `0xD0-0xD7` | `MOV Rn, RA` | `IMP` | copia `RA` in `Rn` |
-| `11` | `0b11011rrr` | `0xD8-0xDF` | riservata | - | espansioni future |
+| `ss` | Opcode bin   |   Hex range | Assembly     | Formato | Effetto            |
+| ---- | ------------ | ----------: | ------------ | ------- | ------------------ |
+| `00` | `0b11000rrr` | `0xC0-0xC7` | `MOV RA, Rn` | `IMP`   | copia `Rn` in `RA` |
+| `01` | `0b11001rrr` | `0xC8-0xCF` | `MOV RB, Rn` | `IMP`   | copia `Rn` in `RB` |
+| `10` | `0b11010rrr` | `0xD0-0xD7` | `MOV Rn, RA` | `IMP`   | copia `RA` in `Rn` |
+| `11` | `0b11011rrr` | `0xD8-0xDF` | riservata    | -       | espansioni future  |
 
 Queste istruzioni rispettano il circuito visto nei video:
 
@@ -966,42 +995,42 @@ R2 = RA
 
 Tabella estesa `MOV RA, Rn`:
 
-| Istruzione | Opcode hex | Opcode bin |
-| --- | ---: | --- |
-| `MOV RA, R0` | `0xC0` | `0b11000000` |
-| `MOV RA, R1` | `0xC1` | `0b11000001` |
-| `MOV RA, R2` | `0xC2` | `0b11000010` |
-| `MOV RA, R3` | `0xC3` | `0b11000011` |
-| `MOV RA, R4` | `0xC4` | `0b11000100` |
-| `MOV RA, R5` | `0xC5` | `0b11000101` |
-| `MOV RA, R6` | `0xC6` | `0b11000110` |
-| `MOV RA, R7` | `0xC7` | `0b11000111` |
+| Istruzione   | Opcode hex | Opcode bin   |
+| ------------ | ---------: | ------------ |
+| `MOV RA, R0` |     `0xC0` | `0b11000000` |
+| `MOV RA, R1` |     `0xC1` | `0b11000001` |
+| `MOV RA, R2` |     `0xC2` | `0b11000010` |
+| `MOV RA, R3` |     `0xC3` | `0b11000011` |
+| `MOV RA, R4` |     `0xC4` | `0b11000100` |
+| `MOV RA, R5` |     `0xC5` | `0b11000101` |
+| `MOV RA, R6` |     `0xC6` | `0b11000110` |
+| `MOV RA, R7` |     `0xC7` | `0b11000111` |
 
 Tabella estesa `MOV RB, Rn`:
 
-| Istruzione | Opcode hex | Opcode bin |
-| --- | ---: | --- |
-| `MOV RB, R0` | `0xC8` | `0b11001000` |
-| `MOV RB, R1` | `0xC9` | `0b11001001` |
-| `MOV RB, R2` | `0xCA` | `0b11001010` |
-| `MOV RB, R3` | `0xCB` | `0b11001011` |
-| `MOV RB, R4` | `0xCC` | `0b11001100` |
-| `MOV RB, R5` | `0xCD` | `0b11001101` |
-| `MOV RB, R6` | `0xCE` | `0b11001110` |
-| `MOV RB, R7` | `0xCF` | `0b11001111` |
+| Istruzione   | Opcode hex | Opcode bin   |
+| ------------ | ---------: | ------------ |
+| `MOV RB, R0` |     `0xC8` | `0b11001000` |
+| `MOV RB, R1` |     `0xC9` | `0b11001001` |
+| `MOV RB, R2` |     `0xCA` | `0b11001010` |
+| `MOV RB, R3` |     `0xCB` | `0b11001011` |
+| `MOV RB, R4` |     `0xCC` | `0b11001100` |
+| `MOV RB, R5` |     `0xCD` | `0b11001101` |
+| `MOV RB, R6` |     `0xCE` | `0b11001110` |
+| `MOV RB, R7` |     `0xCF` | `0b11001111` |
 
 Tabella estesa `MOV Rn, RA`:
 
-| Istruzione | Opcode hex | Opcode bin |
-| --- | ---: | --- |
-| `MOV R0, RA` | `0xD0` | `0b11010000` |
-| `MOV R1, RA` | `0xD1` | `0b11010001` |
-| `MOV R2, RA` | `0xD2` | `0b11010010` |
-| `MOV R3, RA` | `0xD3` | `0b11010011` |
-| `MOV R4, RA` | `0xD4` | `0b11010100` |
-| `MOV R5, RA` | `0xD5` | `0b11010101` |
-| `MOV R6, RA` | `0xD6` | `0b11010110` |
-| `MOV R7, RA` | `0xD7` | `0b11010111` |
+| Istruzione   | Opcode hex | Opcode bin   |
+| ------------ | ---------: | ------------ |
+| `MOV R0, RA` |     `0xD0` | `0b11010000` |
+| `MOV R1, RA` |     `0xD1` | `0b11010001` |
+| `MOV R2, RA` |     `0xD2` | `0b11010010` |
+| `MOV R3, RA` |     `0xD3` | `0b11010011` |
+| `MOV R4, RA` |     `0xD4` | `0b11010100` |
+| `MOV R5, RA` |     `0xD5` | `0b11010101` |
+| `MOV R6, RA` |     `0xD6` | `0b11010110` |
+| `MOV R7, RA` |     `0xD7` | `0b11010111` |
 
 ## `ccc = 111` riservata
 
@@ -1016,8 +1045,8 @@ Tutto il range `111xxxxx` e riservato per espansioni future.
 
 Sottocategorie:
 
-| Campo `xxxxx` | Opcode bin | Hex range | Uso |
-| --- | --- | ---: | --- |
+| Campo `xxxxx` | Opcode bin              |   Hex range | Uso       |
+| ------------- | ----------------------- | ----------: | --------- |
 | `00000-11111` | `0b11100000-0b11111111` | `0xE0-0xFF` | riservato |
 
 ## Tabella opcode riassuntiva
@@ -1025,37 +1054,37 @@ Sottocategorie:
 La seguente tabella riassume gli opcode attivi, mantenendo l'ordine binario delle macrocategorie `ccc`.
 Le tabelle estese delle singole istruzioni sono nelle sezioni precedenti, dove si vede il valore completo per ogni registro.
 
-| Mnemonic | Opcode hex | Opcode bin | Formato | Byte | Descrizione |
-| --- | ---: | --- | --- | ---: | --- |
-| `NOP` | `0x00` | `0b00000000` | `IMP` | 1 | Nessuna operazione |
-| `HLT` | `0x01` | `0b00000001` | `IMP` | 1 | Ferma la CPU |
-| `LDI Rn, imm8` | `0x20-0x27` | `0b00100rrr` | `IMM8` | 2 | Carica un valore immediato nel registro `Rn` |
-| `LDA Rn, addr16` | `0x40-0x47` | `0b01000rrr` | `ADDR16` | 3 | Carica in `Rn` il byte letto dalla memoria |
-| `STA Rn, addr16` | `0x48-0x4F` | `0b01001rrr` | `ADDR16` | 3 | Scrive `Rn` in memoria |
-| `AND` | `0x60` | `0b01100000` | `IMP` | 1 | Seleziona operazione ALU `AND` |
-| `OR` | `0x61` | `0b01100001` | `IMP` | 1 | Seleziona operazione ALU `OR` |
-| `XOR` | `0x62` | `0b01100010` | `IMP` | 1 | Seleziona operazione ALU `XOR` |
-| `NOR` | `0x63` | `0b01100011` | `IMP` | 1 | Seleziona operazione ALU `NOR` |
-| `NAND` | `0x64` | `0b01100100` | `IMP` | 1 | Seleziona operazione ALU `NAND` |
-| `XNOR` | `0x65` | `0b01100101` | `IMP` | 1 | Seleziona operazione ALU `XNOR` |
-| `NOT` | `0x66` | `0b01100110` | `IMP` | 1 | Esegue `RA = NOT RA` |
-| `ADD` | `0x67` | `0b01100111` | `IMP` | 1 | Esegue `RA = RA + RB` |
-| `SUB` | `0x68` | `0b01101000` | `IMP` | 1 | Esegue `RA = RA - RB` |
-| `CMP` | `0x69` | `0b01101001` | `IMP` | 1 | Confronta `RA` e `RB` tramite logica ALU cablata, salva i flag |
-| `IN Rn` | `0x80-0x87` | `0b10000rrr` | `IMP` | 1 | Copia input in `Rn` |
-| `OUT Rn` | `0x88-0x8F` | `0b10001rrr` | `IMP` | 1 | Copia `Rn` nel registro/periferica di output |
-| `JMP addr16` | `0xA0` | `0b10100000` | `ADDR16` | 3 | Carica il PC con un nuovo indirizzo |
-| `JZ addr16` | `0xA1` | `0b10100001` | `ADDR16` | 3 | Salta se il flag zero e attivo |
-| `JNZ addr16` | `0xA2` | `0b10100010` | `ADDR16` | 3 | Salta se il flag zero non e attivo |
-| `JC addr16` | `0xA3` | `0b10100011` | `ADDR16` | 3 | Salta se il flag carry/borrow e attivo |
-| `JNC addr16` | `0xA4` | `0b10100100` | `ADDR16` | 3 | Salta se il flag carry/borrow non e attivo |
-| `JN addr16` | `0xA5` | `0b10100101` | `ADDR16` | 3 | Salta se il flag negative e attivo |
-| `JNN addr16` | `0xA6` | `0b10100110` | `ADDR16` | 3 | Salta se il flag negative non e attivo |
-| `JO addr16` | `0xA7` | `0b10100111` | `ADDR16` | 3 | Salta se il flag overflow e attivo |
-| `JNO addr16` | `0xA8` | `0b10101000` | `ADDR16` | 3 | Salta se il flag overflow non e attivo |
-| `MOV RA, Rn` | `0xC0-0xC7` | `0b11000rrr` | `IMP` | 1 | Copia `Rn` nel registro `RA` |
-| `MOV RB, Rn` | `0xC8-0xCF` | `0b11001rrr` | `IMP` | 1 | Copia `Rn` nel registro `RB` |
-| `MOV Rn, RA` | `0xD0-0xD7` | `0b11010rrr` | `IMP` | 1 | Copia `RA` nel registro `Rn` |
+| Mnemonic         |  Opcode hex | Opcode bin   | Formato  | Byte | Descrizione                                                    |
+| ---------------- | ----------: | ------------ | -------- | ---: | -------------------------------------------------------------- |
+| `NOP`            |      `0x00` | `0b00000000` | `IMP`    |    1 | Nessuna operazione                                             |
+| `HLT`            |      `0x01` | `0b00000001` | `IMP`    |    1 | Ferma la CPU                                                   |
+| `LDI Rn, imm8`   | `0x20-0x27` | `0b00100rrr` | `IMM8`   |    2 | Carica un valore immediato nel registro `Rn`                   |
+| `LDA Rn, addr16` | `0x40-0x47` | `0b01000rrr` | `ADDR16` |    3 | Carica in `Rn` il byte letto dalla memoria                     |
+| `STA Rn, addr16` | `0x48-0x4F` | `0b01001rrr` | `ADDR16` |    3 | Scrive `Rn` in memoria                                         |
+| `AND`            |      `0x60` | `0b01100000` | `IMP`    |    1 | Seleziona operazione ALU `AND`                                 |
+| `OR`             |      `0x61` | `0b01100001` | `IMP`    |    1 | Seleziona operazione ALU `OR`                                  |
+| `XOR`            |      `0x62` | `0b01100010` | `IMP`    |    1 | Seleziona operazione ALU `XOR`                                 |
+| `NOR`            |      `0x63` | `0b01100011` | `IMP`    |    1 | Seleziona operazione ALU `NOR`                                 |
+| `NAND`           |      `0x64` | `0b01100100` | `IMP`    |    1 | Seleziona operazione ALU `NAND`                                |
+| `XNOR`           |      `0x65` | `0b01100101` | `IMP`    |    1 | Seleziona operazione ALU `XNOR`                                |
+| `NOT`            |      `0x66` | `0b01100110` | `IMP`    |    1 | Esegue `RA = NOT RA`                                           |
+| `ADD`            |      `0x67` | `0b01100111` | `IMP`    |    1 | Esegue `RA = RA + RB`                                          |
+| `SUB`            |      `0x68` | `0b01101000` | `IMP`    |    1 | Esegue `RA = RA - RB`                                          |
+| `CMP`            |      `0x69` | `0b01101001` | `IMP`    |    1 | Confronta `RA` e `RB` tramite logica ALU cablata, salva i flag |
+| `IN Rn`          | `0x80-0x87` | `0b10000rrr` | `IMP`    |    1 | Copia input in `Rn`                                            |
+| `OUT Rn`         | `0x88-0x8F` | `0b10001rrr` | `IMP`    |    1 | Copia `Rn` nel registro/periferica di output                   |
+| `JMP addr16`     |      `0xA0` | `0b10100000` | `ADDR16` |    3 | Carica il PC con un nuovo indirizzo                            |
+| `JZ addr16`      |      `0xA1` | `0b10100001` | `ADDR16` |    3 | Salta se il flag zero e attivo                                 |
+| `JNZ addr16`     |      `0xA2` | `0b10100010` | `ADDR16` |    3 | Salta se il flag zero non e attivo                             |
+| `JC addr16`      |      `0xA3` | `0b10100011` | `ADDR16` |    3 | Salta se il flag carry/borrow e attivo                         |
+| `JNC addr16`     |      `0xA4` | `0b10100100` | `ADDR16` |    3 | Salta se il flag carry/borrow non e attivo                     |
+| `JN addr16`      |      `0xA5` | `0b10100101` | `ADDR16` |    3 | Salta se il flag negative e attivo                             |
+| `JNN addr16`     |      `0xA6` | `0b10100110` | `ADDR16` |    3 | Salta se il flag negative non e attivo                         |
+| `JO addr16`      |      `0xA7` | `0b10100111` | `ADDR16` |    3 | Salta se il flag overflow e attivo                             |
+| `JNO addr16`     |      `0xA8` | `0b10101000` | `ADDR16` |    3 | Salta se il flag overflow non e attivo                         |
+| `MOV RA, Rn`     | `0xC0-0xC7` | `0b11000rrr` | `IMP`    |    1 | Copia `Rn` nel registro `RA`                                   |
+| `MOV RB, Rn`     | `0xC8-0xCF` | `0b11001rrr` | `IMP`    |    1 | Copia `Rn` nel registro `RB`                                   |
+| `MOV Rn, RA`     | `0xD0-0xD7` | `0b11010rrr` | `IMP`    |    1 | Copia `RA` nel registro `Rn`                                   |
 
 ## Confronti e salti condizionati
 
@@ -1095,12 +1124,12 @@ bin: 0b00100000 0b00001010 0b10001000 0b00000001
 
 Layout in memoria:
 
-| Indirizzo hex | Indirizzo bin | Valore hex | Valore bin | Significato |
-| --- | --- | --- | --- | --- |
-| `0x0000` | `0b0000000000000000` | `0x20` | `0b00100000` | opcode `LDI R0, imm8` |
-| `0x0001` | `0b0000000000000001` | `0x0A` | `0b00001010` | immediato |
-| `0x0002` | `0b0000000000000010` | `0x88` | `0b10001000` | opcode `OUT R0` |
-| `0x0003` | `0b0000000000000011` | `0x01` | `0b00000001` | opcode `HLT` |
+| Indirizzo hex | Indirizzo bin        | Valore hex | Valore bin   | Significato           |
+| ------------- | -------------------- | ---------- | ------------ | --------------------- |
+| `0x0000`      | `0b0000000000000000` | `0x20`     | `0b00100000` | opcode `LDI R0, imm8` |
+| `0x0001`      | `0b0000000000000001` | `0x0A`     | `0b00001010` | immediato             |
+| `0x0002`      | `0b0000000000000010` | `0x88`     | `0b10001000` | opcode `OUT R0`       |
+| `0x0003`      | `0b0000000000000011` | `0x01`     | `0b00000001` | opcode `HLT`          |
 
 ## Esempio ALU con registri RA e RB
 
@@ -1123,12 +1152,12 @@ bin: 0b11000000 0b11001001 0b01100111 0b11010010
 
 Layout in memoria:
 
-| Indirizzo hex | Indirizzo bin | Valore hex | Valore bin | Significato |
-| --- | --- | --- | --- | --- |
-| `0x0000` | `0b0000000000000000` | `0xC0` | `0b11000000` | opcode `MOV RA, R0` |
-| `0x0001` | `0b0000000000000001` | `0xC9` | `0b11001001` | opcode `MOV RB, R1` |
-| `0x0002` | `0b0000000000000010` | `0x67` | `0b01100111` | opcode `ADD` |
-| `0x0003` | `0b0000000000000011` | `0xD2` | `0b11010010` | opcode `MOV R2, RA` |
+| Indirizzo hex | Indirizzo bin        | Valore hex | Valore bin   | Significato         |
+| ------------- | -------------------- | ---------- | ------------ | ------------------- |
+| `0x0000`      | `0b0000000000000000` | `0xC0`     | `0b11000000` | opcode `MOV RA, R0` |
+| `0x0001`      | `0b0000000000000001` | `0xC9`     | `0b11001001` | opcode `MOV RB, R1` |
+| `0x0002`      | `0b0000000000000010` | `0x67`     | `0b01100111` | opcode `ADD`        |
+| `0x0003`      | `0b0000000000000011` | `0xD2`     | `0b11010010` | opcode `MOV R2, RA` |
 
 ## Esempio con indirizzo a 16 bit
 
@@ -1153,14 +1182,14 @@ bin: 0b01001010 0b11111111 0b00000000
 
 Layout in memoria:
 
-| Indirizzo hex | Indirizzo bin | Valore hex | Valore bin | Significato |
-| --- | --- | --- | --- | --- |
-| `0x0000` | `0b0000000000000000` | `0x42` | `0b01000010` | opcode `LDA R2, addr16` |
-| `0x0001` | `0b0000000000000001` | `0x34` | `0b00110100` | byte basso indirizzo `0x1234` |
-| `0x0002` | `0b0000000000000010` | `0x12` | `0b00010010` | byte alto indirizzo `0x1234` |
-| `0x0003` | `0b0000000000000011` | `0x4A` | `0b01001010` | opcode `STA R2, addr16` |
-| `0x0004` | `0b0000000000000100` | `0xFF` | `0b11111111` | byte basso indirizzo `0x00FF` |
-| `0x0005` | `0b0000000000000101` | `0x00` | `0b00000000` | byte alto indirizzo `0x00FF` |
+| Indirizzo hex | Indirizzo bin        | Valore hex | Valore bin   | Significato                   |
+| ------------- | -------------------- | ---------- | ------------ | ----------------------------- |
+| `0x0000`      | `0b0000000000000000` | `0x42`     | `0b01000010` | opcode `LDA R2, addr16`       |
+| `0x0001`      | `0b0000000000000001` | `0x34`     | `0b00110100` | byte basso indirizzo `0x1234` |
+| `0x0002`      | `0b0000000000000010` | `0x12`     | `0b00010010` | byte alto indirizzo `0x1234`  |
+| `0x0003`      | `0b0000000000000011` | `0x4A`     | `0b01001010` | opcode `STA R2, addr16`       |
+| `0x0004`      | `0b0000000000000100` | `0xFF`     | `0b11111111` | byte basso indirizzo `0x00FF` |
+| `0x0005`      | `0b0000000000000101` | `0x00`     | `0b00000000` | byte alto indirizzo `0x00FF`  |
 
 ## Esempio con variabile in memoria
 
