@@ -1,4 +1,4 @@
-; Esempio didattico: somma due numeri a 8 bit.
+; ESEMPIO ASSEMBLY 03: somma due numeri a 8 bit.
 ;
 ; Obiettivo:
 ; - caricare due valori nei registri generali R0 e R1;

@@ -1,4 +1,4 @@
-; VIDEO ASSEMBLER - ESEMPIO 3
+; ESEMPIO ASSEMBLY 06
 ; Label in avanti, confronto e assemblaggio in due passate.
 ;
 ; R0 e R1 contengono entrambi 5, quindi CMP attiva il flag Z.

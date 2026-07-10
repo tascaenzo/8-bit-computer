@@ -1,4 +1,4 @@
-; Esempio didattico: confronto unsigned tra due numeri.
+; ESEMPIO ASSEMBLY 05: confronto unsigned tra due numeri.
 ;
 ; Obiettivo:
 ; - confrontare RA e RB con CMP;
