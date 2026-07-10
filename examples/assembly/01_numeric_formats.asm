@@ -1,4 +1,4 @@
-; VIDEO ASSEMBLER - ESEMPIO 1
+; ESEMPIO ASSEMBLY 01
 ; Formati numerici supportati dal linguaggio assembly.
 ;
 ; Le quattro istruzioni LDI caricano sempre lo stesso valore: 42 decimale.

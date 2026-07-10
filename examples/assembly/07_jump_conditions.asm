@@ -1,4 +1,4 @@
-; Esempio didattico: panoramica dei salti condizionali.
+; ESEMPIO ASSEMBLY 07: panoramica dei salti condizionali.
 ;
 ; CMP aggiorna i flag confrontando RA e RB.
 ; Le istruzioni JZ, JNZ, JC e JNC sono le piu utili per confronti unsigned.

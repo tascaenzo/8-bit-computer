@@ -1,4 +1,4 @@
-; Esempio didattico: operazioni principali della ALU.
+; ESEMPIO ASSEMBLY 04: operazioni principali della ALU.
 ;
 ; La ALU lavora sui registri RA e RB.
 ; Dopo ogni operazione il risultato resta in RA e viene copiato in R2.

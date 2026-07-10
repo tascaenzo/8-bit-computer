@@ -1,4 +1,4 @@
-; VIDEO ASSEMBLER - ESEMPIO 2
+; ESEMPIO ASSEMBLY 02
 ; Costanti, direttive, label e accesso alla memoria.
 ;
 ; Risultato previsto:
