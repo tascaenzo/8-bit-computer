@@ -148,7 +148,7 @@ I formati previsti sono:
 - `.bits`: vista binaria testuale per controllare i bit `D7`...`D0`;
 - `.h`: array C/C++ da usare in Arduino IDE.
 
-La versione attuale scrive tutti e tre i formati.
+La versione attuale scrive tutti e quattro i formati.
 
 ## `include/errors.h` e `src/errors.c`
 
