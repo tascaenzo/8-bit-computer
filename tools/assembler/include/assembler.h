@@ -30,7 +30,7 @@ typedef struct {
  * Opzioni passate dalla CLI al motore dell'assembler.
  *
  * input_path     e il file .asm da leggere.
- * output_prefix  e il prefisso usato per generare .bin, .hex, .h, ecc.
+ * output_prefix  e il prefisso usato per generare .bin, .hex, .bits e .h.
  */
 typedef struct {
     const char *input_path;

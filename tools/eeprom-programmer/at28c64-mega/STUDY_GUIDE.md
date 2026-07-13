@@ -100,14 +100,15 @@ Questo header espone le funzioni usate dal resto del programma per parlare con l
 ```cpp
 void eepromBusBegin();
 uint8_t eepromReadByte(uint16_t address);
-bool eepromWriteByte(uint16_t address, uint8_t value);
+void eepromWriteByte(uint16_t address, uint8_t value);
+void eepromWriteByteProtected(uint16_t address, uint8_t value);
 ```
 
 Il resto del codice non deve sapere come sono collegati i pin fisici. Deve solo poter chiedere:
 
 - inizializza il bus;
 - leggi un byte;
-- scrivi un byte.
+- scrivi un byte normale o con sequenza Software Data Protection.
 
 ## `src/EepromBus.cpp`
 

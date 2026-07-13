@@ -403,7 +403,7 @@ Dalla root del repository:
 make -C tools/assembler
 ```
 
-### 3. Generare il file `.hex`
+### 3. Generare gli output dell'assembler
 
 ```sh
 tools/assembler/build/cpu8asm examples/assembly/demo.asm -o tools/assembler/build/demo
