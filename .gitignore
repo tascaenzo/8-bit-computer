@@ -2,10 +2,9 @@
 node_modules/
 
 # Build outputs
-dist/
 build/
-.next/
 coverage/
+tmp/
 
 # Logs
 *.log
