@@ -1,0 +1,556 @@
+Bentornati sul mio canale YouTube. Per
+chi non mi conosce, io sono Enzo. Oggi
+continuiamo a parlare della CPU 8 bit e
+vediamo come prendere un programma
+assembly e convertirlo in un codice
+binario che può essere eseguito dalla
+nostra CPU. Ma prima di iniziare vi
+ricordo di lasciare un mi piace,
+commentare questo video e iscrivervi al
+mio canale per supportare il mio lavoro.
+Nello scorso video ci siamo lasciati con
+l'istruction set architecture della CPU.
+Abbiamo detto che comunque sono tutte le
+operazioni, tutti i codici che poi si
+traducono in istruzioni, operazioni che
+la nostra CPU riesce ad eseguire. Ora,
+ehm, a ricord di logica, dato che la CPU
+riesce a leggere soltanto dei dei bit,
+quindi una serie di 0 e 1, noi dovremmo
+scrivere un programma con questo codice
+binario e poi lo dovremmo dare impasto
+alla CPU per l'esecuzione vera e
+propria. Il problema è che
+effettivamente andare a scrivere 0 e 1
+per per una mente umana è un po'
+complicato. Per questo motivo esistono
+dei linguaggi come l'assembly che,
+diciamo, è un linguaggio di
+programmazione a basso livello, il più
+basso livello possibile.
+Si correla molto a come effettivamente è
+costruito l'hardware che ci permette di
+tradurre tutto in delle label, comunque
+delle etichette, scrivere un programma
+in maniera più agile e comprensibile per
+un uomo e poi successivamente eh queste
+etichette vengono tradotte in codice
+binario, in codice macchina. che può
+eseguire la CPU, perché in effetti la
+CPU non riesce a leggere dei file
+assembly, ma bisogna passare da un
+programma chiamato assemblatore o
+assembler che va a prendere questo file
+che di fatto è un file di testo, lo
+prende, lo traduce in
+byte code in codice macchina e a quel
+punto apriamo tutta una serie di bit,
+quindi 0 e 1 che possono essere compresi
+dalla CPU e che può facilmente seguire
+la nostra CPU. In questo video proviamo
+a vedere tutto il processo che ci porta
+da un programma assembly a un codice
+macchina che è pronto ad essere eseguito
+dalla nostra CPU. Poi questo codice
+macchina verrà inserito all'interno
+della della eprom e poi da lì partirà
+tutto il flusso, tutto il giro che
+caricherà il codice all'interno della
+RAM e poi l'esecuzione vera e propria
+della nostra CPU.
+Quindi, se vogliamo riassumere, diciamo
+che l'ISA è ciò che la CPU comprende, il
+linguaggio assembly è ciò che un
+programmatore riesce a scrivere e poi
+abbiamo l'assembler che traduce eh
+effettivamente il codice scritto dal
+programmatore in una serie di byte che
+possono essere letti dalla nostra CPU.
+Per quanto riguarda tutta la parte di
+software correlata al progetto, ho
+creato questo repository dove ho
+inserito tutta una serie di eh file di
+testo che vediamo qui sotto sotto Viki
+video che sono la trascrizione
+di tutti i video fatti finora,
+realizzati finora, quindi diciamo che
+sono i sottotitoli che genera in
+automatico YouTube. Li ho presi e li ho
+inseriti in questi file. Perché ho fatto
+questo? Diciamo che la maggior parte del
+codice che vedremo all'interno di questo
+repository è generata da intelligenza
+artificiale, ho utilizzato Codex. Quindi
+per dare un po' di contesto all'AI ho
+creato tutta questa serie di di
+documenti testuali. Una volta fatto
+questo, sempre tramite lei, ho creato
+questa serie di articoli.
+Sono dei file markdown generati dall'AI.
+vi possiamo vedere come una sorta di
+blog a puntate
+in cui c'è una descrizione di tutti di
+tutti i video, di tutto il lavoro fatto
+finora. Potrebbe essere una buona base
+di partenza per fare delle future
+pubblicazioni in un blog. Ovviamente
+vanno rivisti, corretti ed integrati con
+eventuali immagini, schemi e
+quant'altro.
+Una volta fatto tutto questo lavoro con
+l'AI, ho generato una serie di documenti
+sempre in formato markdown. Uno è
+relativo all'ISA, è questo documento
+qui.
+Diciamo che dopo che ho dato tutto
+questo contesto all AI gli ho chiesto di
+generare un estruction set architecture
+per la CPU, ma ha generato una prima
+versione che in realtà era abbastanza
+generica e non era proprio correlata al
+nostro caso d'uso specifico, non
+rispecchiava le caratteristiche hardware
+del nostro progetto. Quindi m ho chiesto
+alle AI di fare una serie di modifiche.
+Eh, m'ha creato una seconda versione già
+più corretta, più in linea guida con il
+nostro hardware. Ho corretto poi le
+varie sezioni, le varie i vari pezzi che
+non mi piacevano e sono arrivato a
+questo documento.
+Di fatto è questo qua è una sorta di
+documento che va a descrivere tutto
+l'ISA. Noi abbiamo visto nel video
+precedente degli estratti di questo
+documento. Mh, ad esempio, ho preso
+tutte le varie tabelle da questo file MD
+e diciamo descrivere in maniera un po'
+più dettagliata e testuale
+tutto quello che abbiamo visto nel video
+precedente. Vi invito a leggerla se
+siete interessati perché comunque vi dà
+un po' più di dettaglio a livello
+tecnico,
+cosa che può essere sempre utile. Una
+volta scritto l'ISA.md, sono passato a
+un altro documento di specifica che è
+assemblyelilanglanguage. MD, un altro
+file di testo markdown che va a
+descrivere il funzionamento e la
+struttura di un programma assembly per
+la nostra CPU. Quindi qua dentro abbiamo
+tutte abbiamo tutta la parte di base su
+come su come strutturare un programma
+assembler assembly. Parte ovviamente da
+da ciò che è stato dato per scontato
+come presupposto sull'ISA.
+Abbiamo, diciamo, tutta questa serie di
+esempi per ogni singola istruzione, come
+definire le label, i sistemi
+numerici su cui andiamo a descrivere un
+un valore numerico, quindi binario,
+esadimale,
+eh, e così via.
+Una volta che avevamo ho fatto definire
+allei tutta questa parte, quindi questa
+parte documentale,
+eh ho fatto scrivere sempre a una serie
+di file, d' esempio assembly sono una
+sorta di demo, di programmi demo, sono
+sotto questa cartella, questa directory
+e qui abbiamo un primo codice demo.
+è tutto commentato in modo che il target
+resta quello didattico, quindi leggendo
+un po' i commenti possiamo capire un po'
+come funziona tutto.
+Fatto ciò, ho scritto ho fatto scrivere
+alle AI il nostro assemblatore, quindi
+il programma in C, che andrà a prendere
+questi file ASM e li convertirà in del
+codice binario. troviamo il progetto
+dentro Tools Assembler e qui dentro
+abbiamo questo progetto che è un
+progetto in C, un classico progetto in
+C. Abbiamo questo file MD
+che eh va a descrivere il funzionalità,
+va a dare un po' una guida per chi vuole
+studiare comeè fatto questo codice. Va a
+dare un po' una linea guida dove partire
+con la lettura dei file sorgenti, la
+struttura del progetto
+e così via.
+Ovviamente ora poi vediamo anche durante
+il corso del video un po' tutti i
+singoli file sorgente per vedere
+effettivamente cosa fanno, però diciamo
+non entrerò troppo nel dettaglio. In
+ogni caso tutto il software, tutti i
+file sorgenti sono stati commentati in
+italiano, quindi possono essere letti
+seguendo anche un po' questo file MD,
+dovreste anche riuscire ad accarezzarvi
+e approfondire
+approfondire il tutto. Poi ci sono tutta
+una serie di altri sottoprogetti che
+vedremo un po' nei prossimi video. Nel
+prossimo video, ad esempio, vedremo
+questa parte EPROM Programmer che sono
+dei
+dei software che ci permettono di
+programmare la IPROM, quindi è lo step
+successivo. Prendo il file sorgente
+assembly, lo assemblo, prendo i file
+binari generati, li metto all'interno eh
+di questo progetto AT28C64
+M, che è un progetto fatto per Arduino,
+eh mi va a generare mi va a scrivere
+all'interno della IPROM effettivamente
+il programma che ho costruito, però
+questa parte la vediamo in un prossimo
+video. L'intero repository lo metto
+all'interno del Gitup e vi metto il link
+in descrizione a questo video, così
+comunque potete andarvi a recuperare
+tutta questa parte di codice.
+Io direi a questo punto di analizzare un
+primo programma demo in assembly e
+vedere effettivamente com'è costituito.
+Troviamo questo esempio all'interno di
+example assembly demo.sm.
+Qui vediamo questo primo programma, già
+vediamo la sintassi. Questi punti e
+virgola vanno a rappresentare dei
+commenti. In effetti tutta queste
+stringhe che vedete in verde è solo del
+testo che poi quando andremo a
+assemblare il programma l'assemblatore
+ignorerà, quindi è come se non ci
+fossero,
+però ci danno una mano e ci semplificano
+la lettura di un di un programma.
+Alla 27 troviamo già la prima parte di
+codice che poi effettivamente viene
+gestita dal nostro assemblatore.
+Questa sintassi punto equ inizial value
+con questo valore eh non è altro che la
+definizione di una costante. In pratica
+che cosa stiamo facendo? Stiamo dicendo
+al nostro assemblatore, guarda che
+quando andrò all'interno del mio
+programma a scrivere questa etichetta
+inizial value, tu devi sostituirla con
+questo valore. Questo valore espresso in
+esadecimale è il valore 10.
+In esadecimale lo capiamo perché inizia
+con 0x. Se utilizzavo ad esempio eh 0 B
+e poi scrivo il valore binario, stavo
+definendo lo stesso numero in binario.
+Se invece scrivo 10 in questo modo, lo
+sto definendo direttamente in sistema
+decimale. Però comunque solitamente
+quando si scrive del software in
+assembly si utilizza molto spesso la
+codifica esadecimale.
+Invece andando avanti, questi sono altri
+commenti. Sulla linea 36 abbiamo questo
+blocco punto code con un indirizzo. Che
+cosa a che cosa serve? Questo in pratica
+indica all'assemblatore che questa è da
+qui in poi inizia tutta la parte di
+codice. Ricordo che siamo sotto
+un'architettura di One Newman, quindi
+all'interno della stessa memoria
+convivono sia la parte di codice che la
+parte data.
+In effetti, se poi vado a scendere, vado
+in fondo al nostro programma assembly,
+vedo quest'altra etichetta punto data
+che dice all'assemblatore, guarda, da
+qui in poi inizia tutta la parte data.
+Quindi è come se vado a fisicamente a
+suddividere la memoria in questi due
+blocchi.
+Torniamo torniamo sopra.
+Code. Questo è un indirizzo, è un
+indirizzo di memoria. Sto dicendo
+all'assemblatore, guarda che la parte di
+codice inizia da questo indirizzo. In
+realtà, se io eh vado a cancellare
+questo questo valore, l'indirizzo, in
+automatico l'assemblatore farà partire
+il blocco code da zero e in automatico
+poi andrà a calcolarsi tutte eh le altre
+istruzioni, tutti gli indirizzi delle
+altre istruzioni.
+Rimettiamo tutto com'era. Qui vediamo la
+vera la prima vera e propria istruzione
+assembly che poi andrà a tradursi
+all'interno di un valore binario di un
+byte code. Abbiamo questa istruzione LR0
+inizial value che cosa fa? Stiamo
+caricando all'interno del registro R0 il
+valore iniziale, quindi mh questa
+costante.
+Poi già l'ho detto, ma comunque
+l'assemblatore prenderà questo valore,
+lo cancellerà e lo sostituirà in tutte
+le varie parti con eh 0x0a.
+In effetti, se io qua scrivo 0x0a
+o scrivo inal, il codice binario del
+generato sarà sempre lo stesso, quindi
+per la CPU non cambierà niente. Diciamo
+che tutta questa serie di di istruzioni,
+definire costanti e così via, aiutano lo
+sviluppatore, il programmatore a
+costruire un programma che sia più
+facile da leggere.
+Riportiamo tutto com'era.
+Nella linea 46 invece stiamo prendendo
+il valore contenuto all'interno del
+registro R0 che avevamo precedentemente
+inizializzato e lo stiamo mettendo
+all'interno della variabile counter. La
+variabile counter è definita sotto,
+ovviamente nel blocco data perché è una
+variabile è definita qui. Abbiamo la
+label counter. Stiamo dicendo che ehm
+una variabile da 1 byte, quindi 8 bit e
+gli stiamo assegnando questo valore
+iniziale.
+Ovviamente la nostra CPU è 8 bit, per
+ora prevediamo soltanto di gestire
+variabili da 8 bit, quindi 1 byte.
+Torniamo su. Questa qua invece questa
+istruzione invece carica all'interno del
+registro R1 ciò che è memorizzato
+all'interno della variabile counter.
+Successivamente abbiamo questa
+istruzione che ferma la CPU e in pratica
+ci va a dire a noi, guarda qua finisce
+il blocco data, fermati perché se io non
+metto questalt la il proprio encounter
+verrebbe incrementato e andremo nella
+sezione data. La sezione data contiene
+eh dei dati, però ovviamente la CPU non
+sa che contiene dei dati e andrebbe a
+leggere questo indirizzo come se fosse
+un'istruzione, quindi avere problemi
+durante l'esecuzione poi della del
+programma vero e proprio.
+Qui abbiamo data, al solito, eh qua
+stiamo dicendo da qua in poi inizia il
+blocco data, non stiamo mettendo nessun
+indirizzo, quindi sarà l'assemblatore
+stesso a calcolare quando inizia il
+blocco data all'interno della memoria,
+però potevamo anche inserire un
+indirizzo se volevamo noi specificare
+quale indirizzo utilizzare per un blocco
+rispetto a un altro. Questa è la
+dichiarazione della variabile, l'abbiamo
+vista l'abbiamo vista in precedenza e
+poi in realtà il nostro programma
+finisce perché poi il resto sono
+commenti, però da notare questo commento
+che va a descrivere ciò che succede poi,
+come viene mappata la memoria realmente.
+Ciò che ci aspettiamo dalla
+compilazione, dall'assemblamento di
+questo programma. Quando viene
+assemblato questo programma, io mi
+aspetto che venga divisa la memoria in
+questi due blocchi. Questo è il blocco
+code dove abbiamo le nostre varie
+istruzioni
+e poi abbiamo il blocco data che
+contiene eh counter, la nostra variabile
+counter.
+Quindi abbiamo visto il file demo.sm
+all'interno di questa cartella example
+assembly abbiamo tutta una serie di
+esempi che vanno dal 01 che è il più
+semplice fino a andare a esempi un po'
+più complessi. L'ultimo contiene salti
+condizionali.
+A questo punto io direi di provare a
+assemblare questo file demo SM e vedere
+effettivamente cosa esce fuori, il
+binario che ne esce fuori. Per fare ciò
+ci dobbiamo spostare sotto la cartella
+Tools Assembler. Qui abbiamo il nostro
+programma in Che è l'assemblatore.
+C'ho questa directory build con questo
+file CPU8 SMM che è un eseguibile.
+Quindi se io ranno questo file lancio il
+mio assemblatore. Però mettiamo il caso
+che io scarico il progetto da zero, non
+avrò questa cartella build, quindi la
+vado a eliminare e eh devo compilarmi
+questo progetto per ottenere
+l'eseguibile. Esiste questo file Mac
+file che contiene tutte le regole per
+compilare da sorgenti questo programma.
+Facciamo così, apro un nuovo terminale,
+mi sposto dentro la directory CD Tools
+Assembly Assembler e lancio il comando
+make. Il comando make lancia la
+compilazione. Vengono creati tutta
+questa serie di file oggetto partendo
+dai file punto C. Poi vengono linkati e
+ottengo questo eseguibile. Se io provo
+ad esempio a lanciare ora questo
+eseguibile,
+quindi sono sotto build CP+ 8 SMM,
+parte l'eseguibile m in realtà mi dà un
+errore. L'errore è perché manca input il
+file SM, ti dà un suggerimento sulla
+sintassi e ti dice di inserire un file
+SM in input e specificare qual è la
+directory di output per i file
+m buildati,
+quindi per i file assemblati.
+Proviamo. Siamo sempre nella nella root.
+Provo a dare
+tools
+assembly
+e poi do build C+8 SMM
+e poi da qua vado a dargli impasto il
+mio programma a demo. Quindi vado su
+example assemblydemo.sm
+o per dire qual è la directory di
+output.
+Come directory do TMP
+demo.
+Ok. Eh, m'ha generato effettivamente i
+binari. Sono sotto TMP e vedo questa
+serie di file cosa sono. Allora,
+demo.bbin è un file binario che comunque
+l'editor non riesce neanche ad aprire.
+potrei aprirlo come esadecimale, come
+lettore,
+leggerlo in modalità esadecimale editor,
+vedo qualcosa, comunque ci capiamo ben
+poco, è un file binario.
+Poi abbiamo questo demo bits.bits bitz
+in cui abbiamo gli indirizzi espressi in
+codice decimale, il corrispettivo file
+binario,
+cioè il contenuto dell'indirizzo, quindi
+abbiamo il codice binario e il
+corrispettivo in esadecimale.
+Poi abbiamo questo demo.
+In realtà questo è stato pensato un po'
+per essere utilizzato all'interno di
+microcontrollori come Arduino che
+potremmo utilizzare per freshare una
+eprom. comunque un file in C in cui
+abbiamo eh questo array CPU8 program che
+è un array che contiene tutti i codici
+esadecciali
+della memoria che dovranno poi essere
+inserite all'interno della eprom e poi
+infine abbiamo questo demo.ex
+Eh, quindi demo punto esadecimale
+dovrebbe stare in cui abbiamo gli
+indirizzi sempre espressi in codice e
+poi accanto abbiamo il corrispettivo in
+esate decimale a 8 bit. In effetti sono
+due cifre che ne sacciale vanno a dare 8
+bit di informazione. Se io prendo questo
+e prendo quest'altro demo.bits che metto
+a fianco, noto subito che il codice
+decimale praticamente è lo stesso. Ok,
+ignoriamo 0x che semplicemente ci sta
+dando la codifica esadecimale. Abbiamo
+anche il corrispettivo in binario. Io ho
+detto al di creare questo file a Codex
+quando ha generato questo codice, in
+modo da poter avere un banco di prova
+per confrontare effettivamente l'output
+con l'ISA, in modo che vado a vedere se
+effettivamente il programma assemblato
+corrisponde al all l'ISAL OPT Code che
+mi aspettavo, quindi per fare una serie
+di confronti
+Ora, nel prossimo step dobbiamo capire
+effettivamente, lo faremo in un prossimo
+video, quale di questi file utilizzare e
+come introdurli, scriverli all'interno
+nella nostra eprom.
+L'ultima cosa che dobbiamo vedere in
+questo video è la struttura generale del
+programma assembler, come è stato
+scritto. Abbiamo questi due queste due
+cartelle principali, include ed src.
+Dentro include abbiamo tutti i file di
+intestazione punh dove abbiamo
+solitamente i type e tutte le varie
+funzioni che poi sono implementate
+all'interno dei file C veri e propri.
+Come tutti i programmi l'enter point
+d'ingresso è il main.cc.
+Eh, qui dentro che cosa abbiamo? Abbiamo
+il main che va a prendermi gli argomenti
+che passiamo dalla console, dalla Cli e
+va a fare un pass sugli argomenti, va a
+selezion a capire un pochettino cosa
+mandiamo in input e poi lo passa agli
+step successivi.
+Poi abbiamo questo file parser.hhh che
+fa appunto il pars delle varie
+istruzioni che ci sono all'interno del
+programma assembly.
+Quindi abbiamo pars.h e poi pars.cc
+parser.cc.
+Poi eh abbiamo
+assembler. C e punto H. M. Qui abbiamo
+al solito le definizioni,
+qui l'implementazione, qua vengono fatti
+anche tutti i vari calcoli eh per
+calcolare i vari indirizzi.
+error.c gestisce tutti i vari errori di
+sintassi quando incappa un errore di
+sintassi all'interno del file assembly
+e poi secondo me abbiamo output.cc che
+invece
+va a gestire la scrittura dei vari file
+binari che abbiamo visto che abbiamo
+appena abbiamo appena visto. E infine
+secondo me il file più importante sono
+questo ISA. ISA.
+Eh, qui dentro c'è effettivamente la
+tabella di conversione tra il codice
+che utilizziamo all'interno del
+programma assembly, quindi un codice
+memonico, eh facile da ricordare con il
+codice se decimale che poi eh verrà
+utilizzato all'interno della della
+IPROM, quindi il codice decimale
+effettivo. Quindi qua viene
+effettivamente fatta la conversione
+verso il formato ISA che poi andrà a
+leggere la CPU. Ma poi per il resto è
+tutto abbastanza commentato, quindi
+facilmente leggibile. È un programma
+abbastanza basilare
+e diciamo che è un po' tutto. Abbiamo
+anche una suite di test. nei test
+abbiamo tutta una serie di eh programmi
+assembly e vengono viene fatto un
+confronto lanciando poi l'assemblatore
+dando input questi programmi e
+confrontando effettivamente cosa
+otteniamo in output. Quindi dovremmo
+avere degli output attesi. Vediamo se
+effettivamente vengono rispettati.
+Quindi questa è una prima suit di test
+abbastanza basilare, però comunque ci
+possono aiutare e dare dire a colpo
+d'occhio se c'è qualche problema
+all'interno del del codice sorgente.
+Io direi che per questo video è tutto.
+Ci sentiamo in un prossimo video. Vi
+ricordo di lasciare un mi piace,
+commentare questo video e iscrivervi al
+mio canale per supportare il mio lavoro.
+Un saluto.
