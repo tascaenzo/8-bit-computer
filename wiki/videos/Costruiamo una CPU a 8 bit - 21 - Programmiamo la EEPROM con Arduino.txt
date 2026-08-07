@@ -1,0 +1,708 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Per chi non mi conosce,
+io sono Enzo. Oggi continuiamo a parlare
+della CPU a 8 bit. In questo video
+vedremo come programmare la nostra eprom
+utilizzando un Arduino. Ma prima di
+iniziare vi ricordo di lasciare un mi
+piace, commentare questo video e
+iscrivervi al mio canale in modo da
+supportare il mio lavoro.
+Nei video precedenti abbiamo introdotto
+la T28 C64 che è la nostra EPROM, però
+non abbiamo mai visto effettivamente
+come utilizzarla e come programmarla.
+Nel video di oggi voglio ricongiungermi
+all'ultimo video dove avevamo generato
+un programma binario partendo da
+assembly e lo step successivo è quello
+di prendere questo binario e inserirlo
+all'interno della eprom, quindi
+programmarla.
+All'interno di questa slide ho riassunto
+il pinout dell'integrato, così capiamo
+effettivamente come andarlo a collegare.
+È una tabella di verità che va a
+illustrarmi le varie modalità di
+funzionamento.
+Partiamo dal pinout. Abbiamo
+l'alimentazione sul pin 28, i nostri + 5
+V, sul pin 14 la massa, poi abbiamo
+tutti i nostri segnali come la IO,
+quindi input, output, tutti i pin
+utilizzati per fare letture o scritture.
+I selettori dell'indirizzo
+sono tutti questi segnali, questi pin eh
+che hanno la lettera A e poi eh tutti i
+segnali di controllo. Ad esempio, sul
+pin 27 abbiamo il segnale Wright enable
+che mi permette di fare una scrittura.
+Sul pin 22 abbiamo l'output enable che
+gestisce l'alta impedenza in uscita. Poi
+abbiamo il pin 20 che sta per chip
+enable, serve abilitare il chip. Come
+potete vedere questi tre segnali sono
+tutti attivi bassi, quindi ragionano in
+logica negata. La particolarità di
+questo integrato è che il pin 1 e il pin
+26 che vediamo con la label NC non sono
+collegati elettricamente a niente,
+quindi eh sono presenti, però
+effettivamente non vengono utilizzati,
+non sono neanche collegati.
+Vediamo brevemente la tabella di verità
+che riassume il funzionamento del
+dell'integrato la nostra eprom. Partiamo
+dalla lettura. Eh, per fare una lettura
+dobbiamo avere il pin CE, il segnale CE,
+quindi chip enable a 0, output enable a
+0 e WRght enable a 1, in modo da avere
+in uscita i dati che sono presenti
+all'interno dell'indirizzo selezionato.
+Per fare invece la programmazione,
+comunque la scrittura, dobbiamo avere il
+pin chi c chip enable a 0, output enable
+a 1 e poi far transitare il segnale
+enable da 0 a 1.
+Invece per mettere in standby la nostra
+eprom dobbiamo utilizzare il chip enable
+e metterlo a uno. Output enable e wrght
+enable. eh possono assumere qualsiasi
+valore e comunque in uscita avremo
+un'alta impedenza. Invece se vogliamo
+gestire eh l'alta impedenza basterà che
+mettiamo il chip enable a 0 e output
+enable ehtina
+ci dà in uscita un'alta impedenza.
+Per eseguire la programmazione della
+nostra e esistono dei programmatori
+fatti apposta che ci permettono di
+scrivere questa eprom. Io non ho uno di
+questi programmatori. Ho pensato di
+riciclare un Arduino Omega per generare
+tutti i segnali di controllo necessaria
+alla programmazione della del chip.
+Quindi ho preso l'Arduino Omega, ho
+utilizzato l'Arduino Omega perché ha
+tanti pin di input e output.
+Ho inserito questa Ibrom all'interno
+della di questa board e ho eseguito
+tutti i vari collegamenti. Adesso ci
+spostiamo sul computer e proviamo a
+scrivere un programma per Arduino che ci
+permetterà di programmare il nostro
+Jeep.
+Eccoci qua davanti al computer. Vediamo
+effettivamente come scrivere lo sketch
+da inserire all'interno dell'Arduino che
+poi programmerà la nostra EPROM.
+Partirei da questo file
+atcaruinoaprogrammer.
+È un file di specifica che ho fatto
+scrivere a Codex. Abbiamo un po' un
+riassunto di tutto quelli che ci siamo
+detti precedentemente, quindi tabella di
+verità, come effettivamente fare la
+lettura e come fare la scrittura. Però
+la cosa più importante è questa piccola
+tabella che va a spiegare come collegare
+la eprom al nostro Arduino. Quindi
+abbiamo da un lato tutti i pin della
+nostra eprom nel nostro Jeep, dall'altro
+i pin dell'Arduino e poi una breve label
+che descrive effettivamente ogni pin che
+cos'è.
+Un'altra cosa importante è che per
+creare lo sketch da inserire
+nell'Arduino non utilizzerò Arduino lead
+Arduino, ma bensì la CE Arduino Cli,
+quindi utilizzeremo il terminale per
+compilare lo sketch, caricarlo e poi
+avviare il monitor seriale per parlare
+con l'Arduino tramite la porta seriale.
+A questo punto partirei con la
+programmazione vera e propria, quindi
+proviamo a scrivere un primo sketch che
+è una sorta di demo che ci permette di
+fare qualche test di scrittura e lettura
+del nostro chip di EPROM. Ho creato
+questo file T28C64
+demo che non è altro che uno sketch in
+cui ho messo questo commento che
+racchiude la tabella di verità che
+abbiamo già visto del chip e proviamo a
+scrivere un po' di codice e provare
+effettivamente
+a fare la programmazione.
+Partiamo con includere Arduino.
+Successivamente
+vado a definire un po' di costanti e
+variabili che andremo a utilizzare
+all'interno dello sketch.
+Partiamo da queste. Abbiamo questo array
+formato da 13 elementi che va a
+contenere tutti i collegamenti con i
+vari pin
+di Arduino che sono collegati al basso
+degli indirizzi della nostra eprom.
+Quindi abbiamo questa questa serie di
+pin.
+Invece questi pin vanno a rappresentare
+questa arremi va a rappresentare tutti i
+pin dell'Arduino collegati a tutti i
+vari eh a tutti i vari segnali di input
+output dell'Eprom. Poi abbiamo tutta una
+serie di costanti che vanno a
+rappresentarmi i vari segnali di
+controllo. Quindi sappiamo che eh il
+chip enable è collegato al pin 43
+dell'Arduino. Il pin output enable è
+collegato al al pin 44 dell'Arduino e
+così via. Il 45 avremo il bright enable.
+Invece queste costanti mi vanno a
+rappresentare tutta una serie di tempi
+che utilizzeremo per mettere dei delay
+nelle fasi di programmazione della EPROM
+per switchare da un livello logico alto
+a un livello logico basso, rispecchiando
+soprattutto questa condizione di
+scrittura in cui dovremmo avere
+effettivamente il passaggio del segnale
+bright enable da 0 a 1.
+Vado anche a crearmi questo demo program
+che è un array contenente effettivamente
+il programma da scrivere all'interno
+della eprom, quindi i vari bit che devo
+scrivere all'interno della eprom. Ad
+esempio avrò 0 seguito da tutti i zeri
+sul sull'indirizzo 0, sull'indirizzo 1
+avrò 1, sull'indirizzo eh 2 avrò du e
+così via.
+A questo punto devo andare a settare,
+devo andare a pilotare il bass degli
+indirizzi. Per fare ciò vado a
+utilizzare questa funzione eh set
+address in cui vado a passare una
+variabile a 16 bit rappresentarmi eh
+l'indirizzo da leggere o comunque da
+scrivere. Che cosa faccio?
+Effettivamente l'indirizzo poi sarà a 13
+bit, però comunque utilizzo una
+variabile a 16 bit, ma vado soltanto a
+utilizzare i primi 13 bit. In effetti,
+tramite questo ciclo for che va dal bit
+0 fino al 12 bit, in totale 13
+combinazioni, vado a fare delle
+scritture andando a scrivere
+effettivamente il valore contenuto
+all'interno dell'indirizzo. Tramite
+questa funzione bit vado a leggermi il
+bit che mi interessa dalla dalla
+variabile address. Ricordo che address
+pin è questo array che abbiamo definito
+qui sopra, quindi nel primo ciclo bit
+varrà 0 e leggerà il il valore 22, poi
+varrà 1 e leggerà il valore 23 e così
+via fino al valore 34 che sarà il 13º il
+13º bit del pastrizzi.
+La funzione digital Bright invece va
+effettivamente poi a scrivere
+all'interno del PIN di Arduino e andremo
+a scrivere poi i valori 1 0 che sono
+rappresentate da queste costanti
+simboliche.
+Arduino dovrà controllare anche il bass
+dati. Il bass dati può essere utilizzato
+sia in lettura che in scrittura a
+secondo se stiamo leggendo alla eprom
+stiamo scrivendo all'interno della
+eprom. Per questo mi vado a creare
+queste due funzioni, set bass set
+databass input e set databass output.
+Ricordo che vado a impostare il bass
+come input nel caso in cui devo fare una
+lettura dalla eprom. Quindi la prom va a
+prendere il controllo del bass e va a
+scrivere all'interno del bass e Arduino
+leggerà queste informazioni. Quindi per
+Arduino questi pin vanno settati come
+input.
+Invece nel caso opposto in cui devo
+scrivere all'interno della EPROM,
+Arduino dovrà scrivere all'interno di
+questo di questo bass e la EPROM dovrà
+leggere dal bass dati.
+Partiamo con il descrivere questa
+funzione set databassi input. In pratica
+vado a ciclarmi eh tutti i bit del
+nostro bass. Vado inizialmente a farmi
+un digital, quindi vado a scrivere
+effettivamente all'interno eh dei pin e
+li vado a impostare a livello logico
+basso e subito dopo imposto il bit,
+imposto il pin come input. La domanda
+potrebbe essere come mai se sto
+impostando il PIN come input, eh prima
+faccio effettivamente una scrittura e lo
+imposto come livello logico basso. Il
+motivo è che voglio evitare che quando
+viene effettivamente fatto lo switch, se
+malauguratamente il pin era
+a un livello logico alto, voglio evitare
+che Arduino faccia una lettura falsata e
+mi ritrovo una lettura di un unologico
+quando in realtà è un residuo, cioè è
+uno stato vecchio, quindi preferisco
+inizializzare i bit e metterli tutti a
+livello logico basso e poi andare a fare
+lo switch e andare in modalità di input.
+Invece la funzione analoga è questa, set
+databass output. Qui c'ho il mio solito
+cicloforiclare
+tutti i bit e vado a impostare con pin
+mod ogni singolo pin in output.
+Finora quindi abbiamo gestito il bass
+dati impostandolo come input e output,
+però non abbiamo mai fatto lettura o
+scritture. Per fare ciò vado a crearmi
+altre due funzioni, write databasse e
+read databasse che effettivamente mi
+consentono di leggere e di scrivere
+all'interno del bass dati. Qui però c'è
+da fare una piccola precisazione. Se io
+vado a scrivere congright databass un
+valore all'interno del bass dati, non
+vuol dire che sto scrivendo nella eprom
+perché devo oltre a scrivere nel bass
+dati, andare a controllare questi tre
+segnali, questi tre pin della eprom che
+poi dovranno andare a rispecchiare
+questa condizione della tabella di
+verità.
+In ogni caso vediamo questa funzione
+Write databass. Vado a passare un valore
+alla funzione un un sign in a 8 bit,
+quindi un valore 8 bit. Mi vado a
+ciclare tutti i pin di input output che
+sono collegati alla eprom con il solito
+ciclo for e poi vado a fare un digital
+del
+bit selezionato, del pin corrispondente
+al bit selezionato e vado a farmi una
+lettura del bit che eh ho passato
+all'interno di value. Se questo bit sarà
+a un livello logico alto,
+andrò a a utilizzare questa variabile
+simbolica, altrimenti questa variabile
+simbolica low che corrispondono a 1 e 0.
+Questa questa cosa ovviamente la faccio
+per tutti gli 8 bits del bass dati.
+Invece questa funzione mi permette di
+leggere
+non ha parametri in ingresso. Cosa vado
+a fare? vado a crearmi una variabile
+value che sarà sempre un intero a 8 un
+intero non segnato a 8 bit. preimposto
+il valore zero, quindi ho tutti i bit a
+zero e poi con il solito ciclo for vado
+a leggermi ogni singolo pin del bass
+dati. Se digitalght è a1 e al valore
+logico alto, faccio un bit set
+all'interno della variabile value del
+bit effettivamente
+effettivamente letto
+e poi alla fine vado a farmi il return
+di value dove avrò il valore effettivo.
+La domanda potrebbe essere perché lo
+faccio solo se sono a livello logico
+alto? perché a livello logico basso
+dovrei salvare zero all'interno della
+del value del bit corrispondente a al
+bitato a value, però in realtà non mi
+serve perché già ho impostato tutto a
+zero. Per essere più chiari, potrei
+anche qua scrivere eh 0 B per
+rappresentazione binaria e tutti i bit a
+zero, così siamo più espliciti, dato che
+abbiamo finora ragionato sempre in
+binario.
+A questo punto abbiamo tutto
+l'occorrente per scrivere una funzione
+che realmente va a scrivere un dato
+all'interno della eprom.
+Creiamo quindi questa funzione Wright
+byte che prenderà in input il nostro
+indirizzo, quindi lazione di memoria che
+dovremmo andare a scrivere e il valore
+da scrivere nella memoria. Come prima
+cosa utilizziamo questa funzione set
+address che abbiamo creato
+precedentemente, la troviamo qui sopra e
+quindi andiamo a scrivere l'indirizzo di
+memoria che dovremmo utilizzare per fare
+la scrittura. Successivamente andiamo a
+gestire un po' tutti i vari segnali di
+controllo della eprom, quindi portiamo
+l'output enable a livello logico alto in
+modo che la eprom non va a pilotare il
+bass dati. Una volta fatto questo,
+settiamo il bass dati come output.
+scriviamo effettivamente il valore che
+dovremmo salvare nella eprom all'interno
+del bass data e poi eh possiamo
+effettivamente iniziare la sequenza che
+andrà a scrivere all'interno della
+eprom. Cosa facciamo? Innanzitutto
+abilitiamo eh il chip di EPROM, quindi
+eh pin chip enable lo impostiamo con
+livello logico basso. Il pin bright
+enable lo impostiamo con livello logico
+basso. Aspettiamo qualche microsecondo.
+In realtà abbiamo gestito tutto tramite
+queste variabili,
+quindi aspettiamo un microsecondo.
+Una volta che abbiamo questo piccolo
+delay, switcha il pin di bright enable a
+livello logico alto. E una volta fatto
+questo, switchiamo anche il pin chip
+enable ad in modo comunque da spegnere
+eh il chip.
+In effetti, con il piccolo delay che
+abbiamo inserito, siamo in questa
+situazione in cui chip enable è a 0,
+output enable è a 1 e abbiamo fatto il
+passaggio di bright enable da 0 a 1. Una
+volta fatto ciò, aspettiamo un piccolo
+delay di qualche millisecondo. abbiamo
+impostato 15, che sarebbe il tempo
+effettivo per cui la eprom va a salvare
+il dato prima di passare a un'altra
+istruzione di lettura o scrittura.
+Quindi diciamo che andando a richiamare
+questa funzione effettivamente dovremmo
+fare la scrittura all'interno della
+eprom e di fatto il nostro Arduino fa da
+orchestratore per gestire tutti i vari
+segnali di controllo. Ehm va a
+sostituire i programmatori di epromo.
+A questo punto proviamo a scrivere la
+funzione che ci permette di fare una
+lettura dalla eprom. scriviamo questa
+red byte dove passiamo l'indirizzo e ci
+aspettiamo come return il valore letto
+dalla eprom.
+Partiamo subito, vuol dire che ehm
+impostiamo tutti i vari pin di
+controllo, quindi il pin output enable,
+chip enable e enable a livello logico
+alto. Quindi ci troviamo in questa
+condizione, la la condizione del riposo.
+Diciamo che utilizziamo questa
+condizione come condizione ben nota e
+poi andiamo a settarci, a passare in una
+condizione di lettura.
+cioè questa qui.
+Quindi, una volta fatto questo,
+impostiamo il bass dati come input,
+andiamo a scrivere all'interno del bass
+di indirizzi l'indirizzo che abbiamo
+passato alla funzione.
+Poi che cosa facciamo? Andiamo a passare
+alla condizione di lettura, quindi
+andiamo a mettere a livello logico basso
+il pin chip enable e output enable.
+Quindi ci troviamo in questa condizione.
+Fatto ciò, ehm, facciamo diamo un
+piccolo delay, questo qua, in modo che
+comunque i segnali si stabilizzano e
+siamo sicuri che eh ci troviamo in una
+condizione di lettura prima di
+effettuare realmente la lettura del bass
+dati. Quindi, passato questo piccolo
+delay, facciamo la lettura e andiamo a
+salvare il valore letto all'interno di
+questa variabile. Successivamente
+ritorniamo nella condizione di standby
+della Aprom, quindi ci basta impostare
+il pin output enable e chip enable a
+livello logico alto e concludiamo
+restituendo il valore appena letto.
+Scriviamo adesso una piccola funzione
+che utilizzeremo per le operazioni di
+debug. In effetti voglio vedere
+effettivamente all'interno del monitor
+seriale, quindi voglio che l'Arduino
+scriva nel monitor seriale, ciò che
+legge dalla eprom. Per fare ciò mi creo
+questa funzione print binary byte, dove
+passo il valore a 8 bit, la nostra
+variabile a 8 bit. E cosa vado a fare?
+Vado a farmi essenzialmente un ciclo for
+che va a ciclarmi tutti i bit e faccio
+un serial pun printend ln, quindi vado a
+a stampare sulla porta seriale la
+stringa 10 a seconda del valore
+effettivamente eletto alla variabile
+value che vado a passare come input. A
+questo punto, diciamo, che eh possiamo
+scrivere una piccola funzione che eh va
+a salvarmi il programo, quindi i valori
+presenti all'interno di questo di questo
+array.
+Quindi scriviamo una funzione che va a
+fare la scrittura del programma demo e
+va a fare una verifica. Qual è l'idea?
+L'idea è quella di leggere il nostro
+demo program, fare una scrittura
+all'interno dell'indirizzo.
+Dopo che abbiamo effettuato la
+scrittura, andiamo a fare una lettura
+della eprom sullo stesso indirizzo e
+confrontiamo i valori. Se i due valori
+sono uguali, vuol dire che la scrittura
+ha avuto esito positivo.
+Allora, analizziamo brevemente questa
+funzione. Innanzitutto ci creiamo un
+valore buleano, ok? U = a true. Sarà il
+valore restituito alla fine della
+funzione. Se ok resta true, vuol dire
+che la scrittura avrà avuto successo,
+scrittura e verifica avranno avuto
+successo, altrimenti passerà a false e
+quindi il return di OK sarà false.
+Partiamo subito. Vuol dire che dobbiamo
+ciclarci tutto il nostro array. Dobbiamo
+ciclarci tutto questo array. In effetti
+all'interno di questo forciamo
+una un ciclo for che andrà a concludersi
+quando address sarà minore di size of
+demo program, quindi della grandezza
+dell'intero array. Ovviamente partiamo
+da zero, quindi abbiamo la minoranza
+minore di size off di demoprogram.
+Questa condizione fa in modo che tutte
+le possibili combinazioni coincidano con
+la grandezza effettiva dell'array.
+Cosa andiamo a fare? Eh, ci creiamo
+questa questa variabile expected, cioè
+ciò che ci aspettiamo e dalla lettura
+poi della della EPROM. E che cosa
+facciamo? Facciamo deo program e andiamo
+a prenderci, andiamo a salvare
+all'interno di Expted il valore
+dell'indirizzo del demo program che
+effettivamente andrà a coincidere con la
+posizione dell'array. Quindi indirizzo
+0, posizione zero, avremo questo questo
+bit, questo byte, indirizzo 1, avremo
+questo byte e così via. Quindi indirizzi
+e posizione dell'array coincidono.
+A questo punto che cosa facciamo? Chiamo
+la nostra funzione Wright byte che
+abbiamo visto precedentemente e passiamo
+l'indirizzo e ciò che dobbiamo
+effettivamente eh salvare all'interno
+della eprom.
+Questa qua invece questa variabile
+conterrà lettura. Eh quindi che cosa
+facciamo? andiamo a leggere all'interno
+dello stesso indirizzo che abbiamo
+appena scritto. Tramite
+queste questo serial printf andiamo a
+crearci tutta una serie di stringhe di
+debug che stampiamo all'interno del
+terminale seriale.
+Ci andiamo a richiamare la funzione
+print
+binary byte che andrà a stamparci
+effettivamente l'indirizzo e
+successivamente ciò che ci aspettiamo.
+Una volta che abbiamo fatto tutta questa
+serie di stampe all'interno del monitor
+seriale per vedere se effettivamente per
+cercare di debuggare un po' ciò che
+abbiamo salvato all'interno della eprom,
+possiamo fare una verifica. Quindi
+andiamo a vedere ehm ciò che abbiamo
+letto alla EPROM, andiamo a confrontarlo
+con ciò che ci aspettiamo, eh che deriva
+direttamente dal nostro array demo
+program. Se questi due valori sono eh
+uguali, vuol dire che eh abbiamo avuto
+una scrittura, è andata bene e quindi
+stampiamo OK,
+altrimenti abbiamo un errore e in questo
+caso ok viene impostato a false e
+abbiamo il return di OK che equivarrà a
+false.
+A questo punto, come in tutti gli sketch
+di Arduino che si rispettano, abbiamo
+bisogno della funzione di setup e la
+funzione loop. Ricordo che il setup
+viene ehm viene richiamato all'interno
+di Arduino quando viene inizializzato
+l'Arduino. Una volta vengono
+inizializzate tutte queste fasi eh viene
+lanciato il loop, la funzione loop. Ora
+noi non avremo in realtà bisogno della
+funzione loop, quindi la lasciamo vuota
+perché durante il ciclo di esecuzione
+dell'Arduino non dovremmo fare nessun
+operazione, ma faremo la scrittura della
+eprom e la lettura all'interno del
+setup. Quindi cerchiamo di analizzare
+effettivamente cosa fa la funzione
+setup. Partiamo subito, vuol dire che
+inizializziamo la porta seriale, quindi
+utilizziamo questo comando serial pin in
+cui andiamo a inserire la velocità di
+comunicazione della porta seriale per
+inizializzarla.
+Poi che cosa andiamo a fare? Andiamo a
+iterarci tutto, tutti i bit relativi
+agli indirizzi,
+al bas degli indirizzi. E cosa facciamo?
+Andiamo a impostarli come output e li
+inizializziamo con il valore logico
+zero, quindi abbiamo tutti i bit a zero.
+Successivamente andiamo a impostare
+il pin chip enable, output enable e
+write enable come output e assegniamo il
+valore logico alto. Quindi ricordo che
+siamo in una condizione di standby, di
+riposo della EPROM, questa qui.
+Una volta fatto questo, settiamo il bass
+dati come input,
+un stambiamo un breve messaggio
+all'interno della della porta seriale
+sempre come debug. Eh, in pratica
+diciamo che siamo pronti a fare la
+scrittura del programma demo.
+Lanciamo WR demo and verify, che è la
+funzione che abbiamo appena scritto e
+poi andiamo a capire effettivamente se
+ci torna
+true come come valore di ritorno, vuol
+dire che la programmazione, la verifica
+è andata a buon fine e lo stampiamo su
+monitor seriale, altrimenti abbiamo un
+errore. A questo punto direi che
+possiamo provare a compilare questo
+programma, inserirlo all'interno
+dell'Arduino Omega e effettivamente
+vedere se riusciamo a programmare la
+nostra EPRON.
+Ho collegato l'Arduino Omega all'interno
+del mio computer. Proviamo a programmare
+effettivamente l'Arduino e vediamo se
+funziona tutto. Come facciamo? M
+>> ho aperto il file gli specifica AT28 C64
+Arduino mega programmer. che avevo visto
+all'inizio, avevo preso inizialmente
+dopo ovviamente tutta la fase di
+installazione della CD di Arduino,
+configurazione e così via, fasi che già
+ho fatto, possiamo effettivamente
+passare alla programmazione vera e
+propria. La prima cosa che dobbiamo fare
+è compilare lo sketch, quindi andiamo a
+dire tramite questo comando Arduino
+click compile, selezionando il tipo di
+scheda che abbiamo di fare la
+compilazione. Copiamoci questo comando e
+andiamo nella cartella
+tool
+Evron Programmer AT 2864 mega demo e
+andiamo a selezionare il nostro sketch.
+Abbiamo la compilazione.
+Ok, la compilazione è andata a buon
+fine. Qua ci dà un paio di informazioni,
+la memoria che occupa e così via. E già,
+quindi siamo pronti a caricare lo sketch
+all'interno del nostro Arduino.
+Lanciamo questo comando per capire
+effettivamente eh in che porta seriale è
+collegata la nostra board di Arduino.
+Vediamo che è collegata su questa porta,
+viene rilevata all'interno di questa
+porta. Abbiamo il nostro Arduino Mega.
+Ci interessa questa parte che
+effettivamente la porta.
+Andiamo momentaneamente a sostituirla
+a questa porta, ad esempio.
+Facciamo un replace,
+così possiamo fare copia incolla di
+tutti i comandi.
+Salviamo. Andiamo in modalità di
+lettura.
+Ok, a questo punto possiamo
+effettivamente caricare lo sketch.
+Copriamoci questo comando. Ovviamente
+andiamo a selezionare
+Arduino Mega Demo e facciamo l'upload.
+Ok,
+ho fatto l'upload. Proviamo adesso ad
+aprirci il monitor seriale. Appena ci
+apriamo il monitor seriale, passandoci
+come configurazione la velocità che se
+ci fate caso, è la stessa che avevamo
+inserito qui nella funzione di setup,
+quando avevamo inizializzato la seriale.
+Dovrebbe aprirsi il monitor seriale, in
+automatico partire
+l'Arduino e fare la programmazione, la
+lettura della EPROM. Vediamo se è vero.
+Ok, in effetti eh già è partito,
+quindi ha fatto ciò che ci aspettavamo.
+Io vado a prendermi il mio programma
+demo,
+c'ho questa prima questo prima serie al
+punto printer e print ln che stampa
+questa stringa e me la ritrovo qui e poi
+in effetti iniziano tutte le fasi di
+scrittura e di lettura.
+Se noi ci facciamo caso, prendiamo ad
+esempio il nostro demo program, il
+nostro array, vediamo che all'indirizzo
+0 abbiamo tutti i bit a 0 e come lettura
+abbiamo tutti i bit a zero.
+All'indirizzo 1 abbiamo 1 e qui avvamo a
+1.
+È lo stesso ciò che leggiamo e così via
+fino arrivare all'ultimo indirizzo.
+Quindi diciamo che in effetti eh sembra
+che ha funzionato tutto, quindi siamo
+riusciti a programmare la nostra eprom,
+abbiamo fatto delle letture e la fase di
+programmazione è riuscita.
+Quindi già con questo piccolo sketch,
+sostituendo a questo demo program il la
+parte assemblata dal nostro
+assemblatore, riusciamo a effettivamente
+inserire all'interno della eprog
+all'interno della eprog un programma
+assembly. Ora diciamo che per questo
+video è tutto. In un prossimo video
+voglio provare a modificare questo
+questo sketch. In realtà già l'ho fatto
+fare a Codex in modo da strutturarlo un
+po' meglio, suddividere un po' le varie
+competenze del programma, le varie aree,
+quindi fare un enorme refactoring e
+cercare di eh utilizzare effettivamente
+l'Arduino con la porta seriale.
+Scrivendo all'interno della porta
+seriale il programma, voglio riuscire a
+programmare la eprom senza scrivere
+staticamente nel sorgente il programma.
+E poi una volta fatto questo, possiamo
+staccare il chip di EPROM, collegarlo
+all'interno del nostro computer a 8 bit
+e fare delle letture e vedere se
+effettivamente poi quello che riusciamo
+a leggere è ciò che è presente
+all'interno del nostro programma
+assemblato. Direi che per questo video è
+tutto. Vi ricordo di lasciare un mi
+piace e commentare questa serie di video
+per supportare il mio lavoro.

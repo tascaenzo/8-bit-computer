@@ -519,11 +519,17 @@ Solo la rete selezionata deve poter scrivere sul bus dati.
 
 La struttura complessiva può essere vista così:
 
-```text
-          rete AND ---- buffer AND ----\
-          rete OR  ---- buffer OR  -----\
-A, B ---> rete XOR ---- buffer XOR ------ bus dati
-          rete NOR ---- buffer NOR -----/
+```mermaid
+flowchart LR
+    AB["A (8 bit) e B (8 bit)"] --> AND[Rete AND] & OR[Rete OR] & XOR[Rete XOR] & NOR[Rete NOR]
+    AND --> BUF1[Buffer AND]
+    OR --> BUF2[Buffer OR]
+    XOR --> BUF3[Buffer XOR]
+    NOR --> BUF4[Buffer NOR]
+    BUF1 --> BUS[Bus dati 8 bit]
+    BUF2 --> BUS
+    BUF3 --> BUS
+    BUF4 --> BUS
 ```
 
 Questa organizzazione modulare ci permette di continuare ad aggiungere operazioni senza cambiare il principio generale della ALU.

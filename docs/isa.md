@@ -100,18 +100,17 @@ Istruzioni `ADDR16` della ISA v0.1:
 
 In binario:
 
-```text
-IMP
-byte 0: oooooooo
-
-IMM8
-byte 0: oooooooo
-byte 1: iiiiiiii
-
-ADDR16
-byte 0: oooooooo
-byte 1: aaaaaaaa  indirizzo bit 7..0
-byte 2: AAAAAAAA  indirizzo bit 15..8
+```mermaid
+flowchart LR
+    subgraph IMP["IMP (1 byte)"]
+        op1["opcode 8 bit"]
+    end
+    subgraph IMM8["IMM8 (2 byte)"]
+        op2["opcode 8 bit"] --> imm["immediato 8 bit"]
+    end
+    subgraph ADDR16["ADDR16 (3 byte)"]
+        op3["opcode 8 bit"] --> al["addr_low 8 bit<br/>indirizzo bit 7..0"] --> ah["addr_high 8 bit<br/>indirizzo bit 15..8"]
+    end
 ```
 
 Dove:
@@ -179,11 +178,14 @@ Oltre ai registri generali, la ALU usa due registri dedicati:
 
 Il flusso operativo della ALU e:
 
-```text
-registro generale -> RA
-registro generale -> RB
-ALU(RA, RB) -> RA
-RA -> registro generale
+```mermaid
+flowchart LR
+    RG1["Registro generale"] -->|"MOV RA, Rn"| RA
+    RG2["Registro generale"] -->|"MOV RB, Rn"| RB
+    RA -->|operando A| ALU
+    RB -->|operando B| ALU
+    ALU -->|risultato| RA
+    RA -->|"MOV Rn, RA"| RG3["Registro generale"]
 ```
 
 Questa scelta deriva dall'hardware gia costruito:
@@ -207,9 +209,12 @@ L'opcode e largo 8 bit.
 
 La struttura scelta e:
 
-```text
-bit:    7 6 5 4 3 2 1 0
-        c c c x x x x x
+```mermaid
+flowchart LR
+    subgraph Opcode["Opcode 8 bit"]
+        direction LR
+        ccc["ccc<br/>bit 7-5<br/>macrocategoria"] --> xxxxx["xxxxx<br/>bit 4-0<br/>campo dati"]
+    end
 ```
 
 Dove:
@@ -257,8 +262,12 @@ Per le istruzioni che lavorano su un registro, i 3 bit bassi dell'opcode codific
 
 Schema:
 
-```text
-opcode = cccssrrr
+```mermaid
+flowchart LR
+    subgraph Opcode["Opcode 8 bit"]
+        direction LR
+        ccc["ccc<br/>bit 7-5<br/>macrocategoria"] --> ss["ss<br/>bit 4-3<br/>sotto-operazione"] --> rrr["rrr<br/>bit 2-0<br/>registro"]
+    end
 ```
 
 Dove:
