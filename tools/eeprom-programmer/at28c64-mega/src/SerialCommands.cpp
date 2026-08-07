@@ -43,17 +43,21 @@ static char *skipSpaces(char *text)
     return text;
 }
 
-static bool parseHexValue(char **cursor, uint16_t *value)
+static bool parseNumber(char **cursor, uint16_t *value)
 {
     /*
-     * Parser minimale per numeri esadecimali.
-     * Accetta sia "00FF" sia "0x00FF", cosi i comandi seriali restano comodi.
+     * I numeri senza prefisso sono esadecimali: "00FF" e "0x00FF".
+     * Il prefisso "0b" seleziona il binario: "0b10100110".
      */
     char *text = skipSpaces(*cursor);
     uint16_t result = 0;
     uint8_t digits = 0;
+    uint8_t base = 16;
 
     if (text[0] == '0' && (text[1] == 'x' || text[1] == 'X')) {
+        text += 2;
+    } else if (text[0] == '0' && (text[1] == 'b' || text[1] == 'B')) {
+        base = 2;
         text += 2;
     }
 
@@ -61,17 +65,19 @@ static bool parseHexValue(char **cursor, uint16_t *value)
         char ch = *text;
         uint8_t nibble;
 
-        if (ch >= '0' && ch <= '9') {
+        if (ch >= '0' && ch <= '1') {
             nibble = (uint8_t)(ch - '0');
-        } else if (ch >= 'a' && ch <= 'f') {
+        } else if (base == 16 && ch >= '2' && ch <= '9') {
+            nibble = (uint8_t)(ch - '0');
+        } else if (base == 16 && ch >= 'a' && ch <= 'f') {
             nibble = (uint8_t)(ch - 'a' + 10);
-        } else if (ch >= 'A' && ch <= 'F') {
+        } else if (base == 16 && ch >= 'A' && ch <= 'F') {
             nibble = (uint8_t)(ch - 'A' + 10);
         } else {
             break;
         }
 
-        result = (uint16_t)((result << 4) | nibble);
+        result = (uint16_t)(result * base + nibble);
         digits++;
         text++;
     }
@@ -219,16 +225,18 @@ static void commandFill(uint16_t start, uint16_t end, uint8_t value)
 
 void serialCommandsPrintHelp()
 {
-    Serial.println(F("AT28C64 programmer commands:"));
-    Serial.println(F("  0000: 20          write cpu8asm .hex line"));
-    Serial.println(F("  W 0000 20         write byte"));
-    Serial.println(F("  P 0000 20         protected write byte"));
-    Serial.println(F("  M W               hex lines use normal write"));
-    Serial.println(F("  M P               hex lines use protected write"));
-    Serial.println(F("  R 0000            read byte"));
-    Serial.println(F("  D 0000 0010       dump count bytes"));
-    Serial.println(F("  F 0000 00FF FF    fill inclusive range"));
-    Serial.println(F("  HELP              show this help"));
+    Serial.println(F("Comandi programmatore AT28C64:"));
+    Serial.println(F("  Numeri: esadecimali oppure binari con prefisso 0b."));
+    Serial.println(F("  Esempio binario: W 0b0 0b10100110"));
+    Serial.println(F("  0000: 20          scrive una riga .hex di cpu8asm"));
+    Serial.println(F("  W 0000 20         scrive il byte 20 all'indirizzo 0000"));
+    Serial.println(F("  P 0000 20         scrittura con protezione software"));
+    Serial.println(F("  M W               righe .hex: scrittura normale"));
+    Serial.println(F("  M P               righe .hex: scrittura protetta"));
+    Serial.println(F("  R 0000            legge un byte"));
+    Serial.println(F("  D 0000 0010       legge 0010 byte da 0000"));
+    Serial.println(F("  F 0000 00FF FF    riempie 0000-00FF con FF"));
+    Serial.println(F("  HELP oppure ?      mostra questo aiuto"));
 }
 
 static void handleCpu8HexLine(char *line)
@@ -242,7 +250,7 @@ static void handleCpu8HexLine(char *line)
     uint16_t address;
     uint16_t value;
 
-    if (!parseHexValue(&cursor, &address)) {
+    if (!parseNumber(&cursor, &address)) {
         Serial.println(F("ERR expected address"));
         return;
     }
@@ -254,7 +262,7 @@ static void handleCpu8HexLine(char *line)
     }
     cursor++;
 
-    if (!parseHexValue(&cursor, &value) || !validateByte(value)) {
+    if (!parseNumber(&cursor, &value) || !validateByte(value)) {
         return;
     }
 
@@ -291,7 +299,7 @@ static void handleCommand(char *line)
 
     switch (command) {
         case 'W':
-            if (!parseHexValue(&cursor, &a) || !parseHexValue(&cursor, &b) || !validateByte(b)) {
+            if (!parseNumber(&cursor, &a) || !parseNumber(&cursor, &b) || !validateByte(b)) {
                 Serial.println(F("ERR usage: W addr byte"));
                 return;
             }
@@ -299,7 +307,7 @@ static void handleCommand(char *line)
             return;
 
         case 'P':
-            if (!parseHexValue(&cursor, &a) || !parseHexValue(&cursor, &b) || !validateByte(b)) {
+            if (!parseNumber(&cursor, &a) || !parseNumber(&cursor, &b) || !validateByte(b)) {
                 Serial.println(F("ERR usage: P addr byte"));
                 return;
             }
@@ -323,7 +331,7 @@ static void handleCommand(char *line)
         }
 
         case 'R':
-            if (!parseHexValue(&cursor, &a)) {
+            if (!parseNumber(&cursor, &a)) {
                 Serial.println(F("ERR usage: R addr"));
                 return;
             }
@@ -331,7 +339,7 @@ static void handleCommand(char *line)
             return;
 
         case 'D':
-            if (!parseHexValue(&cursor, &a) || !parseHexValue(&cursor, &b)) {
+            if (!parseNumber(&cursor, &a) || !parseNumber(&cursor, &b)) {
                 Serial.println(F("ERR usage: D start count"));
                 return;
             }
@@ -339,8 +347,8 @@ static void handleCommand(char *line)
             return;
 
         case 'F':
-            if (!parseHexValue(&cursor, &a) || !parseHexValue(&cursor, &b) ||
-                !parseHexValue(&cursor, &c) || !validateByte(c)) {
+            if (!parseNumber(&cursor, &a) || !parseNumber(&cursor, &b) ||
+                !parseNumber(&cursor, &c) || !validateByte(c)) {
                 Serial.println(F("ERR usage: F start end byte"));
                 return;
             }
