@@ -205,14 +205,12 @@ e due uscite:
 
 Lo schema logico è:
 
-```text
-A ----\
-       XOR ---- S
-B ----/
-
-A ----\
-       AND ---- C
-B ----/
+```mermaid
+flowchart LR
+    A[A] --> XOR & AND
+    B[B] --> XOR & AND
+    XOR --> S["S = A XOR B<br/>(somma)"]
+    AND --> C["C = A AND B<br/>(riporto)"]
 ```
 
 La XOR produce il bit di somma.
@@ -327,15 +325,16 @@ Cout = C1 OR C2
 
 Lo schema concettuale è:
 
-```text
-A ----\
-       Half Adder ---- S1 ----\
-B ----/                         Half Adder ---- S
-                         Cin --/
-
-C1 --------------------\
-                       OR ---- Cout
-C2 --------------------/
+```mermaid
+flowchart LR
+    A[A] --> HA1[Half Adder 1]
+    B[B] --> HA1
+    HA1 -->|S1| HA2[Half Adder 2]
+    Cin[Cin] --> HA2
+    HA1 -->|C1| OR[OR]
+    HA2 -->|C2| OR
+    HA2 --> S[S]
+    OR --> Cout[Cout]
 ```
 
 In questo modo il full adder tiene conto sia dei due bit da sommare sia del riporto proveniente dalla colonna precedente.
