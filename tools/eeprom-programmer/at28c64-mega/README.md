@@ -121,7 +121,9 @@ Significato:
 | `F start end byte` | riempie un intervallo inclusivo |
 | `HELP` | stampa l'aiuto |
 
-I numeri sono esadecimali. Il prefisso `0x` e opzionale.
+I numeri senza prefisso sono esadecimali e il prefisso `0x` e opzionale. Per
+inserire un numero binario usa `0b`: ad esempio `W 0b0 0b10100110`.
+L'output e i dump restano in esadecimale, nel formato compatibile con `cpu8asm`.
 
 ## Esempio con l'assembler
 

@@ -158,7 +158,9 @@ Usa il terminatore di riga newline.
 
 ## Comandi utili
 
-Tutti i numeri sono esadecimali; `0x` e facoltativo.
+I numeri senza prefisso sono esadecimali; `0x` e facoltativo. Per usare il
+binario, anteponi `0b`: per esempio `W 0b0 0b10100110` scrive il byte `A6`
+all'indirizzo `0000`. Il formato di risposta e dei dump resta esadecimale.
 
 | Comando            | Esempio          | Funzione                     |
 | ------------------ | ---------------- | ---------------------------- |

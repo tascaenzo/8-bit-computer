@@ -17,7 +17,7 @@ void setup()
 
     eepromBusBegin();
 
-    Serial.println(F("AT28C64 programmer ready"));
+    Serial.println(F("Programmatore AT28C64 pronto"));
     serialCommandsPrintHelp();
 }
 
