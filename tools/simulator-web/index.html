@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CPU 8-bit · Simulatore ISA</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">CPU DIDATTICA · ISA v0.1</p>
+        <h1>Simulatore step-by-step</h1>
+      </div>
+      <div class="status" id="status" aria-live="polite">Pronto</div>
+    </header>
+
+    <main>
+      <section class="workspace">
+        <section class="panel source-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SORGENTE</p>
+              <h2>Assembly</h2>
+            </div>
+            <button class="secondary" id="loadDemo">Carica demo</button>
+          </div>
+          <textarea
+            id="source"
+            spellcheck="false"
+            aria-label="Sorgente assembly"
+          ></textarea>
+          <div class="actions">
+            <button id="assemble">Assembla e resetta</button>
+            <button id="step" class="secondary">Step istruzione</button>
+            <button id="run" class="secondary">Esegui</button>
+            <button id="pause" class="secondary" disabled>Pausa</button>
+            <button id="reset" class="secondary">Reset CPU</button>
+          </div>
+          <p class="hint">
+            Supporta `.code`, `.data`, `.byte`, `.equ`, label e tutte le
+            istruzioni ISA v0.1.
+          </p>
+          <pre
+            class="message"
+            id="message"
+          >
+Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
+        </section>
+
+        <section class="panel execution-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ESECUZIONE</p>
+              <h2>Stato della CPU</h2>
+            </div>
+            <div class="cycle">Istruzioni: <strong id="cycles">0</strong></div>
+          </div>
+          <div class="instruction" id="instruction">—</div>
+          <div class="register-grid" id="registers"></div>
+          <div class="flags" id="flags"></div>
+          <div class="bus-readout">
+            <span>MAR <b id="mar">0x0000</b></span>
+            <span>MDR <b id="mdr">0x00</b></span>
+            <span>IR <b id="ir">0x00</b></span>
+          </div>
+          <div class="io-row">
+            <label>Input <input
+                id="inputValue"
+                value="0x00"
+                inputmode="text"
+              /></label>
+            <span>Output: <b id="output">0x00</b> <em id="outputChar"
+              >.</em></span>
+          </div>
+        </section>
+      </section>
+
+      <section class="observatory">
+        <section class="panel memory-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">MEMORIA UNICA · 64 KiB</p>
+              <h2>RAM / ROM</h2>
+            </div>
+            <label class="address-picker">Vai a
+              <input
+                id="memoryAddress"
+                value="0x0000"
+                aria-label="Indirizzo memoria"
+              /></label>
+          </div>
+          <div class="memory-legend">
+            <span class="legend pc"></span>PC
+            <span class="legend mar"></span>MAR
+            <span class="legend changed"></span>ultima scrittura
+          </div>
+          <div class="memory-grid" id="memory"></div>
+        </section>
+
+        <section class="panel video-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">FPGA · AREA MAPPATA 0x4000–0x7FFF</p>
+              <h2>VRAM a caratteri</h2>
+            </div>
+            <span class="video-map">A[13:7] = Y · A[6:0] = X</span>
+          </div>
+          <div
+            class="screen"
+            id="screen"
+            aria-label="Anteprima memoria video"
+          >
+          </div>
+          <p class="hint">
+            Anteprima delle prime 40 × 20 celle; la VRAM simulata usa una
+            griglia fisica di 128 × 128.
+          </p>
+        </section>
+      </section>
+
+      <section class="panel micro-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">CONTROL UNIT · MODELLO DIDATTICO</p>
+            <h2>Microcicli, bus e blocchi della CPU</h2>
+          </div>
+          <div class="micro-actions">
+            <button id="microStep">Step microciclo</button>
+            <button id="microReset" class="secondary">Azzera T</button>
+          </div>
+        </div>
+        <p class="hint micro-note">
+          Ogni istruzione viene illustrata in sette fasi. È una traccia di
+          microcodice da definire: i segnali mostrati sono una proposta coerente
+          con l’ISA, non ancora il wiring definitivo.
+        </p>
+        <div class="micro-layout">
+          <div
+            class="timing"
+            id="timing"
+            aria-label="Sequenza dei microcicli"
+          >
+          </div>
+          <div class="diagram-wrap">
+            <div
+              class="cpu-diagram"
+              id="cpuDiagram"
+              role="img"
+              aria-label="Datapath interattivo della CPU: registri, ALU, bus e memoria"
+            >
+            </div>
+          </div>
+          <aside
+            class="micro-detail"
+            id="microDetail"
+            aria-live="polite"
+          >
+          </aside>
+        </div>
+      </section>
+
+      <section class="panel trace-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">TRACCIA</p>
+            <h2>Ultime istruzioni</h2>
+          </div>
+          <button id="clearTrace" class="secondary">Pulisci</button>
+        </div>
+        <ol id="trace" class="trace"></ol>
+      </section>
+    </main>
+    <footer>
+      Il simulatore emula l’ISA documentata, non i singoli micro-cicli TTL. MAR,
+      MDR e IR mostrano l’ultimo stato osservabile.
+    </footer>
+    <script src="vendor/x6.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
