@@ -45,6 +45,13 @@ La guida passo passo per il programmatore AT28C64 con Arduino Mega e in:
 docs/at28c64-arduino-mega-programmer.md
 ```
 
+### `tools/simulator-web`
+
+Contiene il simulatore web step-by-step della ISA: permette di assemblare ed
+eseguire programmi nel browser, osservando registri, flag, RAM e la memoria
+video mappata nella FPGA. La guida di avvio è in
+[`tools/simulator-web/README.md`](tools/simulator-web/README.md).
+
 ### `wiki/videos`
 
 Contiene le trascrizioni autogenerate dei video della serie.
