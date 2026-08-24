@@ -10,7 +10,6 @@ const COLORS = {
   address: "#86aeb8",
   data: "#58b9da",
   control: "#c79d62",
-  video: "#b89762",
 };
 
 const FONT = "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace";
@@ -107,7 +106,7 @@ function registerShapes(Graph) {
           refX: "50%",
           refY: 43,
           fill: COLORS.muted,
-          fontSize: 10,
+          fontSize: 11,
         },
         value: {
           ...text,
@@ -358,6 +357,7 @@ export function createCpuDiagram(container, onBlockClick) {
       fill,
       icon = "",
       divider = "",
+      nodePorts,
     },
   ) => {
     const node = graph.addNode({
@@ -368,7 +368,7 @@ export function createCpuDiagram(container, onBlockClick) {
       width,
       height,
       zIndex: 3,
-      ports: ports(),
+      ports: nodePorts || ports(),
       data: {
         blockKey,
         valueKey,
@@ -413,7 +413,7 @@ export function createCpuDiagram(container, onBlockClick) {
     zIndex: 1,
     attrs: {
       title: { text: "MEMORIA ESTERNA" },
-      value: { text: "RAM + VRAM mappata" },
+      value: { text: "RAM / ROM" },
     },
   });
   graph.addNode({
@@ -452,25 +452,15 @@ export function createCpuDiagram(container, onBlockClick) {
     blockKey: "memory",
     valueKey: "memory",
     title: "MEMORIA 64 KiB",
-    subtitle: "programma · dati · area video",
+    subtitle: "codice · dati",
     value: "MEM[0x0000] = 0x00",
     icon:
       "M24 73 H161 M24 103 H161 M24 133 H161 M24 163 H161 M61 58 V181 M98 58 V181 M135 58 V181",
     divider: "M0 48 H185",
-  });
-  addUnit({
-    id: "vram",
-    x: 25,
-    y: 555,
-    width: 185,
-    height: 120,
-    blockKey: "vram",
-    title: "FPGA · VIDEO TESTO",
-    subtitle: "griglia caratteri 128 × 128",
-    value: "VRAM 0x4000–0x7FFF",
-    fill: "#2b2922",
-    icon: "M24 69 H161 M61 53 V88 M98 53 V88 M135 53 V88",
-    divider: "M0 45 H185",
+    nodePorts: absolutePorts([
+      { id: "address", x: "100%", y: 82 },
+      { id: "data", x: "100%", y: 178 },
+    ]),
   });
   addUnit({
     id: "pc",
@@ -481,7 +471,7 @@ export function createCpuDiagram(container, onBlockClick) {
     blockKey: "pc",
     valueKey: "pc",
     title: "PC",
-    subtitle: "Program Counter · 16 bit",
+    subtitle: "16 bit · INC / LOAD",
     value: "0x0000",
     divider: "M0 49 H135",
   });
@@ -494,9 +484,14 @@ export function createCpuDiagram(container, onBlockClick) {
     blockKey: "mar",
     valueKey: "mar",
     title: "MAR",
-    subtitle: "Memory Address · 16 bit",
+    subtitle: "16 bit · LOW / HIGH",
     value: "0x0000",
     divider: "M0 49 H145",
+    nodePorts: absolutePorts([
+      { id: "jump", x: 0, y: "50%" },
+      { id: "address", x: "35%", y: "100%" },
+      { id: "data", x: "72%", y: "100%" },
+    ]),
   });
   addUnit({
     id: "mdr",
@@ -507,7 +502,7 @@ export function createCpuDiagram(container, onBlockClick) {
     blockKey: "mdr",
     valueKey: "mdr",
     title: "MDR",
-    subtitle: "Memory Data · 8 bit",
+    subtitle: "8 bit · WE / OE",
     value: "0x00",
     divider: "M0 49 H130",
   });
@@ -520,7 +515,7 @@ export function createCpuDiagram(container, onBlockClick) {
     blockKey: "ir",
     valueKey: "ir",
     title: "IR",
-    subtitle: "Instruction · 8 bit",
+    subtitle: "8 bit · opcode",
     value: "0x00",
     divider: "M0 49 H125",
   });
@@ -533,26 +528,12 @@ export function createCpuDiagram(container, onBlockClick) {
     blockKey: "cu",
     valueKey: "cu",
     title: "CONTROL UNIT",
-    subtitle: "decode · sequencer T1–T7",
+    subtitle: "µROM · µSTEP · C/Z/N/O",
     value: "IDLE",
     fill: "#183139",
     icon: "M26 64 H149 M26 82 H149 M26 100 H149",
     divider: "M0 48 H175",
   });
-  addUnit({
-    id: "io",
-    x: 1110,
-    y: 315,
-    width: 175,
-    height: 76,
-    blockKey: "io",
-    valueKey: "io",
-    title: "I/O",
-    subtitle: "IN Rn · OUT Rn",
-    value: "IN 00 · OUT 00",
-    divider: "M0 45 H175",
-  });
-
   const registerBank = graph.addNode({
     id: "registers",
     shape: "cpu-register-bank",
@@ -562,10 +543,7 @@ export function createCpuDiagram(container, onBlockClick) {
     height: 185,
     zIndex: 3,
     ports: absolutePorts([
-      { id: "data", x: 0, y: 93 },
-      { id: "control", x: "75%", y: 0 },
-      { id: "out-a", x: "100%", y: 62 },
-      { id: "out-b", x: "100%", y: 128 },
+      { id: "bus", x: "50%", y: 0 },
       { id: "bottom", x: "50%", y: "100%" },
     ]),
     data: {
@@ -584,10 +562,10 @@ export function createCpuDiagram(container, onBlockClick) {
     y: 525,
     width: 140,
     height: 76,
-    blockKey: "alu",
+    blockKey: "ra",
     valueKey: "ra",
     title: "RA · operando A",
-    subtitle: "ingresso / risultato ALU",
+    subtitle: "8 bit · WE / OE",
     value: "0x00",
     fill: "#12313b",
     divider: "M0 45 H140",
@@ -598,10 +576,10 @@ export function createCpuDiagram(container, onBlockClick) {
     y: 635,
     width: 140,
     height: 76,
-    blockKey: "alu",
+    blockKey: "rb",
     valueKey: "rb",
     title: "RB · operando B",
-    subtitle: "secondo ingresso ALU",
+    subtitle: "8 bit · WE",
     value: "0x00",
     fill: "#12313b",
     divider: "M0 45 H140",
@@ -638,50 +616,78 @@ export function createCpuDiagram(container, onBlockClick) {
     blockKey: "flags",
     valueKey: "flags",
     title: "FLAG REGISTER",
-    subtitle: "C · Z · N · O",
+    subtitle: "latch C · Z · N · O",
     value: "C0 Z0 N0 O0",
     fill: "#182d35",
     divider: "M0 47 H175",
   });
 
-  const addBusLabel = (id, x, y, title, color) => {
+  const addBusLabel = (id, x, y, width, title, color, nodePorts) => {
     const node = graph.addNode({
       id,
       shape: "cpu-bus-label",
       x,
       y,
-      width: 250,
-      height: 42,
+      width,
+      height: 46,
       zIndex: 2,
+      ports: nodePorts,
       data: { valueKey: id },
-      attrs: { title: { text: title, fill: color }, value: { text: "—" } },
+      attrs: {
+        body: {
+          fill: "#0a1d25",
+          stroke: color,
+          strokeOpacity: 0.58,
+          strokeWidth: 1,
+          rx: 8,
+          ry: 8,
+        },
+        title: { text: title, fill: color, refX: 12, refY: 15 },
+        value: { text: "—", refX: 12, refY: 34 },
+      },
     });
     nodes.set(id, node);
   };
   addBusLabel(
     "address-bus",
-    270,
+    260,
     275,
+    820,
     "ADDRESS BUS · A[15:0]",
     COLORS.address,
+    absolutePorts([
+      { id: "memory", x: 0, y: 23 },
+      { id: "pc", x: 108, y: 0 },
+      { id: "mar", x: 296, y: 0 },
+    ]),
   );
-  addBusLabel("data-bus", 560, 392, "DATA BUS · D[7:0]", COLORS.data);
-  graph.addNode({
-    id: "control-label",
-    shape: "cpu-bus-label",
-    x: 900,
-    y: 449,
-    width: 260,
-    height: 30,
-    zIndex: 2,
-    attrs: {
-      title: {
-        text: "CONTROL BUS · enable / load / RD / WR",
-        fill: COLORS.control,
-      },
-      value: { text: "" },
-    },
-  });
+  addBusLabel(
+    "data-bus",
+    260,
+    392,
+    820,
+    "DATA BUS · D[7:0]",
+    COLORS.data,
+    absolutePorts([
+      { id: "memory", x: 0, y: 14 },
+      { id: "mar", x: 349, y: 0 },
+      { id: "mdr", x: 525, y: 0 },
+      { id: "ir", x: 722, y: 0 },
+      { id: "registers", x: 175, y: 46 },
+      { id: "rb", x: 360, y: 46 },
+      { id: "ra", x: 460, y: 46 },
+      { id: "alu", x: 701, y: 46 },
+    ]),
+  );
+  addBusLabel(
+    "control-bus",
+    260,
+    449,
+    820,
+    "CONTROL BUS · enable / load / RD / WR",
+    COLORS.control,
+  );
+  nodes.get("control-bus").attr("value/fontSize", 10);
 
   const addEdge = (
     {
@@ -692,7 +698,7 @@ export function createCpuDiagram(container, onBlockClick) {
       color = COLORS.data,
       vertices,
       dashed = false,
-      router = "manhattan",
+      router = "orth",
       bidirectional = false,
       label,
     },
@@ -731,7 +737,8 @@ export function createCpuDiagram(container, onBlockClick) {
       attrs: {
         line: {
           stroke: color,
-          strokeWidth: 3,
+          strokeWidth: 1.25,
+          strokeOpacity: 0.22,
           strokeDasharray: dashed ? "7 6" : "",
           strokeLinejoin: "round",
           sourceMarker: bidirectional ? { name: "classic", size: 7 } : null,
@@ -746,37 +753,106 @@ export function createCpuDiagram(container, onBlockClick) {
   };
 
   addEdge({
-    id: "pc-mar",
-    pathKey: "pc-mar",
-    source: { cell: "pc", port: "right" },
-    target: { cell: "mar", port: "left" },
+    id: "pc-address",
+    pathKey: "pc-address",
+    source: { cell: "pc", port: "bottom" },
+    target: { cell: "address-bus", port: "pc" },
     color: COLORS.address,
-  });
-  addEdge({
-    id: "mar-memory",
-    pathKey: "mar-memory",
-    source: { cell: "mar", port: "left" },
-    target: { cell: "memory", port: "right" },
-    color: COLORS.address,
-    vertices: [{ x: 470, y: 258 }, { x: 235, y: 258 }],
+    vertices: [{ x: 368, y: 248 }],
     router: "orth",
   });
   addEdge({
-    id: "memory-mdr",
-    pathKey: "memory-mdr",
-    source: { cell: "memory", port: "right" },
-    target: { cell: "mdr", port: "bottom" },
+    id: "mar-address",
+    pathKey: "mar-address",
+    source: { cell: "mar", port: "address" },
+    target: { cell: "address-bus", port: "mar" },
+    color: COLORS.address,
+    vertices: [{ x: 556, y: 248 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "address-memory",
+    pathKey: "address-memory",
+    source: { cell: "address-bus", port: "memory" },
+    target: { cell: "memory", port: "address" },
+    color: COLORS.address,
+    vertices: [{ x: 235, y: 296 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "mar-pc",
+    pathKey: "mar-pc",
+    source: { cell: "mar", port: "jump" },
+    target: { cell: "pc", port: "right" },
+    color: COLORS.address,
+    dashed: true,
+  });
+  addEdge({
+    id: "memory-data",
+    pathKey: "memory-data",
+    source: { cell: "memory", port: "data" },
+    target: { cell: "data-bus", port: "memory" },
     color: COLORS.data,
-    vertices: [{ x: 245, y: 425 }, { x: 785, y: 425 }],
+    vertices: [{ x: 235, y: 415 }],
     router: "orth",
     bidirectional: true,
   });
   addEdge({
-    id: "mdr-ir",
-    pathKey: "mdr-ir",
-    source: { cell: "mdr", port: "right" },
-    target: { cell: "ir", port: "left" },
+    id: "data-mar",
+    pathKey: "data-mar",
+    source: { cell: "data-bus", port: "mar" },
+    target: { cell: "mar", port: "data" },
     color: COLORS.data,
+    vertices: [{ x: 609, y: 248 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "data-mdr",
+    pathKey: "mdr-data",
+    source: { cell: "data-bus", port: "mdr" },
+    target: { cell: "mdr", port: "bottom" },
+    color: COLORS.data,
+    vertices: [{ x: 785, y: 248 }],
+    router: "orth",
+    bidirectional: true,
+  });
+  addEdge({
+    id: "data-ir",
+    pathKey: "data-ir",
+    source: { cell: "data-bus", port: "ir" },
+    target: { cell: "ir", port: "bottom" },
+    color: COLORS.data,
+    vertices: [{ x: 982, y: 248 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "data-registers",
+    pathKey: "registers-data",
+    source: { cell: "data-bus", port: "registers" },
+    target: { cell: "registers", port: "bus" },
+    color: COLORS.data,
+    vertices: [{ x: 435, y: 505 }],
+    router: "orth",
+    bidirectional: true,
+  });
+  addEdge({
+    id: "data-ra",
+    pathKey: "ra-data",
+    source: { cell: "data-bus", port: "ra" },
+    target: { cell: "ra", port: "top" },
+    color: COLORS.data,
+    vertices: [{ x: 720, y: 505 }],
+    router: "orth",
+    bidirectional: true,
+  });
+  addEdge({
+    id: "data-rb",
+    pathKey: "data-rb",
+    source: { cell: "data-bus", port: "rb" },
+    target: { cell: "rb", port: "left" },
+    color: COLORS.data,
+    vertices: [{ x: 620, y: 505 }, { x: 620, y: 673 }],
+    router: "orth",
   });
   addEdge({
     id: "ir-cu",
@@ -787,54 +863,36 @@ export function createCpuDiagram(container, onBlockClick) {
     dashed: true,
   });
   addEdge({
-    id: "cu-registers",
-    pathKey: "cu-registers",
+    id: "cu-control",
+    pathKey: "cu-control",
     source: { cell: "cu", port: "bottom" },
-    target: { cell: "registers", port: "control" },
+    target: { cell: "control-bus" },
     color: COLORS.control,
     dashed: true,
-    vertices: [{ x: 1300, y: 280 }, { x: 1300, y: 480 }, { x: 435, y: 480 }],
+    vertices: [{ x: 1300, y: 280 }, { x: 1300, y: 472 }],
     router: "orth",
-  });
-  addEdge({
-    id: "registers-ra",
-    pathKey: "registers-alu",
-    source: { cell: "registers", port: "out-a" },
-    target: { cell: "ra", port: "left" },
-    color: COLORS.data,
-    bidirectional: true,
-  });
-  addEdge({
-    id: "registers-rb",
-    pathKey: "registers-alu",
-    source: { cell: "registers", port: "out-b" },
-    target: { cell: "rb", port: "left" },
-    color: COLORS.data,
-    vertices: [{ x: 610, y: 673 }],
-    router: "orth",
-    bidirectional: true,
   });
   addEdge({
     id: "ra-alu",
-    pathKey: "registers-alu",
+    pathKey: "ra-alu",
     source: { cell: "ra", port: "right" },
     target: { cell: "alu", port: "in-a" },
     color: COLORS.data,
   });
   addEdge({
     id: "rb-alu",
-    pathKey: "registers-alu",
+    pathKey: "rb-alu",
     source: { cell: "rb", port: "right" },
     target: { cell: "alu", port: "in-b" },
     color: COLORS.data,
   });
   addEdge({
-    id: "alu-ra",
-    pathKey: "registers-alu",
+    id: "alu-data",
+    pathKey: "alu-data",
     source: { cell: "alu", port: "result" },
-    target: { cell: "ra", port: "top" },
+    target: { cell: "data-bus", port: "alu" },
     color: COLORS.accent,
-    vertices: [{ x: 955, y: 505 }, { x: 720, y: 505 }],
+    vertices: [{ x: 961, y: 505 }],
     router: "orth",
   });
   addEdge({
@@ -844,29 +902,6 @@ export function createCpuDiagram(container, onBlockClick) {
     target: { cell: "flags", port: "left" },
     color: COLORS.control,
   });
-  addEdge({
-    id: "memory-vram",
-    pathKey: "memory-vram",
-    source: { cell: "memory", port: "bottom" },
-    target: { cell: "vram", port: "top" },
-    color: COLORS.video,
-    dashed: true,
-  });
-  addEdge({
-    id: "io-registers",
-    pathKey: "io-registers",
-    source: { cell: "io", port: "left" },
-    target: { cell: "registers", port: "data" },
-    color: COLORS.data,
-    vertices: [
-      { x: 1080, y: 425 },
-      { x: 270, y: 425 },
-      { x: 270, y: 618 },
-    ],
-    router: "orth",
-    bidirectional: true,
-  });
-
   graph.on("node:click", ({ node }) => {
     const blockKey = node.getData()?.blockKey;
     if (blockKey) onBlockClick?.(blockKey);
@@ -877,7 +912,7 @@ export function createCpuDiagram(container, onBlockClick) {
     const height = container.clientHeight;
     if (!width || !height) return;
     graph.resize(width, height);
-    graph.zoomToFit({ padding: 24, maxScale: 1 });
+    graph.zoomToFit({ padding: 28, maxScale: 1 });
     graph.centerContent();
   }
   const resizeObserver = new ResizeObserver(fit);
@@ -892,17 +927,20 @@ export function createCpuDiagram(container, onBlockClick) {
     node.attr(`${selector}/style/filter`, active ? ACTIVE_SHADOW : "none");
   }
 
-  function update({ phase, selectedBlock, preview, input = 0, output = 0 }) {
+  function update({ phase, selectedBlock, preview }) {
     const activeBlocks = new Set(phase?.blocks || []);
     nodes.forEach((node) => {
       const data = node.getData() || {};
       if (!data.blockKey) return;
       const active = activeBlocks.has(data.blockKey);
       const selected = selectedBlock === data.blockKey;
-      node.attr("body/fill", active || selected ? "#144b50" : data.baseFill);
+      node.attr(
+        "body/fill",
+        active ? "#144b50" : selected ? "#4a3d24" : data.baseFill,
+      );
       node.attr(
         "body/stroke",
-        active || selected ? COLORS.accent : data.baseStroke,
+        active ? COLORS.accent : selected ? COLORS.value : data.baseStroke,
       );
       node.attr("body/strokeWidth", active || selected ? 3 : 2);
       node.attr("body/style/filter", active ? ACTIVE_SHADOW : "none");
@@ -912,7 +950,8 @@ export function createCpuDiagram(container, onBlockClick) {
       group.forEach((edge) => {
         const data = edge.getData();
         edge.attr("line/stroke", active ? COLORS.accent : data.color);
-        edge.attr("line/strokeWidth", active ? 5 : 3);
+        edge.attr("line/strokeWidth", active ? 5 : 1.25);
+        edge.attr("line/strokeOpacity", active ? 1 : 0.22);
         edge.attr("line/strokeDasharray", data.dashed ? "7 6" : "");
         edge.attr("line/style/filter", active ? ACTIVE_SHADOW : "none");
       });
@@ -945,18 +984,16 @@ export function createCpuDiagram(container, onBlockClick) {
       preview.active.has("data-bus"),
     );
     setValue(
+      "control-bus",
+      "value",
+      phase?.signals || "—",
+      Boolean(phase),
+    );
+    setValue(
       "cu",
       "value",
       phase ? `${phase.t} · ${phase.title}` : "IDLE",
       activeBlocks.has("cu"),
-    );
-    setValue(
-      "io",
-      "value",
-      `IN ${input.toString(16).toUpperCase().padStart(2, "0")} · OUT ${
-        output.toString(16).toUpperCase().padStart(2, "0")
-      }`,
-      activeBlocks.has("io"),
     );
     const bank = nodes.get("registers");
     preview.regs.forEach((value, index) => {

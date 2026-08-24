@@ -61,6 +61,7 @@ function assembleAndReset() {
   try {
     loadProgram(state, assemble(view.el("source").value));
     stop();
+    view.setSourceSynchronized(true);
     view.render(state);
     view.setMessage(
       `Assemblato: ${state.program.size} istruzioni, ${
@@ -70,6 +71,7 @@ function assembleAndReset() {
     view.setStatus("Assemblato");
   } catch (error) {
     stop();
+    view.setSourceSynchronized(false);
     view.setMessage(error.message, true);
     view.setStatus("Errore assembly", true);
   }
@@ -90,16 +92,19 @@ function microStep() {
     view.setStatus("CPU arrestata");
     return;
   }
-  if (!state.micro.plan.length || state.micro.current >= 6) {
+  if (
+    !state.micro.plan.length ||
+    state.micro.current >= state.micro.plan.length - 1
+  ) {
     state.micro.instructionAddress = state.pc;
     state.micro.plan = planMicrocycles(state);
     state.micro.current = -1;
   }
   state.micro.current++;
   const phase = state.micro.plan[state.micro.current];
-  if (state.micro.current === 6) {
+  if (state.micro.current === state.micro.plan.length - 1) {
     runInstruction();
-    if (!state.halted) view.setStatus("T7 completato");
+    if (!state.halted) view.setStatus(`${phase.t} completato`);
   } else {
     view.render(state);
     view.setStatus(`${phase.t} · ${phase.title}`);
@@ -107,6 +112,9 @@ function microStep() {
 }
 
 view.el("assemble").addEventListener("click", assembleAndReset);
+view.el("source").addEventListener("input", () => {
+  view.setSourceSynchronized(false);
+});
 view.el("step").addEventListener("click", () => {
   stop();
   clearMicroPlan(state);

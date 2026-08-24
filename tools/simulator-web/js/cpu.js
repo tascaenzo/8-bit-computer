@@ -87,11 +87,10 @@ export function disassemble(state, opcode, address) {
   return OPCODE_NAMES[opcode] || `DB ${hex(opcode)}`;
 }
 
-const fetchByte = (state) => {
-  state.mar = state.pc;
-  state.mdr = state.mem[state.mar];
+const readProgramByte = (state) => {
+  const value = state.mem[state.pc];
   state.pc = (state.pc + 1) & 0xffff;
-  return state.mdr;
+  return value;
 };
 const overflowAdd = (a, b, result) => (~(a ^ b) & (a ^ result) & 0x80) !== 0;
 const overflowSub = (a, b, result) => ((a ^ b) & (a ^ result) & 0x80) !== 0;
@@ -149,7 +148,7 @@ export function stepCpu(state, input) {
   if (state.halted) return { halted: true };
   state.input = input;
   const address = state.pc;
-  const opcode = fetchByte(state);
+  const opcode = readProgramByte(state);
   state.ir = opcode;
   const text = disassemble(state, opcode, address);
   const reg = opcode & 7;
@@ -159,9 +158,10 @@ export function stepCpu(state, input) {
   else if (opcode === FIXED_OPCODES.NOP) {
     /* no operation */
   } else if (opcode >= 0x20 && opcode <= 0x27) {
-    state.regs[reg] = fetchByte(state);
+    state.mdr = readProgramByte(state);
+    state.regs[reg] = state.mdr;
   } else if (opcode >= 0x40 && opcode <= 0x4f) {
-    const target = fetchByte(state) | (fetchByte(state) << 8);
+    const target = readProgramByte(state) | (readProgramByte(state) << 8);
     state.mar = target;
     if (opcode <= 0x47) {
       state.mdr = state.mem[target];
@@ -173,13 +173,12 @@ export function stepCpu(state, input) {
     }
   } else if (opcode >= 0x60 && opcode <= 0x69) executeAlu(state, opcode);
   else if (opcode >= 0x80 && opcode <= 0x87) {
-    state.mdr = input;
     state.regs[reg] = input;
   } else if (opcode >= 0x88 && opcode <= 0x8f) {
-    state.mdr = state.regs[reg];
-    state.output = state.mdr;
+    state.output = state.regs[reg];
   } else if (opcode >= 0xa0 && opcode <= 0xa8) {
-    const target = fetchByte(state) | (fetchByte(state) << 8);
+    const target = readProgramByte(state) | (readProgramByte(state) << 8);
+    state.mar = target;
     if (jumpCondition(state, opcode)) state.pc = target;
   } else if (opcode >= 0xc0 && opcode <= 0xc7) state.ra = state.regs[reg];
   else if (opcode >= 0xc8 && opcode <= 0xcf) state.rb = state.regs[reg];

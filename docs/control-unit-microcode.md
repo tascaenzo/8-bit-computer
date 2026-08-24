@@ -1,0 +1,192 @@
+# Control Unit a microcodice — segnali di controllo
+
+> **Stato:** bozza da verificare sul cablaggio reale
+> **Versione:** 0.1
+> **Ambito:** CPU TTL a 8 bit, bus dati a 8 bit e bus indirizzi a 16 bit.
+
+Questo documento raccoglie i segnali che la Control Unit deve generare per la CPU attuale. I nomi sono **funzionali** e attivi alti: il circuito di uscita puo poi invertirli dove il chip fisico richiede logica attiva bassa, per esempio `/OE`, `/WE`, `/LOAD` o `/CLR`.
+
+Non sono inclusi:
+
+- i segnali `IN` e `OUT` usati provvisoriamente per test sulla board;
+- il registro `IX`, che non fa parte della ISA corrente;
+- segnali specifici per video, tastiera e timer: questi dispositivi sono memory-mapped e usano i normali cicli `MEM_RD` e `MEM_WR`.
+
+## 1. Vincoli dei bus
+
+La CPU ha un data bus condiviso `D[7:0]` e un address bus `A[15:0]`.
+
+```text
+Su D[7:0]:  al massimo una sorgente puo guidare il bus in ogni microciclo.
+Su A[15:0]: pilota il PC oppure il MAR, mai entrambi.
+```
+
+Le sorgenti del data bus previste sono:
+
+```text
+memoria selezionata, MDR, banco registri, RA, ALU
+```
+
+Le destinazioni possono invece catturare il medesimo valore sul fronte di clock, se la microistruzione lo richiede.
+
+## 2. Segnali generati dal microcodice
+
+| Gruppo | Segnale | Azione | Note hardware |
+| --- | --- | --- | --- |
+| Address bus | `PC_A_OE` | Il PC pilota `A[15:0]`. | Usato nel fetch dei byte istruzione. |
+| Address bus | `MAR_A_OE` | Il MAR pilota `A[15:0]`. | Usato per accessi a dati, VRAM e I/O memory-mapped. |
+| Program Counter | `PC_INC` | Incrementa il PC di uno. | Avviene dopo ogni byte letto dal flusso istruzioni. |
+| Program Counter | `PC_LOAD` | Carica il PC con l'indirizzo presente nel MAR. | Usato dai salti. |
+| MAR | `MAR_L_WE` | Salva `D[7:0]` nella parte bassa del MAR. | Primo byte di un indirizzo little-endian. |
+| MAR | `MAR_H_WE` | Salva `D[7:0]` nella parte alta del MAR. | Secondo byte di un indirizzo little-endian. |
+| Memoria | `MEM_RD` | Esegue una lettura dal dispositivo selezionato da `A[15:0]`. | Diventa `/OE` attivo basso vicino a RAM, ROM o buffer FPGA. |
+| Memoria | `MEM_WR` | Scrive `D[7:0]` nel dispositivo selezionato. | Diventa `/WE` attivo basso; indirizzo e dato devono gia essere stabili. |
+| Fetch | `IR_WE` | Salva l'opcode letto nel registro `IR`. | Il byte letto viene dal data bus. |
+| Registro dati memoria | `MDR_WE` | Salva un byte letto o da scrivere. | Ponte opzionale ma consigliato per gli accessi dati. |
+| Registro dati memoria | `MDR_OE` | Porta il contenuto di MDR su `D[7:0]`. | Non attivarlo insieme a un'altra sorgente del bus. |
+| Banco registri | `RF_EN` | Abilita il banco dei registri generali. | Il registro e scelto direttamente da `IR[2:0]`. |
+| Banco registri | `RF_WR` | Con `RF_EN`, scrive nel registro selezionato. | Con `RF_WR=0`, il registro selezionato e la sorgente del bus. |
+| Registro ALU A | `RA_WE` | Salva `D[7:0]` in RA. | Riceve valori da registri o risultato ALU. |
+| Registro ALU A | `RA_OE` | Porta RA su `D[7:0]`. | Necessario per `MOV Rn, RA`. |
+| Registro ALU B | `RB_WE` | Salva `D[7:0]` in RB. | RB non deve pilotare il data bus nella revisione corrente. |
+| ALU | `ALU_OE` | Porta il risultato ALU su `D[7:0]`. | L'operazione e selezionata direttamente da `IR[3:0]`. |
+| Flag | `FLAGS_WE` | Salva `C`, `Z`, `N`, `O` nel registro flag. | Attivo per operazioni ALU e `CMP`, non per load/store/mov/jump. |
+| Sequencer | `NEXT_FETCH` | Riporta il microsequencer al primo microciclo di fetch. | Normalmente azzera il contatore dei microstep. |
+| Sequencer | `HALT` | Ferma il sequencer e quindi la CPU. | Usato dall'istruzione `HLT`. |
+
+Il reset globale non e una normale microoperazione:
+
+| Segnale esterno | Azione |
+| --- | --- |
+| `RESET` | Inizializza PC, microsequencer e gli altri blocchi che richiedono uno stato iniziale noto. |
+
+## 3. Collegamenti diretti dall'Instruction Register
+
+Questi segnali **non devono consumare bit della microistruzione**.
+
+| Bit di IR | Destinazione | Uso |
+| --- | --- | --- |
+| `IR[2:0]` | selettori del banco registri | Seleziona `R0`…`R7` per `LDI`, `LDA`, `STA` e `MOV`. |
+| `IR[3:0]` | decoder ALU | Seleziona AND, OR, XOR, NOR, NAND, XNOR, NOT, ADD, SUB o CMP. |
+| `IR[3:0]` | logica delle condizioni | Identifica `JMP`, `JZ`, `JNZ`, `JC`, `JNC`, `JN`, `JNN`, `JO`, `JNO`. |
+| `IR[7:5]` | decoder/dispatch | Identifica la macrocategoria: sistema, immediate, memoria, ALU, I/O, jump o trasferimento. |
+
+Per `CMP` serve evitare il salvataggio del risultato in RA:
+
+```text
+IS_CMP          = (IR == 0x69)
+RA_WE_effettivo = RA_WE AND NOT(IS_CMP)
+```
+
+In questo modo `CMP` aggiorna i flag ma non modifica ne RA ne RB.
+
+## 4. Flag come ingressi del microcodice
+
+I flag sono ingressi della Control ROM, non uscite da generare:
+
+```text
+C = carry / borrow
+Z = zero
+N = negative
+O = overflow
+```
+
+Una possibile mappa per AT28C64 e:
+
+```text
+A0..A2   = µSTEP[2:0]
+A3..A7   = µOP[4:0]
+A8       = C
+A9       = Z
+A10      = N
+A11      = O
+A12      = libero per estensioni future
+```
+
+`µOP` non coincide necessariamente con l'opcode. E un identificatore di microprogramma prodotto da un piccolo decoder TTL o da una EEPROM di dispatch:
+
+```text
+IR[7:0] -> decoder/EEPROM dispatch -> µOP[4:0]
+```
+
+Il dispatch deve assegnare `µOP` diversi almeno a `LDA` e `STA`, ai tre `MOV` e ai salti condizionati. In questo modo, nella fase finale di un salto la Control ROM puo attivare `PC_LOAD` solo per le combinazioni di flag corrette.
+
+Il contatore `µSTEP[2:0]` identifica i tempi da `T1` a `T8`: `000` corrisponde a `T1` e `111` a `T8`. `NEXT_FETCH` riporta il sequencer a `T1`, quindi un'istruzione puo terminare prima di `T8`; i tempi successivi restano inattivi e disponibili per microsequenze future.
+
+## 5. Microsequenze di riferimento
+
+Ogni riga rappresenta un microciclo. I segnali di scrittura (`*_WE`) catturano il dato sul fronte attivo del clock; i segnali `*_OE` devono essere stabili prima di quel fronte.
+
+### Fetch comune
+
+| Microstep | Segnali | Effetto |
+| --- | --- | --- |
+| `T1` | `PC_A_OE`, `MEM_RD`, `IR_WE`, `PC_INC` | Legge l'opcode puntato dal PC, lo salva in IR e avanza al byte seguente. |
+
+### `LDI Rn, imm8`
+
+| Microstep | Segnali | Effetto |
+| --- | --- | --- |
+| `T2` | `PC_A_OE`, `MEM_RD`, `MDR_WE`, `PC_INC` | Legge l'immediato. |
+| `T3` | `MDR_OE`, `RF_EN`, `RF_WR`, `NEXT_FETCH` | Salva l'immediato in `Rn`. |
+
+### `LDA Rn, addr16`
+
+| Microstep | Segnali | Effetto |
+| --- | --- | --- |
+| `T2` | `PC_A_OE`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
+| `T3` | `PC_A_OE`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
+| `T4` | `MAR_A_OE`, `MEM_RD`, `MDR_WE` | Legge il byte dati all'indirizzo nel MAR. |
+| `T5` | `MDR_OE`, `RF_EN`, `RF_WR`, `NEXT_FETCH` | Salva il byte in `Rn`. |
+
+### `STA Rn, addr16`
+
+| Microstep | Segnali | Effetto |
+| --- | --- | --- |
+| `T2` | `PC_A_OE`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
+| `T3` | `PC_A_OE`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
+| `T4` | `RF_EN`, `MDR_WE` | Porta `Rn` sul bus e lo salva in MDR. |
+| `T5` | `MAR_A_OE`, `MDR_OE`, `MEM_WR`, `NEXT_FETCH` | Scrive MDR nell'indirizzo del MAR. |
+
+### ALU e trasferimenti
+
+| Istruzione | Microstep execute | Segnali |
+| --- | --- | --- |
+| ALU eccetto `CMP` | `T2` | `ALU_OE`, `RA_WE`, `FLAGS_WE`, `NEXT_FETCH` |
+| `CMP` | `T2` | `FLAGS_WE`, `NEXT_FETCH` |
+| `MOV RA, Rn` | `T2` | `RF_EN`, `RA_WE`, `NEXT_FETCH` |
+| `MOV RB, Rn` | `T2` | `RF_EN`, `RB_WE`, `NEXT_FETCH` |
+| `MOV Rn, RA` | `T2` | `RA_OE`, `RF_EN`, `RF_WR`, `NEXT_FETCH` |
+
+### Salti
+
+| Microstep | Segnali | Effetto |
+| --- | --- | --- |
+| `T2` | `PC_A_OE`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
+| `T3` | `PC_A_OE`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
+| `T4` | `PC_LOAD` se la condizione e vera; `NEXT_FETCH` | Carica il PC dal MAR oppure prosegue sequenzialmente. |
+
+## 6. Organizzazione suggerita delle EEPROM
+
+Una microistruzione ha 20 segnali principali. Per evitare di creare stati illegali e avere spazio per estensioni, e consigliabile usare tre EEPROM da 8 bit in parallelo, tutte con lo stesso indirizzo:
+
+```text
+EEPROM 0  -> PC, MAR, address bus, memoria
+EEPROM 1  -> IR, MDR, banco registri, RA/RB
+EEPROM 2  -> ALU, flag, sequencer, bit riservati
+```
+
+Le linee di indirizzo sono condivise; le tre EEPROM generano tre porzioni della stessa microistruzione da 24 bit.
+
+Una EEPROM di dispatch opzionale usa `IR[7:0]` come indirizzo e produce `µOP[4:0]`. Essa non pilota direttamente i blocchi della CPU.
+
+## 7. Checklist prima del cablaggio finale
+
+- [ ] Verificare se il PC e il MAR possono essere entrambi messi in alta impedenza sull'address bus.
+- [ ] Verificare il percorso fisico `MAR -> PC` necessario a `PC_LOAD`.
+- [ ] Verificare che il banco registri implementi esattamente la semantica `RF_EN` e `RF_WR` descritta qui.
+- [ ] Verificare se il risultato ALU ha un enable indipendente (`ALU_OE`).
+- [ ] Verificare se MDR e realmente richiesto in ogni accesso dati o solo nelle scritture.
+- [ ] Predisporre un decoder di indirizzo che selezioni RAM, ROM e FPGA senza conflitti sul data bus.
+- [ ] Verificare tempi di accesso EEPROM, RAM e propagazione dei buffer prima di scegliere la frequenza di clock.
+- [ ] Definire il comportamento esatto del reset e dell'istruzione `HLT`.
