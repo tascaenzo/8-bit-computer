@@ -25,11 +25,22 @@
             </div>
             <button class="secondary" id="loadDemo">Carica demo</button>
           </div>
-          <textarea
-            id="source"
-            spellcheck="false"
-            aria-label="Sorgente assembly"
-          ></textarea>
+          <div class="source-run-state" id="sourceRunState" aria-live="polite">
+            In attesa dell’assembly
+          </div>
+          <div class="source-editor" id="sourceEditor">
+            <div
+              class="source-execution-highlight"
+              id="sourceExecutionHighlight"
+              aria-hidden="true"
+              hidden
+            ></div>
+            <textarea
+              id="source"
+              spellcheck="false"
+              aria-label="Sorgente assembly"
+            ></textarea>
+          </div>
           <div class="actions">
             <button id="assemble">Assembla e resetta</button>
             <button id="step" class="secondary">Step istruzione</button>
@@ -131,9 +142,10 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
           </div>
         </div>
         <p class="hint micro-note">
-          Ogni istruzione viene illustrata in sette fasi. È una traccia di
-          microcodice da definire: i segnali mostrati sono una proposta coerente
-          con l’ISA, non ancora il wiring definitivo.
+          Il numero di microcicli dipende dall’istruzione. I segnali mostrati
+          seguono la specifica della Control Unit: `PC_A_OE`, `MEM_RD`,
+          `MAR_L_WE`, `RF_WR`, `ALU_OE`, `FLAGS_WE` e gli altri segnali
+          funzionali da verificare sul wiring definitivo.
         </p>
         <div class="micro-layout">
           <div
@@ -143,6 +155,13 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
           >
           </div>
           <div class="diagram-wrap">
+            <div class="diagram-legend" aria-label="Legenda dello schema">
+              <span class="legend-item address">indirizzi · A[15:0]</span>
+              <span class="legend-item data">dati · D[7:0]</span>
+              <span class="legend-item control">controllo</span>
+              <span class="legend-item active">percorso attivo</span>
+              <span class="legend-item rule">1 sola sorgente per bus</span>
+            </div>
             <div
               class="cpu-diagram"
               id="cpuDiagram"
@@ -172,8 +191,9 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
       </section>
     </main>
     <footer>
-      Il simulatore emula l’ISA documentata, non i singoli micro-cicli TTL. MAR,
-      MDR e IR mostrano l’ultimo stato osservabile.
+      Il simulatore emula l’ISA documentata. La vista microcodice mostra i
+      microcicli funzionali della Control Unit; il cablaggio TTL resta da
+      verificare sulla board.
     </footer>
     <script src="vendor/x6.min.js"></script>
     <script type="module" src="js/app.js"></script>

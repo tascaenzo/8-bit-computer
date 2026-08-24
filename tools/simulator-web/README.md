@@ -15,24 +15,36 @@ python3 -m http.server 8080
 
 Poi visita `http://localhost:8080`.
 
+## Verifica automatica
+
+La suite controlla assembler, semantica delle istruzioni, flag, salti,
+allineamento tra stato interno e microsegnali, assenza di contese sui bus e
+corrispondenza tra percorsi del microcodice e collegamenti del datapath:
+
+```sh
+cd tools/simulator-web
+npm test
+```
+
 ## Cosa simula
 
 - assembler nel browser: label, `.equ`, `.code`, `.data`, `.byte`;
 - istruzioni documentate nell'ISA v0.1;
 - registri `R0`–`R7`, `RA`, `RB`, `PC`, `MAR`, `MDR`, `IR` e flag;
 - esecuzione a istruzioni (`Step`) o continua;
-- avanzamento didattico nei microcicli `T1`–`T7`, con fetch, decode ed execute
-  evidenziati su uno schema interattivo dei blocchi della CPU;
+- avanzamento didattico nei microcicli funzionali, con numero di fasi variabile
+  per istruzione e segnali allineati alla specifica della Control Unit;
 - RAM da 64 KiB, memoria video da `0x4000` a `0x7FFF` e semplice anteprima
   testuale;
 - una porta di input e una di output per `IN` e `OUT`.
 
 Il simulatore esegue lo stato architetturale al termine di ogni istruzione. La
-vista `T1`–`T7` è invece un modello didattico di microcodice, utile per
-progettare la Control Unit: i segnali e il numero preciso di clock per
-istruzione devono ancora essere confermati dall’hardware reale. `IX` non è
-incluso perché è un’estensione futura dell’ISA, discussa ma non ancora definita
-nei documenti del progetto.
+vista microcodice mostra invece le fasi funzionali definite in
+[`docs/control-unit-microcode.md`](../../docs/control-unit-microcode.md):
+`PC_A_OE`, `MAR_A_OE`, `MEM_RD`, `MEM_WR`, `MDR_WE`, `RF_WR`, `ALU_OE`,
+`FLAGS_WE` e segnali di sequencer. Il numero preciso di clock e il wiring TTL
+restano da verificare sulla board reale. `IX` non è incluso perché è
+un’estensione futura dell’ISA.
 
 ## Struttura del codice
 
@@ -42,7 +54,7 @@ separate:
 - `isa.js`: opcode, formati e mappa video;
 - `assembler.js`: parsing e generazione dei byte macchina;
 - `cpu.js`: stato e semantica eseguibile della CPU;
-- `microcode.js`: modello didattico delle fasi `T1`–`T7`;
+- `microcode.js`: microsequenze funzionali e segnali della Control Unit;
 - `view.js`: rendering della UI e anteprima dei valori nei microcicli;
 - `diagram.js`: schema del datapath, porte e collegamenti ortogonali;
 - `programs.js`: programmi demo;
@@ -50,7 +62,8 @@ separate:
 
 Lo schema usa AntV X6, distribuita con licenza MIT. Il bundle è incluso in
 `vendor/`, quindi il simulatore resta utilizzabile offline e non richiede `npm`,
-`package.json` o download all’avvio.
+download o una fase di build all’avvio. Node.js serve soltanto per eseguire la
+suite opzionale con `npm test`.
 
 Questa separazione permette di estendere, ad esempio, `IX` modificando prima
 `isa.js` e `cpu.js`, e solo poi assembler, microcicli e visualizzazione.

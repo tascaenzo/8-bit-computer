@@ -3,8 +3,40 @@ import { disassemble } from "./cpu.js";
 import { BLOCK_INFO } from "./microcode.js";
 import { displayChar, hex, parseNumber } from "./utils.js";
 
+const bits = (value, width) => (value >>> 0)
+  .toString(2)
+  .padStart(width, "0")
+  .replace(/(.{4})(?=.)/g, "$1 ");
+
+const MICROSTEP_NAMES = Array.from({ length: 8 }, (_, index) => `T${index + 1}`);
+
+export function sourceExecutionFor(state) {
+  const microActive = state.micro.plan.length > 0 &&
+    state.micro.current >= 0 &&
+    state.micro.instructionAddress !== null;
+  const mode = microActive ? "executing" : state.halted ? "halted" : "ready";
+  const address = microActive
+    ? state.micro.instructionAddress
+    : state.halted
+    ? state.trace[0]?.address
+    : state.pc;
+  const instruction = address === undefined ? null : state.program.get(address);
+  return instruction
+    ? {
+      address,
+      line: instruction.line,
+      source: instruction.source,
+      mode,
+      phase: microActive ? state.micro.plan[state.micro.current]?.t : null,
+    }
+    : null;
+}
+
 export function createView(root = document, diagram = null) {
   const el = (id) => root.getElementById(id);
+  let sourceSynchronized = true;
+  let sourceLocation = null;
+  let lastSourceLine = null;
   const setStatus = (text, error = false) => {
     const target = el("status");
     target.textContent = text;
@@ -15,6 +47,75 @@ export function createView(root = document, diagram = null) {
     target.textContent = text;
     target.style.color = error ? "var(--danger)" : "var(--accent-2)";
   };
+
+  function positionSourceHighlight(line, ensureVisible = false) {
+    const source = el("source");
+    const highlight = el("sourceExecutionHighlight");
+    const style = root.defaultView.getComputedStyle(source);
+    const lineHeight = Number.parseFloat(style.lineHeight);
+    const paddingTop = Number.parseFloat(style.paddingTop);
+    const paddingBottom = Number.parseFloat(style.paddingBottom);
+    const lineTop = (line - 1) * lineHeight;
+    const viewportHeight = source.clientHeight - paddingTop - paddingBottom;
+
+    if (
+      ensureVisible &&
+      (lineTop < source.scrollTop || lineTop + lineHeight > source.scrollTop + viewportHeight)
+    ) {
+      source.scrollTop = Math.max(0, lineTop - viewportHeight / 2 + lineHeight / 2);
+    }
+
+    const top = paddingTop + lineTop - source.scrollTop;
+    highlight.style.top = `${top}px`;
+    highlight.style.height = `${lineHeight}px`;
+    highlight.hidden = top + lineHeight <= 0 || top >= source.clientHeight;
+  }
+
+  function renderSourceExecution(state) {
+    const status = el("sourceRunState");
+    const editor = el("sourceEditor");
+    const highlight = el("sourceExecutionHighlight");
+    if (!sourceSynchronized) {
+      sourceLocation = null;
+      lastSourceLine = null;
+      highlight.hidden = true;
+      editor.className = "source-editor";
+      status.className = "source-run-state dirty";
+      status.textContent = "SORGENTE MODIFICATO · riassembla per sincronizzare l’esecuzione";
+      return;
+    }
+
+    sourceLocation = sourceExecutionFor(state);
+    if (!sourceLocation) {
+      lastSourceLine = null;
+      highlight.hidden = true;
+      editor.className = "source-editor";
+      status.className = "source-run-state";
+      status.textContent = "Nessuna istruzione sorgente associata al PC";
+      return;
+    }
+
+    const changedLine = lastSourceLine !== sourceLocation.line;
+    lastSourceLine = sourceLocation.line;
+    editor.className = `source-editor ${sourceLocation.mode}`;
+    status.className = `source-run-state ${sourceLocation.mode}`;
+    const prefix = sourceLocation.mode === "executing"
+      ? `IN ESECUZIONE · ${sourceLocation.phase}`
+      : sourceLocation.mode === "halted"
+      ? "CPU ARRESTATA SU"
+      : "PROSSIMA ISTRUZIONE";
+    status.textContent = `${prefix} · ${hex(sourceLocation.address, 4)} · riga ${sourceLocation.line} · ${sourceLocation.source}`;
+    positionSourceHighlight(sourceLocation.line, changedLine);
+  }
+
+  function setSourceSynchronized(value) {
+    sourceSynchronized = value;
+    if (!value) renderSourceExecution({});
+  }
+
+  function syncSourceScroll() {
+    if (sourceLocation) positionSourceHighlight(sourceLocation.line);
+  }
 
   function aluPreview(opcode, a, b) {
     let result = a;
@@ -48,7 +149,7 @@ export function createView(root = document, diagram = null) {
     };
   }
 
-  function datapathPreview(state) {
+  function datapathPreview(state, phase) {
     const preview = {
       pc: state.pc,
       mar: state.mar,
@@ -65,6 +166,37 @@ export function createView(root = document, diagram = null) {
       memoryValue: state.mem[state.mar],
       active: new Set(),
     };
+    const planned = phase?.preview;
+    if (planned) {
+      // Lo stato interno di un microciclo include gli effetti dei microcicli
+      // precedenti, anche se la CPU architetturale viene aggiornata solo alla
+      // fine dell'istruzione.
+      state.micro.plan
+        .slice(0, state.micro.current + 1)
+        .forEach((item) => {
+          const itemPreview = item.preview || {};
+          for (const key of ["pc", "mar", "mdr", "ir", "ra", "rb"]) {
+            if (itemPreview[key] !== undefined) preview[key] = itemPreview[key];
+          }
+          if (itemPreview.flags) preview.flags = { ...itemPreview.flags };
+          if (itemPreview.regs) {
+            Object.entries(itemPreview.regs).forEach(([index, value]) => {
+              preview.regs[Number(index)] = value;
+            });
+          }
+        });
+      for (const key of [
+        "alu",
+        "addressBus",
+        "dataBus",
+        "memoryAddress",
+        "memoryValue",
+      ]) {
+        if (planned[key] !== undefined) preview[key] = planned[key];
+      }
+      preview.active = new Set(planned.active || []);
+      return preview;
+    }
     const t = state.micro.current;
     if (t < 0) return preview;
     const address = state.micro.instructionAddress ?? state.pc;
@@ -191,7 +323,7 @@ export function createView(root = document, diagram = null) {
   }
 
   function renderDatapathValues(state, phase) {
-    const preview = datapathPreview(state);
+    const preview = datapathPreview(state, phase);
     diagram?.update({
       phase,
       selectedBlock: state.micro.selectedBlock,
@@ -210,8 +342,10 @@ export function createView(root = document, diagram = null) {
           `C${preview.flags.C} Z${preview.flags.Z} N${preview.flags.N} O${preview.flags.O}`,
         addressBusText: preview.addressBus === null
           ? "—"
-          : hex(preview.addressBus, 4),
-        dataBusText: preview.dataBus === null ? "—" : hex(preview.dataBus),
+          : `${hex(preview.addressBus, 4)} · ${bits(preview.addressBus, 16)}`,
+        dataBusText: preview.dataBus === null
+          ? "—"
+          : `${hex(preview.dataBus)} · ${bits(preview.dataBus, 8)}`,
         memoryText: `MEM[${hex(preview.memoryAddress, 4)}] = ${
           hex(preview.memoryValue)
         }`,
@@ -306,15 +440,14 @@ export function createView(root = document, diagram = null) {
 
   function renderMicro(state) {
     const phase = state.micro.plan[state.micro.current];
-    el("timing").innerHTML = Array.from(
-      { length: 7 },
-      (_, index) =>
-        `<div class="micro-phase ${
-          index === state.micro.current ? "active" : ""
-        }"><b>T${index + 1}</b><span>${
-          state.micro.plan[index]?.title || "—"
-        }</span></div>`,
-    ).join("");
+    el("timing").innerHTML = MICROSTEP_NAMES.map((name, index) => {
+      const item = state.micro.plan[index];
+      const label = item?.title ||
+        (!state.micro.plan.length && index === 0 ? "Pronto al fetch" : "—");
+      return `<div class="micro-phase ${
+        index === state.micro.current ? "active" : ""
+      }${item ? "" : " unused"}"><b>${name}</b><span>${label}</span></div>`;
+    }).join("");
     renderDatapathValues(state, phase);
     const selected = state.micro.selectedBlock
       ? BLOCK_INFO[state.micro.selectedBlock]
@@ -327,11 +460,12 @@ export function createView(root = document, diagram = null) {
       }<p class="detail-note">Clicca un altro blocco o azzera T per tornare alla spiegazione del microciclo.</p>`
       : phase
       ? `<h3>${phase.t} · ${phase.title}</h3><p>${phase.description}</p><code class="signals">${phase.signals}</code><p class="detail-note">Clicca un blocco nello schema per leggerne il ruolo permanente.</p>`
-      : '<h3>Pronto al microciclo</h3><p>Premi “Step microciclo”: T1 evidenzierà il primo trasferimento del fetch dell’istruzione puntata dal PC.</p><p class="detail-note">Il diagramma mostra i percorsi logici, non tutti i buffer TTL singoli.</p>';
+      : '<h3>Pronto al microciclo</h3><p>Premi “Step microciclo”: T1 mostrerà il fetch dell’opcode puntato dal PC.</p><p class="detail-note">Il diagramma mostra i percorsi funzionali, non tutti i buffer TTL singoli.</p>';
     el("microDetail").innerHTML = detail;
   }
 
   function render(state) {
+    renderSourceExecution(state);
     renderRegisters(state);
     el("cycles").textContent = state.cycles;
     el("mar").textContent = hex(state.mar, 4);
@@ -366,5 +500,14 @@ export function createView(root = document, diagram = null) {
       )
       .join("") || "<li>Nessuna istruzione eseguita.</li>";
   }
-  return { el, render, renderMemory, renderMicro, setMessage, setStatus };
+  el("source").addEventListener("scroll", syncSourceScroll);
+  return {
+    el,
+    render,
+    renderMemory,
+    renderMicro,
+    setMessage,
+    setSourceSynchronized,
+    setStatus,
+  };
 }
