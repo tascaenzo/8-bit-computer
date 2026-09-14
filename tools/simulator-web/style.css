@@ -369,6 +369,9 @@ textarea {
 .legend.mar {
   background: var(--accent-2);
 }
+.legend.idx {
+  background: #b18cff;
+}
 .legend.changed {
   background: var(--danger);
 }
@@ -401,6 +404,10 @@ textarea {
 .memory-grid .at-mar {
   outline: 1px solid var(--accent-2);
   color: var(--accent-2);
+}
+.memory-grid .at-idx {
+  box-shadow: inset 0 0 0 1px #b18cff;
+  color: #d2bfff;
 }
 .memory-grid .changed {
   color: var(--danger);

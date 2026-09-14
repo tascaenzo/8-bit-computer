@@ -358,6 +358,9 @@ export function createCpuDiagram(container, onBlockClick) {
       icon = "",
       divider = "",
       nodePorts,
+      titleY = 22,
+      subtitleY = 43,
+      valueY = height - 18,
     },
   ) => {
     const node = graph.addNode({
@@ -377,9 +380,9 @@ export function createCpuDiagram(container, onBlockClick) {
       },
       attrs: {
         body: { fill: fill || COLORS.panel },
-        title: { text: title },
-        subtitle: { text: subtitle },
-        value: { text: value, refY: height - 18 },
+        title: { text: title, refY: titleY },
+        subtitle: { text: subtitle, refY: subtitleY },
+        value: { text: value, refY: valueY },
         icon: { d: icon },
         divider: { d: divider },
       },
@@ -399,7 +402,7 @@ export function createCpuDiagram(container, onBlockClick) {
     attrs: {
       title: { text: "CPU 8-BIT · DATAPATH" },
       subtitle: {
-        text: "memoria unificata · bus indirizzi 16 bit · bus dati 8 bit",
+        text: "memoria unificata · PC/MAR/IDX su selettore indirizzi · bus dati 8 bit",
       },
     },
   });
@@ -491,6 +494,46 @@ export function createCpuDiagram(container, onBlockClick) {
       { id: "jump", x: 0, y: "50%" },
       { id: "address", x: "35%", y: "100%" },
       { id: "data", x: "72%", y: "100%" },
+    ]),
+  });
+  addUnit({
+    id: "idx",
+    x: 300,
+    y: 225,
+    width: 135,
+    height: 64,
+    blockKey: "idx",
+    valueKey: "idx",
+    title: "IDX",
+    subtitle: "16 bit · LOW / HIGH",
+    value: "0x0000",
+    fill: "#102d36",
+    divider: "M0 38 H135",
+    titleY: 14,
+    subtitleY: 29,
+    valueY: 50,
+  });
+  addUnit({
+    id: "addrsel",
+    x: 505,
+    y: 225,
+    width: 145,
+    height: 64,
+    blockKey: "addrsel",
+    valueKey: "addrsel",
+    title: "ADDR SELECT",
+    subtitle: "S1:S0 · 1 sorgente",
+    value: "NONE · 11",
+    fill: "#19333a",
+    divider: "M0 38 H145",
+    titleY: 14,
+    subtitleY: 29,
+    valueY: 50,
+    nodePorts: absolutePorts([
+      { id: "pc", x: 0, y: 15 },
+      { id: "mar", x: "50%", y: 0 },
+      { id: "idx", x: 0, y: 49 },
+      { id: "out", x: "50%", y: "100%" },
     ]),
   });
   addUnit({
@@ -651,14 +694,13 @@ export function createCpuDiagram(container, onBlockClick) {
   addBusLabel(
     "address-bus",
     260,
-    275,
+    315,
     820,
     "ADDRESS BUS · A[15:0]",
     COLORS.address,
     absolutePorts([
       { id: "memory", x: 0, y: 23 },
-      { id: "pc", x: 108, y: 0 },
-      { id: "mar", x: 296, y: 0 },
+      { id: "selector", x: 317, y: 0 },
     ]),
   );
   addBusLabel(
@@ -670,6 +712,7 @@ export function createCpuDiagram(container, onBlockClick) {
     COLORS.data,
     absolutePorts([
       { id: "memory", x: 0, y: 14 },
+      { id: "idx", x: 108, y: 0 },
       { id: "mar", x: 349, y: 0 },
       { id: "mdr", x: 525, y: 0 },
       { id: "ir", x: 722, y: 0 },
@@ -753,21 +796,36 @@ export function createCpuDiagram(container, onBlockClick) {
   };
 
   addEdge({
-    id: "pc-address",
-    pathKey: "pc-address",
+    id: "pc-selector",
+    pathKey: "pc-selector",
     source: { cell: "pc", port: "bottom" },
-    target: { cell: "address-bus", port: "pc" },
+    target: { cell: "addrsel", port: "pc" },
     color: COLORS.address,
-    vertices: [{ x: 368, y: 248 }],
+    vertices: [{ x: 465, y: 240 }],
     router: "orth",
   });
   addEdge({
-    id: "mar-address",
-    pathKey: "mar-address",
+    id: "mar-selector",
+    pathKey: "mar-selector",
     source: { cell: "mar", port: "address" },
-    target: { cell: "address-bus", port: "mar" },
+    target: { cell: "addrsel", port: "mar" },
     color: COLORS.address,
-    vertices: [{ x: 556, y: 248 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "idx-selector",
+    pathKey: "idx-selector",
+    source: { cell: "idx", port: "right" },
+    target: { cell: "addrsel", port: "idx" },
+    color: COLORS.address,
+    router: "orth",
+  });
+  addEdge({
+    id: "selector-address",
+    pathKey: "selector-address",
+    source: { cell: "addrsel", port: "out" },
+    target: { cell: "address-bus", port: "selector" },
+    color: COLORS.address,
     router: "orth",
   });
   addEdge({
@@ -804,6 +862,15 @@ export function createCpuDiagram(container, onBlockClick) {
     target: { cell: "mar", port: "data" },
     color: COLORS.data,
     vertices: [{ x: 609, y: 248 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "data-idx",
+    pathKey: "data-idx",
+    source: { cell: "data-bus", port: "idx" },
+    target: { cell: "idx", port: "bottom" },
+    color: COLORS.data,
+    vertices: [{ x: 368, y: 305 }],
     router: "orth",
   });
   addEdge({
@@ -959,6 +1026,13 @@ export function createCpuDiagram(container, onBlockClick) {
 
     setValue("pc", "value", preview.pcText, preview.active.has("pc"));
     setValue("mar", "value", preview.marText, preview.active.has("mar"));
+    setValue("idx", "value", preview.idxText, preview.active.has("idx"));
+    setValue(
+      "addrsel",
+      "value",
+      preview.addressSourceText,
+      preview.active.has("addrsel"),
+    );
     setValue("mdr", "value", preview.mdrText, preview.active.has("mdr"));
     setValue("ir", "value", preview.irText, preview.active.has("ir"));
     setValue("ra", "value", preview.raText, preview.active.has("ra"));

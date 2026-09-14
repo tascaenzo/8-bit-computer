@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { assemble } from "../js/assembler.js";
-import { createCpuState, stepCpu } from "../js/cpu.js";
+import { createCpuState, resetCpu, stepCpu } from "../js/cpu.js";
 import { FIXED_OPCODES, VIDEO_BASE } from "../js/isa.js";
 import { planMicrocycles } from "../js/microcode.js";
 import { DEFAULT_PROGRAM } from "../js/programs.js";
@@ -91,6 +91,16 @@ test("MAR e MDR cambiano solo quando il microcodice prevede una scrittura", () =
   assert.equal(output.output, 0x41);
   assert.equal(output.mar, 0xabcd);
   assert.equal(output.mdr, 0x5a);
+});
+
+test("IDX fa parte dello stato a 16 bit e resta inattivo finche l'ISA non lo usa", () => {
+  const state = loadBytes([FIXED_OPCODES.NOP]);
+  assert.equal(state.idx, 0);
+  state.idx = 0xcafe;
+  stepCpu(state, 0);
+  assert.equal(state.idx, 0xcafe);
+  resetCpu(state, true);
+  assert.equal(state.idx, 0);
 });
 
 test("ADD e SUB impostano carry/borrow, zero, negativo e overflow", () => {
@@ -218,11 +228,26 @@ test("nessun microciclo crea contese sui bus", () => {
         signals.has("ALU_OE") && "ALU_OE",
         signals.has("IN_OE") && "IN_OE",
       ].filter(Boolean);
-      const addressSources = ["PC_A_OE", "MAR_A_OE"].filter((name) => signals.has(name));
+      const addressSources = [...signals].filter((name) => name.startsWith("ADDR_SEL="));
       assert.ok(dataSources.length <= 1, `${opcode.toString(16)} ${item.t}: ${dataSources}`);
       assert.ok(addressSources.length <= 1, `${opcode.toString(16)} ${item.t}: ${addressSources}`);
+      addressSources.forEach((source) => {
+        assert.match(source, /^ADDR_SEL=(?:IDX\(00\)|PC\(01\)|MAR\(10\)|NONE\(11\))$/);
+      });
+      assert.equal(signals.has("PC_A_OE"), false);
+      assert.equal(signals.has("MAR_A_OE"), false);
     }
   }
+});
+
+test("le letture selezionano PC o MAR con il nuovo selettore indirizzi", () => {
+  const lda = planMicrocycles(loadBytes([0x40, 0x34, 0x12]));
+  assert.deepEqual(
+    lda.map(({ preview }) => preview.addressSource || "NONE"),
+    ["PC", "PC", "PC", "MAR", "NONE"],
+  );
+  assert.equal(lda[0].signals.includes("ADDR_SEL=PC(01)"), true);
+  assert.equal(lda[3].signals.includes("ADDR_SEL=MAR(10)"), true);
 });
 
 test("ogni percorso microcodice esiste nella mappa del datapath", async () => {
@@ -255,6 +280,25 @@ test("la memoria ha un solo ramo fisico verso il data bus", async () => {
       false,
       `collegamento diretto non ammesso: ${obsoletePath}`,
     );
+  }
+});
+
+test("il datapath contiene IDX e un solo selettore per PC, MAR e IDX", async () => {
+  const diagramSource = await readFile(new URL("../js/diagram.js", import.meta.url), "utf8");
+  for (const nodeId of ["idx", "addrsel"]) {
+    assert.equal(diagramSource.includes(`id: "${nodeId}"`), true);
+  }
+  for (const path of [
+    "pc-selector",
+    "mar-selector",
+    "idx-selector",
+    "selector-address",
+    "data-idx",
+  ]) {
+    assert.equal(diagramSource.includes(`pathKey: "${path}"`), true);
+  }
+  for (const obsoletePath of ["pc-address", "mar-address"]) {
+    assert.equal(diagramSource.includes(`pathKey: "${obsoletePath}"`), false);
   }
 });
 

@@ -153,6 +153,7 @@ export function createView(root = document, diagram = null) {
     const preview = {
       pc: state.pc,
       mar: state.mar,
+      idx: state.idx,
       mdr: state.mdr,
       ir: state.ir,
       ra: state.ra,
@@ -161,6 +162,7 @@ export function createView(root = document, diagram = null) {
       alu: null,
       flags: { ...state.flags },
       addressBus: null,
+      addressSource: "NONE",
       dataBus: null,
       memoryAddress: state.mar,
       memoryValue: state.mem[state.mar],
@@ -175,7 +177,7 @@ export function createView(root = document, diagram = null) {
         .slice(0, state.micro.current + 1)
         .forEach((item) => {
           const itemPreview = item.preview || {};
-          for (const key of ["pc", "mar", "mdr", "ir", "ra", "rb"]) {
+          for (const key of ["pc", "mar", "idx", "mdr", "ir", "ra", "rb"]) {
             if (itemPreview[key] !== undefined) preview[key] = itemPreview[key];
           }
           if (itemPreview.flags) preview.flags = { ...itemPreview.flags };
@@ -188,6 +190,7 @@ export function createView(root = document, diagram = null) {
       for (const key of [
         "alu",
         "addressBus",
+        "addressSource",
         "dataBus",
         "memoryAddress",
         "memoryValue",
@@ -333,6 +336,7 @@ export function createView(root = document, diagram = null) {
         ...preview,
         pcText: hex(preview.pc, 4),
         marText: hex(preview.mar, 4),
+        idxText: hex(preview.idx, 4),
         mdrText: hex(preview.mdr),
         irText: hex(preview.ir),
         raText: hex(preview.ra),
@@ -343,6 +347,9 @@ export function createView(root = document, diagram = null) {
         addressBusText: preview.addressBus === null
           ? "—"
           : `${hex(preview.addressBus, 4)} · ${bits(preview.addressBus, 16)}`,
+        addressSourceText: `${preview.addressSource} · ${
+          { IDX: "00", PC: "01", MAR: "10", NONE: "11" }[preview.addressSource]
+        }`,
         dataBusText: preview.dataBus === null
           ? "—"
           : `${hex(preview.dataBus)} · ${bits(preview.dataBus, 8)}`,
@@ -365,6 +372,7 @@ export function createView(root = document, diagram = null) {
     );
     items.push(
       `<div class="reg"><span>PC</span><b>${hex(state.pc, 4)}</b></div>`,
+      `<div class="reg"><span>IDX</span><b>${hex(state.idx, 4)}</b></div>`,
       `<div class="reg"><span>RA</span><b>${hex(state.ra)}</b></div>`,
       `<div class="reg"><span>RB</span><b>${hex(state.rb)}</b></div>`,
     );
@@ -400,6 +408,7 @@ export function createView(root = document, diagram = null) {
         const classes = [
           address === state.pc && "at-pc",
           address === state.mar && "at-mar",
+          address === state.idx && "at-idx",
           address === state.lastWrite && "changed",
         ]
           .filter(Boolean)
@@ -440,6 +449,10 @@ export function createView(root = document, diagram = null) {
 
   function renderMicro(state) {
     const phase = state.micro.plan[state.micro.current];
+    const addressSource = phase?.preview?.addressSource || "NONE";
+    el("addressSource").textContent = `${addressSource} (${
+      { IDX: "00", PC: "01", MAR: "10", NONE: "11" }[addressSource]
+    })`;
     el("timing").innerHTML = MICROSTEP_NAMES.map((name, index) => {
       const item = state.micro.plan[index];
       const label = item?.title ||
@@ -469,6 +482,7 @@ export function createView(root = document, diagram = null) {
     renderRegisters(state);
     el("cycles").textContent = state.cycles;
     el("mar").textContent = hex(state.mar, 4);
+    el("idx").textContent = hex(state.idx, 4);
     el("mdr").textContent = hex(state.mdr);
     el("ir").textContent = hex(state.ir);
     el("output").textContent = hex(state.output);

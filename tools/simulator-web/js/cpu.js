@@ -7,6 +7,10 @@ export function createCpuState() {
     regs: new Uint8Array(8),
     pc: 0,
     mar: 0,
+    // Registro indice a 16 bit della nuova revisione del datapath. Le
+    // istruzioni che lo caricheranno non sono ancora state assegnate nell'ISA,
+    // quindi per ora il simulatore ne conserva e visualizza lo stato.
+    idx: 0,
     mdr: 0,
     ir: 0,
     ra: 0,
@@ -35,6 +39,7 @@ export function resetCpu(state, keepMemory = true) {
   Object.assign(state, {
     pc: 0,
     mar: 0,
+    idx: 0,
     mdr: 0,
     ir: 0,
     ra: 0,

@@ -11,8 +11,11 @@ In questa fase il repository contiene documentazione, una prima ISA, esempi asse
 ├── docs/
 ├── examples/
 │   └── assembly/
+├── hardware/
+│   └── tang-nano-9k-video/
 ├── tools/
 │   ├── assembler/
+│   ├── cu-bytecode/
 │   └── eeprom-programmer/
 ├── wiki/
 │   ├── blog/
@@ -26,10 +29,18 @@ Contiene la documentazione tecnica della CPU:
 
 - [`docs/isa.md`](docs/isa.md) definisce architettura, istruzioni e opcode;
 - [`docs/assembly-language.md`](docs/assembly-language.md) definisce la sintassi dei programmi assembly.
+- [`docs/control-unit-microcode.md`](docs/control-unit-microcode.md) definisce segnali e microsequenze della Control Unit.
+- [`docs/video-hdmi.md`](docs/video-hdmi.md) definisce VRAM e uscita HDMI della Tang Nano 9K.
+- [`docs/io-ps2-timer.md`](docs/io-ps2-timer.md) definisce registri I/O, tastiera PS/2 e timer della Tang Nano 9K.
 
 ### `examples/assembly`
 
 Contiene programmi assembly didattici usati per provare l'assembler e spiegare le istruzioni della CPU.
+
+### `hardware/tang-nano-9k-video`
+
+Contiene il progetto Gowin per la Tang Nano 9K. Il primo milestone verifica
+l'uscita HDMI prima di introdurre VRAM e interfaccia al bus TTL.
 
 ### `tools/assembler`
 
@@ -44,6 +55,12 @@ La guida passo passo per il programmatore AT28C64 con Arduino Mega e in:
 ```text
 docs/at28c64-arduino-mega-programmer.md
 ```
+
+### `tools/cu-bytecode`
+
+Contiene `cpu8microcode`, il generatore C delle tre Control ROM e della ROM di
+dispatch. La guida di build e la mappa dei bit sono in
+[`tools/cu-bytecode/README.md`](tools/cu-bytecode/README.md).
 
 ### `tools/simulator-web`
 

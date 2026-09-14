@@ -12,15 +12,16 @@ const phase = (t, title, description, signals, blocks, paths, preview = {}) => (
   preview,
 });
 
-const readPreview = (address, value, updates = {}) => {
+const readPreview = (address, value, addressSource, updates = {}) => {
   const { active = [], ...values } = updates;
   return {
     addressBus: address,
+    addressSource,
     dataBus: value,
     memoryAddress: address,
     memoryValue: value,
     ...values,
-    active: ["address-bus", "data-bus", "memory", ...active],
+    active: ["addrsel", "address-bus", "data-bus", "memory", ...active],
   };
 };
 
@@ -67,10 +68,10 @@ const fetch = (address, opcode) => [
     "T1",
     "Fetch opcode",
     `PC (${hex(address, 4)}) pilota A[15:0]; la memoria presenta ${hex(opcode)} sul data bus. IR cattura l'opcode e PC viene incrementato.`,
-    "PC_A_OE · MEM_RD · IR_WE · PC_INC",
-    ["pc", "memory", "ir"],
-    ["pc-address", "address-memory", "memory-data", "data-ir", "ir-cu"],
-    readPreview(address, opcode, {
+    "ADDR_SEL=PC(01) · MEM_RD · IR_WE · PC_INC",
+    ["pc", "addrsel", "memory", "ir"],
+    ["pc-selector", "selector-address", "address-memory", "memory-data", "data-ir", "ir-cu"],
+    readPreview(address, opcode, "PC", {
       pc: (address + 1) & 0xffff,
       ir: opcode,
       active: ["pc", "ir"],
@@ -83,10 +84,10 @@ const addressOperand = (address, low, high, initialMar) => [
     "T2",
     "Fetch addr_low",
     `Il PC legge ${hex(low)} da ${hex((address + 1) & 0xffff)} e lo salva in MAR[7:0].`,
-    "PC_A_OE · MEM_RD · MAR_L_WE · PC_INC",
-    ["pc", "mar", "memory"],
-    ["pc-address", "address-memory", "memory-data", "data-mar"],
-    readPreview((address + 1) & 0xffff, low, {
+    "ADDR_SEL=PC(01) · MEM_RD · MAR_L_WE · PC_INC",
+    ["pc", "mar", "addrsel", "memory"],
+    ["pc-selector", "selector-address", "address-memory", "memory-data", "data-mar"],
+    readPreview((address + 1) & 0xffff, low, "PC", {
       pc: (address + 2) & 0xffff,
       mar: (initialMar & 0xff00) | low,
       active: ["pc", "mar"],
@@ -96,10 +97,10 @@ const addressOperand = (address, low, high, initialMar) => [
     "T3",
     "Fetch addr_high",
     `Il PC legge ${hex(high)} da ${hex((address + 2) & 0xffff)} e completa MAR = ${hex(low | (high << 8), 4)}.`,
-    "PC_A_OE · MEM_RD · MAR_H_WE · PC_INC",
-    ["pc", "mar", "memory"],
-    ["pc-address", "address-memory", "memory-data", "data-mar"],
-    readPreview((address + 2) & 0xffff, high, {
+    "ADDR_SEL=PC(01) · MEM_RD · MAR_H_WE · PC_INC",
+    ["pc", "mar", "addrsel", "memory"],
+    ["pc-selector", "selector-address", "address-memory", "memory-data", "data-mar"],
+    readPreview((address + 2) & 0xffff, high, "PC", {
       pc: (address + 3) & 0xffff,
       mar: low | (high << 8),
       active: ["pc", "mar"],
@@ -122,9 +123,9 @@ export function planMicrocycles(state) {
       phase(
         "T2", "Fetch immediato",
         `Legge ${hex(low)} da ${hex((address + 1) & 0xffff)} e lo salva in MDR.`,
-        "PC_A_OE · MEM_RD · MDR_WE · PC_INC",
-        ["pc", "memory", "mdr"], ["pc-address", "address-memory", "memory-data", "mdr-data"],
-        readPreview((address + 1) & 0xffff, low, {
+        "ADDR_SEL=PC(01) · MEM_RD · MDR_WE · PC_INC",
+        ["pc", "addrsel", "memory", "mdr"], ["pc-selector", "selector-address", "address-memory", "memory-data", "mdr-data"],
+        readPreview((address + 1) & 0xffff, low, "PC", {
           pc: (address + 2) & 0xffff, mdr: low, active: ["pc", "mdr"],
         }),
       ),
@@ -144,9 +145,9 @@ export function planMicrocycles(state) {
       phase(
         "T4", "Leggi dato memoria",
         `MAR pilota ${hex(target, 4)}; la memoria restituisce ${hex(data)} e MDR lo salva.`,
-        "MAR_A_OE · MEM_RD · MDR_WE",
-        ["mar", "memory", "mdr"], ["mar-address", "address-memory", "memory-data", "mdr-data"],
-        readPreview(target, data, { mar: target, mdr: data, active: ["mar", "mdr"] }),
+        "ADDR_SEL=MAR(10) · MEM_RD · MDR_WE",
+        ["mar", "addrsel", "memory", "mdr"], ["mar-selector", "selector-address", "address-memory", "memory-data", "mdr-data"],
+        readPreview(target, data, "MAR", { mar: target, mdr: data, active: ["mar", "mdr"] }),
       ),
       phase(
         "T5", `Scrivi R${reg}`,
@@ -171,10 +172,10 @@ export function planMicrocycles(state) {
       phase(
         "T5", "Scrivi memoria",
         `MAR seleziona ${hex(target, 4)}; MDR presenta ${hex(data)} e la memoria esegue la scrittura.`,
-        "MAR_A_OE · MDR_OE · MEM_WR · NEXT_FETCH",
-        ["mar", "mdr", "memory"],
-        ["mar-address", "address-memory", "mdr-data", "memory-data"],
-        { mar: target, mdr: data, addressBus: target, dataBus: data, memoryAddress: target, memoryValue: data, active: ["mar", "mdr", "address-bus", "data-bus", "memory"] },
+        "ADDR_SEL=MAR(10) · MDR_OE · MEM_WR · NEXT_FETCH",
+        ["mar", "addrsel", "mdr", "memory"],
+        ["mar-selector", "selector-address", "address-memory", "mdr-data", "memory-data"],
+        { mar: target, mdr: data, addressSource: "MAR", addressBus: target, dataBus: data, memoryAddress: target, memoryValue: data, active: ["mar", "addrsel", "mdr", "address-bus", "data-bus", "memory"] },
       ),
     ]);
   }
@@ -272,12 +273,14 @@ export function planMicrocycles(state) {
 }
 
 export const BLOCK_INFO = {
-  pc: ["PC · Program Counter", "Con PC_A_OE pilota il bus indirizzi nel fetch; PC_INC lo incrementa e PC_LOAD lo carica dal MAR durante un salto."],
-  mar: ["MAR · Memory Address Register", "MAR_L_WE e MAR_H_WE lo caricano dal data bus; MAR_A_OE gli permette di pilotare A[15:0] per dati e periferiche memory-mapped."],
+  pc: ["PC · Program Counter", "Con ADDR_SEL=PC (01) viene collegato al bus indirizzi nel fetch; PC_INC lo incrementa e PC_LOAD lo carica dal MAR durante un salto."],
+  mar: ["MAR · Memory Address Register", "MAR_L_WE e MAR_H_WE lo caricano dal data bus; ADDR_SEL=MAR (10) lo collega ad A[15:0] per dati e periferiche memory-mapped."],
+  idx: ["IDX · Index Register", "Registro indice a 16 bit. IDX_L_WE e IDX_H_WE ne caricano le due meta dal data bus; ADDR_SEL=IDX (00) lo collega ad A[15:0]. Gli opcode indicizzati sono ancora da definire."],
+  addrsel: ["Selettore del bus indirizzi", "ADDR_SEL_1:0 sceglie una sola sorgente: 00=IDX, 01=PC, 10=MAR, 11=nessuna. In questo modo PC, MAR e IDX non possono creare contesa su A[15:0]."],
   memory: ["Memoria unificata", "MEM_RD abilita la memoria selezionata a guidare D[7:0]; MEM_WR scrive il byte gia stabile sul bus. Lo schema corrente mostra soltanto RAM / ROM."],
   mdr: ["MDR · Memory Data Register", "MDR_WE cattura un byte dal data bus; MDR_OE lo riporta sul data bus senza coinvolgere direttamente la memoria."],
   ir: ["IR · Instruction Register", "IR_WE salva l'opcode. I suoi bit vanno direttamente al banco registri, al decoder ALU e al decoder/EEPROM di dispatch."],
-  cu: ["Control Unit a microcodice", "La Control ROM riceve µSTEP, µOP e flag C/Z/N/O. Genera i segnali funzionali mostrati; NEXT_FETCH riporta il sequencer al fetch comune."],
+  cu: ["Control Unit a microcodice", "A0–A2 ricevono µSTEP, A3–A7 µOP, A8–A11 i flag C/Z/N/O e A12 BOOT_RUN. In modalita RUN genera i segnali funzionali mostrati; NEXT_FETCH riporta il sequencer al fetch comune."],
   registers: ["Banco registri e ALU", "RF_EN abilita R0–R7; IR[2:0] seleziona il registro e RF_WR decide lettura o scrittura. RA e RB alimentano l'ALU; RA puo pilotare il bus con RA_OE."],
   ra: ["RA · Registro operando A", "RA_WE cattura D[7:0]. RA alimenta l’ingresso A della ALU, riceve il risultato e puo pilotare il data bus tramite RA_OE."],
   rb: ["RB · Registro operando B", "RB_WE cattura D[7:0] e alimenta l’ingresso B della ALU. Nella revisione corrente RB non pilota direttamente il data bus."],

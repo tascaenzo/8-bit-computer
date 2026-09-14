@@ -23,6 +23,10 @@ Questo documento e la sorgente di verita per la progettazione della ISA. La sint
 - Il registro `RA` contiene il primo operando della ALU e riceve anche il risultato dell'operazione.
 - Il registro `RB` contiene il secondo operando della ALU.
 - Il registro `RA` puo leggere e scrivere sul bus dati; il registro `RB` viene usato come registro temporaneo in ingresso alla ALU.
+- La CPU dispone di un registro indice `IDX` a 16 bit, diviso in parte bassa e parte alta.
+- Le due meta di `IDX` possono essere caricate separatamente dal data bus a 8 bit.
+- `PC`, `MAR` e `IDX` possono pilotare il bus indirizzi, uno alla volta, tramite un selettore a 2 bit.
+- `IDX` e destinato agli indirizzi calcolati dinamicamente e, in prospettiva, agli accessi alla memoria video memory-mapped.
 - Per usare i registri generali con la ALU servono istruzioni di trasferimento tra `R0`...`R7` e i registri `RA`/`RB`.
 - Non e ammesso il trasferimento diretto `MOV Rx, Ry` tra due registri generali.
 - La CPU espone i flag `C`, `Z`, `N`, `O`: carry/borrow, zero, negativo, overflow.
@@ -62,7 +66,7 @@ address         value
 
 Anche se i chip fisici usati nei primi test possono avere meno linee indirizzo, la CPU viene progettata per lavorare con indirizzi a 16 bit.
 
-## Registri coinvolti nel fetch
+## Registri di indirizzamento e fetch
 
 Dalle trascrizioni risultano questi registri rilevanti per il formato istruzioni:
 
@@ -70,10 +74,36 @@ Dalle trascrizioni risultano questi registri rilevanti per il formato istruzioni
 | -------- | ---------: | ------------------------------------------------------------ |
 | `PC`     |     16 bit | Program Counter, punta al prossimo byte da leggere           |
 | `MAR`    |     16 bit | Memory Address Register, pilota l'address bus                |
+| `IDX`    |     16 bit | Index Register, contiene un indirizzo calcolato dal software |
 | `IR`     |      8 bit | Instruction Register, contiene l'opcode                      |
 | `MDR`    |      8 bit | Memory Data Register, contiene dati letti/scritti in memoria |
 
-`PC` e `MAR` sono registri a 16 bit, ma vengono caricati tramite data bus a 8 bit. Per questo sono divisi logicamente in parte bassa e parte alta.
+`PC`, `MAR` e `IDX` sono registri a 16 bit. `MAR` e `IDX` vengono caricati dal
+data bus a 8 bit e sono quindi divisi logicamente in parte bassa e parte alta.
+
+Un selettore a 2 bit abilita una sola sorgente del bus indirizzi tra `PC`, `MAR`
+e `IDX`; la quarta combinazione rimane disponibile. In questo modo la Control
+Unit usa due segnali di selezione invece di tre segnali `output enable`
+indipendenti.
+
+## Index Register `IDX`
+
+`IDX` permette al software di costruire dinamicamente un indirizzo a 16 bit e
+usarlo per accedere alla memoria. Le sue uscite sono collegate al bus indirizzi,
+mentre le parti `IDX_L` e `IDX_H` ricevono i dati dal bus a 8 bit e dispongono di
+enable di caricamento separati.
+
+L'uso previsto comprende buffer, tabelle e memoria video memory-mapped, dove
+l'indirizzo da leggere o scrivere cambia durante l'esecuzione del programma.
+
+La presenza hardware di `IDX` e confermata, ma questa versione della ISA non
+assegna ancora opcode alle operazioni indicizzate. Prima dell'implementazione
+devono essere definite almeno:
+
+- le istruzioni per caricare `IDX_L` e `IDX_H`;
+- la sintassi degli accessi indiretti, per esempio `LDA Rn, [IDX]` e
+  `STA Rn, [IDX]`;
+- l'eventuale incremento automatico di `IDX` dopo un accesso.
 
 ## Formato generale
 
@@ -961,6 +991,8 @@ Layout in memoria:
 
 - codifica definitiva degli opcode;
 - eventuale uso del range riservato `0b11011rrr` nei trasferimenti;
-- eventuali istruzioni di indirizzamento indiretto o indicizzato;
+- codifica delle istruzioni per caricare `IDX_L` e `IDX_H`;
+- codifica e sintassi degli accessi indiretti tramite `[IDX]`;
+- eventuale incremento automatico di `IDX` negli accessi sequenziali;
 - eventuali estensioni per input/output aggiuntivi;
 - eventuale supporto a confronti signed tramite combinazioni dei flag `N` e `O`.

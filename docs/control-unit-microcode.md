@@ -4,12 +4,15 @@
 > **Versione:** 0.1
 > **Ambito:** CPU TTL a 8 bit, bus dati a 8 bit e bus indirizzi a 16 bit.
 
-Questo documento raccoglie i segnali che la Control Unit deve generare per la CPU attuale. I nomi sono **funzionali** e attivi alti: il circuito di uscita puo poi invertirli dove il chip fisico richiede logica attiva bassa, per esempio `/OE`, `/WE`, `/LOAD` o `/CLR`.
+Questo documento raccoglie i segnali logici che la Control Unit deve generare
+per la CPU attuale. Il generatore converte ciascun segnale nel livello elettrico
+richiesto dalla configurazione, per esempio attivo basso per `/OE`, `/WE` o
+`/CLR`.
 
 Non sono inclusi:
 
 - i segnali `IN` e `OUT` usati provvisoriamente per test sulla board;
-- il registro `IX`, che non fa parte della ISA corrente;
+- le microsequenze del registro `IDX`, presente nell'hardware ma ancora privo di opcode definitivi nella ISA;
 - segnali specifici per video, tastiera e timer: questi dispositivi sono memory-mapped e usano i normali cicli `MEM_RD` e `MEM_WR`.
 
 ## 1. Vincoli dei bus
@@ -18,7 +21,7 @@ La CPU ha un data bus condiviso `D[7:0]` e un address bus `A[15:0]`.
 
 ```text
 Su D[7:0]:  al massimo una sorgente puo guidare il bus in ogni microciclo.
-Su A[15:0]: pilota il PC oppure il MAR, mai entrambi.
+Su A[15:0]: il selettore abilita PC, MAR, IDX oppure nessuna sorgente.
 ```
 
 Le sorgenti del data bus previste sono:
@@ -33,12 +36,14 @@ Le destinazioni possono invece catturare il medesimo valore sul fronte di clock,
 
 | Gruppo | Segnale | Azione | Note hardware |
 | --- | --- | --- | --- |
-| Address bus | `PC_A_OE` | Il PC pilota `A[15:0]`. | Usato nel fetch dei byte istruzione. |
-| Address bus | `MAR_A_OE` | Il MAR pilota `A[15:0]`. | Usato per accessi a dati, VRAM e I/O memory-mapped. |
+| Address bus | `ADDR_SEL_0` | Bit 0 del selettore della sorgente di `A[15:0]`. | Con la configurazione attuale: `00=IDX`, `01=PC`, `10=MAR`, `11=nessuna`. |
+| Address bus | `ADDR_SEL_1` | Bit 1 del selettore della sorgente di `A[15:0]`. | Pilota con `ADDR_SEL_0` il decoder 74LS138. |
 | Program Counter | `PC_INC` | Incrementa il PC di uno. | Avviene dopo ogni byte letto dal flusso istruzioni. |
 | Program Counter | `PC_LOAD` | Carica il PC con l'indirizzo presente nel MAR. | Usato dai salti. |
 | MAR | `MAR_L_WE` | Salva `D[7:0]` nella parte bassa del MAR. | Primo byte di un indirizzo little-endian. |
 | MAR | `MAR_H_WE` | Salva `D[7:0]` nella parte alta del MAR. | Secondo byte di un indirizzo little-endian. |
+| IDX | `IDX_L_WE` | Salva `D[7:0]` nella parte bassa di IDX. | Predisposto per le future istruzioni indicizzate. |
+| IDX | `IDX_H_WE` | Salva `D[7:0]` nella parte alta di IDX. | Predisposto per le future istruzioni indicizzate. |
 | Memoria | `MEM_RD` | Esegue una lettura dal dispositivo selezionato da `A[15:0]`. | Diventa `/OE` attivo basso vicino a RAM, ROM o buffer FPGA. |
 | Memoria | `MEM_WR` | Scrive `D[7:0]` nel dispositivo selezionato. | Diventa `/WE` attivo basso; indirizzo e dato devono gia essere stabili. |
 | Fetch | `IR_WE` | Salva l'opcode letto nel registro `IR`. | Il byte letto viene dal data bus. |
@@ -100,7 +105,7 @@ A8       = C
 A9       = Z
 A10      = N
 A11      = O
-A12      = libero per estensioni future
+A12      = BOOT_RUN
 ```
 
 `µOP` non coincide necessariamente con l'opcode. E un identificatore di microprogramma prodotto da un piccolo decoder TTL o da una EEPROM di dispatch:
@@ -121,32 +126,32 @@ Ogni riga rappresenta un microciclo. I segnali di scrittura (`*_WE`) catturano i
 
 | Microstep | Segnali | Effetto |
 | --- | --- | --- |
-| `T1` | `PC_A_OE`, `MEM_RD`, `IR_WE`, `PC_INC` | Legge l'opcode puntato dal PC, lo salva in IR e avanza al byte seguente. |
+| `T1` | `ADDR_SEL=PC`, `MEM_RD`, `IR_WE`, `PC_INC` | Legge l'opcode puntato dal PC, lo salva in IR e avanza al byte seguente. |
 
 ### `LDI Rn, imm8`
 
 | Microstep | Segnali | Effetto |
 | --- | --- | --- |
-| `T2` | `PC_A_OE`, `MEM_RD`, `MDR_WE`, `PC_INC` | Legge l'immediato. |
+| `T2` | `ADDR_SEL=PC`, `MEM_RD`, `MDR_WE`, `PC_INC` | Legge l'immediato. |
 | `T3` | `MDR_OE`, `RF_EN`, `RF_WR`, `NEXT_FETCH` | Salva l'immediato in `Rn`. |
 
 ### `LDA Rn, addr16`
 
 | Microstep | Segnali | Effetto |
 | --- | --- | --- |
-| `T2` | `PC_A_OE`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
-| `T3` | `PC_A_OE`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
-| `T4` | `MAR_A_OE`, `MEM_RD`, `MDR_WE` | Legge il byte dati all'indirizzo nel MAR. |
+| `T2` | `ADDR_SEL=PC`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
+| `T3` | `ADDR_SEL=PC`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
+| `T4` | `ADDR_SEL=MAR`, `MEM_RD`, `MDR_WE` | Legge il byte dati all'indirizzo nel MAR. |
 | `T5` | `MDR_OE`, `RF_EN`, `RF_WR`, `NEXT_FETCH` | Salva il byte in `Rn`. |
 
 ### `STA Rn, addr16`
 
 | Microstep | Segnali | Effetto |
 | --- | --- | --- |
-| `T2` | `PC_A_OE`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
-| `T3` | `PC_A_OE`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
+| `T2` | `ADDR_SEL=PC`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
+| `T3` | `ADDR_SEL=PC`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
 | `T4` | `RF_EN`, `MDR_WE` | Porta `Rn` sul bus e lo salva in MDR. |
-| `T5` | `MAR_A_OE`, `MDR_OE`, `MEM_WR`, `NEXT_FETCH` | Scrive MDR nell'indirizzo del MAR. |
+| `T5` | `ADDR_SEL=MAR`, `MDR_OE`, `MEM_WR`, `NEXT_FETCH` | Scrive MDR nell'indirizzo del MAR. |
 
 ### ALU e trasferimenti
 
@@ -162,18 +167,19 @@ Ogni riga rappresenta un microciclo. I segnali di scrittura (`*_WE`) catturano i
 
 | Microstep | Segnali | Effetto |
 | --- | --- | --- |
-| `T2` | `PC_A_OE`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
-| `T3` | `PC_A_OE`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
+| `T2` | `ADDR_SEL=PC`, `MEM_RD`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
+| `T3` | `ADDR_SEL=PC`, `MEM_RD`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
 | `T4` | `PC_LOAD` se la condizione e vera; `NEXT_FETCH` | Carica il PC dal MAR oppure prosegue sequenzialmente. |
 
 ## 6. Organizzazione suggerita delle EEPROM
 
-Una microistruzione ha 20 segnali principali. Per evitare di creare stati illegali e avere spazio per estensioni, e consigliabile usare tre EEPROM da 8 bit in parallelo, tutte con lo stesso indirizzo:
+Una microistruzione ha 22 segnali principali. Tre EEPROM da 8 bit in parallelo
+forniscono 24 uscite, lasciando due bit disponibili:
 
 ```text
 EEPROM 0  -> PC, MAR, address bus, memoria
 EEPROM 1  -> IR, MDR, banco registri, RA/RB
-EEPROM 2  -> ALU, flag, sequencer, bit riservati
+EEPROM 2  -> ALU, flag, sequencer, IDX, bit riservati
 ```
 
 Le linee di indirizzo sono condivise; le tre EEPROM generano tre porzioni della stessa microistruzione da 24 bit.
@@ -182,7 +188,7 @@ Una EEPROM di dispatch opzionale usa `IR[7:0]` come indirizzo e produce `µOP[4:
 
 ## 7. Checklist prima del cablaggio finale
 
-- [ ] Verificare se il PC e il MAR possono essere entrambi messi in alta impedenza sull'address bus.
+- [ ] Verificare sul cablaggio reale i codici `00=IDX`, `01=PC`, `10=MAR`, `11=nessuna sorgente`.
 - [ ] Verificare il percorso fisico `MAR -> PC` necessario a `PC_LOAD`.
 - [ ] Verificare che il banco registri implementi esattamente la semantica `RF_EN` e `RF_WR` descritta qui.
 - [ ] Verificare se il risultato ALU ha un enable indipendente (`ALU_OE`).
