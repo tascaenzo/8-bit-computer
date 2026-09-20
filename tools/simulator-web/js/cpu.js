@@ -4,9 +4,14 @@ import { hex } from "./utils.js";
 export function createCpuState() {
   return {
     mem: new Uint8Array(MEMORY_SIZE),
+    rom: new Uint8Array(0x2000),
     regs: new Uint8Array(8),
     pc: 0,
     mar: 0,
+    // Registro indice a 16 bit della nuova revisione del datapath. Le
+    // istruzioni che lo caricheranno non sono ancora state assegnate nell'ISA,
+    // quindi per ora il simulatore ne conserva e visualizza lo stato.
+    idx: 0,
     mdr: 0,
     ir: 0,
     ra: 0,
@@ -16,6 +21,7 @@ export function createCpuState() {
     cycles: 0,
     input: 0,
     output: 0,
+    bootBytesCopied: 0,
     program: new Map(),
     symbols: {},
     trace: [],
@@ -35,6 +41,7 @@ export function resetCpu(state, keepMemory = true) {
   Object.assign(state, {
     pc: 0,
     mar: 0,
+    idx: 0,
     mdr: 0,
     ir: 0,
     ra: 0,
@@ -43,6 +50,7 @@ export function resetCpu(state, keepMemory = true) {
     halted: false,
     cycles: 0,
     output: 0,
+    bootBytesCopied: 0,
     trace: [],
     lastWrite: null,
   });
@@ -51,9 +59,17 @@ export function resetCpu(state, keepMemory = true) {
 
 export function loadProgram(state, assembled) {
   state.mem = assembled.mem;
+  state.rom.set(assembled.mem.slice(0, state.rom.length));
   state.program = assembled.program;
   state.symbols = assembled.symbols;
   resetCpu(state, true);
+}
+
+/* Copia l'intera EPROM in RAM e riparte da PC=0, come il banco BOOT CU. */
+export function bootEpromToRam(state) {
+  state.mem.set(state.rom, 0);
+  resetCpu(state, true);
+  state.bootBytesCopied = state.rom.length;
 }
 
 export function clearMicroPlan(state) {
@@ -76,6 +92,8 @@ export function disassemble(state, opcode, address) {
   if (opcode >= 0x48 && opcode <= 0x4f) {
     return `STA R${reg}, ${hex(operandAddress(), 4)}`;
   }
+  if (opcode >= 0x50 && opcode <= 0x57) return `LDAI R${reg}, [IDX]`;
+  if (opcode >= 0x58 && opcode <= 0x5f) return `STAI R${reg}, [IDX]`;
   if (opcode >= 0x80 && opcode <= 0x87) return `IN R${reg}`;
   if (opcode >= 0x88 && opcode <= 0x8f) return `OUT R${reg}`;
   if (opcode >= 0xa0 && opcode <= 0xa8) {
@@ -171,6 +189,13 @@ export function stepCpu(state, input) {
       state.mem[target] = state.mdr;
       state.lastWrite = target;
     }
+  } else if (opcode >= 0x50 && opcode <= 0x57) {
+    state.mdr = state.mem[state.idx];
+    state.regs[reg] = state.mdr;
+  } else if (opcode >= 0x58 && opcode <= 0x5f) {
+    state.mdr = state.regs[reg];
+    state.mem[state.idx] = state.mdr;
+    state.lastWrite = state.idx;
   } else if (opcode >= 0x60 && opcode <= 0x69) executeAlu(state, opcode);
   else if (opcode >= 0x80 && opcode <= 0x87) {
     state.regs[reg] = input;
@@ -180,6 +205,8 @@ export function stepCpu(state, input) {
     const target = readProgramByte(state) | (readProgramByte(state) << 8);
     state.mar = target;
     if (jumpCondition(state, opcode)) state.pc = target;
+  } else if (opcode === FIXED_OPCODES.LDX) {
+    state.idx = readProgramByte(state) | (readProgramByte(state) << 8);
   } else if (opcode >= 0xc0 && opcode <= 0xc7) state.ra = state.regs[reg];
   else if (opcode >= 0xc8 && opcode <= 0xcf) state.rb = state.regs[reg];
   else if (opcode >= 0xd0 && opcode <= 0xd7) state.regs[reg] = state.ra;

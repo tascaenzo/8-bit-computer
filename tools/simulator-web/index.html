@@ -9,7 +9,7 @@
   <body>
     <header class="topbar">
       <div>
-        <p class="eyebrow">CPU DIDATTICA · ISA v0.1</p>
+        <p class="eyebrow">CPU DIDATTICA · ISA v0.1 · DATAPATH IDX</p>
         <h1>Simulatore step-by-step</h1>
       </div>
       <div class="status" id="status" aria-live="polite">Pronto</div>
@@ -47,6 +47,7 @@
             <button id="run" class="secondary">Esegui</button>
             <button id="pause" class="secondary" disabled>Pausa</button>
             <button id="reset" class="secondary">Reset CPU</button>
+            <button id="boot" class="secondary">BOOT EPROM → RAM</button>
           </div>
           <p class="hint">
             Supporta `.code`, `.data`, `.byte`, `.equ`, label e tutte le
@@ -72,8 +73,13 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
           <div class="flags" id="flags"></div>
           <div class="bus-readout">
             <span>MAR <b id="mar">0x0000</b></span>
+            <span>IDX <b id="idx">0x0000</b></span>
             <span>MDR <b id="mdr">0x00</b></span>
             <span>IR <b id="ir">0x00</b></span>
+            <span>ADDR_SEL <b id="addressSource">NONE (11)</b></span>
+            <span class="execution-phase" id="executionPhase" data-stage="fetch">FASE <b>FETCH</b></span>
+            <span class="decode-state">DECODE <b>IR → CU (combinatorio)</b></span>
+            <span>BOOT_RUN / A12 <b>RUN (1)</b></span>
           </div>
           <div class="io-row">
             <label>Input <input
@@ -104,6 +110,7 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
           <div class="memory-legend">
             <span class="legend pc"></span>PC
             <span class="legend mar"></span>MAR
+            <span class="legend idx"></span>IDX
             <span class="legend changed"></span>ultima scrittura
           </div>
           <div class="memory-grid" id="memory"></div>
@@ -142,10 +149,9 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
           </div>
         </div>
         <p class="hint micro-note">
-          Il numero di microcicli dipende dall’istruzione. I segnali mostrati
-          seguono la specifica della Control Unit: `PC_A_OE`, `MEM_RD`,
-          `MAR_L_WE`, `RF_WR`, `ALU_OE`, `FLAGS_WE` e gli altri segnali
-          funzionali da verificare sul wiring definitivo.
+          Il numero di microcicli dipende dall’istruzione. `ADDR_SEL_1:0`
+          collega al bus indirizzi una sola sorgente tra IDX (00), PC (01),
+          MAR (10) e nessuna (11). IDX usa le istruzioni LDX, LDAI e STAI.
         </p>
         <div class="micro-layout">
           <div
@@ -191,9 +197,9 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
       </section>
     </main>
     <footer>
-      Il simulatore emula l’ISA documentata. La vista microcodice mostra i
-      microcicli funzionali della Control Unit; il cablaggio TTL resta da
-      verificare sulla board.
+      Il simulatore emula l’ISA documentata e il datapath con IDX. La vista
+      microcodice opera nel banco RUN (A12=1); BOOT copia l'EPROM nella RAM e
+      LDX, LDAI e STAI usano il registro IDX.
     </footer>
     <script src="vendor/x6.min.js"></script>
     <script type="module" src="js/app.js"></script>

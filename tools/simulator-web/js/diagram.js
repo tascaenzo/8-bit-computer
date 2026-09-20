@@ -14,6 +14,23 @@ const COLORS = {
 
 const FONT = "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace";
 const ACTIVE_SHADOW = "drop-shadow(0 0 5px rgba(85, 220, 197, 0.72))";
+// Mantiene le unità della CPU più distanti orizzontalmente senza alterarne le dimensioni.
+const HORIZONTAL_SPREAD = 1.14;
+const spreadX = (value) => Math.round(value * HORIZONTAL_SPREAD);
+const spreadVertices = (vertices) => vertices?.map((vertex) => ({
+  ...vertex,
+  x: typeof vertex.x === "number" ? spreadX(vertex.x) : vertex.x,
+}));
+const spreadPorts = (nodePorts) => nodePorts && {
+  ...nodePorts,
+  items: nodePorts.items?.map((port) => ({
+    ...port,
+    args: {
+      ...port.args,
+      x: typeof port.args?.x === "number" ? spreadX(port.args.x) : port.args?.x,
+    },
+  })),
+};
 
 function registerShapes(Graph) {
   if (globalThis.X6.__cpuSimulatorShapes) return;
@@ -358,12 +375,15 @@ export function createCpuDiagram(container, onBlockClick) {
       icon = "",
       divider = "",
       nodePorts,
+      titleY = 22,
+      subtitleY = 43,
+      valueY = height - 18,
     },
   ) => {
     const node = graph.addNode({
       id,
       shape: "cpu-unit",
-      x,
+      x: spreadX(x),
       y,
       width,
       height,
@@ -377,9 +397,9 @@ export function createCpuDiagram(container, onBlockClick) {
       },
       attrs: {
         body: { fill: fill || COLORS.panel },
-        title: { text: title },
-        subtitle: { text: subtitle },
-        value: { text: value, refY: height - 18 },
+        title: { text: title, refY: titleY },
+        subtitle: { text: subtitle, refY: subtitleY },
+        value: { text: value, refY: valueY },
         icon: { d: icon },
         divider: { d: divider },
       },
@@ -391,22 +411,22 @@ export function createCpuDiagram(container, onBlockClick) {
   graph.addNode({
     id: "cpu-frame",
     shape: "cpu-frame",
-    x: 240,
+    x: spreadX(240),
     y: 35,
-    width: 1085,
+    width: spreadX(1085),
     height: 730,
     zIndex: -2,
     attrs: {
       title: { text: "CPU 8-BIT · DATAPATH" },
       subtitle: {
-        text: "memoria unificata · bus indirizzi 16 bit · bus dati 8 bit",
+        text: "memoria unificata · PC/MAR/IDX su selettore indirizzi · bus dati 8 bit",
       },
     },
   });
   graph.addNode({
     id: "external-label",
     shape: "cpu-bus-label",
-    x: 25,
+    x: spreadX(25),
     y: 72,
     width: 200,
     height: 40,
@@ -419,7 +439,7 @@ export function createCpuDiagram(container, onBlockClick) {
   graph.addNode({
     id: "fetch-label",
     shape: "cpu-bus-label",
-    x: 285,
+    x: spreadX(285),
     y: 105,
     width: 240,
     height: 30,
@@ -432,7 +452,7 @@ export function createCpuDiagram(container, onBlockClick) {
   graph.addNode({
     id: "execute-label",
     shape: "cpu-bus-label",
-    x: 285,
+    x: spreadX(285),
     y: 497,
     width: 280,
     height: 30,
@@ -494,6 +514,46 @@ export function createCpuDiagram(container, onBlockClick) {
     ]),
   });
   addUnit({
+    id: "idx",
+    x: 300,
+    y: 225,
+    width: 135,
+    height: 64,
+    blockKey: "idx",
+    valueKey: "idx",
+    title: "IDX",
+    subtitle: "16 bit · LOW / HIGH",
+    value: "0x0000",
+    fill: "#102d36",
+    divider: "M0 38 H135",
+    titleY: 14,
+    subtitleY: 29,
+    valueY: 50,
+  });
+  addUnit({
+    id: "addrsel",
+    x: 505,
+    y: 225,
+    width: 145,
+    height: 64,
+    blockKey: "addrsel",
+    valueKey: "addrsel",
+    title: "ADDR SELECT",
+    subtitle: "S1:S0 · 1 sorgente",
+    value: "NONE · 11",
+    fill: "#19333a",
+    divider: "M0 38 H145",
+    titleY: 14,
+    subtitleY: 29,
+    valueY: 50,
+    nodePorts: absolutePorts([
+      { id: "pc", x: 0, y: 15 },
+      { id: "mar", x: "50%", y: 0 },
+      { id: "idx", x: 0, y: 49 },
+      { id: "out", x: "50%", y: "100%" },
+    ]),
+  });
+  addUnit({
     id: "mdr",
     x: 720,
     y: 130,
@@ -537,7 +597,7 @@ export function createCpuDiagram(container, onBlockClick) {
   const registerBank = graph.addNode({
     id: "registers",
     shape: "cpu-register-bank",
-    x: 305,
+    x: spreadX(305),
     y: 525,
     width: 260,
     height: 185,
@@ -558,7 +618,7 @@ export function createCpuDiagram(container, onBlockClick) {
 
   addUnit({
     id: "ra",
-    x: 650,
+    x: spreadX(650),
     y: 525,
     width: 140,
     height: 76,
@@ -572,7 +632,7 @@ export function createCpuDiagram(container, onBlockClick) {
   });
   addUnit({
     id: "rb",
-    x: 650,
+    x: spreadX(650),
     y: 635,
     width: 140,
     height: 76,
@@ -587,7 +647,7 @@ export function createCpuDiagram(container, onBlockClick) {
   const alu = graph.addNode({
     id: "alu",
     shape: "cpu-alu",
-    x: 875,
+    x: spreadX(875),
     y: 540,
     width: 160,
     height: 150,
@@ -609,7 +669,7 @@ export function createCpuDiagram(container, onBlockClick) {
   nodes.set("alu", alu);
   addUnit({
     id: "flags",
-    x: 1110,
+    x: spreadX(1110),
     y: 565,
     width: 175,
     height: 100,
@@ -626,12 +686,12 @@ export function createCpuDiagram(container, onBlockClick) {
     const node = graph.addNode({
       id,
       shape: "cpu-bus-label",
-      x,
+      x: spreadX(x),
       y,
-      width,
+      width: spreadX(width),
       height: 46,
       zIndex: 2,
-      ports: nodePorts,
+      ports: spreadPorts(nodePorts),
       data: { valueKey: id },
       attrs: {
         body: {
@@ -651,14 +711,13 @@ export function createCpuDiagram(container, onBlockClick) {
   addBusLabel(
     "address-bus",
     260,
-    275,
+    315,
     820,
     "ADDRESS BUS · A[15:0]",
     COLORS.address,
     absolutePorts([
       { id: "memory", x: 0, y: 23 },
-      { id: "pc", x: 108, y: 0 },
-      { id: "mar", x: 296, y: 0 },
+      { id: "selector", x: 317, y: 0 },
     ]),
   );
   addBusLabel(
@@ -670,6 +729,7 @@ export function createCpuDiagram(container, onBlockClick) {
     COLORS.data,
     absolutePorts([
       { id: "memory", x: 0, y: 14 },
+      { id: "idx", x: 108, y: 0 },
       { id: "mar", x: 349, y: 0 },
       { id: "mdr", x: 525, y: 0 },
       { id: "ir", x: 722, y: 0 },
@@ -707,7 +767,7 @@ export function createCpuDiagram(container, onBlockClick) {
       id,
       source,
       target,
-      vertices,
+      vertices: spreadVertices(vertices),
       zIndex: 1,
       router: {
         name: router,
@@ -753,21 +813,36 @@ export function createCpuDiagram(container, onBlockClick) {
   };
 
   addEdge({
-    id: "pc-address",
-    pathKey: "pc-address",
+    id: "pc-selector",
+    pathKey: "pc-selector",
     source: { cell: "pc", port: "bottom" },
-    target: { cell: "address-bus", port: "pc" },
+    target: { cell: "addrsel", port: "pc" },
     color: COLORS.address,
-    vertices: [{ x: 368, y: 248 }],
+    vertices: [{ x: 465, y: 240 }],
     router: "orth",
   });
   addEdge({
-    id: "mar-address",
-    pathKey: "mar-address",
+    id: "mar-selector",
+    pathKey: "mar-selector",
     source: { cell: "mar", port: "address" },
-    target: { cell: "address-bus", port: "mar" },
+    target: { cell: "addrsel", port: "mar" },
     color: COLORS.address,
-    vertices: [{ x: 556, y: 248 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "idx-selector",
+    pathKey: "idx-selector",
+    source: { cell: "idx", port: "right" },
+    target: { cell: "addrsel", port: "idx" },
+    color: COLORS.address,
+    router: "orth",
+  });
+  addEdge({
+    id: "selector-address",
+    pathKey: "selector-address",
+    source: { cell: "addrsel", port: "out" },
+    target: { cell: "address-bus", port: "selector" },
+    color: COLORS.address,
     router: "orth",
   });
   addEdge({
@@ -804,6 +879,15 @@ export function createCpuDiagram(container, onBlockClick) {
     target: { cell: "mar", port: "data" },
     color: COLORS.data,
     vertices: [{ x: 609, y: 248 }],
+    router: "orth",
+  });
+  addEdge({
+    id: "data-idx",
+    pathKey: "data-idx",
+    source: { cell: "data-bus", port: "idx" },
+    target: { cell: "idx", port: "bottom" },
+    color: COLORS.data,
+    vertices: [{ x: 368, y: 305 }],
     router: "orth",
   });
   addEdge({
@@ -959,6 +1043,13 @@ export function createCpuDiagram(container, onBlockClick) {
 
     setValue("pc", "value", preview.pcText, preview.active.has("pc"));
     setValue("mar", "value", preview.marText, preview.active.has("mar"));
+    setValue("idx", "value", preview.idxText, preview.active.has("idx"));
+    setValue(
+      "addrsel",
+      "value",
+      preview.addressSourceText,
+      preview.active.has("addrsel"),
+    );
     setValue("mdr", "value", preview.mdrText, preview.active.has("mdr"));
     setValue("ir", "value", preview.irText, preview.active.has("ir"));
     setValue("ra", "value", preview.raText, preview.active.has("ra"));

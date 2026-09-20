@@ -10,10 +10,10 @@ HTTP:
 
 ```sh
 cd tools/simulator-web
-python3 -m http.server 8080
+python3 -m http.server 8081
 ```
 
-Poi visita `http://localhost:8080`.
+Poi visita `http://localhost:8081`.
 
 ## Verifica automatica
 
@@ -30,7 +30,9 @@ npm test
 
 - assembler nel browser: label, `.equ`, `.code`, `.data`, `.byte`;
 - istruzioni documentate nell'ISA v0.1;
-- registri `R0`–`R7`, `RA`, `RB`, `PC`, `MAR`, `MDR`, `IR` e flag;
+- registri `R0`–`R7`, `RA`, `RB`, `PC`, `MAR`, `IDX`, `MDR`, `IR` e flag;
+- selettore a 2 bit del bus indirizzi: `00=IDX`, `01=PC`, `10=MAR`,
+  `11=nessuna sorgente`;
 - esecuzione a istruzioni (`Step`) o continua;
 - avanzamento didattico nei microcicli funzionali, con numero di fasi variabile
   per istruzione e segnali allineati alla specifica della Control Unit;
@@ -41,10 +43,13 @@ npm test
 Il simulatore esegue lo stato architetturale al termine di ogni istruzione. La
 vista microcodice mostra invece le fasi funzionali definite in
 [`docs/control-unit-microcode.md`](../../docs/control-unit-microcode.md):
-`PC_A_OE`, `MAR_A_OE`, `MEM_RD`, `MEM_WR`, `MDR_WE`, `RF_WR`, `ALU_OE`,
-`FLAGS_WE` e segnali di sequencer. Il numero preciso di clock e il wiring TTL
-restano da verificare sulla board reale. `IX` non è incluso perché è
-un’estensione futura dell’ISA.
+`ADDR_SEL_1:0`, `RAM_OE`, `RAM_WE`, `MDR_WE`, `RF_RW`, `ALU_EN`, `FLAGS_WE`
+e segnali di sequencer. Il numero preciso di clock e il wiring TTL restano da
+verificare sulla board reale. `IDX` è presente nello stato e nel datapath, ma
+rimane a zero perché le relative istruzioni non hanno ancora una codifica
+definitiva nella ISA. La vista usa il banco RUN (`BOOT_RUN=1`); il
+microprogramma di boot copia l'immagine EPROM nella RAM; il pulsante BOOT del
+simulatore completa la copia e riporta PC a zero.
 
 ## Struttura del codice
 
@@ -65,5 +70,5 @@ Lo schema usa AntV X6, distribuita con licenza MIT. Il bundle è incluso in
 download o una fase di build all’avvio. Node.js serve soltanto per eseguire la
 suite opzionale con `npm test`.
 
-Questa separazione permette di estendere, ad esempio, `IX` modificando prima
+Questa separazione permette di estendere, ad esempio, `IDX` modificando prima
 `isa.js` e `cpu.js`, e solo poi assembler, microcicli e visualizzazione.

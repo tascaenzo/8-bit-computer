@@ -70,6 +70,14 @@ function encode(record, symbols) {
       ...addressBytes(address),
     ];
   }
+  if (record.mnemonic === "LDAI" || record.mnemonic === "STAI") {
+    if (args.length !== 1) {
+      throw new Error(`riga ${record.line}: ${record.mnemonic} richiede un registro`);
+    }
+    return [
+      REGISTER_OPCODES[record.mnemonic] | parseRegister(args[0], record.line),
+    ];
+  }
   if (ADDRESS_INSTRUCTIONS.has(record.mnemonic)) {
     if (args.length !== 1) {
       throw new Error(
