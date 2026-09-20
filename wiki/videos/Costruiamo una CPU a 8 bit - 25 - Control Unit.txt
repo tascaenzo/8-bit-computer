@@ -1,0 +1,309 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo. Oggi
+continuiamo a parlare della CPU a 8 bit.
+Nel video di oggi inizieremo a vedere
+come generare i segnali di controllo che
+serviranno all'interno della nostra CPU.
+Ma prima di iniziare vi ricordo di
+lasciare un mi piace, commentare questo
+video e iscrivervi al mio canale in modo
+da poter supportare il mio lavoro. Nei
+video precedenti abbiamo iniziato a
+introdurre il contatore di microstep e
+il segnale bootrun che va a identificare
+lo stato della CPU. Diciamo che queste
+parti fanno parte della control unit,
+però non abbiamo affrontato il problema
+principale che deve risolvere la control
+unit, cioè generare tutti i segnali di
+controllo che saranno collegati alle
+varie parti della CPU, ad esempio
+registri generali, ALU, RAM e così via.
+Quindi diciamo che il cuore della
+Control Unit è qualcosa che ho
+schematizzato con questa scatola. dove
+in input prenderà l'istruction register,
+i flag e il microstep e output genererà
+tutta questa serie di segnali di
+controllo.
+Le possibili soluzioni per creare una
+control unit sono unità di controllo
+cablata e unità di controllo
+microprogrammata. Qual è la differenza?
+L'unità di controllo cablata in sostanza
+è una rete logica formata da porte endor
+or not e così via che prende in input i
+segnali instruction register flag e step
+e in output mi dà tutta una serie di
+segnali di controllo. Qual è il
+problema? Ma il problema è che costruire
+questa rete è complesso perché comunque
+dobbiamo utilizzare tutta una serie eh
+di
+tutta una serie di operazioni
+matematiche che mi permettono poi di
+andare a costruire sintetizzare questa
+rete. Poi, fisicamente una volta che
+abbiamo creato il progetto su carta
+dobbiamo realizzarlo all'interno della
+CPU. occuperà un numero enorme di board
+della CPU e c avremo un numero elevato
+di chip da andare a collegare.
+E infine, se vado a modificare una
+sezione della CPU devo riprogettare
+nuovamente da zero l'unità di controllo.
+Un possib una possibile soluzione è
+l'unità di controllo microprogrammata.
+Come funziona questo tipo di unità di
+controllo? Sostanzialmente vado a
+sfruttare delle prom. L'idea è quella di
+collegare all'interno del basso degli
+indirizzi della eprom i segnali
+structure register, flag e step. Per
+ogni singola combinazione di questi
+segnali vado a selezionare una cella
+della eprom. La cella della eprom verrà
+ehm messa in output all'interno del bass
+dati della eprom. A ogni singolo bit del
+bass dati della eprom vado ad associare
+un segnale di controllo. Che cosa
+succede? Succede che io avrò programmato
+la epromedenza
+e quindi saprò per ogni singolo eh
+singola combinazione dell'input, quindi
+del basso degli indirizzi, che cosa
+dovrà succedere a ogni singolo segnale
+di controllo. Quindi seleziono il
+seleziono l'indirizzo o i segnali di
+controllo e tramite un programma che
+avrò generato in precedenza avrò creato
+un binario da inserire all'interno della
+eprom. E quindi il vantaggio reale è che
+ho un numero di chip limitati e quindi
+più facile da gestire, meno collegamenti
+fisici da fare all'interno della CPU e
+se un domani vado a modificare una
+sezione della CPU mi basterà cambiare il
+software che genera il binario da
+inserire all'interno della eprom. Quindi
+diciamo già subito che la strada che
+percorriamo per la nostra CPU è quella
+dell'unità di controllo
+microprogrammata.
+A questo punto, secondo me, dobbiamo
+capire effettivamente prima di andare
+avanti, quali segnali di controllo
+fisicamente dovrà gestire la nostra
+control unit. Partiamo dagli input.
+Sicuramente abbiamo bisogno
+dell'istruction register. L'istruction
+register contiene nello specifico il
+codice operazione che mi identifica
+l'operazione che dovrà essere eseguita
+alla CPU. Dobbiamo ricordarci che eh
+un'istruzione all'interno della nostra
+architettura può essere composta da 1
+byte, 2 byte o 3 byte. Però in realtà a
+noi non ci servono tutti e tre i byte,
+ma ci bastano i primi bit
+dell'istruction register, quindi il
+primo byte di informazione, perché
+contiene il codice operazione. Poi tutto
+il resto in realtà sono degli operandi
+che devono essere inseriti, cablati,
+collegati direttamente o all'alu oppure
+alla al blocco dei registri generali.
+Quindi, essenzialmente m ci servono in
+realtà soltanto i primi 5 bit
+dell'istruction register, ci sono
+sufficienti per creare la nostra control
+unit. Poi abbiamo il registro de flag
+che sono quattro flag e i microstep che
+abbiamo detto possono essere
+rappresentati da 3 bit.
+Ho fatto un elenco con tutti i segnali
+di controllo che effettivamente dovrà
+gestire la nostra control Unit che
+adesso brevemente andremo a vedere.
+Partiamo dall'alu, abbiamo un segnale di
+controllo enable attivo basso. Ho
+segnato con una stanghetta sopra il
+segnale tutti i segnali e logica negata,
+come in questo caso. Che cosa vuol dire?
+Vuol dire che se il livello logico è
+zero si abiliterà l'alu.
+Oltre all'enable l'alu ha bisogno di 4
+bit di selezione per determinare quale
+operazione deve eseguire. Però abbiamo
+detto che questi 4 bit non dovranno
+essere gestiti direttamente da la
+control unit, ma li andremo a collegare
+direttamente dagli ultimi bitruction
+register, quindi contiamo solo un
+segnale enable. Poi abbiamo i registri
+generali, qui abbiamo il segnale
+d'enable, abbiamo un segnale redght che
+mi permette di capire se siamo in
+lettura o in scrittura e 3 bit di
+selezione del registro. Anche in questo
+caso i 3 bit di selezione del registro
+non dovranno essere generati
+direttamente dalla Control Unit, ma li
+andiamo a collegare agli ultimi 3 bit
+del codice operazione dell'istruction
+register.
+Poi abbiamo i registri A e B, abbiamo
+enable RA, enable RB e poi segnale red
+Wright.
+Abbiamo la RAM. Nella RAM abbiamo output
+enable e Wright enable, entrambi
+funzionano a logica negata.
+EPROM, abbiamo l'output enable, anche
+questo funzione in logica negata. Poi
+abbiamo registro de flag, avrà un
+segnale Wright enable, instruction
+register. avrà un segnale Wright enable.
+Memory data register avrà Wright enable
+e output enable. Poi abbiamo il program
+counter che ha un segnale load per
+caricare un valore all'interno del
+program counter. Il segnale clear, il
+segnale che abilita l'incremento
+del program counter e l'output enable.
+Abbiamo poi il MAR, memory address
+register, qui abbiamo output enable,
+write enable della parte alta e write
+enable della parte bassa, perché questo
+è un registro a 16 bit, quindi è
+spezzato in due registri da 8 bit. Index
+register, anche questo è spezzato in due
+registri da 8 bit. Abbiamo output
+enable, bright enable parte alta, bright
+enable parte bassa.
+C'è da fare una piccola riflessione sul
+program
+e Index Register. In pratica uno di
+questi costantemente dovrà pilotare il
+bass degli indirizzi della RAM.
+Proprio per questo motivo, m invece di
+andare a considerare tre segnali output
+enable, abbiamo collegato nei video
+precedenti eh un decoder multiplexer che
+mi va a pilotare questi tre registri,
+l'output enable di questi tre registri e
+quindi passiamo da 3 bit, da tre segnali
+di controllo a 2 bit, quindi due segnali
+di controllo da gestire la control Unit
+e andiamo a risparmiare un bit.
+In totale abbiamo 22 segnali di
+controllo che dovranno essere gestiti
+dalla control Unit. Nei video precedenti
+abbiamo utilizzato una EPROM AT T28 C64.
+La mia idea è di utilizzare ancora
+questo questo componente, questo chi per
+costruire la mia unità di controllo.
+Ora, questo tipo di componente ha 13
+linee di indirizzo che saranno i nostri
+input e 8 bit che saranno i nostri il
+nostro output, quindi ogni bit sarà
+cablato a un segnale di controllo.
+Sicuramente non basta una sola e per
+gestire 22 segnali di controllo, quindi
+la mia idea è di utilizzare tre di
+queste eprom.
+andremo a parallelizzare il bass degli
+indirizzi interno della della eprom, di
+tutte e tre le eprom avere lo stesso
+input e poi ognuna delle eprom gestirà
+otto segnali di controllo. Contra eprom
+abbiamo più dei 22 segnali che ci
+servono, però ci dà un po' di margine se
+in futuro vogliamo inserire altre
+funzionalità all'interno del nostro
+computer o della nostra CPU in generale.
+Ho realizzato un piccolo schema anche di
+collegamenti della eprom. È abbastanza
+provvisorio, soprattutto per quanto
+riguarda le uscite che vedete
+rappresentate qui, i segnali di
+controllo, però comunque ci dà un'idea
+di cosa dobbiamo effettivamente fare.
+Pensavo di andare a collegare
+all'interno di A0, A1 e A2 il contatore
+di microstep, quindi i primi tre pit del
+bass degli indirizzi sono collegati al
+contatore di microstep.
+Poi i successivi 5 bit A3, A4, A5, A6 e7
+sono collegati al codice operazione,
+quindi l'istruction register, i primi 5
+bit, quelli più significativi e già con
+questi 5 bit sono in grado di poter
+gestire tutte eh le operazioni eh della
+mia CPU.
+Successivamente a 8, a 9, a 10 e a 11
+rivado a collegare ai flag, quindi avrò
+carry, zero, negative e overflow. E
+infine l'ultimo bit a 12 lo vado a
+collegare al segnale boot run, quindi so
+se sono una fase di boot e quindi
+l'unità di controllo deve fare il
+caricamento del programma dalla EPROM
+alla RAM oppure sono una fase di run
+nella CPU e devo gestire tutto il ciclo
+di fetch decode ed execute
+dell'operazione.
+Quindi in questo video ora facciamo già
+una prima configurazione nella board
+dove andremo a collegare fisicamente le
+eprom m o almeno andremo a
+parallelizzare tutti gli indirizzi e
+fare i primi collegamenti. Poi una volta
+fatto questo, dovremo realizzare tutta
+la parte di software che andrà a
+generare il binario da inserire
+all'interno delle tre eprom
+e Aprom. Per collegare le eprom sto
+utilizzando questi zoccoli che mi
+permettono di estrarre facilmente
+l'eprom con questa levetta che poi va a
+fare una pressione sui pin del chip.
+Sto utilizzando questo sistema perché
+questa eprom dove c'è caricato il
+programma ho danneggiato un pin facendo
+attacca e stacca per programmarlo.
+Invece in questo modo diciamo sono un
+po' più veloce nell'inserire
+le prom. In ogni caso, ho iniziato a
+fare alcuni collegamenti. Questi cavi
+bianchi che vediamo qui sono di fatto il
+basso interno degli indirizzi, sono
+parallelizzate tutte e tre. Poi abbiamo
+questi cavi blu, questi altri e questi
+qua marroni che sono i vari segnali di
+controllo, quindi le uscite delle eprom.
+Ancora non ho deciso quale sarà la
+prima, la seconda e la terza eprom,
+quindi l'ordine dei chip e inoltre non
+ho deciso effettivamente su ognuna di
+questa quali segnali di controllo andrà
+a definire. Ho iniziato anche a fare
+alcuni collegamenti. Ad esempio, ho
+collegato il flag di boot, e questo cavo
+arancio che poi va qui
+e poi ho collegato anche i flag che sono
+questi cavi neri che poi vanno qui e
+prendo il segnale direttamente dai flag.
+E quindi nient'altro. Io direi che per
+questo video è tutto. Nei prossimi video
+eh vediamo effettivamente come andare a
+realizzare la parte di programma che
+andrà a generare il codice binario
+inserire all'interno delle tre eprom e
+poi facciamo qualche test. Magari
+inizialmente vediamo semplicemente se
+con un programma caricato all'interno
+della ROM vengono generati i segnali di
+controllo corretti senza fisicamente
+andrare a collegare, a fare tutti i
+collegamenti fisici tra segnali di
+controllo e vari pezzi della della CPU.

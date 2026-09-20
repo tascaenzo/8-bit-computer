@@ -1,0 +1,242 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo. Oggi
+continuiamo a parlare della CPU a 8 bit
+e nello specifico andiamo a vedere una
+piccola riorganizzazione che ho fatto
+all'interno del blocco dei registri,
+inserendo dei nuovi registri e andando a
+modificare qualche piccolo segnale di
+controllo all'interno dei registri già
+esistenti.
+Vi ricordo prima di iniziare di lasciare
+un mi piace, commentare questo video e
+iscrivervi al mio canale YouTube.
+Prima di passare alla progettazione
+dell'unità di controllo, ho fatto
+qualche piccola modifica al blocco dei
+registri. Qualche video fa abbiamo visto
+i registri che andavano a controllare la
+memoria. Avevamo detto che avevamo il
+program counter e il MAR M mem Memory
+Address Register. Ho pensato che potesse
+essere utile aggiungere un altro
+registro che ho chiamato I che sta per
+index register. L'idea è quella che
+questo registro può essere una sorta di
+indice, una sorta di indice verso la
+memoria che può essere caricato
+utilizzando il bass dati a 8 bit. Quindi
+avremo eh 274574
+che andranno a costituire la parte alta
+e la parte bassa del registro. Qual è
+l'idea? L'idea è quella che ehm da
+codice andando a modificare il bass
+dati, quindi andando a caricare
+all'interno di questo registro ciò che
+passa dal bass dati, io posso fare
+calcoli sugli indirizzi che eh dovranno
+essere salvati all'interno di questo
+registro. Quindi alla fine eh il
+risultato è che la memoria può essere
+controllata o da X che sta per index
+index register o dal MAR o dal programo
+counter.
+Per realizzare questo registro, come
+dicevo, ho aggiunto un 274574
+e quindi abbiamo questo registro
+collegato all'uscita di questi due 74574
+collegati al bass degli indirizzi a 16
+bit e gli ingressi collegati al bass
+date 8 bit.
+Altra modifica che ho fatto, dato che eh
+la memoria potrà essere controllata
+soltanto da uno di questi registri, la
+RAM,
+per diminuire i segnali di controllo,
+perché consideriamo che ognuno di questi
+ha un segnale output enable che va a
+pilotare il bass dati. Ho ho deciso di
+andare a inserire un 74138
+che utilizzando soltanto 2 bit mi
+permette di selezionare uno di questi
+registri. Vado a risparmiare di fatto un
+bit perché altrimenti avrei tre segnali
+output enable da andare a gestire.
+Qui abbiamo il 74138
+che è il nostro decoder multiplexer, lo
+abbiamo visto anche in video precedenti.
+Brevemente ricordo il funzionamento. Ho
+tre segnali di input che sono questi
+segnali a 0, a con1 e a con 2. In base
+alla combinazione dei segnali input che
+vado a inserire otterrò uno di queste
+una di queste uscite output da o0 a o
+con 7 a un valore di massa. Quindi ci
+sarà una di questa che sarà a massa e
+tutto il resto a + 5 V e quindi andranno
+ad abilitare o disabilitare eh uno dei
+registri. Il trucco è che vado a
+collegare l'output enable di ogni
+singolo registro, uno di queste tre eh
+uscite. In realtà utilizzo soltanto 2
+bit perché già con 2 bit riesco a avere
+quattro combinazioni. In realtà eh devo
+andare a pilotare soltanto tre registri,
+quindi c'è anche una combinazione in
+più. e quindi utilizzerò l'ingresso A
+con 0 e AON 1. A con 2 invece lo lascio
+fisso a massa.
+Lo stesso i segnali eh enable 1 e enable
+2. Invece con 3 sarà più 5 V che il
+segnale di enable sempre fisso. Tutti
+gli altri tutte le altre uscite invece
+non verranno mai utilizzate.
+Un'altra modifica al blocco dei registri
+è quella di aggiungere un nuovo registro
+relativo ai flag. Qualche video fa,
+quando abbiamo parlato dell'alo, abbiamo
+visto i quattro flag che andiamo a
+utilizzare, il carryborov, negative zero
+e overflow. Ora, il problema è che
+questi flag eh non sono collegati a un
+registro, in effetti vengono presi
+direttamente dall'uscita e dall'alu e
+quindi noi dopo che abbiamo fatto una
+determinata operazione non salviamo
+l'informazione. In realtà, soprattutto
+per tutte le funzioni, tutte i codici
+operazione relativi ai salti
+condizionali, abbiamo bisogno di avere
+queste informazioni. Quindi ho creato un
+nuovo registro e all'interno di questo
+registro dei flag andrò a salvare queste
+informazioni. Sono soltanto 4 bit di
+informazione, quindi in realtà non vado
+a utilizzare appieno tutto il registro
+che ha a 8 bit, ma in ogni caso, grazie
+al registro flag posso poi dall'unità di
+controllo decidere quando devono essere
+salvate le informazioni, soprattutto
+quando andrò a fare quindi i confronti.
+si abiliterà un segnale di controllo
+della control unit che andrà ad
+abilitare il salvataggio all'interno del
+registro dei flag.
+Vediamo effettivamente la parte pratica.
+Ho collegato questo registro dei flag.
+Qui dentro arrivano i 4 bit prodotti
+dall'al sono questi cavi azzurri che
+vediamo qui che vanno poi qui dentro. Le
+uscite dovranno essere collegate alla
+control unit, però tramite questi cavi
+neri li ho riportati all'interno di
+questi quattro LED che vanno ad
+accendersi quando un determinato flag è
+acceso e ovviamente eh questa
+informazione è salvata all'interno di
+questo registro. Per abilitare il
+salvataggio abbiamo una porta end che fa
+l'end tra il segnale di clock e un
+segnale di enable per abilitare il
+salvataggio sul su questo registro.
+Invece qui di fianco vediamo il registro
+eh index X eh che è suddiviso in parte
+alta e parte bassa. Anche qui abbiamo
+due segnali di controllo per andare a
+abilitare il salvataggio che vengono
+ricavati tra l'endlock e il segnale di
+enable. sono questi cavi, eh, questi due
+cavi qua,
+questi cavi neri, questa è una porta
+endi
+abbiamo questi cavi viola che eh sono il
+bass dati, un collegamento con il bass
+dati e gli ingressi di questi due
+registri e poi abbiamo questi cavi blu
+che sono l'uscita del di questi registri
+a 14 a 16 bit che vanno poi a essere
+collegati con il bass degli indirizzi,
+questo qui sotto.
+Invece, infine, eh questo qua è il
+nostro decoder multiplexer e questi due
+cavi bianchi sono i selettori del
+registro in output verso il bass degli
+indirizzi. Quindi noi andiamo a
+selezionare quale registro sta pilotando
+effettivamente il bass degli indirizzi.
+Abbiamo anche qui dei LED che ci fanno
+capire a colpo d'occhio effettivamente
+la memoria quale registro è pilotata.
+Questi questi cavi arancioni
+rispettivamente poi vanno a essere
+collegati con il program counter,
+l'index register o il MAR M mem memory
+address register. Ho dato alimentazione
+al computer. Vediamo che si accende il
+LED corrispondente al programo counter.
+In effetti vuol dire che il basso degli
+indirizzi è pilotato dal programo
+possiamo provare a a variare la
+combinazione di questi due selettori in
+ingresso, questi capi bianchi e vedere
+se effettivamente riusciamo a switchare
+verso il MAR o il registro index.
+Siamo nella combinazione 10. Se andiamo
+nella combinazione 00 e l'index register
+che per ora sta pilotando il bass degli
+indirizzi.
+Se invece vado nella combinazione eh 10
+invece mi trovo m nel MAR, il MAR sta
+pilotando il basso degli indirizzi. A
+questo punto un'altra prova che possiamo
+fare è quella di verificare che
+effettivamente eh il registro index
+prenda il valore che viene scritto sul
+bass dei dati e provare quindi a salvare
+questo questo valore all'interno
+dell'indirizzo index. Andiamo di nuovo a
+riswitchare verso il registro index.
+Combinazione 00.
+A questo punto vado a pilotare dalla
+variabile di input il bass degli
+indirizzi e il bass dati, scusate.
+Proviamo a salvare questa informazione,
+quindi mettiamo tutto a zero.
+Attualmente questi due cavi neri sono
+tutti e due a + 5 V, quindi stanno
+pilotando sia la parte bassa che la
+parte alta del registro index in modo da
+salvare l'informazione all'impulso di
+clock. Do l'impulso di clock.
+In effetti e ho appena impostato a zero
+il basso degli indirizzi. Proviamo a
+mettere a uno tutti i bit, magari eh
+mettiamo a più 5 V solo l'enable la
+parte bassa. Diamo un altro impulso di
+clock e in effetti l'informazione è
+stata salvata nella parte bassa.
+Mettiamo a più 5 volte entrambi e diamo
+un altro impulso di clock. Quindi sia
+parte bassa che parte alta e ci troviamo
+tutto eh il basso degli indirizzi a + 5
+V, quindi a tutti i valori a un. Quindi
+anche questa casistica funziona. Un
+altro test che possiamo fare è quello di
+provare a vedere se abilitando l'enable
+del dell'indirizzo delle flag
+all'impulso de clock viene salvato
+l'informazione che ho all'interno dei
+flag prodotti dall'alo. Attualmente ho
+il flag Z acceso che corrisponde a a
+zero. In effetti nel bass dati c'ho
+zero, quindi se io do un impulso di
+clock mi si accende il flag zero e
+quindi ho salvato questa informazione
+anche nel registro dei flag. Io direi
+che per questo video è tutto. Nel
+prossimo video iniziamo a vedere un po'
+i micro step che andranno a costituire
+la Control Unit e vi ricordo di lasciare
+un mi piace, commentare questo video e
+iscrivervi al mio canale per supportare
+il mio lavoro.

@@ -1,0 +1,369 @@
+Bentornati sul mio canale YouTube. Per
+chi non mi conosce, io sono Enzo. Nel
+video di oggi iniziamo a parlare della
+Control Unit e nel dettaglio andremo a
+realizzare il contatore di microstep, un
+componente fondamentale che ci permette
+di scandire gli istanti di tempo che
+vanno a definire il ciclo di vita di una
+istruzione. Prima di iniziare vi ricordo
+di lasciare un mi piace, commentare
+questo video e iscrivervi al mio canale
+in modo da supportare il mio lavoro.
+Nel video di oggi iniziamo
+effettivamente a parlare della
+dell'unità di controllo e a capire come
+andare a costruire il primo componente
+dell'unità di controllo.
+Prima di iniziare però facciamo un
+piccolo ripasso del dell'architettura di
+Von Newman e nello specifico andiamo a
+capire cos'è il ciclo di esecuzione
+nella CPU.
+Abbiamo detto qualche video fa che la
+nostra CPU va a eseguire un'istruzione
+eseguendo una serie di fasi che sono la
+fase di fetch di decode ed execute.
+Diciamo questo è il ciclo di vita di
+un'istruzione della CPU, però oggi
+dobbiamo capire effettivamente nel
+dettaglio in cosa consiste ogni singola
+fase m diciamo questo ciclo di vita
+dell'esecuzione di un'istruzione per poi
+capire come andare a costruire la
+control unit. Partiamo subito con la
+fase di fetch. La fase la fase di fetch
+è la fase in cui la CPU preleva
+l'informazione dalla RAM. In pratica,
+all'interno della RAM abbiamo il program
+counter che sta puntando a una cella di
+memoria che contiene l'istruzione che
+deve essere eseguita.
+Questa questa istruzione in questa fase
+eh deve essere salvata all'interno del
+registro instruction register, quindi
+fetch vuol dire prelievo. La CPU va a
+prelevare l'istruzione da seguire dalla
+memoria la mette nell'istruction
+register. Poi in realtà all'interno di
+questa fase di fetch eh abbiamo noi
+sappiamo che potrebbero essere fatte
+altre operazioni di lettura di prelievo
+di dati. Ad esempio, se un'istruzione
+che dobbiamo eseguire coinvolge la RAM,
+eh o un registro e così via, dovremmo
+salvare alcune informazioni all'interno
+del MAR Memory Address Register o l'MDR
+memory data register, quindi andare
+avanti con la lettura della della RAM
+avanzando il program counter e andare a
+leggere le altre locazioni di memoria
+per avere tutta l'informazione
+necessaria all'esecuzione di di quella
+determinata istruzione, perché eh come
+abbiamo detto nei video precedenti, il
+formato di una nostra istruzione può
+essere da costituito da 1 2 o 3 byte.
+Una volta fatta la fase di fetch, quindi
+abbiamo tutto l'occorrente per capire
+che tipo di istruzione dobbiamo eseguire
+e i dati eventualmente coinvolti, c'è
+una seconda fase che è la fase di
+decode. In questa fase la CPU che cosa
+va a fare? va a leggere ciò che è
+presente all'interno dell'Istruction
+register, va a interpretare il codice
+operazione presente al suo interno e
+capisce effettivamente qual è
+l'operazione che deve essere eseguita
+nella fase successiva.
+Questa fase, infatti, si chiama fase di
+decodifica decode. Infine l'ultima fase
+è quella di execuzione.
+In questa fase vengono effettivamente
+abilitate le varie aree, ad esempio
+l'alusoperazione
+aritmeticologica e viene effettivamente
+eseguita questa operazione potrebbe
+essere anche la control Unit a fare
+l'esecuzione se ad esempio si tratta di
+un'operazione di ad esempio uno
+spostamento tra due registri sarà tutto
+competenza della control Unit in
+generale. Questo qua è il ciclo di vita
+di esecuzione di un'operazione
+all'interno della CPU. Diciamo che ehm
+l'unità di controllo è un po' il cuore
+della della nostra CPU perché comunque
+deve andare a gestire tutte queste varie
+fasi e generare tutti i vari segnali di
+controllo che ci permettono di costruire
+questo ciclo.
+Io tendo a considerare anche il circuito
+che genera il segnale di clock come una
+parte
+della control.
+In effetti capiamo che il solo segnale
+di clock non ci permette di capire in
+che momento, in che fase siamo
+di esecuzione della nostra istruzione
+all'interno del ciclo di vita della
+della CPU.
+Per sapere effettivamente siamo nella
+fase di FCH, decode ed execute, dobbiamo
+utilizzare eh un altro componente che è
+il contatore di microstep. Immaginiamo
+tutta una serie eh di microSep che, ad
+esempio, vanno da T1 a T8. Ogni segnale
+di clock eh viene incrementato questo
+contatore, quindi partiamo da T1,
+passiamo a T2, a T3, T4 e così via fino
+a T8. In pratica, dando questa
+informazione all'interno della control
+Unit, la Control Unit in ogni istante sa
+in che fase ci troviamo. Se se ad
+esempio una determinata istruzione fetch
+ha bisogno di tre cicli di clock,
+sappiamo che a T3 dobbiamo passare alla
+decodifica e così via. Quindi il primo
+componente andiamo a realizzare è
+proprio questo, questo contatore di
+microstep.
+Nel caso specifico ho pensato
+effettivamente di creare un contatore
+che va da T1 a T8, quindi avremo otto
+istanti di tempo che dovrebbero bastare
+a gestire tutte le tutte le operazioni
+che abbiamo pensato all'interno del
+nostro instruction set.
+Una cosa fondamentale da definire è che
+non per forza la fase di fetch decode
+execute deve avere per ogni singola
+istruzione lo stesso numero di istanti
+di tempo di esecuzione. Ad esempio, ci
+potrà essere un'istruzione di fetch
+potrà richiedere soltanto, che ne so,
+due istanti, quindi T1 e T2,
+un'istruzione invece che ne richiederà
+tre e così via.
+Per quanto riguarda il nostro contatore
+macrostep, pensavo di utilizzare un
+74161
+e un 74138
+per realizzare questo circuito. In
+realtà il cuore è il 74161
+che abbiamo già utilizzato in altri
+video quando, ad esempio, abbiamo
+costruito il program counter. Non è
+altro che un contatore a 4 bit.
+In realtà noi utilizzeremo soltanto 3
+bit perché ehm con 3 bit già riusciamo
+ad avere otto possibili combinazioni che
+dovrebbero essere sufficienti per la
+nostra CPU. Come funziona questo
+circuito? Abbiamo un input che in realtà
+non andremo a utilizzare perché serve a
+precaricare un valore, però a noi non ci
+serve. in questo caso specifico un
+segnale di clock, un segnale clear che
+va a resettare il contatore, poi abbiamo
+un segnale di enable, la massa, un
+segnale per caricare i dati presenti
+all'interno di questi pin che non
+utilizzeremo perché non dovremmo mai
+fare il caricamento. Poi abbiamo i bit
+QA, QB, QC e QD. OD, abbiamo detto già
+che QD non verrà utilizzato perché
+abbiamo utilizzeremo solo 3 bit. Eh,
+carry out per eventuali riporti per
+collegarne più di uno in cascata e la
+nostra alimentazione.
+Eh, il discorso è che quindi ogni
+segnale di clock io mi aspetto che venga
+incrementato il valore. Poi che cosa ho
+fatto? Ho utilizzato un 74138
+per andare a leggere il valore binario
+questi 3 bit e a seconda della
+combinazione andare ad abilitare una
+determinata uscita che va da y con 0 a Y
+con 7. A ogni uscita ho collegato un LED
+in modo che visivamente noi possiamo
+capire in che step siamo, in che
+microstep siamo, quindi T1, T2, T3, T4,
+T5 e così via fino ad arrivare a T a T8.
+Quindi a questo punto io direi di vedere
+effettivamente il circuito realizzato
+all'interno della CPU.
+Vediamo come ho realizzato nella pratica
+il nostro circuito. Questi due integrati
+sono il 74161
+che è il nostro contatore e il 74138
+che fa da decoder multiplexer.
+Questi cavi bianchi sono i 3 bit che
+vanno a trasportare l'informazione che
+tiene il conteggio
+della nostra control unit.
+mh vengono poi decodificati al 74138
+che va ad accendere, va a mettere a
+massa uno di questi cavi grigi che sono
+collegati a questi LED. I LED vanno ad
+identificare i vari step che vanno da T1
+a T8. Questa resistenza va a limitare
+poi la corrente di questi LED.
+Al 74161
+diamo l'impulso di clock e questo cavo
+che vedete in blu, il pin 2. Invece il
+clear per ora l'ho messo a più cin volte
+il primo pin, però in realtà dovrò poi
+collegarlo alla control unit perché
+effettivamente dopo che viene eseguito
+il ciclo di fetch decoded execute di
+un'istruzione, la Control Unit deve
+poter resettare questo contatore per
+inizializzare il nuovo ciclo di
+operazioni per l'istruzione successiva,
+quindi dovrà essere pilotato alla
+control Unit. Questa parte di circuito
+invece la vediamo successivamente, non è
+collegata al sistema di macrostep.
+Ho dato alimentazione al circuito.
+Tralasciando questi LED, questi tre LED
+qui che non ci interessano al momento,
+vediamo che siamo nell'istante T1, il
+primo istante di tempo. Eh, dando un
+impulso di clock, il test che dobbiamo
+fare è verificare se si accenderà T2,
+T3, T4, T5, T6, T7 e T8 e poi si
+resetterà e ripartirà da T1. Provo a
+dare un impulso di clock.
+In effetti siamo a T2.
+T3,
+T4,
+T5, T6, T7, T8 e ripartiamo da T1.
+Quindi in effetti eh funziona il nostro
+contatore, riusciamo a scandire questi
+otto istanti di tempo per ogni e a ogni
+ciclo di clock abbiamo l'incremento del
+nostro contatore. A questo punto
+brevemente parliamo di questa parte di
+circuito. In realtà ho realizzato un
+flip flop di tipo SR e vado a
+memorizzare un'informazione che mi
+permette di capire se siamo in una
+modalità di boot o di run della CPU.
+L'idea qual è? L'idea è che quando io
+avvio la CPU siamo in una modalità di
+boot dove m la Control Unit va a copiare
+il contenuto della ROM all'interno della
+RAM. Una volta che viene fatta la copia,
+la mia idea è quella di utilizzare
+questo pulsante che ehm mi switcha dalla
+modalità di boot alla modalità di run.
+In effetti, se io premo questo pulsante
+mi si accende questo LED verde che mi va
+a identificare il run della della CPU.
+Quest'altro LED invece blu che ancora
+non ho collegato, avevo pensato di
+collegarlo all'istruzione Alt che dovrà
+fermare la CPU. Quindi l'idea è che
+quando viene eseguito l'ALT si accende
+questo LED che mi fa capire che la CPU è
+ferma, però lo vediamo successivamente.
+Non sono ancora sicuro che lascerò
+questa logica, però per il momento l'ho
+costruita. Vediamo anche in dettaglio
+come ho fatto questa parte di circuito.
+Vediamo quindi come ultima cosa la parte
+di circuito che mi va a gestire questo
+segnale di boot run della CPU. Partiamo
+col dire che ho utilizzato un flipfop
+SR. Esistono dei componenti che hanno al
+loro interno dei flip flop SR. Io non ho
+uno di questi componenti, quindi ho
+pensato di utilizzare due porte logiche
+di tipo NOR. Qualche video fa vi ho
+parlato proprio dei Flip Flop SR prima
+di introdurre la parte di memoria di
+RAM. Vi invito a recuperare quel video
+dove spiegavo in dettaglio come
+funzionava questo tipo di circuiti. In
+ogni caso, questo è il circuito che
+andiamo a schematizzare tramite questa
+scatoletta dove abbiamo ingresso S ed R
+e uscita Q e Qegata. Partendo da questo,
+vediamo effettivamente come ho costruito
+il circuito che mi va a gestire questo
+segnale.
+Ho schematizzato le due porte NOR che
+vanno a costituirmi il Flip Flop SR con
+questa scatoletta dove ho gli ingressi
+reset e7 e le uscite Q e Q negato.
+Partiamo col capire qual è l'idea di
+base, la logica che ci sta dietro.
+Quando io accendo la CPU voglio trovarmi
+una situazione di boot, una condizione
+di boot. Quindi la Control Unit nella
+fase di boot va a ciclarsi tutto il
+basso degli indirizzi copiando il
+contenuto della eprom all'interno della
+RAM. Una volta ciclati tutti gli
+indirizzi voglio poter switchare
+nell'esecuzione, quindi nella fase di
+run, tramite un pulsante.
+Quindi, che cosa ho fatto? Ho collegato
+l'ingresso reset del flip flop a massa.
+Invece l'ingresso set l'ho collegato a
+questo pulsante tramite questa
+resistenza di pull down. Quando il
+circuito è aperto set sarà a zero.
+Quando invece io clicco, premo il
+pulsante mando a + 5 V l'ingresso set.
+Quindi eh questa resistenza mi evita il
+corto circuito con la massa ed Sà uno.
+Invece l'uscita Q sarà collegata a run a
+LED di run e l'uscita Q negata a LED di
+boot. Poi in realtà eh la control Unit
+gestisce un solo segnale che eh mi va a
+rappresentare lo stato boot run, però è
+comodo il fatto che io ho l'uscita Q
+eqegata perché vado a pilotarmi
+direttamente quei LED che abbiamo visto
+nella scheda.
+Tramite la tabella di verità del Flip
+Flop SR cerchiamo di capire cosa
+succede. Mi trovo in una situazione
+iniziale dove 7 R7 sono a zero e la
+condizione di memoria mi dà zero in
+uscita. Zero in uscita che cosa vuol
+dire? Vuol dire che eh il LED run sarà
+spento perché sono a 0 V, invece eh il
+boot sarà acceso perché conegato sarà
+uno. Quindi in effetti qui ho conegato
+che sarà uno
+e quindi il LED sarà acceso. Quando io
+vado fisicamente a cliccare questo
+pulsante
+sto impostando set a un set a un reset
+sarà a zero. in uscita mi trovo uno.
+Uscita uno vuol dire run acceso, quindi
+LED run acceso e conegato
+inevitabilmente sarà zero, quindi si
+spegne il pulsante di boot. Poi in
+realtà una volta che sono in questa
+condizione,
+quindi a questo punto siamo con Q1
+e Q negato a 0.
+Premendo nuovamente il pulsante non
+succede niente perché comunque sarà
+impossibile, vedendo la tabella di
+verità, ritornare nella nella modalità
+di boot. Quindi m sta bene questa logica
+e con questo piccolo flip flop sr vado a
+tenermi lo stato di bootto di run che
+poi va a condizionarmi tutta la control
+unit.
+Io direi che per il momento è tutto per
+questo video è tutto. Vi ricordo di
+lasciare un mi piace, commentare questo
+video e iscrivervi al mio canale per
+supportare il mio lavoro. Un saluto.
