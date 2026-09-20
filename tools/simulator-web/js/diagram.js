@@ -14,6 +14,23 @@ const COLORS = {
 
 const FONT = "'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace";
 const ACTIVE_SHADOW = "drop-shadow(0 0 5px rgba(85, 220, 197, 0.72))";
+// Mantiene le unità della CPU più distanti orizzontalmente senza alterarne le dimensioni.
+const HORIZONTAL_SPREAD = 1.14;
+const spreadX = (value) => Math.round(value * HORIZONTAL_SPREAD);
+const spreadVertices = (vertices) => vertices?.map((vertex) => ({
+  ...vertex,
+  x: typeof vertex.x === "number" ? spreadX(vertex.x) : vertex.x,
+}));
+const spreadPorts = (nodePorts) => nodePorts && {
+  ...nodePorts,
+  items: nodePorts.items?.map((port) => ({
+    ...port,
+    args: {
+      ...port.args,
+      x: typeof port.args?.x === "number" ? spreadX(port.args.x) : port.args?.x,
+    },
+  })),
+};
 
 function registerShapes(Graph) {
   if (globalThis.X6.__cpuSimulatorShapes) return;
@@ -366,7 +383,7 @@ export function createCpuDiagram(container, onBlockClick) {
     const node = graph.addNode({
       id,
       shape: "cpu-unit",
-      x,
+      x: spreadX(x),
       y,
       width,
       height,
@@ -394,9 +411,9 @@ export function createCpuDiagram(container, onBlockClick) {
   graph.addNode({
     id: "cpu-frame",
     shape: "cpu-frame",
-    x: 240,
+    x: spreadX(240),
     y: 35,
-    width: 1085,
+    width: spreadX(1085),
     height: 730,
     zIndex: -2,
     attrs: {
@@ -409,7 +426,7 @@ export function createCpuDiagram(container, onBlockClick) {
   graph.addNode({
     id: "external-label",
     shape: "cpu-bus-label",
-    x: 25,
+    x: spreadX(25),
     y: 72,
     width: 200,
     height: 40,
@@ -422,7 +439,7 @@ export function createCpuDiagram(container, onBlockClick) {
   graph.addNode({
     id: "fetch-label",
     shape: "cpu-bus-label",
-    x: 285,
+    x: spreadX(285),
     y: 105,
     width: 240,
     height: 30,
@@ -435,7 +452,7 @@ export function createCpuDiagram(container, onBlockClick) {
   graph.addNode({
     id: "execute-label",
     shape: "cpu-bus-label",
-    x: 285,
+    x: spreadX(285),
     y: 497,
     width: 280,
     height: 30,
@@ -580,7 +597,7 @@ export function createCpuDiagram(container, onBlockClick) {
   const registerBank = graph.addNode({
     id: "registers",
     shape: "cpu-register-bank",
-    x: 305,
+    x: spreadX(305),
     y: 525,
     width: 260,
     height: 185,
@@ -601,7 +618,7 @@ export function createCpuDiagram(container, onBlockClick) {
 
   addUnit({
     id: "ra",
-    x: 650,
+    x: spreadX(650),
     y: 525,
     width: 140,
     height: 76,
@@ -615,7 +632,7 @@ export function createCpuDiagram(container, onBlockClick) {
   });
   addUnit({
     id: "rb",
-    x: 650,
+    x: spreadX(650),
     y: 635,
     width: 140,
     height: 76,
@@ -630,7 +647,7 @@ export function createCpuDiagram(container, onBlockClick) {
   const alu = graph.addNode({
     id: "alu",
     shape: "cpu-alu",
-    x: 875,
+    x: spreadX(875),
     y: 540,
     width: 160,
     height: 150,
@@ -652,7 +669,7 @@ export function createCpuDiagram(container, onBlockClick) {
   nodes.set("alu", alu);
   addUnit({
     id: "flags",
-    x: 1110,
+    x: spreadX(1110),
     y: 565,
     width: 175,
     height: 100,
@@ -669,12 +686,12 @@ export function createCpuDiagram(container, onBlockClick) {
     const node = graph.addNode({
       id,
       shape: "cpu-bus-label",
-      x,
+      x: spreadX(x),
       y,
-      width,
+      width: spreadX(width),
       height: 46,
       zIndex: 2,
-      ports: nodePorts,
+      ports: spreadPorts(nodePorts),
       data: { valueKey: id },
       attrs: {
         body: {
@@ -750,7 +767,7 @@ export function createCpuDiagram(container, onBlockClick) {
       id,
       source,
       target,
-      vertices,
+      vertices: spreadVertices(vertices),
       zIndex: 1,
       router: {
         name: router,

@@ -1,3 +1,9 @@
+/*
+ * Motore del generatore: descrive fetch, microsequenze e dispatch opcode,
+ * valida i bus e converte la parola logica nei tre byte fisici delle EEPROM.
+ * Non conosce dettagli di cablaggio oltre alle tabelle in config/.
+ */
+
 #include "../include/microcode.h"
 #include "../config/control_signals.h"
 
@@ -15,8 +21,8 @@
  */
 
 /* Converte il codice 00..11 del selettore in due bit della ControlWord. */
-#define ADDRESS_WORD(code)                                                   \
-    ((((code) & 0x01u) != 0 ? CTRL_ADDR_SEL_0 : 0u) |                       \
+#define ADDRESS_WORD(code)                            \
+    ((((code) & 0x01u) != 0 ? CTRL_ADDR_SEL_0 : 0u) | \
      (((code) & 0x02u) != 0 ? CTRL_ADDR_SEL_1 : 0u))
 
 /* Valore sicuro usato quando nessun registro deve pilotare A[15:0]. */
@@ -25,16 +31,16 @@ static const ControlWord ADDRESS_NONE = ADDRESS_WORD(CPU8_ADDR_SEL_NONE);
 /* T1 comune: PC presenta l'indirizzo, la memoria presenta l'opcode, IR salva. */
 static const ControlWord FETCH =
     ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
-    CTRL_MEM_RD | CTRL_IR_WE | CTRL_PC_INC;
+    CTRL_RAM_OE | CTRL_IR_WE | CTRL_PC_INC;
 
 /* Microoperazioni condivise dalle istruzioni con operando addr16. */
 static const ControlWord READ_ADDRESS_LOW =
     ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
-    CTRL_MEM_RD | CTRL_MAR_L_WE | CTRL_PC_INC;
+    CTRL_RAM_OE | CTRL_MAR_L_WE | CTRL_PC_INC;
 
 static const ControlWord READ_ADDRESS_HIGH =
     ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
-    CTRL_MEM_RD | CTRL_MAR_H_WE | CTRL_PC_INC;
+    CTRL_RAM_OE | CTRL_MAR_H_WE | CTRL_PC_INC;
 
 /* Valuta la condizione di salto usando i flag gia memorizzati dalla CPU. */
 static bool jump_is_taken(MicroOp uop, CpuFlags flags)
@@ -95,13 +101,30 @@ uint16_t microcode_address(uint8_t step, MicroOp uop, CpuFlags flags,
 ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                            CpuMode mode)
 {
-    /* Il banco BOOT e predisposto, ma usa ancora le sequenze RUN. */
     if (mode != CPU_MODE_BOOT && mode != CPU_MODE_RUN)
     {
         return ADDRESS_NONE;
     }
     if (step >= CPU8_MICROSTEP_COUNT)
     {
+        return ADDRESS_NONE;
+    }
+
+    /*
+     * BOOT copia una cella alla volta: PC seleziona prima l'EPROM e poi la
+     * RAM allo stesso indirizzo. Il pulsante BOOT_RUN ferma il ciclo quando
+     * l'operatore ha copiato l'intera ROM; il reset/clear esterno riporta PC
+     * a zero prima dell'esecuzione RUN.
+     */
+    if (mode == CPU_MODE_BOOT)
+    {
+        if (step == 0)
+            return ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
+                   CTRL_EPROM_OE | CTRL_MDR_WE;
+        if (step == 1)
+            return ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
+                   CTRL_MDR_OE | CTRL_RAM_WE | CTRL_PC_INC |
+                   CTRL_NEXT_FETCH;
         return ADDRESS_NONE;
     }
 
@@ -119,21 +142,23 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
     switch (uop)
     {
     case UOP_INVALID:
-        return step == 1 ? ADDRESS_NONE | CTRL_HALT : ADDRESS_NONE;
+        return step == 1 ? ADDRESS_NONE | CTRL_NEXT_FETCH : ADDRESS_NONE;
     case UOP_NOP:
         return step == 1 ? ADDRESS_NONE | CTRL_NEXT_FETCH : ADDRESS_NONE;
     case UOP_HLT:
-        return step == 1 ? ADDRESS_NONE | CTRL_HALT : ADDRESS_NONE;
+        /* HLT richiede ancora una linea dedicata, non compresa nei 22 segnali
+           del video 25: qui fermiamo il microprogramma senza trasferimenti. */
+        return ADDRESS_NONE;
     case UOP_LDI:
         /* T2 legge l'immediato; T3 lo copia da MDR al registro IR[2:0]. */
         if (step == 1)
         {
             return ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
-                   CTRL_MEM_RD | CTRL_MDR_WE | CTRL_PC_INC;
+                   CTRL_RAM_OE | CTRL_MDR_WE | CTRL_PC_INC;
         }
         return step == 2
                    ? ADDRESS_NONE | CTRL_MDR_OE | CTRL_RF_EN |
-                         CTRL_RF_WR | CTRL_NEXT_FETCH
+                         CTRL_RF_RW | CTRL_NEXT_FETCH
                    : ADDRESS_NONE;
     case UOP_LDA:
         /* T2/T3 formano MAR, T4 legge il dato, T5 scrive il registro. */
@@ -143,10 +168,10 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
             return READ_ADDRESS_HIGH;
         if (step == 3)
             return ADDRESS_WORD(CPU8_ADDR_SEL_MAR) |
-                   CTRL_MEM_RD | CTRL_MDR_WE;
+                   CTRL_RAM_OE | CTRL_MDR_WE;
         return step == 4
                    ? ADDRESS_NONE | CTRL_MDR_OE | CTRL_RF_EN |
-                         CTRL_RF_WR | CTRL_NEXT_FETCH
+                         CTRL_RF_RW | CTRL_NEXT_FETCH
                    : ADDRESS_NONE;
     case UOP_STA:
         /* T2/T3 formano MAR, T4 salva Rn in MDR, T5 scrive la memoria. */
@@ -158,12 +183,12 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
             return ADDRESS_NONE | CTRL_RF_EN | CTRL_MDR_WE;
         return step == 4
                    ? ADDRESS_WORD(CPU8_ADDR_SEL_MAR) |
-                         CTRL_MDR_OE | CTRL_MEM_WR | CTRL_NEXT_FETCH
+                         CTRL_MDR_OE | CTRL_RAM_WE | CTRL_NEXT_FETCH
                    : ADDRESS_NONE;
     case UOP_ALU:
         /* IR[3:0] sceglie l'operazione; la CU salva risultato e flag. */
         return step == 1
-                   ? ADDRESS_NONE | CTRL_ALU_OE | CTRL_RA_WE |
+                   ? ADDRESS_NONE | CTRL_ALU_EN | CTRL_RA_EN | CTRL_RA_RB_RW |
                          CTRL_FLAGS_WE | CTRL_NEXT_FETCH
                    : ADDRESS_NONE;
     case UOP_CMP:
@@ -173,16 +198,45 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                    : ADDRESS_NONE;
     case UOP_MOV_RA_RN:
         return step == 1
-                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RA_WE | CTRL_NEXT_FETCH
+                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RA_EN | CTRL_RA_RB_RW |
+                         CTRL_NEXT_FETCH
                    : ADDRESS_NONE;
     case UOP_MOV_RB_RN:
         return step == 1
-                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RB_WE | CTRL_NEXT_FETCH
+                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RB_EN | CTRL_RA_RB_RW |
+                         CTRL_NEXT_FETCH
                    : ADDRESS_NONE;
     case UOP_MOV_RN_RA:
         return step == 1
-                   ? ADDRESS_NONE | CTRL_RA_OE | CTRL_RF_EN |
-                         CTRL_RF_WR | CTRL_NEXT_FETCH
+                   ? ADDRESS_NONE | CTRL_RA_EN | CTRL_RF_EN |
+                         CTRL_RF_RW | CTRL_NEXT_FETCH
+                   : ADDRESS_NONE;
+    case UOP_LDX:
+        /* LDX addr16 carica IDX in little-endian dal flusso istruzioni. */
+        if (step == 1)
+            return ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
+                   CTRL_RAM_OE | CTRL_IDX_L_WE | CTRL_PC_INC;
+        return step == 2
+                   ? ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
+                         CTRL_RAM_OE | CTRL_IDX_H_WE | CTRL_PC_INC |
+                         CTRL_NEXT_FETCH
+                   : ADDRESS_NONE;
+    case UOP_LDA_IDX:
+        /* LDA Rn, [IDX]: IDX seleziona RAM, MDR conserva il dato. */
+        if (step == 1)
+            return ADDRESS_WORD(CPU8_ADDR_SEL_IDX) |
+                   CTRL_RAM_OE | CTRL_MDR_WE;
+        return step == 2
+                   ? ADDRESS_NONE | CTRL_MDR_OE | CTRL_RF_EN |
+                         CTRL_RF_RW | CTRL_NEXT_FETCH
+                   : ADDRESS_NONE;
+    case UOP_STA_IDX:
+        /* STA Rn, [IDX]: prima Rn -> MDR, poi MDR -> RAM selezionata da IDX. */
+        if (step == 1)
+            return ADDRESS_NONE | CTRL_RF_EN | CTRL_MDR_WE;
+        return step == 2
+                   ? ADDRESS_WORD(CPU8_ADDR_SEL_IDX) |
+                         CTRL_MDR_OE | CTRL_RAM_WE | CTRL_NEXT_FETCH
                    : ADDRESS_NONE;
     default:
         /* Tutti i salti condividono il fetch dell'indirizzo a 16 bit. */
@@ -218,6 +272,10 @@ MicroOp dispatch_opcode(uint8_t opcode)
         return UOP_LDA;
     if (opcode >= 0x48 && opcode <= 0x4f)
         return UOP_STA;
+    if (opcode >= 0x50 && opcode <= 0x57)
+        return UOP_LDA_IDX;
+    if (opcode >= 0x58 && opcode <= 0x5f)
+        return UOP_STA_IDX;
     if (opcode >= 0x60 && opcode <= 0x68)
         return UOP_ALU;
     if (opcode == 0x69)
@@ -228,6 +286,8 @@ MicroOp dispatch_opcode(uint8_t opcode)
         return UOP_MOV_RB_RN;
     if (opcode >= 0xd0 && opcode <= 0xd7)
         return UOP_MOV_RN_RA;
+    if (opcode == 0xd8)
+        return UOP_LDX;
 
     /* I salti restano distinti perche ognuno interpreta i flag diversamente. */
     switch (opcode)
@@ -260,7 +320,8 @@ const char *microop_name(MicroOp uop)
     /* L'indice dell'array coincide intenzionalmente con il valore di MicroOp. */
     static const char *const names[] = {
         "INVALID", "NOP", "HLT", "LDI", "LDA", "STA", "ALU", "CMP",
-        "MOV_RA_RN", "MOV_RB_RN", "MOV_RN_RA", "JMP", "JZ", "JNZ",
+        "MOV_RA_RN", "MOV_RB_RN", "MOV_RN_RA", "LDX", "LDA_IDX",
+        "STA_IDX", "JMP", "JZ", "JNZ",
         "JC", "JNC", "JN", "JNN", "JO", "JNO"};
 
     return (unsigned)uop < sizeof(names) / sizeof(names[0])
@@ -282,6 +343,12 @@ bool validate_signal_config(char *message, size_t message_size)
         CPU8_ADDR_SEL_PC,
         CPU8_ADDR_SEL_MAR,
         CPU8_ADDR_SEL_NONE};
+    /* AT28C64 DIP-28: I/O0..I/O7 non sono numerati consecutivamente per GND. */
+    static const uint8_t at28c64_data_pins[8] = {
+        CPU8_AT28C64_PIN_IO0, CPU8_AT28C64_PIN_IO1,
+        CPU8_AT28C64_PIN_IO2, CPU8_AT28C64_PIN_IO3,
+        CPU8_AT28C64_PIN_IO4, CPU8_AT28C64_PIN_IO5,
+        CPU8_AT28C64_PIN_IO6, CPU8_AT28C64_PIN_IO7};
     size_t index;
     size_t other;
 
@@ -323,6 +390,13 @@ bool validate_signal_config(char *message, size_t message_size)
         {
             snprintf(message, message_size,
                      "%s usa ROM o bit fuori intervallo", signal->name);
+            return false;
+        }
+        if (signal->eeprom_pin != at28c64_data_pins[signal->bit])
+        {
+            snprintf(message, message_size,
+                     "%s ha un pin AT28C64 non coerente con D%u", signal->name,
+                     signal->bit);
             return false;
         }
         /* Trasforma D0..D7 in una maschera per la ROM selezionata. */
@@ -415,26 +489,35 @@ bool validate_control_word(ControlWord word, char *message, size_t message_size)
     /* Conta quante sorgenti tentano di pilotare contemporaneamente D[7:0]. */
     unsigned data_sources = 0;
 
-    data_sources += (word & CTRL_MEM_RD) != 0;
+    data_sources += (word & CTRL_RAM_OE) != 0;
+    data_sources += (word & CTRL_EPROM_OE) != 0;
     data_sources += (word & CTRL_MDR_OE) != 0;
-    /* RF_EN senza RF_WR mette il registro selezionato in lettura sul bus. */
-    data_sources += ((word & CTRL_RF_EN) != 0 && (word & CTRL_RF_WR) == 0);
-    data_sources += (word & CTRL_RA_OE) != 0;
-    data_sources += (word & CTRL_ALU_OE) != 0;
+    /* RF_EN senza RF_RW mette il registro selezionato in lettura sul bus. */
+    data_sources += ((word & CTRL_RF_EN) != 0 && (word & CTRL_RF_RW) == 0);
+    /* RA_EN con RA_RB_RW=0 mette RA in lettura sul bus. */
+    data_sources += ((word & CTRL_RA_EN) != 0 &&
+                     (word & CTRL_RA_RB_RW) == 0);
+    data_sources += (word & CTRL_ALU_EN) != 0;
 
     if (data_sources > 1)
     {
         snprintf(message, message_size, "piu sorgenti pilotano il data bus");
         return false;
     }
-    if ((word & CTRL_MEM_RD) && (word & CTRL_MEM_WR))
+    if ((word & CTRL_RAM_OE) && (word & CTRL_RAM_WE))
     {
-        snprintf(message, message_size, "MEM_RD e MEM_WR sono attivi insieme");
+        snprintf(message, message_size, "RAM_OE e RAM_WE sono attivi insieme");
         return false;
     }
-    if ((word & CTRL_RF_WR) && !(word & CTRL_RF_EN))
+    if ((word & CTRL_RF_RW) && !(word & CTRL_RF_EN))
     {
-        snprintf(message, message_size, "RF_WR richiede RF_EN");
+        snprintf(message, message_size, "RF_RW richiede RF_EN");
+        return false;
+    }
+    if ((word & CTRL_RA_RB_RW) &&
+        !(word & (CTRL_RA_EN | CTRL_RB_EN)))
+    {
+        snprintf(message, message_size, "RA_RB_RW richiede RA_EN o RB_EN");
         return false;
     }
 

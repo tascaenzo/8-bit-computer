@@ -43,12 +43,13 @@ npm test
 Il simulatore esegue lo stato architetturale al termine di ogni istruzione. La
 vista microcodice mostra invece le fasi funzionali definite in
 [`docs/control-unit-microcode.md`](../../docs/control-unit-microcode.md):
-`ADDR_SEL_1:0`, `MEM_RD`, `MEM_WR`, `MDR_WE`, `RF_WR`, `ALU_OE`, `FLAGS_WE`
+`ADDR_SEL_1:0`, `RAM_OE`, `RAM_WE`, `MDR_WE`, `RF_RW`, `ALU_EN`, `FLAGS_WE`
 e segnali di sequencer. Il numero preciso di clock e il wiring TTL restano da
 verificare sulla board reale. `IDX` è presente nello stato e nel datapath, ma
 rimane a zero perché le relative istruzioni non hanno ancora una codifica
 definitiva nella ISA. La vista usa il banco RUN (`BOOT_RUN=1`); il
-microprogramma di boot non è ancora definito.
+microprogramma di boot copia l'immagine EPROM nella RAM; il pulsante BOOT del
+simulatore completa la copia e riporta PC a zero.
 
 ## Struttura del codice
 

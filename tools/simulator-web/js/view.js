@@ -450,6 +450,12 @@ export function createView(root = document, diagram = null) {
   function renderMicro(state) {
     const phase = state.micro.plan[state.micro.current];
     const addressSource = phase?.preview?.addressSource || "NONE";
+    // Il decode è combinatorio: IR seleziona la microistruzione dopo T1,
+    // mentre FETCH ed EXECUTE sono le fasi osservabili ai fronti di clock.
+    const executionStage = !phase || phase.t === "T1" ? "FETCH" : "EXECUTE";
+    const executionPhase = el("executionPhase");
+    executionPhase.dataset.stage = executionStage.toLowerCase();
+    executionPhase.innerHTML = `FASE <b>${executionStage}</b>`;
     el("addressSource").textContent = `${addressSource} (${
       { IDX: "00", PC: "01", MAR: "10", NONE: "11" }[addressSource]
     })`;

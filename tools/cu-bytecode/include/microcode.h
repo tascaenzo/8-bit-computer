@@ -2,6 +2,12 @@
 #define CPU8_MICROCODE_H
 
 /*
+ * API e tipi condivisi del generatore di microcodice.
+ * Dichiara segnali, microoperazioni, immagini EEPROM e funzioni chiamate da
+ * main, test e moduli di configurazione; non contiene la loro implementazione.
+ */
+
+/*
  * Interfaccia pubblica del generatore di microcodice.
  *
  * Qui sono definiti il formato logico di una microistruzione, i codici dei
@@ -17,7 +23,8 @@
 #include "../config/architecture.h"
 
 /* Dimensioni imposte dalla AT28C64: 2^13 indirizzi, un byte per indirizzo. */
-enum {
+enum
+{
     CPU8_CONTROL_ROM_SIZE = 8192,
     CPU8_DISPATCH_ROM_SIZE = 8192,
     CPU8_MICROSTEP_COUNT = 8,
@@ -32,7 +39,8 @@ enum {
 typedef uint32_t ControlWord;
 
 /* Maschere usate con l'operatore | per comporre una ControlWord. */
-typedef enum {
+typedef enum
+{
     /* Campo a 2 bit che seleziona chi pilota il bus indirizzi. */
     CTRL_ADDR_SEL_0 = 1u << 0,
     CTRL_ADDR_SEL_1 = 1u << 1,
@@ -41,41 +49,46 @@ typedef enum {
     CTRL_PC_LOAD = 1u << 3,
     CTRL_MAR_L_WE = 1u << 4,
     CTRL_MAR_H_WE = 1u << 5,
-    CTRL_MEM_RD = 1u << 6,
-    CTRL_MEM_WR = 1u << 7,
+    CTRL_RAM_OE = 1u << 6,
+    CTRL_RAM_WE = 1u << 7,
     /* Registri collegati al bus dati. */
     CTRL_IR_WE = 1u << 8,
     CTRL_MDR_WE = 1u << 9,
     CTRL_MDR_OE = 1u << 10,
     CTRL_RF_EN = 1u << 11,
-    CTRL_RF_WR = 1u << 12,
-    CTRL_RA_WE = 1u << 13,
-    CTRL_RA_OE = 1u << 14,
-    CTRL_RB_WE = 1u << 15,
+    CTRL_RF_RW = 1u << 12,
+    CTRL_RA_EN = 1u << 13,
+    CTRL_RA_RB_RW = 1u << 14,
+    CTRL_RB_EN = 1u << 15,
     /* ALU, sequencer e nuovo Index Register. */
-    CTRL_ALU_OE = 1u << 16,
+    CTRL_ALU_EN = 1u << 16,
     CTRL_FLAGS_WE = 1u << 17,
     CTRL_NEXT_FETCH = 1u << 18,
-    CTRL_HALT = 1u << 19,
+    CTRL_EPROM_OE = 1u << 19,
     CTRL_IDX_L_WE = 1u << 20,
     CTRL_IDX_H_WE = 1u << 21
 } ControlSignal;
 
-enum {
+enum
+{
     CPU8_CONTROL_SIGNAL_COUNT = 22
 };
 
-typedef enum {
+typedef enum
+{
     ACTIVE_HIGH = 0,
     ACTIVE_LOW = 1
 } ControlPolarity;
 
 /* Associazione tra un segnale logico e un pin fisico delle tre EEPROM. */
-typedef struct {
+typedef struct
+{
     ControlSignal signal;
     const char *name;
     uint8_t rom;
     uint8_t bit;
+    /* Pin DIP AT28C64 corrispondente a D0..D7 (9,10,11,13..17). */
+    uint8_t eeprom_pin;
     ControlPolarity polarity;
 } ControlSignalConfig;
 
@@ -84,7 +97,8 @@ typedef struct {
  * stesso uOP: per esempio 0x20..0x27 usano tutti UOP_LDI, mentre IR[2:0]
  * seleziona direttamente il registro generale.
  */
-typedef enum {
+typedef enum
+{
     UOP_INVALID = 0,
     UOP_NOP,
     UOP_HLT,
@@ -96,6 +110,9 @@ typedef enum {
     UOP_MOV_RA_RN,
     UOP_MOV_RB_RN,
     UOP_MOV_RN_RA,
+    UOP_LDX,
+    UOP_LDA_IDX,
+    UOP_STA_IDX,
     UOP_JMP,
     UOP_JZ,
     UOP_JNZ,
@@ -108,7 +125,8 @@ typedef enum {
 } MicroOp;
 
 /* Valori memorizzati nel registro dei flag e collegati ad A8..A11. */
-typedef struct {
+typedef struct
+{
     bool carry;
     bool zero;
     bool negative;
@@ -116,7 +134,8 @@ typedef struct {
 } CpuFlags;
 
 /* Il modo CPU seleziona con A12 una delle due meta della Control ROM. */
-typedef enum {
+typedef enum
+{
     CPU_MODE_BOOT = 0,
     CPU_MODE_RUN = 1
 } CpuMode;

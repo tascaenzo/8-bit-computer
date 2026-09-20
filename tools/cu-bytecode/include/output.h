@@ -1,6 +1,11 @@
 #ifndef CPU8_MICROCODE_OUTPUT_H
 #define CPU8_MICROCODE_OUTPUT_H
 
+/*
+ * API minima per scrivere su disco le immagini binarie generate.
+ * Tiene la gestione degli errori I/O fuori dal motore del microcodice.
+ */
+
 /* Funzioni dedicate alla scrittura su disco delle immagini generate. */
 
 #include <stdbool.h>

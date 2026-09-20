@@ -1,3 +1,9 @@
+/*
+ * Implementazione della scrittura binaria delle immagini EEPROM.
+ * Verifica apertura, scrittura completa e chiusura del file, restituendo
+ * messaggi di errore al chiamante senza interrompere il processo direttamente.
+ */
+
 #include "../include/output.h"
 
 #include <errno.h>

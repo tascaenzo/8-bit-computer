@@ -1,3 +1,9 @@
+/*
+ * Punto di ingresso del tool cpu8microcode.
+ * Coordina costruzione delle quattro immagini EEPROM e salvataggio dei file,
+ * lasciando microsequenze e configurazione fisica ai moduli dedicati.
+ */
+
 #include "../include/microcode.h"
 #include "../include/output.h"
 

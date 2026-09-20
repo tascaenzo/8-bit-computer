@@ -1,4 +1,10 @@
+/*
+ * Test automatici del generatore CU.
+ * Coprono dispatch, indirizzi condivisi, microsequenze, polarita, immagini
+ * EEPROM e assenza di contese sul data bus.
+ */
 #include "../include/microcode.h"
+#include "../config/control_signals.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -30,31 +36,55 @@ static void test_dispatch(void)
     assert(dispatch_opcode(0x27) == UOP_LDI);
     assert(dispatch_opcode(0x40) == UOP_LDA);
     assert(dispatch_opcode(0x4f) == UOP_STA);
+    assert(dispatch_opcode(0x50) == UOP_LDA_IDX);
+    assert(dispatch_opcode(0x5f) == UOP_STA_IDX);
     assert(dispatch_opcode(0x60) == UOP_ALU);
     assert(dispatch_opcode(0x69) == UOP_CMP);
     assert(dispatch_opcode(0xa8) == UOP_JNO);
     assert(dispatch_opcode(0xc7) == UOP_MOV_RA_RN);
     assert(dispatch_opcode(0xcf) == UOP_MOV_RB_RN);
     assert(dispatch_opcode(0xd7) == UOP_MOV_RN_RA);
+    assert(dispatch_opcode(0xd8) == UOP_LDX);
     assert(dispatch_opcode(0x80) == UOP_INVALID);
     assert(dispatch_opcode(0xff) == UOP_INVALID);
+}
+
+static void test_shared_address_input_config(void)
+{
+    static const uint8_t expected_pins[] = {
+        CPU8_CONTROL_ROM_PIN_USTEP_0, CPU8_CONTROL_ROM_PIN_USTEP_1,
+        CPU8_CONTROL_ROM_PIN_USTEP_2, CPU8_CONTROL_ROM_PIN_IR_3,
+        CPU8_CONTROL_ROM_PIN_IR_4, CPU8_CONTROL_ROM_PIN_IR_5,
+        CPU8_CONTROL_ROM_PIN_IR_6, CPU8_CONTROL_ROM_PIN_IR_7,
+        CPU8_CONTROL_ROM_PIN_FLAG_C, CPU8_CONTROL_ROM_PIN_FLAG_Z,
+        CPU8_CONTROL_ROM_PIN_FLAG_N, CPU8_CONTROL_ROM_PIN_FLAG_O,
+        CPU8_CONTROL_ROM_PIN_BOOT_RUN};
+    size_t index;
+
+    assert(CPU8_CONTROL_EEPROM_ADDRESS_CONFIG_COUNT == 13);
+    for (index = 0; index < CPU8_CONTROL_EEPROM_ADDRESS_CONFIG_COUNT; index++)
+    {
+        assert(CPU8_CONTROL_EEPROM_ADDRESS_CONFIGS[index].signal == index);
+        assert(CPU8_CONTROL_EEPROM_ADDRESS_CONFIGS[index].pin ==
+               expected_pins[index]);
+    }
 }
 
 static void test_sequences(void)
 {
     /* Confronta alcune microistruzioni complete con i segnali attesi. */
-    CpuFlags clear = { false, false, false, false };
-    CpuFlags zero = { false, true, false, false };
+    CpuFlags clear = {false, false, false, false};
+    CpuFlags zero = {false, true, false, false};
 
     assert(microcode_word(0, UOP_LDI, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_PC) |
-            CTRL_MEM_RD | CTRL_IR_WE | CTRL_PC_INC));
+            CTRL_RAM_OE | CTRL_IR_WE | CTRL_PC_INC));
     assert(microcode_word(2, UOP_LDI, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_NONE) |
-            CTRL_MDR_OE | CTRL_RF_EN | CTRL_RF_WR | CTRL_NEXT_FETCH));
+            CTRL_MDR_OE | CTRL_RF_EN | CTRL_RF_RW | CTRL_NEXT_FETCH));
     assert(microcode_word(4, UOP_LDA, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_NONE) |
-            CTRL_MDR_OE | CTRL_RF_EN | CTRL_RF_WR | CTRL_NEXT_FETCH));
+            CTRL_MDR_OE | CTRL_RF_EN | CTRL_RF_RW | CTRL_NEXT_FETCH));
     assert(microcode_word(1, UOP_CMP, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_NONE) |
             CTRL_FLAGS_WE | CTRL_NEXT_FETCH));
@@ -62,12 +92,33 @@ static void test_sequences(void)
             CTRL_PC_LOAD) == 0);
     assert((microcode_word(3, UOP_JZ, zero, CPU_MODE_RUN) &
             CTRL_PC_LOAD) != 0);
+    assert(microcode_word(0, UOP_LDX, clear, CPU_MODE_RUN) ==
+           (address_word(CPU8_ADDR_SEL_PC) |
+            CTRL_RAM_OE | CTRL_IR_WE | CTRL_PC_INC));
+    assert(microcode_word(1, UOP_LDX, clear, CPU_MODE_RUN) ==
+           (address_word(CPU8_ADDR_SEL_PC) | CTRL_RAM_OE |
+            CTRL_IDX_L_WE | CTRL_PC_INC));
+    assert(microcode_word(1, UOP_LDA_IDX, clear, CPU_MODE_RUN) ==
+           (address_word(CPU8_ADDR_SEL_IDX) | CTRL_RAM_OE | CTRL_MDR_WE));
+    assert(microcode_word(1, UOP_STA_IDX, clear, CPU_MODE_RUN) ==
+           (address_word(CPU8_ADDR_SEL_NONE) | CTRL_RF_EN | CTRL_MDR_WE));
+}
+
+static void test_boot_sequence(void)
+{
+    CpuFlags clear = { false, false, false, false };
+
+    assert(microcode_word(0, UOP_INVALID, clear, CPU_MODE_BOOT) ==
+           (address_word(CPU8_ADDR_SEL_PC) | CTRL_EPROM_OE | CTRL_MDR_WE));
+    assert(microcode_word(1, UOP_LDI, clear, CPU_MODE_BOOT) ==
+           (address_word(CPU8_ADDR_SEL_PC) | CTRL_MDR_OE | CTRL_RAM_WE |
+            CTRL_PC_INC | CTRL_NEXT_FETCH));
 }
 
 static void test_addresses_and_images(void)
 {
     /* Controlla A12, dimensione dei banchi e replica della ROM di dispatch. */
-    CpuFlags flags = { true, true, true, true };
+    CpuFlags flags = {true, true, true, true};
     uint8_t roms[3][CPU8_CONTROL_ROM_SIZE];
     uint8_t dispatch[CPU8_DISPATCH_ROM_SIZE];
     char message[128];
@@ -90,11 +141,11 @@ static void test_validation(void)
     /* Una parola valida passa; contese e lettura/scrittura insieme falliscono. */
     char message[128];
     assert(validate_signal_config(message, sizeof(message)));
-    assert(validate_control_word(CTRL_MDR_OE | CTRL_RF_EN | CTRL_RF_WR,
+    assert(validate_control_word(CTRL_MDR_OE | CTRL_RF_EN | CTRL_RF_RW,
                                  message, sizeof(message)));
-    assert(!validate_control_word(CTRL_MDR_OE | CTRL_RA_OE,
+    assert(!validate_control_word(CTRL_MDR_OE | CTRL_RA_EN,
                                   message, sizeof(message)));
-    assert(!validate_control_word(CTRL_MEM_RD | CTRL_MEM_WR,
+    assert(!validate_control_word(CTRL_RAM_OE | CTRL_RAM_WE,
                                   message, sizeof(message)));
 }
 
@@ -109,12 +160,14 @@ static void test_polarity_and_idx_outputs(void)
     bool active_low;
 
     encode_control_word(0, inactive);
-    encode_control_word(CTRL_MEM_RD | CTRL_NEXT_FETCH |
+    encode_control_word(CTRL_RAM_OE | CTRL_EPROM_OE | CTRL_NEXT_FETCH |
                             CTRL_IDX_L_WE | CTRL_IDX_H_WE,
                         active);
 
-    assert(physical_level(inactive, CTRL_MEM_RD, &active_low) == active_low);
-    assert(physical_level(active, CTRL_MEM_RD, NULL) != active_low);
+    assert(physical_level(inactive, CTRL_RAM_OE, &active_low) == active_low);
+    assert(physical_level(active, CTRL_RAM_OE, NULL) != active_low);
+    assert(physical_level(inactive, CTRL_EPROM_OE, &active_low) == active_low);
+    assert(physical_level(active, CTRL_EPROM_OE, NULL) != active_low);
     assert(physical_level(inactive, CTRL_NEXT_FETCH, &active_low) == active_low);
     assert(physical_level(active, CTRL_NEXT_FETCH, NULL) != active_low);
     assert(physical_level(inactive, CTRL_IDX_L_WE, &active_low) == active_low);
@@ -127,7 +180,9 @@ int main(void)
 {
     /* assert() termina immediatamente il programma se una verifica fallisce. */
     test_dispatch();
+    test_shared_address_input_config();
     test_sequences();
+    test_boot_sequence();
     test_addresses_and_images();
     test_validation();
     test_polarity_and_idx_outputs();

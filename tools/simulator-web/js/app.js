@@ -1,6 +1,7 @@
 import { assemble } from "./assembler.js";
 import {
   clearMicroPlan,
+  bootEpromToRam,
   createCpuState,
   loadProgram,
   resetCpu,
@@ -131,6 +132,12 @@ view.el("reset").addEventListener("click", () => {
   stop();
   view.render(state);
   view.setStatus("Reset eseguito");
+});
+view.el("boot").addEventListener("click", () => {
+  bootEpromToRam(state);
+  stop();
+  view.render(state);
+  view.setStatus("BOOT completato: EPROM copiata in RAM, PC azzerato");
 });
 view.el("loadDemo").addEventListener("click", () => {
   view.el("source").value = DEFAULT_PROGRAM;

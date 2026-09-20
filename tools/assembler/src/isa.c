@@ -70,6 +70,8 @@ static const Cpu8InstructionDef instruction_set[] = {
      */
     {"LDA", 0x40, 0xF8, CPU8_FORMAT_ADDR16, true},
     {"STA", 0x48, 0xF8, CPU8_FORMAT_ADDR16, true},
+    {"LDAI", 0x50, 0xF8, CPU8_FORMAT_IMP, true},
+    {"STAI", 0x58, 0xF8, CPU8_FORMAT_IMP, true},
 
     /*
      * ccc = 011, range 0x60-0x7F
@@ -129,7 +131,9 @@ static const Cpu8InstructionDef instruction_set[] = {
     {"JN", 0xA5, 0xFF, CPU8_FORMAT_ADDR16, false},
     {"JNN", 0xA6, 0xFF, CPU8_FORMAT_ADDR16, false},
     {"JO", 0xA7, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JNO", 0xA8, 0xFF, CPU8_FORMAT_ADDR16, false}
+    {"JNO", 0xA8, 0xFF, CPU8_FORMAT_ADDR16, false},
+    /* ccc = 110: carica IDX con un indirizzo immediato a 16 bit. */
+    {"LDX", 0xD8, 0xFF, CPU8_FORMAT_ADDR16, false}
 };
 
 const Cpu8InstructionDef *cpu8_find_instruction(const char *mnemonic)

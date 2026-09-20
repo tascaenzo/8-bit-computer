@@ -24,12 +24,15 @@ export const FIXED_OPCODES = {
   JNN: 0xa6,
   JO: 0xa7,
   JNO: 0xa8,
+  LDX: 0xd8,
 };
 
 export const REGISTER_OPCODES = {
   LDI: 0x20,
   LDA: 0x40,
   STA: 0x48,
+  LDAI: 0x50,
+  STAI: 0x58,
   IN: 0x80,
   OUT: 0x88,
 };
@@ -45,6 +48,7 @@ export const ADDRESS_INSTRUCTIONS = new Set([
   "JNN",
   "JO",
   "JNO",
+  "LDX",
 ]);
 export const OPCODE_NAMES = Object.fromEntries(
   Object.entries(FIXED_OPCODES).map(([name, opcode]) => [opcode, name]),

@@ -96,14 +96,14 @@ enable di caricamento separati.
 L'uso previsto comprende buffer, tabelle e memoria video memory-mapped, dove
 l'indirizzo da leggere o scrivere cambia durante l'esecuzione del programma.
 
-La presenza hardware di `IDX` e confermata, ma questa versione della ISA non
-assegna ancora opcode alle operazioni indicizzate. Prima dell'implementazione
-devono essere definite almeno:
+`IDX` e ora gestito dalla ISA con tre istruzioni:
 
-- le istruzioni per caricare `IDX_L` e `IDX_H`;
-- la sintassi degli accessi indiretti, per esempio `LDA Rn, [IDX]` e
-  `STA Rn, [IDX]`;
-- l'eventuale incremento automatico di `IDX` dopo un accesso.
+- `LDX addr16` (`0xD8`): carica prima `IDX_L`, poi `IDX_H` in little-endian;
+- `LDAI Rn` (`0x50-0x57`): legge `RAM[IDX]` in `Rn`;
+- `STAI Rn` (`0x58-0x5F`): scrive `Rn` in `RAM[IDX]`.
+
+Gli accessi non incrementano automaticamente `IDX`: il registro mantiene il
+proprio valore fino a una nuova `LDX` o al reset.
 
 ## Formato generale
 
@@ -434,8 +434,8 @@ Sottocategorie:
 | ---- | ------------ | ----------: | ---------------- | -------- | --------------------------------------- |
 | `00` | `0b01000rrr` | `0x40-0x47` | `LDA Rn, addr16` | `ADDR16` | carica in `Rn` il byte letto da memoria |
 | `01` | `0b01001rrr` | `0x48-0x4F` | `STA Rn, addr16` | `ADDR16` | scrive `Rn` in memoria                  |
-| `10` | `0b01010rrr` | `0x50-0x57` | riservata        | -        | espansioni future                       |
-| `11` | `0b01011rrr` | `0x58-0x5F` | riservata        | -        | espansioni future                       |
+| `10` | `0b01010rrr` | `0x50-0x57` | `LDAI Rn`        | `IMP`    | carica `Rn` da `RAM[IDX]`               |
+| `11` | `0b01011rrr` | `0x58-0x5F` | `STAI Rn`        | `IMP`    | scrive `Rn` in `RAM[IDX]`               |
 
 Gli indirizzi `addr16` sono sempre codificati in little-endian:
 
@@ -753,7 +753,8 @@ Sottocategorie:
 | `00` | `0b11000rrr` | `0xC0-0xC7` | `MOV RA, Rn` | `IMP`   | copia `Rn` in `RA` |
 | `01` | `0b11001rrr` | `0xC8-0xCF` | `MOV RB, Rn` | `IMP`   | copia `Rn` in `RB` |
 | `10` | `0b11010rrr` | `0xD0-0xD7` | `MOV Rn, RA` | `IMP`   | copia `RA` in `Rn` |
-| `11` | `0b11011rrr` | `0xD8-0xDF` | riservata    | -       | espansioni future  |
+| `11` | `0b11011000` | `0xD8`      | `LDX addr16` | `ADDR16` | carica IDX          |
+| `11` | `0b11011001-0b11011111` | `0xD9-0xDF` | riservata | - | espansioni future |
 
 Queste istruzioni rispettano il circuito visto nei video:
 

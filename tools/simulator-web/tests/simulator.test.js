@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { assemble } from "../js/assembler.js";
-import { createCpuState, resetCpu, stepCpu } from "../js/cpu.js";
+import { bootEpromToRam, createCpuState, resetCpu, stepCpu } from "../js/cpu.js";
 import { FIXED_OPCODES, VIDEO_BASE } from "../js/isa.js";
 import { planMicrocycles } from "../js/microcode.js";
 import { DEFAULT_PROGRAM } from "../js/programs.js";
@@ -31,12 +31,15 @@ test("l'assembler codifica registri, immediati e indirizzi little-endian", () =>
     MOV RA, R4
     MOV RB, R5
     MOV R6, RA
+    LDX 0x1234
+    LDAI R2
+    STAI R3
     JNO 0xCAFE
     HLT
   `);
   assert.deepEqual(
-    Array.from(result.mem.slice(0, 16)),
-    [0x27, 0xa5, 0x42, 0x34, 0x12, 0x4b, 0xef, 0xbe, 0xc4, 0xcd, 0xd6, 0xa8, 0xfe, 0xca, 0x01, 0x00],
+    Array.from(result.mem.slice(0, 22)),
+    [0x27, 0xa5, 0x42, 0x34, 0x12, 0x4b, 0xef, 0xbe, 0xc4, 0xcd, 0xd6, 0xd8, 0x34, 0x12, 0x52, 0x5b, 0xa8, 0xfe, 0xca, 0x01, 0x00, 0x00],
   );
 });
 
@@ -93,14 +96,31 @@ test("MAR e MDR cambiano solo quando il microcodice prevede una scrittura", () =
   assert.equal(output.mdr, 0x5a);
 });
 
-test("IDX fa parte dello stato a 16 bit e resta inattivo finche l'ISA non lo usa", () => {
-  const state = loadBytes([FIXED_OPCODES.NOP]);
-  assert.equal(state.idx, 0);
-  state.idx = 0xcafe;
+test("LDX, LDAI e STAI caricano e usano IDX", () => {
+  const state = loadBytes([FIXED_OPCODES.LDX, 0x34, 0x12, 0x52, 0x5b]);
   stepCpu(state, 0);
-  assert.equal(state.idx, 0xcafe);
+  assert.equal(state.idx, 0x1234);
+  state.mem[0x1234] = 0xa5;
+  stepCpu(state, 0);
+  assert.equal(state.regs[2], 0xa5);
+  state.regs[3] = 0x5a;
+  stepCpu(state, 0);
+  assert.equal(state.mem[0x1234], 0x5a);
   resetCpu(state, true);
   assert.equal(state.idx, 0);
+});
+
+test("il boot copia gli 8 KiB EPROM in RAM e riporta PC a zero", () => {
+  const state = createCpuState();
+  state.rom[0] = 0x20;
+  state.rom[0x1fff] = 0xa5;
+  state.mem[0] = 0x00;
+  state.pc = 0x1234;
+  bootEpromToRam(state);
+  assert.equal(state.mem[0], 0x20);
+  assert.equal(state.mem[0x1fff], 0xa5);
+  assert.equal(state.pc, 0);
+  assert.equal(state.bootBytesCopied, 0x2000);
 });
 
 test("ADD e SUB impostano carry/borrow, zero, negativo e overflow", () => {
@@ -145,6 +165,9 @@ test("le sequenze visuali numerano i microstep da T1 a T8", () => {
   assert.deepEqual(namesFor([0x20, 0x42]), ["T1", "T2", "T3"]);
   assert.deepEqual(namesFor([0x40, 0x34, 0x12]), ["T1", "T2", "T3", "T4", "T5"]);
   assert.deepEqual(namesFor([0x48, 0x34, 0x12]), ["T1", "T2", "T3", "T4", "T5"]);
+  assert.deepEqual(namesFor([0xd8, 0x34, 0x12]), ["T1", "T2", "T3"]);
+  assert.deepEqual(namesFor([0x50]), ["T1", "T2", "T3"]);
+  assert.deepEqual(namesFor([0x58]), ["T1", "T2", "T3"]);
   assert.deepEqual(namesFor([0xa0, 0x34, 0x12]), ["T1", "T2", "T3", "T4"]);
   assert.deepEqual(namesFor([0xc0]), ["T1", "T2"]);
   for (const opcode of [0x00, 0x01, 0x20, 0x40, 0x48, 0x60, 0x80, 0xa0, 0xc0]) {
@@ -192,7 +215,7 @@ start:
   assert.equal(sourceExecutionFor(state).line, 5);
 });
 
-test("CMP non abilita il data bus e gli opcode invalidi sono arrestati", () => {
+test("CMP non abilita il data bus e gli opcode invalidi tornano al fetch", () => {
   const cmp = loadBytes([FIXED_OPCODES.CMP]);
   const cmpExecute = planMicrocycles(cmp).at(-1);
   assert.equal(cmpExecute.signals, "FLAGS_WE · NEXT_FETCH");
@@ -202,7 +225,7 @@ test("CMP non abilita il data bus e gli opcode invalidi sono arrestati", () => {
   const invalid = loadBytes([0x02]);
   const invalidExecute = planMicrocycles(invalid).at(-1);
   assert.equal(invalidExecute.t, "T2");
-  assert.equal(invalidExecute.signals, "HALT");
+  assert.equal(invalidExecute.signals, "NEXT_FETCH");
 });
 
 test("nessun microciclo crea contese sui bus", () => {
@@ -221,11 +244,11 @@ test("nessun microciclo crea contese sui bus", () => {
     for (const item of planMicrocycles(state)) {
       const signals = new Set(item.signals.split(" · "));
       const dataSources = [
-        signals.has("MEM_RD") && "MEM_RD",
+        signals.has("RAM_OE") && "RAM_OE",
         signals.has("MDR_OE") && "MDR_OE",
-        signals.has("RF_EN") && !signals.has("RF_WR") && "RF_EN(read)",
-        signals.has("RA_OE") && "RA_OE",
-        signals.has("ALU_OE") && "ALU_OE",
+        signals.has("RF_EN") && !signals.has("RF_RW") && "RF_EN(read)",
+        signals.has("RA_EN") && !signals.has("RA_RB_RW") && "RA_EN(read)",
+        signals.has("ALU_EN") && "ALU_EN",
         signals.has("IN_OE") && "IN_OE",
       ].filter(Boolean);
       const addressSources = [...signals].filter((name) => name.startsWith("ADDR_SEL="));

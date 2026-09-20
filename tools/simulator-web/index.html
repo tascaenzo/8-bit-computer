@@ -47,6 +47,7 @@
             <button id="run" class="secondary">Esegui</button>
             <button id="pause" class="secondary" disabled>Pausa</button>
             <button id="reset" class="secondary">Reset CPU</button>
+            <button id="boot" class="secondary">BOOT EPROM → RAM</button>
           </div>
           <p class="hint">
             Supporta `.code`, `.data`, `.byte`, `.equ`, label e tutte le
@@ -76,6 +77,8 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
             <span>MDR <b id="mdr">0x00</b></span>
             <span>IR <b id="ir">0x00</b></span>
             <span>ADDR_SEL <b id="addressSource">NONE (11)</b></span>
+            <span class="execution-phase" id="executionPhase" data-stage="fetch">FASE <b>FETCH</b></span>
+            <span class="decode-state">DECODE <b>IR → CU (combinatorio)</b></span>
             <span>BOOT_RUN / A12 <b>RUN (1)</b></span>
           </div>
           <div class="io-row">
@@ -148,8 +151,7 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
         <p class="hint micro-note">
           Il numero di microcicli dipende dall’istruzione. `ADDR_SEL_1:0`
           collega al bus indirizzi una sola sorgente tra IDX (00), PC (01),
-          MAR (10) e nessuna (11). IDX è già nel datapath; le sue istruzioni
-          restano disabilitate finché non assegniamo gli opcode nell’ISA.
+          MAR (10) e nessuna (11). IDX usa le istruzioni LDX, LDAI e STAI.
         </p>
         <div class="micro-layout">
           <div
@@ -196,8 +198,8 @@ Carica o modifica il programma, poi premi “Assembla e resetta”.</pre>
     </main>
     <footer>
       Il simulatore emula l’ISA documentata e il datapath con IDX. La vista
-      microcodice opera nel banco RUN (A12=1); il microprogramma di boot e gli
-      opcode indicizzati restano da definire.
+      microcodice opera nel banco RUN (A12=1); BOOT copia l'EPROM nella RAM e
+      LDX, LDAI e STAI usano il registro IDX.
     </footer>
     <script src="vendor/x6.min.js"></script>
     <script type="module" src="js/app.js"></script>
