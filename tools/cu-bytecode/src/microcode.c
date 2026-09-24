@@ -76,25 +76,76 @@ static bool is_jump(MicroOp uop)
     return uop >= UOP_JMP && uop <= UOP_JNO;
 }
 
+/* A3..A7 sono IR[7:3]: questa tabella traduce il gruppo fisico in sequenza. */
+static MicroOp microop_for_ir_group(uint8_t group)
+{
+    switch (group) {
+    case 0x04: return UOP_LDI;
+    case 0x08: return UOP_LDA;
+    case 0x09: return UOP_STA;
+    case 0x0A: return UOP_LDA_IDX;
+    case 0x0B: return UOP_STA_IDX;
+    case 0x0C: return UOP_ALU;
+    case 0x0D: return UOP_CMP;
+    case 0x14: return UOP_JMP;
+    case 0x15: return UOP_JNO;
+    case 0x18: return UOP_MOV_RA_RN;
+    case 0x19: return UOP_MOV_RB_RN;
+    case 0x1A: return UOP_MOV_RN_RA;
+    case 0x1B: return UOP_LDX;
+    default: return UOP_NOP;
+    }
+}
+
+static int address_bit_from_pin(uint8_t pin)
+{
+    static const uint8_t address_pins[] = {
+        CPU8_AT28C64_PIN_A0, CPU8_AT28C64_PIN_A1, CPU8_AT28C64_PIN_A2,
+        CPU8_AT28C64_PIN_A3, CPU8_AT28C64_PIN_A4, CPU8_AT28C64_PIN_A5,
+        CPU8_AT28C64_PIN_A6, CPU8_AT28C64_PIN_A7, CPU8_AT28C64_PIN_A8,
+        CPU8_AT28C64_PIN_A9, CPU8_AT28C64_PIN_A10, CPU8_AT28C64_PIN_A11,
+        CPU8_AT28C64_PIN_A12};
+    uint8_t bit;
+    for (bit = 0; bit < sizeof(address_pins); bit++)
+        if (address_pins[bit] == pin) return bit;
+    return -1;
+}
+
+static bool address_signal_value(ControlEepromAddressSignal signal, uint8_t step,
+                                 MicroOp uop, CpuFlags flags, CpuMode mode)
+{
+    switch (signal) {
+    case CTRL_EEPROM_ADDR_USTEP_0: return (step & 0x01u) != 0;
+    case CTRL_EEPROM_ADDR_USTEP_1: return (step & 0x02u) != 0;
+    case CTRL_EEPROM_ADDR_USTEP_2: return (step & 0x04u) != 0;
+    case CTRL_EEPROM_ADDR_IR_3: return ((uint8_t)uop & 0x01u) != 0;
+    case CTRL_EEPROM_ADDR_IR_4: return ((uint8_t)uop & 0x02u) != 0;
+    case CTRL_EEPROM_ADDR_IR_5: return ((uint8_t)uop & 0x04u) != 0;
+    case CTRL_EEPROM_ADDR_IR_6: return ((uint8_t)uop & 0x08u) != 0;
+    case CTRL_EEPROM_ADDR_IR_7: return ((uint8_t)uop & 0x10u) != 0;
+    case CTRL_EEPROM_ADDR_FLAG_C: return flags.carry;
+    case CTRL_EEPROM_ADDR_FLAG_Z: return flags.zero;
+    case CTRL_EEPROM_ADDR_FLAG_N: return flags.negative;
+    case CTRL_EEPROM_ADDR_FLAG_O: return flags.overflow;
+    case CTRL_EEPROM_ADDR_BOOT_RUN:
+        return mode == CPU_MODE_RUN ? CPU8_RUN_ADDRESS_LEVEL != 0
+                                    : CPU8_BOOT_ADDRESS_LEVEL != 0;
+    }
+    return false;
+}
+
 uint16_t microcode_address(uint8_t step, MicroOp uop, CpuFlags flags,
                            CpuMode mode)
 {
-    /* A12 puo avere polarita logica diversa: la configurazione sceglie i livelli. */
-    unsigned mode_level = mode == CPU_MODE_RUN
-                              ? CPU8_RUN_ADDRESS_LEVEL
-                              : CPU8_BOOT_ADDRESS_LEVEL;
-    /*
-     * Composizione dei 13 bit dell'indirizzo AT28C64:
-     * A0..A2=step, A3..A7=uOP, A8..A11=flag, A12=BOOT_RUN.
-     * Le maschere 0x07 e 0x1f impediscono di invadere i campi vicini.
-     */
-    uint16_t address = (uint16_t)(step & 0x07u);
-    address |= (uint16_t)(((uint8_t)uop & 0x1fu) << 3);
-    address |= (uint16_t)(flags.carry ? 1u << 8 : 0u);
-    address |= (uint16_t)(flags.zero ? 1u << 9 : 0u);
-    address |= (uint16_t)(flags.negative ? 1u << 10 : 0u);
-    address |= (uint16_t)(flags.overflow ? 1u << 11 : 0u);
-    address |= (uint16_t)(mode_level != 0 ? 1u << 12 : 0u);
+    uint16_t address = 0;
+    size_t index;
+    for (index = 0; index < CPU8_CONTROL_EEPROM_ADDRESS_CONFIG_COUNT; index++) {
+        const ControlEepromAddressConfig *config =
+            &CPU8_CONTROL_EEPROM_ADDRESS_CONFIGS[index];
+        int bit = address_bit_from_pin(config->pin);
+        if (bit >= 0 && address_signal_value(config->signal, step, uop, flags, mode))
+            address |= (uint16_t)1u << bit;
+    }
     return address;
 }
 
@@ -111,20 +162,22 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
     }
 
     /*
-     * BOOT copia una cella alla volta: PC seleziona prima l'EPROM e poi la
-     * RAM allo stesso indirizzo. Il pulsante BOOT_RUN ferma il ciclo quando
-     * l'operatore ha copiato l'intera ROM; il reset/clear esterno riporta PC
-     * a zero prima dell'esecuzione RUN.
+     * BOOT usa tre microstep per cella: T1 copia EPROM -> RAM con PC stabile;
+     * T2 disabilita la scrittura, mantiene il dato EPROM valido e incrementa
+     * PC; T3 azzera il sequencer mantenendo l'EPROM abilitata.
+     * Il PC resta selezionato come sorgente dell'indirizzo. MDR non partecipa.
      */
     if (mode == CPU_MODE_BOOT)
     {
         if (step == 0)
             return ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
-                   CTRL_EPROM_OE | CTRL_MDR_WE;
+                   CTRL_EPROM_OE | CTRL_RAM_WE;
         if (step == 1)
             return ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
-                   CTRL_MDR_OE | CTRL_RAM_WE | CTRL_PC_INC |
-                   CTRL_NEXT_FETCH;
+                   CTRL_EPROM_OE | CTRL_PC_INC;
+        if (step == 2)
+            return ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
+                   CTRL_EPROM_OE | CTRL_NEXT_FETCH;
         return ADDRESS_NONE;
     }
 
@@ -581,8 +634,8 @@ bool build_control_roms(uint8_t roms[3][CPU8_CONTROL_ROM_SIZE],
                 {
                     CpuMode mode = (CpuMode)mode_value;
                     ControlWord word = microcode_word((uint8_t)step,
-                                                      (MicroOp)uop, flags,
-                                                      mode);
+                                                      microop_for_ir_group((uint8_t)uop),
+                                                      flags, mode);
                     uint16_t address;
                     uint8_t bytes[3];
 

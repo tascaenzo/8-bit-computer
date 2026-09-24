@@ -12,6 +12,28 @@ static char lineBuffer[SERIAL_LINE_BUFFER_SIZE];
 static uint8_t lineLength = 0;
 static bool protectedHexWrites = false;
 
+static uint16_t crc16Update(uint16_t crc, uint8_t value)
+{
+    crc ^= (uint16_t)value << 8;
+    for (uint8_t bit = 0; bit < 8; bit++) {
+        crc = (crc & 0x8000) ? (uint16_t)((crc << 1) ^ 0x1021) : (uint16_t)(crc << 1);
+    }
+    return crc;
+}
+
+static uint16_t crc16Block(uint16_t address, const uint8_t *data, uint16_t count)
+{
+    uint16_t crc = 0xFFFF;
+    crc = crc16Update(crc, (uint8_t)(address >> 8));
+    crc = crc16Update(crc, (uint8_t)address);
+    crc = crc16Update(crc, (uint8_t)(count >> 8));
+    crc = crc16Update(crc, (uint8_t)count);
+    for (uint16_t index = 0; index < count; index++) {
+        crc = crc16Update(crc, data[index]);
+    }
+    return crc;
+}
+
 static void printHexByte(uint8_t value)
 {
     if (value < 0x10) {
@@ -109,6 +131,90 @@ static bool validateByte(uint16_t value)
     }
 
     return true;
+}
+
+static bool parseHexBytes(char *cursor, uint8_t count, uint8_t *data)
+{
+    cursor = skipSpaces(cursor);
+    if (strlen(cursor) != (size_t)count * 2U) {
+        return false;
+    }
+    for (uint8_t index = 0; index < count; index++) {
+        char pair[3] = { cursor[index * 2], cursor[index * 2 + 1], '\0' };
+        char *pairCursor = pair;
+        uint16_t value;
+        if (!parseNumber(&pairCursor, &value) || *pairCursor != '\0' || value > 0xFF) {
+            return false;
+        }
+        data[index] = (uint8_t)value;
+    }
+    return true;
+}
+
+static void commandBlockWrite(char *cursor)
+{
+    uint16_t address;
+    uint16_t count;
+    uint16_t expectedCrc;
+    uint8_t data[UPLOAD_BLOCK_MAX_BYTES];
+
+    if (!parseNumber(&cursor, &address) || !parseNumber(&cursor, &count) ||
+        !parseNumber(&cursor, &expectedCrc) || count == 0 || count > UPLOAD_BLOCK_MAX_BYTES ||
+        (uint32_t)address + count > EEPROM_SIZE || !parseHexBytes(cursor, (uint8_t)count, data)) {
+        Serial.println(F("ERR B usage: B addr count crc16 hexbytes"));
+        return;
+    }
+    uint16_t actualCrc = crc16Block(address, data, count);
+    if (actualCrc != expectedCrc) {
+        Serial.println(F("ERR B crc"));
+        return;
+    }
+    for (uint8_t index = 0; index < count; index++) {
+        uint16_t target = (uint16_t)(address + index);
+        if (protectedHexWrites) eepromWriteByteProtected(target, data[index]);
+        else eepromWriteByte(target, data[index]);
+        if (eepromReadByte(target) != data[index]) {
+            Serial.print(F("ERR B verify "));
+            printHexAddress(target);
+            Serial.print(F(" expected "));
+            printHexByte(data[index]);
+            Serial.print(F(" got "));
+            printHexByte(eepromReadByte(target));
+            Serial.println();
+            return;
+        }
+    }
+    Serial.print(F("OK B "));
+    printHexAddress(address);
+    Serial.print(' ');
+    printHexAddress((uint16_t)count);
+    Serial.print(F(" CRC "));
+    printHexAddress(actualCrc);
+    Serial.println();
+}
+
+static void commandCrc(char *cursor)
+{
+    uint16_t address;
+    uint16_t count;
+    uint16_t expectedCrc;
+    if (!parseNumber(&cursor, &address) || !parseNumber(&cursor, &count) ||
+        !parseNumber(&cursor, &expectedCrc) || count == 0 ||
+        (uint32_t)address + count > EEPROM_SIZE) {
+        Serial.println(F("ERR C usage: C addr count crc16"));
+        return;
+    }
+    uint16_t crc = 0xFFFF;
+    crc = crc16Update(crc, (uint8_t)(address >> 8));
+    crc = crc16Update(crc, (uint8_t)address);
+    crc = crc16Update(crc, (uint8_t)(count >> 8));
+    crc = crc16Update(crc, (uint8_t)count);
+    for (uint16_t index = 0; index < count; index++) crc = crc16Update(crc, eepromReadByte(address + index));
+    if (crc != expectedCrc) {
+        Serial.println(F("ERR C crc"));
+        return;
+    }
+    Serial.println(F("OK C"));
 }
 
 static bool equalsIgnoreCase(const char *left, const char *right)
@@ -236,6 +342,8 @@ void serialCommandsPrintHelp()
     Serial.println(F("  R 0000            legge un byte"));
     Serial.println(F("  D 0000 0010       legge 0010 byte da 0000"));
     Serial.println(F("  F 0000 00FF FF    riempie 0000-00FF con FF"));
+    Serial.println(F("  B addr n crc data blocco CRC-16, ACK dopo scrittura e verifica"));
+    Serial.println(F("  C addr n crc      verifica CRC-16 di un intervallo EEPROM"));
     Serial.println(F("  HELP oppure ?      mostra questo aiuto"));
 }
 
@@ -353,6 +461,14 @@ static void handleCommand(char *line)
                 return;
             }
             commandFill(a, b, (uint8_t)c);
+            return;
+
+        case 'B':
+            commandBlockWrite(cursor);
+            return;
+
+        case 'C':
+            commandCrc(cursor);
             return;
 
         default:

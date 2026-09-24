@@ -1,12 +1,14 @@
 # CPU8 CU Bytecode Generator
 
 Generatore C99 del microcodice per la Control Unit della CPU didattica a 8 bit.
-La prima versione traduce le microsequenze documentate in quattro immagini da
-8 KiB pronte per EEPROM AT28C64: tre ROM di controllo in parallelo e una ROM di
-dispatch opcode -> `uOP`.
+Traduce le microsequenze documentate in tre immagini da 8 KiB per le tre ROM
+di controllo AT28C64 in parallelo.
 
 La specifica di riferimento e
 [`docs/control-unit-microcode.md`](../../docs/control-unit-microcode.md).
+Per le prove sulla scheda usare il
+[registro delle verifiche](../../docs/control-unit-test-log.md), che parte
+dalla tabella di verita del BOOT.
 
 ## Build, test e generazione
 
@@ -21,7 +23,6 @@ make -C tools/cu-bytecode generate
 - `microcode-rom0.bin`: segnali 0-7;
 - `microcode-rom1.bin`: segnali 8-15;
 - `microcode-rom2.bin`: segnali 16-23;
-- `microcode-dispatch.bin`: estensione opzionale opcode -> `uOP[4:0]`.
 
 Per scegliere un altro prefisso:
 
@@ -35,7 +36,7 @@ Le tre EEPROM condividono l'indirizzo:
 
 ```text
 A0..A2  = microstep T1..T8
-A3..A7  = uOP[4:0]
+A3..A7  = IR[7:3]
 A8      = C
 A9      = Z
 A10     = N
@@ -86,11 +87,8 @@ I codici del selettore del bus indirizzi e i livelli di `BOOT_RUN` sono in
 [`config/architecture.h`](config/architecture.h). La configurazione predefinita
 usa `00=IDX`, `01=PC`, `10=MAR`, `11=nessuna sorgente`.
 
-Il video 25 collega direttamente `IR[7:3]` ad `A3..A7` delle tre Control ROM.
-La ROM di dispatch usa invece `IR[7:0]` sulle linee basse ed e un'estensione
-opzionale necessaria alla ISA corrente per distinguere i salti condizionati che
-condividono `IR[7:3]`; le restanti linee sono ignorate e la tabella viene
-replicata su tutti gli 8 KiB.
+Il video 25 collega direttamente `IR[7:3]` ad `A3..A7` delle tre Control ROM:
+non e prevista una quarta EEPROM di dispatch.
 
 ## Stato iniziale
 

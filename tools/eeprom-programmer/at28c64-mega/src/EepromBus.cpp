@@ -14,8 +14,13 @@ static void setAddress(uint16_t address)
 
 static void setDataBusInput()
 {
-    /* In lettura il bus dati deve essere pilotato dalla EEPROM, non da Arduino. */
+    /*
+     * In lettura il bus dati deve essere pilotato solo dalla EEPROM. Azzerare
+     * prima il latch evita che un precedente HIGH di scrittura diventi una
+     * pull-up interna quando il pin passa a INPUT.
+     */
     for (uint8_t bit = 0; bit < 8; bit++) {
+        digitalWrite(DATA_PINS[bit], LOW);
         pinMode(DATA_PINS[bit], INPUT);
     }
 }

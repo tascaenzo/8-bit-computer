@@ -1,6 +1,6 @@
 /*
  * Punto di ingresso del tool cpu8microcode.
- * Coordina costruzione delle quattro immagini EEPROM e salvataggio dei file,
+ * Coordina costruzione delle tre immagini EEPROM e salvataggio dei file,
  * lasciando microsequenze e configurazione fisica ai moduli dedicati.
  */
 
@@ -32,11 +32,10 @@ int main(int argc, char **argv)
 {
     /*
      * Le immagini vengono tenute in memoria durante la generazione:
-     * 3 x 8192 byte per le Control ROM e 8192 byte per il dispatch.
+     * 3 x 8192 byte per le Control ROM.
      */
     const char *prefix = "build/microcode";
     uint8_t roms[3][CPU8_CONTROL_ROM_SIZE];
-    uint8_t dispatch[CPU8_DISPATCH_ROM_SIZE];
     const char *suffixes[] = {"-rom0.bin", "-rom1.bin", "-rom2.bin"};
     char path[1024];
     char message[256];
@@ -62,7 +61,6 @@ int main(int argc, char **argv)
         fprintf(stderr, "cpu8microcode: microcodice non valido: %s\n", message);
         return EXIT_FAILURE;
     }
-    build_dispatch_rom(dispatch);
 
     /* Ogni iterazione salva il byte appartenente a una delle tre EEPROM. */
     for (index = 0; index < 3; index++)
@@ -79,20 +77,7 @@ int main(int argc, char **argv)
             return EXIT_FAILURE;
         }
     }
-    /* La quarta immagine contiene la tabella opcode -> uOP. */
-    if (!make_path(path, sizeof(path), prefix, "-dispatch.bin"))
-    {
-        fprintf(stderr, "cpu8microcode: percorso output troppo lungo\n");
-        return EXIT_FAILURE;
-    }
-    if (!write_binary_file(path, dispatch, sizeof(dispatch),
-                           message, sizeof(message)))
-    {
-        fprintf(stderr, "cpu8microcode: %s\n", message);
-        return EXIT_FAILURE;
-    }
-
-    printf("Generate 4 immagini EEPROM da %u byte con prefisso %s\n",
+    printf("Generate 3 immagini EEPROM da %u byte con prefisso %s\n",
            CPU8_CONTROL_ROM_SIZE, prefix);
     return EXIT_SUCCESS;
 }

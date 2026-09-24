@@ -52,8 +52,8 @@ static void test_dispatch(void)
 static void test_shared_address_input_config(void)
 {
     static const uint8_t expected_pins[] = {
-        CPU8_CONTROL_ROM_PIN_USTEP_0, CPU8_CONTROL_ROM_PIN_USTEP_1,
-        CPU8_CONTROL_ROM_PIN_USTEP_2, CPU8_CONTROL_ROM_PIN_IR_3,
+        CPU8_CONTROL_ROM_PIN_USTEP_2, CPU8_CONTROL_ROM_PIN_USTEP_1,
+        CPU8_CONTROL_ROM_PIN_USTEP_0, CPU8_CONTROL_ROM_PIN_IR_3,
         CPU8_CONTROL_ROM_PIN_IR_4, CPU8_CONTROL_ROM_PIN_IR_5,
         CPU8_CONTROL_ROM_PIN_IR_6, CPU8_CONTROL_ROM_PIN_IR_7,
         CPU8_CONTROL_ROM_PIN_FLAG_C, CPU8_CONTROL_ROM_PIN_FLAG_Z,
@@ -109,10 +109,13 @@ static void test_boot_sequence(void)
     CpuFlags clear = { false, false, false, false };
 
     assert(microcode_word(0, UOP_INVALID, clear, CPU_MODE_BOOT) ==
-           (address_word(CPU8_ADDR_SEL_PC) | CTRL_EPROM_OE | CTRL_MDR_WE));
+           (address_word(CPU8_ADDR_SEL_PC) | CTRL_EPROM_OE | CTRL_RAM_WE));
     assert(microcode_word(1, UOP_LDI, clear, CPU_MODE_BOOT) ==
-           (address_word(CPU8_ADDR_SEL_PC) | CTRL_MDR_OE | CTRL_RAM_WE |
-            CTRL_PC_INC | CTRL_NEXT_FETCH));
+           (address_word(CPU8_ADDR_SEL_PC) | CTRL_EPROM_OE |
+            CTRL_PC_INC));
+    assert(microcode_word(2, UOP_JNO, clear, CPU_MODE_BOOT) ==
+           (address_word(CPU8_ADDR_SEL_PC) | CTRL_EPROM_OE |
+            CTRL_NEXT_FETCH));
 }
 
 static void test_addresses_and_images(void)

@@ -131,14 +131,21 @@ Ogni riga rappresenta un microciclo. I segnali di scrittura (`*_WE`) catturano i
 
 ### Boot EPROM → RAM
 
-Con `BOOT_RUN=0`, la CU ignora opcode e flag e ripete questi due microcicli.
+Con `BOOT_RUN=0`, la CU ignora opcode e flag e ripete questi tre microcicli.
 L'operatore porta poi `BOOT_RUN` a RUN e azzera PC tramite reset esterno prima
 di eseguire il programma copiato.
 
 | Microstep | Segnali | Effetto |
 | --- | --- | --- |
-| `T1` | `ADDR_SEL=PC`, `EPROM_OE`, `MDR_WE` | Legge `EPROM[PC]` in MDR. |
-| `T2` | `ADDR_SEL=PC`, `MDR_OE`, `RAM_WE`, `PC_INC`, `NEXT_FETCH` | Scrive MDR in `RAM[PC]` e passa alla cella successiva. |
+| `T1` | `ADDR_SEL=PC`, `EPROM_OE`, `RAM_WE` | EPROM pilota direttamente il data bus e RAM salva `EPROM[PC]` in `RAM[PC]` con PC stabile. |
+| `T2` | `ADDR_SEL=PC`, `EPROM_OE`, `PC_INC` | `/WE_RAM` torna alto mentre EPROM mantiene il dato valido; al clock PC passa alla cella successiva. |
+| `T3` | `ADDR_SEL=PC`, `EPROM_OE`, `NEXT_FETCH` | Il PC mantiene il bus indirizzi, l'EPROM mantiene il bus dati e il contatore microstep torna a T1. |
+
+La sequenza presuppone che `PC_INC` sia un'abilitazione campionata al clock del
+PC. `NEXT_FETCH` deve produrre un reset affidabile del contatore dei microstep:
+se pilota direttamente un `/CLR` asincrono, il reset puo togliere da solo il
+segnale appena il contatore torna a T1. La durata dell'impulso va verificata
+sulla scheda reale.
 
 ### `LDI Rn, imm8`
 

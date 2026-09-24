@@ -1,0 +1,1426 @@
+00:01 Bentornati sul mio canale YouTube. Oggi
+00:03 
+
+00:03 continuiamo a parlare della control Unit
+00:06 
+
+00:06 della nostra CPU a 8 bit. Vedremo come
+00:09 
+
+00:09 realizzare la parte di codice che andrà
+00:11 
+
+00:11 a generare il contenuto da inserire
+00:14 
+
+00:14 all'interno delle prom. Ma prima di
+00:16 
+
+00:16 iniziare vi ricordo di lasciare un mi
+00:19 
+
+00:19 piace, commentare questo video e
+00:20 
+
+00:20 iscrivervi al mio canale in modo da
+00:23 
+
+00:23 supportare il mio lavoro. Nell'ultimo
+00:25 
+
+00:25 video abbiamo visto il cuore della
+00:27 
+
+00:27 nostra control unit. Abbiamo iniziato a
+00:30 
+
+00:30 introdurre questo componente
+00:32 
+
+00:32 fondamentale della CPU e abbiamo detto
+00:34 
+
+00:34 che utilizzeremo delle eprom per
+00:37 
+
+00:37 realizzare questa parte. Nel video di
+00:40 
+
+00:40 oggi voglio vedere effettivamente a
+00:43 
+
+00:43 livello software, quindi all'interno del
+00:45 
+
+00:45 nostro repository,
+00:47 
+
+00:47 cosa dobbiamo costruire per andare a
+00:50 
+
+00:50 generare il byte code che dovrà essere
+00:53 
+
+00:53 inserito all'interno delle tre eprom.
+00:57 
+
+00:57 Però eh prima di concentrarci
+00:59 
+
+00:59 effettivamente sul programma che
+01:01 
+
+01:01 genererà questo codice, dobbiamo vedere
+01:05 
+
+01:05 un paio di modifiche che ho fatto nel
+01:06 
+
+01:06 corso di questi giorni all'interno del
+01:09 
+
+01:09 repository. Innanzitutto ho fatto una
+01:12 
+
+01:12 piccola modifica al programma AT28C64
+01:16 
+
+01:16 M che era il nostro programmatore delle
+01:20 
+
+01:20 EPROM che abbiamo visto qualche video fa
+01:23 
+
+01:23 quando abbiamo programmato una prima e
+01:26 
+
+01:26 che conteneva il codice di un programma
+01:30 
+
+01:30 assembly. Mi sono accorto che
+01:33 
+
+01:33 effettivamente quando vado a programmare
+01:35 
+
+01:35 una eprom tramite portas seriale
+01:38 
+
+01:38 incollando il file binario testuale
+01:41 
+
+01:41 generato dal nostro assemblatore,
+01:44 
+
+01:44 alcuni bit, specialmente in programmi
+01:47 
+
+01:47 molto grossi e lunghi, iniziano a
+01:49 
+
+01:49 corrompersi. Questo problema è dato da
+01:53 
+
+01:53 problemi di latenza tra letture e
+01:55 
+
+01:55 scritture dell'Arduino che vengono
+01:56 
+
+01:56 introdotte dal monitor seriale.
+01:60 
+
+01:60 Per questo motivo ho fatto una piccola
+02:01 
+
+02:01 modifica. Ho creato un file Python che
+02:04 
+
+02:04 va a dividere il nostro binario in dei
+02:08 
+
+02:08 chunk.
+02:09 
+
+02:09 Eh, questi chunk sono poi inviati
+02:14 
+
+02:14 all'Arduino tramite porta seriale. Viene
+02:17 
+
+02:17 ricevuto al termine dell'upload del
+02:19 
+
+02:19 chunk un segnale di H che conferma la
+02:22 
+
+02:22 ricezione di del chunk e si va avanti
+02:25 
+
+02:25 con gli altri chunk fino a quando non è
+02:27 
+
+02:27 completo l'upload del programma. Quindi
+02:30 
+
+02:30 questo qua dovrebbe migliorare il
+02:33 
+
+02:33 caricamento del programma all'interno
+02:35 
+
+02:35 della eprom e non dovrebbe causare
+02:37 
+
+02:37 problemi che ho riscontrato su grossi
+02:39 
+
+02:39 file binari.
+02:42 
+
+02:42 Un'altra cosa fondamentale è che
+02:45 
+
+02:45 effettivamente evito di copiare e
+02:47 
+
+02:47 incollare fisicamente eh il binario, ma
+02:52 
+
+02:52 posso utilizzare eh direttamente il file
+02:55 
+
+02:55 esadecimale o comunque il file pun
+02:57 
+
+02:57 binario. andare tramite un comando che
+03:01 
+
+03:01 vediamo qui, tramite questo comando,
+03:06 
+
+03:06 il secondo, effettivamente possiamo
+03:07 
+
+03:07 andare a caricare il file, quindi senza
+03:10 
+
+03:10 fare il copia incollo, aprire
+03:12 
+
+03:12 direttamente noi il monitor seriale.
+03:16 
+
+03:16 Un'altra cosa che ho fatto è quella di
+03:19 
+
+03:19 creare una sorta di simulatore web che
+03:21 
+
+03:21 mi permette di vedere visivamente il
+03:24 
+
+03:24 funzionamento della nostra CPU.
+03:27 
+
+03:27 Mi spiego meglio. Come già detto, questa
+03:30 
+
+03:30 è la parte cruciale dell'intero
+03:31 
+
+03:31 progetto, è la parte un po' più delicata
+03:33 
+
+03:33 dove andiamo a mettere assieme tutte le
+03:35 
+
+03:35 sezioni costruite in questi mesi.
+03:38 
+
+03:38 Vediamo effettivamente come gestirle e
+03:41 
+
+03:41 come pilotare tutti i vari segnali di
+03:44 
+
+03:44 controllo per andare a coordinarle
+03:45 
+
+03:45 all'interno della CPU. Ora, diciamo,
+03:49 
+
+03:49 questa parte è quella eh più complessa.
+03:51 
+
+03:51 Vorrei cercare di avere un po' le idee
+03:54 
+
+03:54 chiare per ogni singola istruzione quali
+03:56 
+
+03:56 sono i vari macrostep che si devono
+03:58 
+
+03:58 eseguire, quali segnali di controllo
+04:00 
+
+04:00 generale all'interno di questo di questi
+04:02 
+
+04:02 macrostep. Per questo motivo, grazie a
+04:06 
+
+04:06 Codex, quindi l'intelligenza
+04:07 
+
+04:07 artificiale, ho fatto generare questo
+04:09 
+
+04:09 progetto. è un progetto JavaScript,
+04:13 
+
+04:13 si tratta di una single page
+04:16 
+
+04:16 application, quindi è un'applicazione
+04:18 
+
+04:18 web che adesso avviamo, apriamo un
+04:22 
+
+04:22 terminale.
+04:25 
+
+04:25 Tramite questo comando andiamo ad
+04:29 
+
+04:29 avviare un server che va a servire
+04:33 
+
+04:33 staticamente questi questi file, questo
+04:35 
+
+04:35 index html con i vari file JavaScript.
+04:41 
+
+04:41 Dovrei avere a questo punto sulla porta
+04:43 
+
+04:43 8081 il progetto. Vediamo se è vero. Qui
+04:47 
+
+04:47 ho il browser.
+04:54 
+
+04:54 Devo spostarmi prima all'interno della
+04:56 
+
+04:56 directory Tools
+05:01 
+
+05:01 Simulator
+05:03 
+
+05:03 Web. In questo punto rilancio il
+05:05 
+
+05:05 comando,
+05:08 
+
+05:08 ricarico la pagina e in effetti sì, ho
+05:11 
+
+05:11 questo programma, questo simulatore web
+05:14 
+
+05:14 che mi permette visivamente di capire
+05:17 
+
+05:17 effettivamente com'è costituita la
+05:19 
+
+05:19 nostra CPU.
+05:21 
+
+05:21 Quindi qui abbiamo una mappa con la
+05:24 
+
+05:24 memoria, il program counter, il MAR,
+05:27 
+
+05:27 l'MDR, instruction register, index
+05:30 
+
+05:30 register, il selettore del registro che
+05:33 
+
+05:33 andrà a pilotare
+05:35 
+
+05:35 il bass degli indirizzi, la control unit
+05:39 
+
+05:39 che è stata schematizzata
+05:41 
+
+05:41 all'interno di questo di questa scatola
+05:44 
+
+05:44 che poi andrà a generare vari segnali di
+05:46 
+
+05:46 controllo. Qui abbiamo il Bass degli
+05:50 
+
+05:50 indirizzi, il Bass dati, è un BS,
+05:54 
+
+05:54 chiamiamolo Bass di controllo, ma in
+05:56 
+
+05:56 effetti è tutto l'insieme dei segnali di
+05:58 
+
+05:58 controllo generati dalla Control Unit.
+06:01 
+
+06:01 Poi abbiamo il blocco dei registri, eh
+06:03 
+
+06:03 il registro RA ed RB, che sono gli
+06:06 
+
+06:06 ingressi dell'alu, l'alu e i flag.
+06:10 
+
+06:10 Qui sopra possiamo vedere i vari
+06:12 
+
+06:12 microstep che vanno da T1 a T8.
+06:16 
+
+06:16 Qui invece andiamo a caricare il nostro
+06:18 
+
+06:18 programma demo o in generale il nostro
+06:21 
+
+06:21 programma assembly che eh verrà poi
+06:25 
+
+06:25 simulato, quindi verrà eseguita la
+06:27 
+
+06:27 simulazione di questo programma. Qui
+06:29 
+
+06:29 abbiamo uno stato della CPU con una
+06:32 
+
+06:32 sorta di riepilogo
+06:35 
+
+06:35 e infine qui sotto abbiamo altre
+06:36 
+
+06:36 informazioni che al momento non ci
+06:38 
+
+06:38 interessano. Qui dovremmo avere una
+06:41 
+
+06:41 mappa della RAM o della ROM.
+06:45 
+
+06:45 dovrebbero coincidere all'inizio.
+06:47 
+
+06:47 Poi qui questa parte per ora la
+06:50 
+
+06:50 tralasciamo, ma stavo pensando a come
+06:52 
+
+06:52 collegare in futuro una sorta di scheda
+06:54 
+
+06:54 video e quindi dedicare una parte della
+06:56 
+
+06:56 memoria come memoria video. Però diciamo
+06:59 
+
+06:59 tutta questa parte lasciamola al
+07:02 
+
+07:02 momento, la vediamo successivamente in
+07:04 
+
+07:04 futuro.
+07:05 
+
+07:05 Quindi, eh, diciamo che con questo
+07:08 
+
+07:08 piccolo strumento abbiamo visivamente
+07:12 
+
+07:12 qualcosa che possiamo poi andare a
+07:14 
+
+07:14 comparare alle singole istruzioni che
+07:15 
+
+07:15 andremo a gestire all'interno della CPU.
+07:18 
+
+07:18 Quindi l'idea è di creare dei programmi
+07:21 
+
+07:21 che vanno a coprire un po' tutte le
+07:22 
+
+07:22 istruzioni della nostra CPU, tutto l'ISA
+07:25 
+
+07:25 della nostra CPU. Vediamo per ogni
+07:28 
+
+07:28 singola istruzione che cosa succede qui
+07:30 
+
+07:30 dentro e poi andiamo a fare un confronto
+07:32 
+
+07:32 con l'hardware reale, quindi il nostro
+07:35 
+
+07:35 il nostro computer, la nostra CPU e
+07:38 
+
+07:38 vediamo se c'è un match tra eh i due
+07:41 
+
+07:41 ambienti, tra ambiente virtuale ed
+07:43 
+
+07:43 ambiente reale, in modo da capire se
+07:45 
+
+07:45 effettivamente
+07:47 
+
+07:47 è tutto corretto e inoltre avere un'idea
+07:50 
+
+07:50 visiva in questo momento mi aiuta con
+07:54 
+
+07:54 diciamo tutto il progetto perché
+07:56 
+
+07:56 comunque
+07:57 
+
+07:57 è utile avere uno strumento del genere.
+08:03 
+
+08:03 Proviamo effettivamente a eseguire
+08:06 
+
+08:06 qualche programma, così vediamo come
+08:08 
+
+08:08 funziona questo tool. Andiamo sulla
+08:11 
+
+08:11 parte di Visual Studio Code. Prendiamo
+08:14 
+
+08:14 uno degli esempi. Prendiamo non a caso,
+08:17 
+
+08:17 tanto al momento non ci interessa
+08:19 
+
+08:19 entrare troppo nello specifico, ma
+08:21 
+
+08:21 vogliamo effettivamente solo vedere come
+08:23 
+
+08:23 funziona questo strumento. Quindi
+08:24 
+
+08:24 copiamo il codice,
+08:28 
+
+08:28 torniamo qui e a questo punto
+08:31 
+
+08:31 cancelliamo questo programma e inseriamo
+08:35 
+
+08:35 quest'altro programma assembly.
+08:39 
+
+08:39 Andiamo su assembla e resetta.
+08:41 
+
+08:41 Effettivamente viene eh caricato questa
+08:45 
+
+08:45 sorta di programma
+08:48 
+
+08:48 e eh ci troviamo vediamo subito
+08:50 
+
+08:50 l'istruzione da eseguire. Quindi in
+08:53 
+
+08:53 evidenza abbiamo l'istruzione che deve
+08:55 
+
+08:55 essere eseguita.
+08:57 
+
+08:57 scendiamo qui sotto e avviamo
+08:60 
+
+08:60 effettivamente la CPU, proviamo a dare
+09:01 
+
+09:01 un impulso di clock che simuliamo con
+09:04 
+
+09:04 questo bottone.
+09:06 
+
+09:06 Ci troviamo
+09:08 
+
+09:08 nel tempo T1, quindi nel macrostep T1 e
+09:11 
+
+09:11 siamo nella nel fetch, nell'operazione,
+09:14 
+
+09:14 quindi stiamo facendo il fetch
+09:15 
+
+09:15 dell'Optic Code. In effetti cosa
+09:18 
+
+09:18 vediamo? Vediamo che si sono accesi, si
+09:20 
+
+09:20 sono illuminati tutte le parti della CPU
+09:23 
+
+09:23 coinvolte. Abbiamo il program counter
+09:26 
+
+09:26 che eh sta pilotando effettivamente il
+09:29 
+
+09:29 basso degli indirizzi.
+09:32 
+
+09:32 Pilotando il basso degli indirizzi va a
+09:35 
+
+09:35 pilotare la nostra memoria. La nostra
+09:37 
+
+09:37 memoria in uscita ci dà eh data sul bass
+09:41 
+
+09:41 dati. Questo valore è il codice
+09:45 
+
+09:45 operazione
+09:46 
+
+09:46 relativo all'istruzione
+09:49 
+
+09:49 LD, quindi il codice operazione relativo
+09:52 
+
+09:52 all'istruzione LD. l'isa
+09:54 
+
+09:54 dell'istruzione,
+09:57 
+
+09:57 che cosa ci aspettiamo? Ci aspettiamo
+09:59 
+
+09:59 che eh nella prima fase viene preso e
+10:02 
+
+10:02 caricato all'interno dell'istruction
+10:04 
+
+10:04 register, quindi la control Unit andrà a
+10:08 
+
+10:08 generare un segnale di controllo che mi
+10:10 
+
+10:10 permette di abilitare la scrittura
+10:12 
+
+10:12 all'interno di extraction register.
+10:15 
+
+10:15 oltre ad avere già tutti i segnali di
+10:17 
+
+10:17 controllo, a generare tutti i segnali di
+10:18 
+
+10:18 controllo che in questa fase mi
+10:20 
+
+10:20 permettono la lettura alla memoria, eh
+10:23 
+
+10:23 mi permettono eh l'output del program
+10:27 
+
+10:27 counter verso il basso degli indirizzi.
+10:31 
+
+10:31 Vado avanti con un altro macro step,
+10:33 
+
+10:33 quindi è come se fisicamente sto dando
+10:36 
+
+10:36 un impulso di clock, mi trovo su T2,
+10:38 
+
+10:38 faccio il fetch del valore immediato
+10:41 
+
+10:41 perché perché effettivamente
+10:42 
+
+10:42 l'istruzione, questa istruzione fa il
+10:44 
+
+10:44 caricamento del valore 42 che è
+10:46 
+
+10:46 l'immediato all'interno del registro R0.
+10:50 
+
+10:50 Quindi viene incrementato il program
+10:53 
+
+10:53 counter, la memoria eh dà in output
+10:58 
+
+10:58 questo valore. Questo valore in effetti
+11:01 
+
+11:01 0x2a mi va a corrispondere a 42
+11:06 
+
+11:06 e questo 42 mi aspetto che venga salvato
+11:10 
+
+11:10 all'interno dell'MDR. In effetti già la
+11:12 
+
+11:12 control Unit in questa fase mi genera il
+11:14 
+
+11:14 segnale di controllo che mi permette di
+11:17 
+
+11:17 scrivere all'interno dell'MDR.
+11:20 
+
+11:20 Vado avanti,
+11:22 
+
+11:22 sono nel microstep T3, quindi qua in
+11:25 
+
+11:25 effetti sta sto facendo l'execute, eh. E
+11:29 
+
+11:29 quindi la control Unit che cosa va a
+11:31 
+
+11:31 fare? mi va ad abilitare tutto il blocco
+11:33 
+
+11:33 dei registri, mi va a abilitare eh la
+11:36 
+
+11:36 scrittura nel blocco dei registri
+11:38 
+
+11:38 tramite il segnale redght e poi eh c'ho
+11:42 
+
+11:42 in selezione il registro R0 dove
+11:44 
+
+11:44 caricherò l'informazione. Se vado avanti
+11:47 
+
+11:47 eh si ehm si resetta il contratore di
+11:51 
+
+11:51 microstep, già sono nell'istruzione
+11:54 
+
+11:54 successiva che è questa. Diciamo che con
+11:57 
+
+11:57 questo strumento visivamente capiamo
+11:59 
+
+11:59 effettivamente cosa succede ed è
+12:01 
+
+12:01 abbastanza utile. Secondo me è molto
+12:03 
+
+12:03 utile anche a livello concettuale, a
+12:06 
+
+12:06 livello teorico capire effettivamente
+12:08 
+
+12:08 quali sono i microstep, cosa
+12:10 
+
+12:10 effettivamente succede e avere un un
+12:13 
+
+12:13 quadro di insieme un po' più ampio.
+12:16 
+
+12:16 Quindi diciamo che per il momento su
+12:18 
+
+12:18 questa parte
+12:21 
+
+12:21 ho detto un po' tutto. Lasciamo un po'
+12:23 
+
+12:23 eh tutto così. Non è inutile andare a
+12:26 
+
+12:26 scorrerci tutto il programma. Banalmente
+12:29 
+
+12:29 va avanti fino a quando arriviamo
+12:31 
+
+12:31 all'istruzione di Alt che ferma la CPU e
+12:34 
+
+12:34 ci dice che il programma è terminato.
+12:38 
+
+12:38 A questo punto analizziamo il programma
+12:41 
+
+12:41 Cu byte Code dove CU sta per control
+12:44 
+
+12:44 Unit. In pratica questo è un programma
+12:47 
+
+12:47 in C generato sempre con Codex che andrà
+12:50 
+
+12:50 eh ad creare dei file binari da inserire
+12:53 
+
+12:53 all'interno delle prom che costituiranno
+12:56 
+
+12:56 la Control Unit.
+12:58 
+
+12:58 Come prima cosa, per realizzare questo
+13:00 
+
+13:00 progetto ho fatto scrivere la
+13:03 
+
+13:03 documentazione. Abbiamo questi file
+13:06 
+
+13:06 control Unit che vanno a identificare un
+13:09 
+
+13:09 po' le specifiche del nostro progetto.
+13:11 
+
+13:11 Qui c'è una spiegazione su come deve
+13:13 
+
+13:13 funzionare l'intera architettura della
+13:15 
+
+13:15 control Unit, i vari segnali di
+13:18 
+
+13:18 controlli in input e in output
+13:21 
+
+13:21 e anche tutta una serie di collegamenti
+13:24 
+
+13:24 che avevamo ipotizzato con i vari
+13:26 
+
+13:26 segnali che devono devono essere gestite
+13:28 
+
+13:28 da ogni singola e
+13:32 
+
+13:32 questi questa questo documento l'avete
+13:35 
+
+13:35 visto nel video precedente dove ho
+13:37 
+
+13:37 introtto la control Unit e dove ho
+13:40 
+
+13:40 mostrato questa piede di natura su cui
+13:43 
+
+13:43 ho iniziato a fare i primi collegamenti.
+13:46 
+
+13:46 Una volta scritti questi documenti è
+13:48 
+
+13:48 stato generato il progetto.
+13:50 
+
+13:50 Ora brevemente vediamo com'è costituito.
+13:53 
+
+13:53 In ogni caso abbiamo un piccolo file di
+13:56 
+
+13:56 ritmi che spiega il funzionamento.
+13:59 
+
+13:59 Se eh a questo punto io provo a
+14:02 
+
+14:02 compilare questo progetto, qui abbiamo
+14:04 
+
+14:04 un un Mac file che va a spiegare un po'
+14:06 
+
+14:06 tutte le varie regole di compilazione.
+14:10 
+
+14:10 Se mi apro un terminale
+14:13 
+
+14:13 e mi vado a fare la compilazione,
+14:22 
+
+14:22 mi viene creata questa cartella build.
+14:25 
+
+14:25 Qui dentro c'ho tutti i vari file
+14:28 
+
+14:28 l'oggetto e poi c'ho questo file che è
+14:30 
+
+14:30 l'eseguibile finale. A questo punto, se
+14:33 
+
+14:33 io vado ad eseguire questo programma
+14:36 
+
+14:36 dovrei avere in output la generazione
+14:39 
+
+14:39 dei binari delle tre eprom. Vediamo se
+14:42 
+
+14:42 effettivamente è vero.
+14:46 
+
+14:46 Mi lancio questo comando.
+14:51 
+
+14:51 Sì, in effetti e mi ha generato questi
+14:54 
+
+14:54 tre file: Microcode, ROM 0, ROM 1 e ROM
+14:58 
+
+14:58 2. Questi sono i file che effettivamente
+15:01 
+
+15:01 dovrò caricare tramite l'Arduino
+15:03 
+
+15:03 all'interno del tre eprom.
+15:08 
+
+15:08 Cerchiamo di capire effettivamente come
+15:10 
+
+15:10 funziona questo programma.
+15:15 
+
+15:15 Io inizierei da questa cartella Config.
+15:17 
+
+15:17 Contiene tutta una serie di file di
+15:19 
+
+15:19 configurazioni che mi permettono di eh
+15:22 
+
+15:22 mantenere, diciamo, disaccoppiata tutta
+15:25 
+
+15:25 la logica dai piedini e dai collegamenti
+15:28 
+
+15:28 al pinout delle varie eprom. Iniziamo da
+15:31 
+
+15:31 architectur.
+15:33 
+
+15:33 Chiudiamo il terminale. Come vedete ogni
+15:36 
+
+15:36 file è documentato. Ci sono questi
+15:38 
+
+15:38 commenti che vanno a dare un po' una
+15:40 
+
+15:40 spiegazione di cosa fa quel file e delle
+15:43 
+
+15:43 varie logiche interne. In ogni caso,
+15:46 
+
+15:46 partiamo da questo. Qui dentro partirei
+15:48 
+
+15:48 da queste due definizioni. Abbiamo una
+15:52 
+
+15:52 definizione delle due modalità di
+15:54 
+
+15:54 funzionamento, cioè la modalità di run e
+15:58 
+
+15:58 di boot, che poi andranno a distinguere
+16:01 
+
+16:01 il caricamento della della RAM, quindi
+16:04 
+
+16:04 la eprom che viene copiata all'interno
+16:06 
+
+16:06 della RAM e poi il funzionamento vero e
+16:09 
+
+16:09 proprio. Qui invece abbiamo queste
+16:11 
+
+16:11 costanti che vanno a definire eh i vari
+16:14 
+
+16:14 selettori
+16:15 
+
+16:15 del registro del bass del degli
+16:18 
+
+16:18 indirizzi. Ricordo che il base degli
+16:20 
+
+16:20 indirizzi potrà essere pilotato o dal
+16:23 
+
+16:23 programo counter o dal MAR M mem memory
+16:25 
+
+16:25 address register oppure dal dall'IDX.
+16:30 
+
+16:30 Qui c'è anche un breve commento, spiega
+16:33 
+
+16:33 che abbiamo due bit di selezione e sono
+16:37 
+
+16:37 in input vengono dati questi due bit al
+16:39 
+
+16:39 74138
+16:42 
+
+16:42 che fa da decodered multiplexer.
+16:45 
+
+16:45 Quindi qui abbiamo questa prima serie di
+16:47 
+
+16:47 definizioni di costanti, poi abbiamo
+16:51 
+
+16:51 signal.hh. H qui dentro abbiamo tutta
+16:54 
+
+16:54 una serie di definizioni
+16:57 
+
+16:57 e di enumeratori che vanno a
+16:59 
+
+16:59 rappresentare un po' tutta la penatura
+17:02 
+
+17:02 della eprom, tutti i nostri segnali di
+17:04 
+
+17:04 controllo e così via.
+17:08 
+
+17:08 Qui invece abbiamo contrsignal.cc,
+17:11 
+
+17:11 dovrebbe essere un file implementativo
+17:13 
+
+17:13 di contrsignal.
+17:16 
+
+17:16 Qui al solito abbiamo eh una piccola
+17:19 
+
+17:19 documentazione, una spiegazione di ogni
+17:22 
+
+17:22 singola
+17:23 
+
+17:23 funzione di questo file. Ma la le cose
+17:25 
+
+17:25 principali da capire sono queste.
+17:28 
+
+17:28 Abbiamo questa struttura che è un array.
+17:31 
+
+17:31 In ogni riga dell'array che cosa
+17:33 
+
+17:33 abbiamo? Abbiamo la mappatura tra eh
+17:36 
+
+17:36 l'input della EPROM e il segnale eh che
+17:42 
+
+17:42 viene dato in input, ad esempio, A0, A1
+17:45 
+
+17:45 e A3, come abbiamo già detto, eh sono
+17:48 
+
+17:48 collegate al contatore di microstep.
+17:55 
+
+17:55 Lo vediamo qua. Ctr ctrl eprom address
+18:00 
+
+18:00 UST0.
+18:02 
+
+18:02 Che poi se io vado ad aprire questi file
+18:05 
+
+18:05 ritorno su contrsignal.hhh
+18:08 
+
+18:08 H dove c'ho tutte queste definizioni. In
+18:11 
+
+18:11 effetti qua ci ci troviamo tutto
+18:14 
+
+18:14 l'input, quindi contatore microstep,
+18:18 
+
+18:18 instruction register, flag, modalità
+18:21 
+
+18:21 bootrun
+18:23 
+
+18:23 e poi c'ho eh la definizione qua di
+18:26 
+
+18:26 questa tabella che va a mettere in
+18:28 
+
+18:28 correlazione il pin della eprom, quindi
+18:32 
+
+18:32 del bass del dell'indirizzo della eprom
+18:35 
+
+18:35 e il segnale effettivo. E qui abbiamo
+18:37 
+
+18:37 anche una descrizione che va eh da 0 ad
+18:41 
+
+18:41 A12 e ci va a identificare
+18:44 
+
+18:44 quale qual è l'ingresso dellaOM che
+18:47 
+
+18:47 stiamo selezionando
+18:50 
+
+18:50 in maniera analoga qui abbiamo la
+18:52 
+
+18:52 mappatura delle uscite, quindi qua
+18:54 
+
+18:54 effettivamente andiamo a decidere ogni
+18:56 
+
+18:56 singola e
+18:58 
+
+18:58 qui abbiamo la prima, questa è la
+19:00 
+
+19:00 seconda e questa è la terza. Quali
+19:03 
+
+19:03 segnali di controllo dovrà gestire?
+19:05 
+
+19:05 Quindi abbiamo una mappatura analoga e
+19:07 
+
+19:07 abbiamo tutto questo insieme disegno di
+19:09 
+
+19:09 controllo. Il vantaggio, qual è? Il
+19:11 
+
+19:11 vantaggio è che se io eh decido che una
+19:14 
+
+19:14 determinata eprom dovrà avere un
+19:17 
+
+19:17 determinato segnale di controllo
+19:18 
+
+19:18 viceversa, basta che modifico questa
+19:20 
+
+19:20 mappatura e non devo modificare
+19:22 
+
+19:22 effettivamente il codice sorgente, tutte
+19:25 
+
+19:25 le logiche eh di questo programma. Cosa
+19:29 
+
+19:29 importante, in output c'ho anche un flag
+19:32 
+
+19:32 che mi va a identificare se il segnale
+19:35 
+
+19:35 di controllo lavora a logica negata e o
+19:39 
+
+19:39 meno. Infatti passiamo come parametro
+19:42 
+
+19:42 anche Active Logtive he che mi permette
+19:45 
+
+19:45 di identificare
+19:47 
+
+19:47 se questo segnale in uscita funzione
+19:49 
+
+19:49 logica negata o meno.
+19:56 
+
+19:56 Poi abbiamo la cartella include che
+19:58 
+
+19:58 contiene microcode.
+20:02 
+
+20:02 Partiamo da output.
+20:05 
+
+20:05 Semplice. Qui abbiamo le definizioni di
+20:07 
+
+20:07 tutto ciò che serve a generare i file
+20:10 
+
+20:10 fisici binari da inserire all'interno
+20:12 
+
+20:12 della eprom. Invece microcode.
+20:16 
+
+20:16 Contiene tutte le strutture e le
+20:18 
+
+20:18 funzioni, le dichiarazioni delle
+20:20 
+
+20:20 funzioni che andremo a utilizzare per
+20:23 
+
+20:23 generare effettivamente la logica di
+20:25 
+
+20:25 business della control unit, quindi
+20:27 
+
+20:27 andare effettivamente a mappare i
+20:29 
+
+20:29 singoli segnali.
+20:31 
+
+20:31 Invece sotto la cartella src abbiamo il
+20:35 
+
+20:35 main. C che è l'entry point del
+20:38 
+
+20:38 programma, quindi il punto d'ingresso,
+20:41 
+
+20:41 microcode.cc che contiene effettivamente
+20:43 
+
+20:43 la logica che andrà poi a compilare ogni
+20:47 
+
+20:47 singola,
+20:49 
+
+20:49 diciamo, riga della eprom, quindi ogni
+20:51 
+
+20:51 singola in input andiamo a dare
+20:54 
+
+20:54 l'indirizzo e qui andrà a generare
+20:57 
+
+20:57 tramite questa logica ogni singolo
+20:59 
+
+20:59 segnale di controllo della della eprom
+21:03 
+
+21:03 output.cc C invece è l'implementazione
+21:05 
+
+21:05 di output.h e quindi avremo qui la
+21:09 
+
+21:09 scrittura effettiva sui file binari. E
+21:12 
+
+21:12 invece il main fa un po' da
+21:13 
+
+21:13 orchestratore e va a chiamare ogni
+21:16 
+
+21:16 singolo pezzettino di questo programma
+21:18 
+
+21:18 per gestire tutto il flusso che poi
+21:21 
+
+21:21 porta alla generazione di questo codice.
+21:26 
+
+21:26 Io direi che per questo video è tutto.
+21:30 
+
+21:30 Nel prossimo video proverei fisicamente
+21:32 
+
+21:32 a vedere che cosa esce con all'interno
+21:36 
+
+21:36 di questo programma. Proverei a, ad
+21:39 
+
+21:39 esempio, a programmare la prima eprom e
+21:41 
+
+21:41 vediamo se già riusciamo a fare la fase
+21:43 
+
+21:43 di boot, a gestire la fase di boot, cioè
+21:45 
+
+21:45 copiare tutto ciò che c'è all'interno
+21:48 
+
+21:48 della RAM, scusate, la EPROM,
+21:51 
+
+21:51 all'interno della RAM.
+21:53 
+
+21:53 Quindi vi ricordo di lasciare un mi
+21:55 
+
+21:55 piace, commentare questo video e
+21:57 
+
+21:57 iscrivervi al mio canale in modo da
+21:59 
+
+21:59 supportare il mio lavoro.

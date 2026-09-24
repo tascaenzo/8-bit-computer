@@ -116,13 +116,13 @@ arduino-cli board list
 Carica lo sketch, sostituendo la porta di esempio con la tua:
 
 ```sh
-arduino-cli upload -p /dev/cu.usbmodem212201 --fqbn arduino:avr:mega tools/eeprom-programmer/at28c64-mega
+arduino-cli upload -p /dev/cu.usbmodem21101 --fqbn arduino:avr:mega tools/eeprom-programmer/at28c64-mega
 ```
 
 Apri poi il monitor seriale a 115200 baud:
 
 ```sh
-arduino-cli monitor -p /dev/cu.usbmodem21101 --config baudrate=115200
+arduino-cli monitor -p /dev/cu.usbmodem21201 --config baudrate=115200
 ```
 
 Usa il terminatore di riga newline.

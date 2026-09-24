@@ -16,6 +16,8 @@ static const uint16_t EEPROM_LAST_ADDRESS = EEPROM_SIZE - 1;
 
 static const uint32_t SERIAL_BAUD = 115200;
 static const uint8_t SERIAL_LINE_BUFFER_SIZE = 96;
+/* Il caricatore affidabile aspetta un ACK per ogni blocco, quindi non satura RX. */
+static const uint8_t UPLOAD_BLOCK_MAX_BYTES = 16;
 
 /*
  * A0..A12 della EEPROM AT28C64.

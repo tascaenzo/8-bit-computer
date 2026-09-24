@@ -12,14 +12,15 @@ docs/at28c64-arduino-mega-programmer.md
 
 ## Struttura sorgenti
 
-| File | Responsabilita |
-| --- | --- |
-| `at28c64-mega.ino` | inizializza seriale e bus EEPROM, poi chiama il gestore comandi nel `loop` |
-| `include/ProgrammerConfig.h` | configurazione pin, baud rate, dimensione EEPROM e timing |
-| `include/EepromBus.h` | interfaccia del modulo che controlla la EEPROM |
-| `src/EepromBus.cpp` | gestisce pin, bus indirizzi, bus dati, lettura, scrittura e attesa del ciclo interno |
-| `include/SerialCommands.h` | interfaccia del parser dei comandi seriali |
-| `src/SerialCommands.cpp` | gestisce parsing, validazione, dump, fill e formato `.hex` di `cpu8asm` |
+| File                         | Responsabilita                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------ |
+| `at28c64-mega.ino`           | inizializza seriale e bus EEPROM, poi chiama il gestore comandi nel `loop`           |
+| `include/ProgrammerConfig.h` | configurazione pin, baud rate, dimensione EEPROM e timing                            |
+| `include/EepromBus.h`        | interfaccia del modulo che controlla la EEPROM                                       |
+| `src/EepromBus.cpp`          | gestisce pin, bus indirizzi, bus dati, lettura, scrittura e attesa del ciclo interno |
+| `include/SerialCommands.h`   | interfaccia del parser dei comandi seriali                                           |
+| `src/SerialCommands.cpp`     | gestisce parsing, validazione, dump, fill e formato `.hex` di `cpu8asm`              |
+| `upload_reliable.py`         | uploader host stop-and-wait: CRC-16, ACK, ritentativi e verifica finale              |
 
 Per una guida di studio didattica dei sorgenti, leggere:
 
@@ -42,31 +43,31 @@ Un Arduino Uno non ha abbastanza pin liberi per collegare tutto in modo diretto.
 Questa mappa descrive i segnali logici. Prima di collegare la EEPROM controlla sempre il pinout del package reale nel datasheet della tua AT28C64.
 
 | Segnale EEPROM | Pin Arduino Mega |
-| --- | ---: |
-| `A0` | `22` |
-| `A1` | `23` |
-| `A2` | `24` |
-| `A3` | `25` |
-| `A4` | `26` |
-| `A5` | `27` |
-| `A6` | `28` |
-| `A7` | `29` |
-| `A8` | `30` |
-| `A9` | `31` |
-| `A10` | `32` |
-| `A11` | `33` |
-| `A12` | `34` |
-| `D0` | `35` |
-| `D1` | `36` |
-| `D2` | `37` |
-| `D3` | `38` |
-| `D4` | `39` |
-| `D5` | `40` |
-| `D6` | `41` |
-| `D7` | `42` |
-| `CE` | `43` |
-| `OE` | `44` |
-| `WE` | `45` |
+| -------------- | ---------------: |
+| `A0`           |             `22` |
+| `A1`           |             `23` |
+| `A2`           |             `24` |
+| `A3`           |             `25` |
+| `A4`           |             `26` |
+| `A5`           |             `27` |
+| `A6`           |             `28` |
+| `A7`           |             `29` |
+| `A8`           |             `30` |
+| `A9`           |             `31` |
+| `A10`          |             `32` |
+| `A11`          |             `33` |
+| `A12`          |             `34` |
+| `D0`           |             `35` |
+| `D1`           |             `36` |
+| `D2`           |             `37` |
+| `D3`           |             `38` |
+| `D4`           |             `39` |
+| `D5`           |             `40` |
+| `D6`           |             `41` |
+| `D7`           |             `42` |
+| `CE`           |             `43` |
+| `OE`           |             `44` |
+| `WE`           |             `45` |
 
 Collegamenti alimentazione:
 
@@ -110,16 +111,16 @@ F 0000 00FF FF
 
 Significato:
 
-| Comando | Effetto |
-| --- | --- |
-| `W addr byte` | scrive un byte |
-| `P addr byte` | scrive un byte usando la sequenza Software Data Protection |
-| `M P` | usa la scrittura protetta per le righe `.hex` incollate dopo il comando |
-| `M W` | torna alla scrittura normale per le righe `.hex` |
-| `R addr` | legge un byte |
-| `D start count` | stampa un dump di `count` byte |
-| `F start end byte` | riempie un intervallo inclusivo |
-| `HELP` | stampa l'aiuto |
+| Comando            | Effetto                                                                 |
+| ------------------ | ----------------------------------------------------------------------- |
+| `W addr byte`      | scrive un byte                                                          |
+| `P addr byte`      | scrive un byte usando la sequenza Software Data Protection              |
+| `M P`              | usa la scrittura protetta per le righe `.hex` incollate dopo il comando |
+| `M W`              | torna alla scrittura normale per le righe `.hex`                        |
+| `R addr`           | legge un byte                                                           |
+| `D start count`    | stampa un dump di `count` byte                                          |
+| `F start end byte` | riempie un intervallo inclusivo                                         |
+| `HELP`             | stampa l'aiuto                                                          |
 
 I numeri senza prefisso sono esadecimali e il prefisso `0x` e opzionale. Per
 inserire un numero binario usa `0b`: ad esempio `W 0b0 0b10100110`.
@@ -140,6 +141,46 @@ tools/assembler/build/demo.hex
 ```
 
 allo sketch Arduino. Ogni riga `addr: byte` programma un byte della EEPROM.
+
+## Caricamento affidabile consigliato
+
+Non incollare un file `.hex` dal monitor seriale: durante il ciclo di scrittura
+la EEPROM richiede fino a 15 ms per byte e la UART del Mega puo perdere righe
+se il computer le invia senza attendere.
+
+Usa invece `upload_reliable.py`. Accetta sia il `.hex` dell'assembler sia un
+`.bin` puro (come le Control ROM). Invia blocchi di massimo 16 byte, attende
+l'ACK del Mega, ritenta un blocco fallito e richiede una verifica CRC-16 dalla
+EEPROM al termine di ogni intervallo contiguo.
+
+```sh
+python3 -m pip install pyserial
+python3 tools/eeprom-programmer/at28c64-mega/upload_reliable.py \
+  --port /dev/cu.usbmodem21201 tools/assembler/build/demo.hex
+```
+
+Per una EEPROM con Software Data Protection attiva aggiungi `--protected`.
+
+### Control ROM generate dalla CU
+
+Le quattro immagini sono gia binari completi da 8192 byte. Programma **una
+EEPROM alla volta**, partendo dall'indirizzo zero, e applica poi l'etichetta del
+file al chip fisico:
+
+```sh
+python3 tools/eeprom-programmer/at28c64-mega/upload_reliable.py \
+  --port /dev/cu.usbmodemXXXX tools/cu-bytecode/build/microcode-rom0.bin
+```
+
+Ripeti lo stesso comando, cambiando il file, per:
+
+```text
+microcode-rom1.bin
+microcode-rom2.bin
+```
+
+Il caricatore verifica tutti gli 8192 byte via CRC-16 prima di dichiarare
+successo. Non usare `--address` per queste immagini: devono iniziare da `0000`.
 
 ## Note elettriche
 
