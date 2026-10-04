@@ -1,0 +1,3 @@
+[submodule "hardware/tang-nano-9k-video/vendor/TangNano-9K-example"]
+	path = hardware/tang-nano-9k-video/vendor/TangNano-9K-example
+	url = https://github.com/sipeed/TangNano-9K-example.git

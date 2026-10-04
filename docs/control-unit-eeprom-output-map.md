@@ -37,7 +37,7 @@ ciclo BOOT.
 | `D4` | 14 | `MDR_OE` | attivo basso | Porta MDR sul data bus per la scrittura RAM. |
 | `D5` | 15 | `RAM_WE` | attivo basso | Scrive nella RAM il byte presente sul bus dati. |
 | `D6` | 16 | `EPROM_OE` | attivo basso | Abilita l'EPROM programma sul data bus. |
-| `D7` | 17 | `NEXT_FETCH` | attivo basso | Azzera il microstep e riparte da `T1`. |
+| `D7` | 17 | `NEXT_FETCH_n` | attivo basso | Richiede il ritorno a `T1`; con `/LOAD` del 74161 avviene al clock successivo. |
 
 Sequenza BOOT generata quando `BOOT_RUN = 0`:
 
@@ -71,7 +71,7 @@ dati e `D7=0` attiva `NEXT_FETCH`; `D5=1` impedisce la scrittura nella RAM.
 | Uscita | Pin | Segnale | Polarita | Uso |
 | --- | ---: | --- | --- | --- |
 | `D0` | 9 | `IR_WE` | attivo alto | Salva l'opcode in IR. |
-| `D1` | 10 | `PC_LOAD` | attivo alto | Carica PC dal MAR durante un salto. |
+| `D1` | 10 | `PC_LOAD` | attivo basso | Carica PC dal MAR durante un salto. |
 | `D2` | 11 | `MAR_L_WE` | attivo alto | Salva il byte basso di MAR. |
 | `D3` | 13 | `RF_EN` | attivo alto | Abilita il banco registri `R0..R7`. |
 | `D4` | 14 | `RF_RW` | attivo alto | Con `RF_EN`, alto = scrittura; basso = lettura. |
@@ -89,7 +89,7 @@ dati e `D7=0` attiva `NEXT_FETCH`; `D5=1` impedisce la scrittura nella RAM.
 | `D3` | 13 | `RAM_OE` | attivo basso | Abilita la RAM sul data bus. |
 | `D4` | 14 | `IDX_L_WE` | attivo alto | Salva il byte basso di IDX. |
 | `D5` | 15 | `IDX_H_WE` | attivo alto | Salva il byte alto di IDX. |
-| `D6` | 16 | riservato | — | Disponibile per un'estensione futura. |
+| `D6` | 16 | `SYS_STEP_n` | attivo basso | Vale `0` solo in RUN/T2 con `IR[7:3]=00000`; si combina con `IR[2:0]` per HLT. |
 | `D7` | 17 | riservato | — | Disponibile per un'estensione futura. |
 
 ## Verifica rapida del primo chip
@@ -104,3 +104,21 @@ Per un test BOOT con sola Control ROM 0 collegata, osserva le uscite seguenti:
 
 Le uscite attive basse inattive restano a `1`: in particolare `D5`, `D6` e
 `D7` sono normalmente alte.
+
+In RUN, il microstep che esegue l'ultima operazione ha sempre `D7=1`.
+La fase successiva ha `ROM0=0x73`, `ROM1=0x00`, `ROM2=0x49`: solo
+`NEXT_FETCH_n` e attivo. Il ritorno e in T3 per NOP/ALU/CMP/MOV, in T4
+per LDI/LDX/LDA-STA IDX, in T5 per i salti e in T6 per LDA/STA diretti.
+Le immagini fisiche devono essere rigenerate e riprogrammate per ottenere
+questa nuova sequenza; il BOOT di ROM0 resta `0x91, 0xB5, 0x31`.
+Per la ISA RUN completa senza IN/OUT anche la EPROM programma va
+riassemblata: `SUB=0x78` e i salti condizionati usano gruppi `IR[7:3]`
+distinti. Non riutilizzare i vecchi opcode `SUB=0x68` e
+`JZ..JO=0xA1..0xA7`.
+`HLT=0x00` e `NOP=0x01` producono le stesse uscite EEPROM perche condividono
+`IR[7:3]=00000`. In RUN/T2 `SYS_STEP_n=0` su ROM2 D6; fuori da quella
+fase D6 vale `1`, compresi BOOT e T1. La OR esterna
+`SYS_STEP_n OR IR0 OR IR1 OR IR2` vale `0` solo per HLT e puo pilotare
+l'abilitazione del contatore microstep. Questa **nuova uscita cambia il
+binario della Control ROM 2**: va riprogrammata prima di collegare D6
+alla logica esterna. ROM0 e ROM1 non cambiano per il solo decoder di sistema.

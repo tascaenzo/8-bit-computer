@@ -39,8 +39,58 @@ test("l'assembler codifica registri, immediati e indirizzi little-endian", () =>
   `);
   assert.deepEqual(
     Array.from(result.mem.slice(0, 22)),
-    [0x27, 0xa5, 0x42, 0x34, 0x12, 0x4b, 0xef, 0xbe, 0xc4, 0xcd, 0xd6, 0xd8, 0x34, 0x12, 0x52, 0x5b, 0xa8, 0xfe, 0xca, 0x01, 0x00, 0x00],
+    [0x27, 0xa5, 0x42, 0x34, 0x12, 0x4b, 0xef, 0xbe, 0xc4, 0xcd, 0xd6, 0xd8, 0x34, 0x12, 0x52, 0x5b, 0xa8, 0xfe, 0xca, 0x00, 0x00, 0x00],
   );
+});
+
+test("HLT=0x00 arresta, NOP=0x01 prosegue", () => {
+  const assembled = assemble("NOP\nHLT");
+  assert.deepEqual(Array.from(assembled.mem.slice(0, 2)), [0x01, 0x00]);
+  const state = loadBytes([0x01, 0x00]);
+  stepCpu(state, 0);
+  assert.equal(state.halted, false);
+  assert.equal(state.pc, 1);
+  stepCpu(state, 0);
+  assert.equal(state.halted, true);
+  const haltPhases = planMicrocycles(loadBytes([0x00]));
+  assert.deepEqual(haltPhases.map(({ t }) => t), ["T1", "T2"]);
+  assert.equal(haltPhases[0].signals.includes("SYS_STEP_n"), false);
+  assert.equal(haltPhases[1].signals, "SYS_STEP_n=0");
+  const nopPhases = planMicrocycles(loadBytes([0x01]));
+  assert.equal(nopPhases[1].signals, "SYS_STEP_n=0");
+  assert.equal(nopPhases[2].signals, "NEXT_FETCH");
+});
+
+test("gli opcode ricodificati di SUB e dei salti corrispondono al simulatore", () => {
+  assert.equal(assemble("SUB").mem[0], FIXED_OPCODES.SUB);
+  for (const mnemonic of ["JMP", "JZ", "JNZ", "JC", "JNC", "JN", "JNN", "JO", "JNO"]) {
+    const opcode = FIXED_OPCODES[mnemonic];
+    assert.equal(assemble(`${mnemonic} 0x1234`).mem[0], opcode);
+    const state = loadBytes([opcode, 0x34, 0x12]);
+    state.flags = { C: 1, Z: 1, N: 1, O: 1 };
+    stepCpu(state, 0);
+    assert.equal(state.pc, ["JNZ", "JNC", "JNN", "JNO"].includes(mnemonic) ? 3 : 0x1234);
+    const clear = loadBytes([opcode, 0x34, 0x12]);
+    stepCpu(clear, 0);
+    assert.equal(clear.pc, ["JZ", "JC", "JN", "JO"].includes(mnemonic) ? 3 : 0x1234);
+    assert.deepEqual(planMicrocycles(loadBytes([opcode, 0x34, 0x12])).map(({ t }) => t),
+      ["T1", "T2", "T3", "T4", "T5"]);
+  }
+  const sub = loadBytes([FIXED_OPCODES.SUB]);
+  sub.ra = 7;
+  sub.rb = 2;
+  stepCpu(sub, 0);
+  assert.equal(sub.ra, 5);
+});
+
+test("il programma di prova della CU arriva a HLT con le tre celle RAM attese", async () => {
+  const source = await readFile(new URL("../../../examples/assembly/cu_isa_smoke.asm", import.meta.url), "utf8");
+  const assembled = assemble(source);
+  const state = createCpuState();
+  state.mem = assembled.mem;
+  for (let guard = 0; guard < 50 && !state.halted; guard++) stepCpu(state, 0);
+  assert.equal(state.halted, true);
+  assert.deepEqual(Array.from(state.mem.slice(0x100, 0x103)), [0x05, 0x5a, 0x05]);
 });
 
 test("il programma demo completa la scrittura della VRAM", () => {
@@ -162,14 +212,14 @@ test("i salti condizionati distinguono condizione vera e falsa", () => {
 
 test("le sequenze visuali numerano i microstep da T1 a T8", () => {
   const namesFor = (bytes) => planMicrocycles(loadBytes(bytes)).map(({ t }) => t);
-  assert.deepEqual(namesFor([0x20, 0x42]), ["T1", "T2", "T3"]);
-  assert.deepEqual(namesFor([0x40, 0x34, 0x12]), ["T1", "T2", "T3", "T4", "T5"]);
-  assert.deepEqual(namesFor([0x48, 0x34, 0x12]), ["T1", "T2", "T3", "T4", "T5"]);
-  assert.deepEqual(namesFor([0xd8, 0x34, 0x12]), ["T1", "T2", "T3"]);
-  assert.deepEqual(namesFor([0x50]), ["T1", "T2", "T3"]);
-  assert.deepEqual(namesFor([0x58]), ["T1", "T2", "T3"]);
-  assert.deepEqual(namesFor([0xa0, 0x34, 0x12]), ["T1", "T2", "T3", "T4"]);
-  assert.deepEqual(namesFor([0xc0]), ["T1", "T2"]);
+  assert.deepEqual(namesFor([0x20, 0x42]), ["T1", "T2", "T3", "T4"]);
+  assert.deepEqual(namesFor([0x40, 0x34, 0x12]), ["T1", "T2", "T3", "T4", "T5", "T6"]);
+  assert.deepEqual(namesFor([0x48, 0x34, 0x12]), ["T1", "T2", "T3", "T4", "T5", "T6"]);
+  assert.deepEqual(namesFor([0xd8, 0x34, 0x12]), ["T1", "T2", "T3", "T4"]);
+  assert.deepEqual(namesFor([0x50]), ["T1", "T2", "T3", "T4"]);
+  assert.deepEqual(namesFor([0x58]), ["T1", "T2", "T3", "T4"]);
+  assert.deepEqual(namesFor([0xa0, 0x34, 0x12]), ["T1", "T2", "T3", "T4", "T5"]);
+  assert.deepEqual(namesFor([0xc0]), ["T1", "T2", "T3"]);
   for (const opcode of [0x00, 0x01, 0x20, 0x40, 0x48, 0x60, 0x80, 0xa0, 0xc0]) {
     const names = namesFor([opcode, 0x34, 0x12]);
     names.forEach((name, index) => assert.equal(name, `T${index + 1}`));
@@ -217,15 +267,25 @@ start:
 
 test("CMP non abilita il data bus e gli opcode invalidi tornano al fetch", () => {
   const cmp = loadBytes([FIXED_OPCODES.CMP]);
-  const cmpExecute = planMicrocycles(cmp).at(-1);
-  assert.equal(cmpExecute.signals, "FLAGS_WE · NEXT_FETCH");
+  const cmpExecute = planMicrocycles(cmp).at(-2);
+  assert.equal(cmpExecute.signals, "FLAGS_WE");
   assert.equal(cmpExecute.preview.dataBus, null);
   assert.equal(cmpExecute.paths.includes("alu-ra"), false);
+  assert.equal(planMicrocycles(cmp).at(-1).signals, "NEXT_FETCH");
 
   const invalid = loadBytes([0x02]);
   const invalidExecute = planMicrocycles(invalid).at(-1);
-  assert.equal(invalidExecute.t, "T2");
+  assert.equal(invalidExecute.t, "T3");
   assert.equal(invalidExecute.signals, "NEXT_FETCH");
+});
+
+test("NEXT_FETCH ha un microstep dedicato dopo le scritture", () => {
+  for (const bytes of [[0x20, 0x42], [0x48, 0x34, 0x12], [0x58], [0x60], [0xa0, 0x34, 0x12]]) {
+    const phases = planMicrocycles(loadBytes(bytes));
+    assert.ok(!phases.at(-2).signals.includes("NEXT_FETCH"));
+    assert.equal(phases.at(-1).signals, "NEXT_FETCH");
+    assert.equal(phases.at(-1).preview.dataBus, null);
+  }
 });
 
 test("nessun microciclo crea contese sui bus", () => {
@@ -267,7 +327,7 @@ test("le letture selezionano PC o MAR con il nuovo selettore indirizzi", () => {
   const lda = planMicrocycles(loadBytes([0x40, 0x34, 0x12]));
   assert.deepEqual(
     lda.map(({ preview }) => preview.addressSource || "NONE"),
-    ["PC", "PC", "PC", "MAR", "NONE"],
+    ["PC", "PC", "PC", "MAR", "NONE", "NONE"],
   );
   assert.equal(lda[0].signals.includes("ADDR_SEL=PC(01)"), true);
   assert.equal(lda[3].signals.includes("ADDR_SEL=MAR(10)"), true);
@@ -278,7 +338,9 @@ test("ogni percorso microcodice esiste nella mappa del datapath", async () => {
   const diagramPaths = new Set(
     [...diagramSource.matchAll(/pathKey:\s*"([^"]+)"/g)].map((match) => match[1]),
   );
-  const opcodes = [0x00, 0x01, 0x20, 0x40, 0x48, 0x60, 0x69, 0x80, 0x88, 0xa0, 0xa1, 0xc0, 0xc8, 0xd0, 0x02];
+  const opcodes = [0x00, 0x01, 0x20, 0x40, 0x48, 0x60, 0x69, 0x78, 0x80, 0x88,
+    ...["JMP", "JZ", "JNZ", "JC", "JNC", "JN", "JNN", "JO", "JNO"].map((name) => FIXED_OPCODES[name]),
+    0xc0, 0xc8, 0xd0, 0x02];
   for (const opcode of opcodes) {
     const state = loadBytes([opcode, 0x34, 0x12]);
     for (const item of planMicrocycles(state)) {

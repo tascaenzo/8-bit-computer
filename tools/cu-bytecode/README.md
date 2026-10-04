@@ -50,7 +50,7 @@ Mappa delle uscite:
 | --- | ------------------------------------------------------------------------------------------- |
 | 0   | `ADDR_SEL_0`, `ADDR_SEL_1`, `PC_INC`, `MDR_WE`, `MDR_OE`, `RAM_WE`, `EPROM_OE`, `NEXT_FETCH` |
 | 1   | `IR_WE`, `PC_LOAD`, `MAR_L_WE`, `RF_EN`, `RF_RW`, `RA_EN`, `RA_RB_RW`, `RB_EN`               |
-| 2   | `ALU_EN`, `FLAGS_WE`, `MAR_H_WE`, `RAM_OE`, `IDX_L_WE`, `IDX_H_WE`, due bit riservati        |
+| 2   | `ALU_EN`, `FLAGS_WE`, `MAR_H_WE`, `RAM_OE`, `IDX_L_WE`, `IDX_H_WE`, `SYS_STEP_n`, un bit riservato |
 
 ## Configurazione dei segnali
 
@@ -68,7 +68,8 @@ Esempi:
 
 ```c
 {CTRL_PC_INC, "PC_INC", 0, 2, 11, ACTIVE_HIGH},
-{CTRL_RAM_OE, "RAM_OE", 0, 6, 16, ACTIVE_LOW},
+{CTRL_RAM_OE, "RAM_OE", 2, 3, CPU8_CONTROL_ROM_PIN_D3, ACTIVE_LOW},
+{CTRL_SYSTEM_STEP, "SYS_STEP_n", 2, 6, CPU8_CONTROL_ROM_PIN_D6, ACTIVE_LOW},
 ```
 
 `ACTIVE_HIGH` scrive `1` quando il segnale e attivo; `ACTIVE_LOW` scrive `0`
@@ -89,12 +90,26 @@ usa `00=IDX`, `01=PC`, `10=MAR`, `11=nessuna sorgente`.
 
 Il video 25 collega direttamente `IR[7:3]` ad `A3..A7` delle tre Control ROM:
 non e prevista una quarta EEPROM di dispatch.
+`HLT=0x00` e `NOP=0x01` condividono `IR[7:3]=00000`. ROM2 D6 emette
+`SYS_STEP_n=0` soltanto in RUN/T2 per questo gruppo; la OR esterna con
+`IR[2:0]` disabilita il conteggio del microstep solo per HLT.
+
+In RUN l'ultima operazione e separata dalla fase di ritorno a T1: il
+microstep successivo attiva soltanto `NEXT_FETCH_n` (ROM0 D7 basso). La
+fase piu lunga e `STA`/`LDA` diretto: operazione in T5, ritorno in T6.
+Per un 74161 e consigliato collegare D7 a `/LOAD` con gli ingressi paralleli
+a zero e lasciare `/POR` su `/CLR` (vedi
+[`docs/control-unit-eeprom-wiring.md`](../../docs/control-unit-eeprom-wiring.md)).
 
 ## Stato iniziale
 
 Sono implementate `NOP`, `HLT`, `LDI`, `LDA`, `STA`, le operazioni ALU, `CMP`,
-i tre trasferimenti `MOV` e tutti i salti. Gli opcode riservati e le istruzioni
-provvisorie `IN`/`OUT` vanno a `UOP_INVALID`, che arresta il sequencer in `T2`.
+i tre trasferimenti `MOV`, `LDX`, `LDAI`, `STAI` e tutti i salti. `SUB=0x78`
+mantiene `IR[3:0]=1000`, ma usa un gruppo CU diverso da `CMP=0x69`;
+ogni salto ha un gruppo CU distinto. I vecchi binari con `SUB=0x68` o
+`JZ..JO=0xA1..0xA7` vanno riassemblati e riprogrammati. Gli opcode riservati e le istruzioni
+provvisorie `IN`/`OUT` seguono una sequenza NOP fisica:
+T2 senza trasferimenti e ritorno a T1 in T3.
 
 Prima di generare le immagini, il tool verifica automaticamente che:
 
@@ -104,8 +119,6 @@ Prima di generare le immagini, il tool verifica automaticamente che:
 - nessuna uscita EEPROM sia assegnata a due segnali;
 - selettore indirizzi e livelli `BOOT_RUN` abbiano valori validi.
 
-`IDX_L_WE` e `IDX_H_WE` sono gia assegnati alle uscite fisiche, ma rimangono
-inattivi finche la ISA non definisce gli opcode per `IDX`. I due banchi boot e
-run sono entrambi generati; per ora contengono le stesse microsequenze, in
-attesa della definizione del ciclo di copia ROM -> RAM. `EPROM_OE` e quindi
-presente nella configurazione ma resta inattivo nelle immagini attuali.
+`IDX_L_WE` e `IDX_H_WE` sono usati da `LDX=0xD8`. I banchi BOOT e RUN
+sono distinti: il BOOT copia EPROM programma in RAM in T1, incrementa PC
+in T2 e torna a T1 in T3. `EPROM_OE` resta attivo nelle tre fasi BOOT.

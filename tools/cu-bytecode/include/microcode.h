@@ -66,12 +66,14 @@ typedef enum
     CTRL_NEXT_FETCH = 1u << 18,
     CTRL_EPROM_OE = 1u << 19,
     CTRL_IDX_L_WE = 1u << 20,
-    CTRL_IDX_H_WE = 1u << 21
+    CTRL_IDX_H_WE = 1u << 21,
+    /* Gruppo IR[7:3]=00000 in RUN/T2; livello fisico basso su ROM2 D6. */
+    CTRL_SYSTEM_STEP = 1u << 22
 } ControlSignal;
 
 enum
 {
-    CPU8_CONTROL_SIGNAL_COUNT = 22
+    CPU8_CONTROL_SIGNAL_COUNT = 23
 };
 
 typedef enum
@@ -121,7 +123,9 @@ typedef enum
     UOP_JN,
     UOP_JNN,
     UOP_JO,
-    UOP_JNO
+    UOP_JNO,
+    /* Gruppo fisico 0x00..0x07, distinto dai NOP degli altri gruppi. */
+    UOP_SYSTEM
 } MicroOp;
 
 /* Valori memorizzati nel registro dei flag e collegati ad A8..A11. */

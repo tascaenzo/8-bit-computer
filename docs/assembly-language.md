@@ -37,7 +37,8 @@ In questo esempio:
 - `LDI` carica il valore `0x0A` in `R0`;
 - `counter` viene collocata automaticamente nel primo indirizzo libero, `0x0009`;
 - `STA` scrive il valore in memoria e `LDA` lo rilegge in `R1`;
-- `HLT` arresta la CPU.
+- `HLT` genera `0x00`: nel simulatore arresta la CPU; sulla board richiede
+  ROM2 `SYS_STEP_n` collegato in OR con `IR[2:0]` all'abilitazione del microstep.
 
 Una sequenza di sorgenti ampiamente commentati, pensata per la spiegazione nel video, e disponibile nella [cartella principale degli esempi](../examples/assembly/README.md#sequenza-per-il-video-sullassembler).
 
@@ -313,7 +314,8 @@ La parte di codice occupa gli indirizzi da `0x0000` a `0x0008`, quindi la label 
 LDI R0, 0x05    -> 20 05
 STA R0, counter -> 48 09 00
 LDA R1, counter -> 41 09 00
-HLT             -> 01
+HLT             -> 00
+NOP             -> 01
 ```
 
 La direttiva `.byte` posiziona infine il valore `0x00` all'indirizzo `0x0009`.

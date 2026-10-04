@@ -49,7 +49,8 @@ STA R0, counter
 ; Dopo l'esecuzione: R0 = 0x0A, counter = 0x0A e R1 = 0x0A.
 LDA R1, counter
 
-; HLT arresta l'esecuzione. E importante terminare il codice prima dei dati,
+; HLT (0x00) arresta l'esecuzione se il decoder esterno e collegato alla CPU.
+; E importante terminare il codice prima dei dati,
 ; altrimenti la CPU potrebbe interpretare i byte delle variabili come opcode.
 HLT
 
@@ -92,7 +93,7 @@ counter: .byte 0x00
 ; | 0x0005    | 0x41   | opcode LDA R1                                |
 ; | 0x0006    | 0x09   | byte basso dell'indirizzo di counter         |
 ; | 0x0007    | 0x00   | byte alto dell'indirizzo di counter          |
-; | 0x0008    | 0x01   | opcode HLT                                   |
+; | 0x0008    | 0x00   | opcode HLT                                   |
 ; +-----------+--------+-----------------------------------------------+
 ; | 0x0009    | 0x00   | counter: primo byte del blocco data          |
 ; +-----------+--------+-----------------------------------------------+

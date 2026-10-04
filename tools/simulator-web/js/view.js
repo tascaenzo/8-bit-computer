@@ -1,4 +1,4 @@
-import { VIDEO_BASE, VIDEO_WIDTH } from "./isa.js";
+import { ALU_OPCODES, FIXED_OPCODES, JUMP_OPCODES, VIDEO_BASE, VIDEO_WIDTH } from "./isa.js";
 import { disassemble } from "./cpu.js";
 import { BLOCK_INFO } from "./microcode.js";
 import { displayChar, hex, parseNumber } from "./utils.js";
@@ -127,11 +127,11 @@ export function createView(root = document, diagram = null) {
     else if (opcode === 0x65) result = ~(a ^ b);
     else if (opcode === 0x66) result = ~a;
     else if (opcode === 0x67) result = a + b;
-    else if (opcode === 0x68 || opcode === 0x69) result = a - b;
+    else if (opcode === FIXED_OPCODES.SUB || opcode === FIXED_OPCODES.CMP) result = a - b;
     result &= 0xff;
     const overflow = opcode === 0x67
       ? ((~(a ^ b) & (a ^ result)) & 0x80) !== 0
-      : opcode === 0x68 || opcode === 0x69
+      : opcode === FIXED_OPCODES.SUB || opcode === FIXED_OPCODES.CMP
       ? (((a ^ b) & (a ^ result)) & 0x80) !== 0
       : false;
     return {
@@ -140,7 +140,7 @@ export function createView(root = document, diagram = null) {
         C: Number(
           opcode === 0x67
             ? a + b > 0xff
-            : (opcode === 0x68 || opcode === 0x69) && a < b,
+            : (opcode === FIXED_OPCODES.SUB || opcode === FIXED_OPCODES.CMP) && a < b,
         ),
         Z: Number(result === 0),
         N: Number((result & 0x80) !== 0),
@@ -232,11 +232,11 @@ export function createView(root = document, diagram = null) {
         preview.memoryValue = state.mem[target];
         ["mar", "mdr", "address-bus", "data-bus", "memory", `r${reg}`]
           .forEach((key) => preview.active.add(key));
-      } else if (opcode >= 0x60 && opcode <= 0x69) {
+      } else if (ALU_OPCODES.has(opcode)) {
         const alu = aluPreview(opcode, state.ra, state.rb);
-        preview.alu = opcode === 0x69 ? alu.result : state.ra;
+        preview.alu = opcode === FIXED_OPCODES.CMP ? alu.result : state.ra;
         ["ra", "rb", "alu", "flags"].forEach((key) => preview.active.add(key));
-      } else if (opcode >= 0xa0 && opcode <= 0xa8) {
+      } else if (JUMP_OPCODES.has(opcode)) {
         preview.addressBus = low | (high << 8);
         preview.active.add("pc");
         preview.active.add("address-bus");
@@ -282,13 +282,13 @@ export function createView(root = document, diagram = null) {
         preview.active.add(`r${reg}`);
       }
     } else if (
-      (opcode >= 0x40 && opcode <= 0x4f) || (opcode >= 0xa0 && opcode <= 0xa8)
+      (opcode >= 0x40 && opcode <= 0x4f) || JUMP_OPCODES.has(opcode)
     ) {
       const operandAddress = (address + (t === 4 ? 1 : 2)) & 0xffff;
       showMemoryRead(operandAddress, t === 4 ? low : high);
       preview.pc = (address + (t === 4 ? 2 : 3)) & 0xffff;
       preview.active.add("pc");
-    } else if (opcode >= 0x60 && opcode <= 0x69) {
+    } else if (ALU_OPCODES.has(opcode)) {
       const alu = aluPreview(opcode, state.ra, state.rb);
       preview.alu = alu.result;
       preview.flags = alu.flags;

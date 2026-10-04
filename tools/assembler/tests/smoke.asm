@@ -6,6 +6,7 @@ LDA R1, counter
 OUT R0
 OUT R1
 HLT
+NOP
 
 .data 0x0010
 counter: .byte 0x00

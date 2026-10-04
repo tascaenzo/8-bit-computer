@@ -89,7 +89,10 @@ function run() {
 }
 function microStep() {
   stop();
-  if (state.halted) {
+  const pendingReturn = state.micro.plan.length > 0 &&
+    state.micro.current === state.micro.plan.length - 2 &&
+    state.micro.plan.at(-1).signals === "NEXT_FETCH";
+  if (state.halted && !pendingReturn) {
     view.setStatus("CPU arrestata");
     return;
   }
@@ -103,12 +106,16 @@ function microStep() {
   }
   state.micro.current++;
   const phase = state.micro.plan[state.micro.current];
-  if (state.micro.current === state.micro.plan.length - 1) {
+  const lastIndex = state.micro.plan.length - 1;
+  const hasFetchReturn = state.micro.plan[lastIndex].signals === "NEXT_FETCH";
+  const executeIndex = hasFetchReturn ? lastIndex - 1 : lastIndex;
+  if (state.micro.current === executeIndex) {
+    // Le istruzioni normali terminano prima di NEXT_FETCH; HLT termina in T2.
     runInstruction();
     if (!state.halted) view.setStatus(`${phase.t} completato`);
   } else {
     view.render(state);
-    view.setStatus(`${phase.t} · ${phase.title}`);
+    view.setStatus(state.halted ? "CPU arrestata" : `${phase.t} · ${phase.title}`);
   }
 }
 

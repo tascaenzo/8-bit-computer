@@ -2,8 +2,8 @@
 
 `cu-bytecode` genera i binari per le tre EEPROM AT28C64 della Control Unit.
 Le tre ROM condividono i 13 ingressi di indirizzo e producono, insieme, una
-microistruzione da 24 bit. Il tool genera anche una ROM di dispatch opzionale
-che traduce l'opcode in un microprogramma (`uOP`).
+microistruzione da 24 bit. Esiste una funzione per costruire una tabella di
+dispatch opzionale, ma l'eseguibile attuale scrive **solo tre** immagini ROM.
 
 ## Idea generale
 
@@ -75,7 +75,7 @@ decoder, modifica questo file invece delle microsequenze.
 E il contratto pubblico del progetto. Dichiara:
 
 - `ControlWord`, parola logica dei segnali;
-- `ControlSignal`, le maschere dei 22 segnali;
+- `ControlSignal`, le maschere dei 23 segnali;
 - `MicroOp`, i microprogrammi;
 - flag, modi CPU e funzioni di generazione.
 
@@ -84,20 +84,23 @@ E il contratto pubblico del progetto. Dichiara:
 E il motore del generatore. `microcode_word` descrive le microsequenze di
 fetch, load, store, ALU, movimenti e salti. Lo stesso file:
 
-- converte opcode in microprogramma con `dispatch_opcode`;
+- converte i gruppi `IR[7:3]` in microprogrammi con `microop_for_ir_group`;
+  `dispatch_opcode` serve solo alla tabella opzionale e ai test;
 - valuta le condizioni usando i flag `C`, `Z`, `N`, `O`;
 - verifica che non esistano contese sul data bus;
 - applica la polarita fisica con `encode_control_word`;
 - riempie tutte le 8192 celle delle tre ROM.
 
-La ROM di dispatch e un'estensione opzionale rispetto al video 25: serve alla
-ISA corrente per distinguere opcode che condividono gli stessi bit alti.
+La ROM di dispatch e un'estensione opzionale rispetto al video 25 e **non
+serve** nel cablaggio corrente: gli opcode attivi con microsequenze differenti
+occupano gruppi `IR[7:3]` distinti. `HLT` e `NOP` condividono il gruppo, ma
+la distinzione avviene con `SYS_STEP_n OR IR[2:0]` fuori dalle EEPROM.
 
 ## `src/main.c`
 
 E il punto di ingresso di `cpu8microcode`: costruisce le immagini, le valida e
-scrive `microcode-rom0.bin`, `microcode-rom1.bin`, `microcode-rom2.bin` e
-`microcode-dispatch.bin`. L'opzione `-o` cambia il prefisso dei file.
+scrive `microcode-rom0.bin`, `microcode-rom1.bin` e `microcode-rom2.bin`.
+L'opzione `-o` cambia il prefisso dei file.
 
 ## `include/output.h` e `src/output.c`
 
@@ -130,5 +133,7 @@ I binari vengono creati in `tools/cu-bytecode/build/`.
 
 - Il BOOT copia in ciclo continuo gli 8 KiB della EPROM: il passaggio a RUN e
   l'azzeramento finale di PC restano azioni hardware esterne.
-- `HLT` non ha ancora una linea fisica tra i 22 segnali del video 25.
+- `HLT=0x00` e `NOP=0x01` condividono `IR[7:3]`, ma ROM2 D6 emette
+  `SYS_STEP_n=0` solo in RUN/T2. La OR esterna con `IR[2:0]` ferma il
+  contatore microstep solo per HLT; il pin resta alto durante T1 e BOOT.
 - `IDX` non ha incremento automatico: `LDX` lo ricarica esplicitamente.

@@ -40,6 +40,10 @@ npm test
   testuale;
 - una porta di input e una di output per `IN` e `OUT`.
 
+La codifica corrente e `HLT=0x00`, `NOP=0x01`. Il simulatore arresta HLT in
+T2; sulla CPU fisica ROM2 D6 emette `SYS_STEP_n=0` solo per il gruppo di
+sistema in RUN/T2. Una OR esterna con `IR[2:0]` ferma il conteggio solo per HLT.
+
 Il simulatore esegue lo stato architetturale al termine di ogni istruzione. La
 vista microcodice mostra invece le fasi funzionali definite in
 [`docs/control-unit-microcode.md`](../../docs/control-unit-microcode.md):

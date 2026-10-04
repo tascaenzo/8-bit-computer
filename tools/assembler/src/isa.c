@@ -38,11 +38,11 @@ static const Cpu8InstructionDef instruction_set[] = {
      * Sistema / controllo.
      *
      * Opcode completamente fissi:
-     *   NOP = 0b00000000
-     *   HLT = 0b00000001
+     *   HLT = 0b00000000
+     *   NOP = 0b00000001
      */
-    {"NOP", 0x00, 0xFF, CPU8_FORMAT_IMP, false},
-    {"HLT", 0x01, 0xFF, CPU8_FORMAT_IMP, false},
+    {"HLT", 0x00, 0xFF, CPU8_FORMAT_IMP, false},
+    {"NOP", 0x01, 0xFF, CPU8_FORMAT_IMP, false},
 
     /*
      * ccc = 001, range 0x20-0x3F
@@ -84,7 +84,7 @@ static const Cpu8InstructionDef instruction_set[] = {
      *   AND  = 0000 -> 0x60
      *   OR   = 0001 -> 0x61
      *   ...
-     *   CMP  = 1001 -> 0x69
+     *   CMP  = 1001 -> 0x69; SUB usa 0x78 per avere un gruppo CU distinto
      *
      * Queste istruzioni non selezionano R0..R7: lavorano su RA/RB.
      */
@@ -96,7 +96,7 @@ static const Cpu8InstructionDef instruction_set[] = {
     {"XNOR", 0x65, 0xFF, CPU8_FORMAT_IMP, false},
     {"NOT", 0x66, 0xFF, CPU8_FORMAT_IMP, false},
     {"ADD", 0x67, 0xFF, CPU8_FORMAT_IMP, false},
-    {"SUB", 0x68, 0xFF, CPU8_FORMAT_IMP, false},
+    {"SUB", 0x78, 0xFF, CPU8_FORMAT_IMP, false},
     {"CMP", 0x69, 0xFF, CPU8_FORMAT_IMP, false},
 
     /*
@@ -119,18 +119,18 @@ static const Cpu8InstructionDef instruction_set[] = {
      *
      * I bit bassi identificano la condizione:
      *   JMP = 0b10100000 = 0xA0
-     *   JZ  = 0b10100001 = 0xA1
-     *   JNZ = 0b10100010 = 0xA2
-     *   ...
+     *   JZ  = 0b10110000 = 0xB0
+     *   JNZ = 0b10111000 = 0xB8
+     *   gli altri salti usano gruppi IR[7:3] distinti.
      */
     {"JMP", 0xA0, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JZ", 0xA1, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JNZ", 0xA2, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JC", 0xA3, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JNC", 0xA4, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JN", 0xA5, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JNN", 0xA6, 0xFF, CPU8_FORMAT_ADDR16, false},
-    {"JO", 0xA7, 0xFF, CPU8_FORMAT_ADDR16, false},
+    {"JZ", 0xB0, 0xFF, CPU8_FORMAT_ADDR16, false},
+    {"JNZ", 0xB8, 0xFF, CPU8_FORMAT_ADDR16, false},
+    {"JC", 0xE0, 0xFF, CPU8_FORMAT_ADDR16, false},
+    {"JNC", 0xE8, 0xFF, CPU8_FORMAT_ADDR16, false},
+    {"JN", 0xF0, 0xFF, CPU8_FORMAT_ADDR16, false},
+    {"JNN", 0xF8, 0xFF, CPU8_FORMAT_ADDR16, false},
+    {"JO", 0x30, 0xFF, CPU8_FORMAT_ADDR16, false},
     {"JNO", 0xA8, 0xFF, CPU8_FORMAT_ADDR16, false},
     /* ccc = 110: carica IDX con un indirizzo immediato a 16 bit. */
     {"LDX", 0xD8, 0xFF, CPU8_FORMAT_ADDR16, false}

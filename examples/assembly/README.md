@@ -18,8 +18,12 @@ La sintassi usata negli esempi e descritta in [`docs/assembly-language.md`](../.
 | `05_compare_unsigned.asm` | confronto unsigned con `CMP`, `JZ`, `JC` e `JMP` |
 | `06_labels_and_two_passes.asm` | label in avanti e assemblaggio in due passate |
 | `07_jump_conditions.asm` | panoramica di `JZ`, `JNZ`, `JC`, `JNC`, `JN`, `JNN`, `JO` e `JNO` |
+| `cu_isa_smoke.asm` | prova fisica senza IN/OUT: SUB, CMP, JNZ, memoria diretta/IDX e HLT; scrive tre byte verificabili in RAM |
 
 `demo.asm` non e numerato perche serve come template autonomo. Gli altri file seguono l'ordine didattico consigliato da `01` a `07`.
+Riassemblare gli esempi prima di caricarli nella EPROM programma: i nuovi
+opcode di `SUB` e dei salti condizionati non sono compatibili con i vecchi
+binari.
 
 ## Sequenza per il video sull'assembler
 
@@ -66,7 +70,7 @@ Durante la registrazione si puo seguire questa sequenza:
 
 | Area | Esempi |
 | --- | --- |
-| Sistema | tutti i programmi terminano con `HLT` |
+| Sistema | tutti i programmi terminano con `HLT` (`0x00`); `NOP` vale `0x01` |
 | Load immediate | `demo.asm` e gli esempi numerati coprono `LDI` |
 | Memoria | `demo.asm` e `02_memory_and_directives.asm` coprono `LDA`, `STA`, `.data` e `.byte` |
 | ALU | `03_add_two_numbers.asm` copre `ADD`; `04_alu_operations.asm` copre le altre operazioni; `05_compare_unsigned.asm` copre `CMP` |

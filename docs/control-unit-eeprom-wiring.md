@@ -24,17 +24,17 @@ Le tre EEPROM di controllo condividono lo stesso bus indirizzi. Il segnale
 | --- | --- |
 | Control ROM 0 | `ADDR_SEL_0`, `ADDR_SEL_1`, `PC_INC`, `MDR_WE`, `MDR_OE`, `RAM_WE`, `EPROM_OE`, `NEXT_FETCH` |
 | Control ROM 1 | `IR_WE`, `PC_LOAD`, `MAR_L_WE`, `RF_EN`, `RF_RW`, `RA_EN`, `RA_RB_RW`, `RB_EN` |
-| Control ROM 2 | `ALU_EN`, `FLAGS_WE`, `MAR_H_WE`, `RAM_OE`, `IDX_L_WE`, `IDX_H_WE`, due uscite riservate |
+| Control ROM 2 | `ALU_EN`, `FLAGS_WE`, `MAR_H_WE`, `RAM_OE`, `IDX_L_WE`, `IDX_H_WE`, `SYS_STEP_n`, una uscita riservata |
 
 Il cablaggio riportato nel video 25 collega direttamente `IR[7:3]` alle cinque
 linee `A3..A7`; `IR[2:0]` seleziona il registro generale e `IR[3:0]` raggiunge
 il decoder ALU. Non e presente una EEPROM di dispatch nello schema mostrato.
 
-> La ISA successiva distingue alcuni opcode che condividono gli stessi cinque
-> bit alti (in particolare i salti condizionati). Il generatore conserva perciò
-> una ROM di dispatch **opzionale** come estensione dell'hardware del video:
-> senza un decoder aggiuntivo, quei salti non possono avere microsequenze
-> differenti. Non collegarla come se facesse parte delle tre Control ROM.
+> La ISA corrente assegna a `SUB`, `CMP` e a ciascun salto un gruppo distinto
+> di `IR[7:3]`. Le tre Control ROM possono quindi produrre le sequenze e le
+> condizioni sui flag senza una ROM di dispatch. L'immagine di dispatch che
+> il tool genera resta **opzionale** e non va collegata nello schema attuale.
+> I vecchi binari con `SUB=0x68` o `JZ..JO=0xA1..0xA7` vanno riassemblati.
 
 > Il banco BOOT e definito: ROM 0 contiene tutti i segnali del trasferimento
 > `EPROM[PC] -> bus dati -> RAM[PC]` in T1, seguito da disattivazione di `/WE_RAM`
@@ -101,21 +101,60 @@ che sale lentamente o con cadute dei 5 V non garantisce un reset affidabile.
 Non usare un normale inverter privo di ingresso Schmitt direttamente sul nodo
 RC, perche la transizione lenta puo provocare commutazioni multiple.
 
-Per i contatori 74161, il pin `/CLR` asincrono e attivo basso:
+Per il contatore 74161 del microstep, usare il caricamento **sincrono** a zero:
 
 ```text
 /CLR_PC[0..3] = /POR                 (tutti i 74161 del PC)
-/CLR_µSTEP   = /POR AND NEXT_FETCH_n (una porta AND)
+/CLR_µSTEP   = /POR
+/LOAD_µSTEP  = NEXT_FETCH_n          (Control ROM 0, D7)
+D,C,B,A del contatore µSTEP = 0,0,0,0
 
 NEXT_FETCH_n = Control ROM 0, D7 (attivo basso)
 ```
 
 Con `/POR=0`, PC e microstep sono forzati a zero. Dopo il rilascio di `/POR`,
-`NEXT_FETCH_n` continua ad azzerare **solo** il microstep quando richiesto
-dal microcodice. Non collegare direttamente fra loro l'uscita del circuito `/POR`
-e D7 della EEPROM: sono due uscite che potrebbero pilotare livelli opposti.
+`NEXT_FETCH_n=0` carica `0000` nel **solo** contatore microstep al successivo
+fronte di salita del clock. Il segnale resta attivo per l'intera fase di reset;
+non si autoestingue in modo asincrono. Tenere `/POR` sul `/CLR` asincrono,
+separato da D7 della EEPROM: sono due uscite che non vanno unite direttamente.
 `NEXT_FETCH_n` non deve resettare il PC, altrimenti il BOOT ripartirebbe da
 indirizzo zero a ogni byte.
+
+Se la scheda attuale collega D7 a `/CLR_µSTEP` tramite una porta AND con
+`/POR`, la nuova sequenza RUN dedica comunque un microstep al solo reset:
+la scrittura RAM e gli aggiornamenti dei registri terminano prima che D7
+scenda a zero. Questa separazione **non garantisce** pero la durata del
+reset asincrono autoestinguente ne l'assenza di glitch della EEPROM; per la
+prova RUN finale resta raccomandato il collegamento a `/LOAD` sopra. Prima
+di riprogrammare la ROM0 fisica, verificare quale cablaggio e presente.
+
+### Arresto HLT esterno alla CU
+
+`HLT=0x00` e `NOP=0x01` hanno entrambi `IR[7:3]=00000`. Control ROM 2
+usa ora `D6` (pin DIP-28 **16**) per `SYS_STEP_n`, attivo basso:
+`D6=0` solo se `BOOT_RUN=1`, `µSTEP[2:0]=001` (T2) e
+`IR[7:3]=00000`. In tutti gli altri indirizzi, inclusi BOOT e T1, `D6=1`.
+Le linee `IR[2:0]` restano esterne alle EEPROM. Per HLT basta una OR:
+
+```text
+µSTEP_EN = SYS_STEP_n OR IR2 OR IR1 OR IR0
+```
+
+Il risultato vale `0` solo per `HLT=0x00` in RUN/T2; collegarlo a una
+**abilitazione al conteggio** del 74161 microstep (l'altra abilitazione
+deve restare alta se non ha un'altra funzione). Non tagliare il clock.
+`001` e T2 sui bit logici del contatore; sui pin EEPROM equivale a
+`A2:A1:A0=100` con la mappatura attuale. In T2 le altre uscite CU sono
+inattive e IR resta `0x00`, quindi il contatore resta fermo. Per NOP
+(`IR[2:0]=001`) la OR vale `1` e il contatore raggiunge T3.
+Se l'abilitazione del contatore e gia condizionata da altra logica,
+combinare il risultato senza scavalcare tale condizione.
+
+**Prima di collegare D6**, programmare e verificare la nuova immagine
+`microcode-rom2.bin`: il precedente bit riservato non aveva un livello
+garantito. Misurare D6 alto durante T1/BOOT e basso in RUN/T2 per il gruppo
+di sistema; usare un clock che rispetti i tempi di propagazione della EEPROM
+e di setup dell'ingresso enable del contatore.
 
 Durante `/POR=0` va inoltre impedita la scrittura della RAM. Poiche T1 del
 BOOT ha `/WE_RAM` attivo basso, aggiungere l'inibizione al circuito OR che

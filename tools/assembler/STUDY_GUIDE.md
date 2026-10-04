@@ -16,7 +16,7 @@ HLT
 L'assembler deve trasformarlo in byte:
 
 ```text
-0x20 0x0A 0x01
+0x20 0x0A 0x00
 ```
 
 Il lavoro dell'assembler puo essere diviso in passaggi:
@@ -124,7 +124,8 @@ La ISA descrive le istruzioni disponibili.
 Il file `src/isa.c` contiene una tabella che collega un mnemonic a un opcode:
 
 ```c
-{"NOP", 0x00, 0xFF, CPU8_FORMAT_IMP, false}
+{"HLT", 0x00, 0xFF, CPU8_FORMAT_IMP, false}
+{"NOP", 0x01, 0xFF, CPU8_FORMAT_IMP, false}
 ```
 
 Il significato dei campi e:

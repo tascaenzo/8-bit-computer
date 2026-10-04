@@ -1,0 +1,1235 @@
+Bentornati sul mio canale YouTube. Oggi
+
+continuiamo la parte relativa alla
+
+control unit della nostra CPU. Nel video
+
+di oggi andremo a collegare la prima e
+
+che costituirà la Control Unit e
+
+proviamo a gestire tutta la fase di boot
+
+della nostra CPU. Ma prima di iniziare
+
+vi ricordo di lasciare un mi piace,
+
+commentare questo video e iscrivervi al
+
+canale in modo da supportare il mio
+
+lavoro.
+
+In questo video riprendiamo tutto il
+
+discorso della programmazione della
+
+eprom che andrà a costituire il la
+
+control unit della nostra CPU. In questo
+
+primo video voglio provare a gestire la
+
+fase di boot, quindi quella fase in cui
+
+la eprom verrà copiata all'interno della
+
+RAM.
+
+Vi dico subito che il codice che abbiamo
+
+visto nello scorso video generato da
+
+Codex aveva una serie di problemi. In
+
+effetti e quella quella prima versione
+
+del codice non funzionava, mi dava tutta
+
+una serie di problemi nelle fasi di
+
+temporizzazione che doveva gestire la
+
+EPROM per fare questo boot.
+
+Ho fatto tutta una serie di modifiche e
+
+di test, però sono arrivato poi a una
+
+conclusione che è quella di pilotare un
+
+po' l'intelligenza artificiale tramite
+
+questo file control Unit test log. è un
+
+file di markdown dove vado a descrivere
+
+per ogni singola fase, per ogni singola
+
+istruzione che dovrà essere gestita
+
+dalla Control Unit, qual è l'input che
+
+deve avere e qual è l'output che dovrà
+
+generare, quindi i vari segnali che
+
+dovrà generare. Attualmente è presente
+
+solo la descrizione della della fase di
+
+boot e poi mano a mano che andiamo a
+
+testare tutte le altre varie fasi della
+
+control Unit, quindi tutte le altre
+
+istruzioni che dovrà gestire la nostra
+
+CPU, andremo a incrementare questo file
+
+da cui l'intelligenza artificiale andrà
+
+ad attingere per andare a modificare il
+
+programma
+
+CU byte Code, quindi il programma che
+
+poi va a generare
+
+i binari delle che costituiranno la
+
+control unit.
+
+Quindi analizziamo la fase di boot.
+
+Attualmente ho queste due tabelle, una
+
+va a rappresentare gli ingressi.
+
+Ricordo che A12 è il segnale di boot che
+
+si trova a zero. Invece
+
+A2, A1 e A0 non è altro che il contatore
+
+nei microstep. La cosa che ci interessa
+
+principalmente sono questi due valori,
+
+perché tutti gli altri possono assumere
+
+un qualsiasi valore ma non vanno a
+
+intaccare tutta la fase di boot. Invece
+
+qui sotto abbiamo la tabella in uscita,
+
+la tabella di verità in uscita che forse
+
+è la parte più importante perché va a
+
+descrivere per ogni singolo istante di
+
+tempo quali dovranno essere i segnali
+
+generati dalla Control Unit e che valori
+
+dovranno assumere.
+
+Innanzitutto diciamo subito che eh un
+
+ciclo di copia dalla
+
+EPROM alla RAM ha bisogno di tre
+
+macrostep T1, T2 e T3, quindi avremo tre
+
+incrementi del contatore di microstep.
+
+Abbiamo detto che eh il primo chip di
+
+ROM di EPROM dovrà potrà gestire tutta
+
+questa fase di boot perché perché di
+
+fatto abbiamo tutti i segnali che ci
+
+interessano. Su D7 abbiamo il clear del
+
+macrostep che fa il reset del contatore
+
+microstep. Su D6 abbiamo l'output enable
+
+della EPROM. Su D5 abbiamo il bright
+
+enable della RAM. Eh, D4, D3 non ci
+
+interessano per il momento. D2 invece
+
+sarà il segnale che va a dare
+
+l'incremento al programo counter e poi
+
+su D1 e D0 abbiamo il selettore del
+
+registro che pilota il bass degli
+
+indirizzi che durante tutte queste tre
+
+fasi sarà sempre fisso a 01 perché la
+
+combinazione 01 coincide con l'enebole
+
+del program counter, quindi il program
+
+counter prende il controllo del bass
+
+degli indirizzi.
+
+Nella prima fase in T1 abbiamo il
+
+condatore microstep A1 livello logico
+
+alto, poi abbiamo output enable la eprom
+
+a 0
+
+e poi programo counter ink a zer
+
+e basta, non ci interessa nient'altro.
+
+il bright enable e la RAM pure a zero.
+
+In T2 abbiamo sempre il contatore di
+
+microstep a 1, output enable la eprom
+
+sempre a zero perché sarà la eprom che
+
+sta ehm spreende il controllo del bass
+
+dei dati. Invece il wright enable della
+
+RAM transita verso il livello logico 1,
+
+quindi inizia la fase di scrittura.
+
+Durante lo step successivo, qui abbiamo
+
+il program counter ink, quindi qua viene
+
+fatto anche l'incremento del program
+
+counter.
+
+Che cosa succede? Abbiamo il il clear
+
+del microstep a zero, quindi
+
+effettivamente si va a resettare il
+
+microstep
+
+right enable a 1 e poi a questo punto
+
+che cosa succede? Succede che torniamo a
+
+zero perché andiamo nel microstep
+
+successivo,
+
+viene fatto il reset, torniamo a zero e
+
+quindi viene effettivamente chiusa la
+
+fase di scrittura all'interno della RAM.
+
+Quindi abbiamo salvato il dato
+
+all'interno della RAM. Ora noi dobbiamo
+
+ciclare eh tutta questa queste tre fasi
+
+T1, T2 e T3, fino a quando non abbiamo
+
+letto tutto il bass degli indirizzi
+
+della della nostra CPU.
+
+A questo punto vi mostro come
+
+effettivamente caricare il codice
+
+binario eh generato dal C byte Code,
+
+cioè questo file qua, microcode ROM 0,
+
+all'interno della epromite l'Arduino
+
+ho collegato l'Arduino al computer,
+
+quindi siamo pronti effettivamente a
+
+scrivere la prominale,
+
+mi sono preparato questo questo comando
+
+che va a eseguire lo script Python e va
+
+a fare la scrittura all'interno della
+
+EPROM. Sto utilizzando una versione di
+
+chip che ha bisogno della scrittura
+
+protetta, quindi vado a aggiungere eh
+
+questo flag durante l'esecuzione
+
+dello script. Vediamo se effettivamente
+
+parte la parte
+
+il caricamento.
+
+In effetti è iniziato il caricamento.
+
+Qui abbiamo anche la percentuale che ci
+
+fa vedere mano a mano che viene scritta
+
+la EPROM, l'avanzamento.
+
+Ok, è stata effettivamente completata la
+
+scrittura. Ho accelerato un po' la clip,
+
+ha impiegato circa 4-5 minuti a fare il
+
+caricamento e siamo arrivati all'ultimo
+
+indirizzo della EPROM. Alla fine mi dà
+
+un messaggio dicendomi che la EPROM è
+
+stata scritta e poi è stata fatta una
+
+verifica sul sul binario che è stato
+
+inviato all'interno della della EPROM. A
+
+questo punto possiamo provare a staccare
+
+il programmatore, l'promatore,
+
+collegarlo all'interno della CPU,
+
+completare tutti i collegamenti e vedere
+
+se effettivamente funziona almeno la
+
+prima fase di boot della CPU.
+
+Ho collegato il chip di eprom
+
+all'interno della CPU della board.
+
+Questo qua, quindi è il chip zero che
+
+andrà a gestirci eh tutta la fase di
+
+boot, quello che abbiamo appena
+
+programmato. Vediamo brevemente i
+
+collegamenti che ho fatto. Nello scorso
+
+video avevamo visto che erano stati
+
+collegati i flag, che erano questi cavi
+
+neri. Poi era stato collegato il segnale
+
+di boot, non so se si vede, questo cavo
+
+arancio. Ora ho collegato all'ingresso
+
+degli indirizzi dell'EPROM questi cavi
+
+verdi che vanno a identificare
+
+l'extraction register, in particolare i
+
+primi 5 bit, quelli più significativi. E
+
+poi abbiamo questi ultimi tre cavi in
+
+grigio che invece vanno a identificare
+
+il contatore dei microstep. Vado a
+
+prelevarli direttamente dall'uscita del
+
+contatore microstep prima che va al
+
+decoder de Multiplexer che va poi
+
+accendere eh i vari macrostep T1, T2,
+
+T3, T4 e così via.
+
+Poi eh qui invece abbiamo le uscite
+
+della prima eprom che saranno poi i
+
+nostri segnali di controllo. Ho già
+
+fatto un paio di collegamenti, quelli
+
+che ci servono per testare la fase di
+
+boot. Questi due cavi intrecciati che
+
+poi continuano sono collegati al decoder
+
+multiplexer che va a gestire i registri
+
+che vanno poi a pilotare il basso degli
+
+indirizzi.
+
+Poi abbiamo questo cavo qua in bianco
+
+che è il cavo di reset del contatore
+
+microstep, serve ad azzerarlo.
+
+Questo cavo marroncino invece
+
+è il
+
+bright enable
+
+della RAM e poi questo cavo qui volante
+
+che vedete invece è il l'output enable
+
+della eprom. Ora diciamo che non ha
+
+funzionato tutto a primo colpo. Ho
+
+dovuto fare un bel po' di modifiche
+
+prima di ottenere un circuito
+
+funzionante perché effettivamente sulla
+
+carta sembrava essere tutto pronto,
+
+predisposto a fare la prima fase di
+
+boot, però c'erano un paio di cose che
+
+ho dovuto sistemare.
+
+Il problema principale che mi ha fatto
+
+perdere un po' più di tempo è stato il
+
+segnale di reset del contatore dei
+
+microep
+
+perché effettivamente è questo cavallo
+
+arancione il reset e l'avevo collegato
+
+direttamente a questo questa uscita qui
+
+della eprom che va a gestirmi il segnale
+
+di controllo del reset, però eh in
+
+realtà dando degli impulsi di clock non
+
+avanzava mai il contatore microstepivo
+
+il motivo. Il problema è che questo
+
+segnale di reset è asincrono, quindi non
+
+è sincronizzato con con il clock, basta
+
+che il segnale anche per un brevissimo
+
+istante transita a livello logico basso
+
+per resettare il contatore microstep.
+
+Che cosa succede? Succede che la eprom,
+
+le uscite della eprom hanno tutta una
+
+fase in cui hanno dei segnali spuri,
+
+hanno, diciamo, dei picchi e in cui il
+
+segnale non è costante l'uscita della
+
+EPROM. prima che si stabilizzi passa
+
+qualche nanosecondo. Ora il problema è
+
+che in questi nanosecondi andava sempre
+
+a resettare il contatore di Macrostep,
+
+quindi non avanzava mai il conteggio. La
+
+soluzione era è utilizzare un altro
+
+integrato in cui il reset avviene
+
+soltanto nell'istante di clock, di
+
+salita del clock, quindi sul fronte di
+
+salita del clock non avevo questo
+
+integrato e allora ho utilizzato un
+
+trucchetto, dato che questo chip
+
+permette anche il load di un valore
+
+e il load è asincrono, è sincrono,
+
+quindi è sincronizzato col clock,
+
+avviene soltanto durante il fronte di
+
+salita del clock. Ho pensato di mettere
+
+a zero tutti gli ingressi, sono questi
+
+cavi marroni. E poi questo cavo che è il
+
+segnale di Load diventa di fatto il
+
+segnale di reset perché quando io avvio
+
+il caricamento
+
+vado a impostare tutti i bit a zero e di
+
+fatto ho creato un reset utilizzando il
+
+Loid e quindi sfruttando questo
+
+trucchetto riesco a risolvere il
+
+problema del segnale che è poco stabile
+
+all'inizio e mi manda in reset sempre il
+
+contatore di microstep. Quindi questo è
+
+stato il primo problema che ho risolto e
+
+già eh con questa piccola modifica
+
+riusciamo a fare qualche test e
+
+completare la fase di boot. Quindi
+
+adesso proviamo a dare alimentazione al
+
+circuito e vediamo effettivamente se
+
+riusciamo a completare questa fase di
+
+boot.
+
+A questo punto siamo pronti a fare un
+
+test. Al solito il problema è riuscire a
+
+farvi vedere tutto. In ogni caso vi
+
+metto in sovraimpressione questo foglio
+
+in cui abbiamo il binario corrispondente
+
+che ci aspettiamo in uscita all'interno
+
+della EPROM e quindi dopo all'interno
+
+della RAM. Quindi abbiamo tutto il il
+
+programma a demo. Questo è l'assembly
+
+che poi diventa un binario.
+
+Proviamo a dare alimentazione al
+
+computer.
+
+Ho dato alimentazione al computer. In
+
+effetti già notiamo un problema. Il
+
+problema è che abbiamo un valore casuale
+
+all'interno del program counter che
+
+attualmente sta pilotando il bass degli
+
+indirizzi. Facciamo un reset del program
+
+counter.
+
+Quindi ho fatto reset del program
+
+counter e a questo punto iniziamo
+
+manualmente a dare degli incrementi di
+
+clock
+
+e vedere se effettivamente eh viene
+
+salvata l'informazione all'interno della
+
+RAM. Quindi facciamo un primo ciclo in
+
+cui m testiamo eh tutto tutto il flusso
+
+dovremmo passare da T1 a T3 e poi
+
+ripartire e in questi tre cicli di clock
+
+dovrebbe aver copiato questo indirizzo,
+
+l'indirizzo zero. Vediamo se è vero.
+
+Partiamo. Do un impulso di clock. tutti
+
+e due. Faccio notare che si è acceso il
+
+bass dati con questo valore che
+
+effettivamente poi corrisponde
+
+all'indirizzo zero della eprom. Quindi
+
+qua ci siamo.
+
+Faccio anche notare che abbiamo il LED
+
+acceso sul program che mi dice
+
+essenzialmente che il program counter
+
+sta pilotando il basso degli indirizzi.
+
+Sono a T2. Impulso dei clock sono a T3.
+
+Quindi in teoria ho chiuso eh già il
+
+salvataggio all'interno della RAM.
+
+Il program counter ha fatto l'incremento
+
+a T3 e quindi già in uscita c'ho un
+
+secondo valore che effettivamente è il
+
+valore che mi aspetto a questo
+
+indirizzo, l'indirizzo uno.
+
+Do un altro
+
+un altro impulso di clock, dovrei
+
+passare da T3 a T1, quindi iniziare il
+
+secondo giro.
+
+In effetti l'ha fatto, però sono andato
+
+troppo avanti, non sono stato preciso
+
+con l'impulso, ne do un altro, ritorno
+
+su T1 e così via. Quindi, banalmente, se
+
+io continuo e vado avanti, dovrei
+
+copiare piano piano tutta tutta la
+
+eprom. Ora, che cosa succede? Succede
+
+che effettivamente eh dopo
+
+un paio di istruzioni c'ho dei dati
+
+casuali all'interno della eprom perché
+
+il programma che ho caricato ha poche
+
+istruzioni.
+
+Di fatto dovrebbe andare in automatico
+
+ciclare tutto il giro, tutto il flusso,
+
+dovrebbe ciclare tutto il bass degli
+
+indirizzi
+
+e poi una volta che tutti i LED si
+
+accendono dovrei fermare la fase di
+
+boot. non ho implementato questo questo
+
+flusso. Eh, in effetti c'è il famoso
+
+bottone che mi permette di switchare
+
+dalla fase di boot alla fase de run,
+
+quindi è tutta gestita manualmente e per
+
+ora la lascio in questo modo. Se io
+
+switcio il clock da impulso manuale in
+
+impulso automatico,
+
+in effetti vedete che sta continuando
+
+tutta la fase di boot e sta
+
+incrementando piano piano il program
+
+counter. Mh, vediamo sembra acceso a T1,
+
+T2, T3, ma in realtà è perché è così
+
+veloce mh il cambiamento di fase che
+
+sembra che siano sempre accesi tutti e
+
+tre i LED. A questo punto lo fermo.
+
+Ho fermato l'avanzamento del program
+
+counter.
+
+Ho effettuato un reset manuale del
+
+program counter con il clear, questo
+
+cavo qui, e poi per vedere
+
+effettivamente se ha funzionato il boot,
+
+quindi se abbiamo copiato la ROM
+
+all'interno della RAM, che cosa ho
+
+fatto? Ho manualmente eh staccato l'outo
+
+enable dalla eprom e l'ho messo fisso a
+
++ 5 V e poi ho messo il wright enable
+
+della RAM, l'ho messo sempre a più 5 V
+
+in modo da evitare scritture accidentali
+
+nella RAM e l' output enable della RAM
+
+l'ho messo a massa. Quindi
+
+effettivamente
+
+adesso la RAM sta pilotando l'uscita.
+
+Siamo all'indirizzo zero e abbiamo
+
+questo output che è coerente con ciò che
+
+avevamo all'interno della eprom con il
+
+programma che abbiamo caricato. Proviamo
+
+a fare un incremento, quindi aspettiamo
+
+che il program counter si incrementa.
+
+Per farlo do degli impulsi di clock.
+
+Ok,
+
+sono all'indirizzo uno e anche questa
+
+uscita che abbiamo coerente con ciò che
+
+ci aspettiamo che avevamo all'interno
+
+della ROM, quindi anche in questo caso è
+
+stato copiato nella RAM e possiamo
+
+andare avanti.
+
+Ok, siamo a questo indirizzo
+
+e in effetti anche questa casistica
+
+combacia, quindi possiamo andare avanti.
+
+Eh, anche avanzando. Ho fatto una
+
+verifica, tutte le combinazioni
+
+combaciano, quindi in effetti eh abbiamo
+
+fatto il boot, quindi abbiamo caricato
+
+la ROM e l'abbiamo spostata all'interno
+
+della RAM. Come dicevamo all'inizio,
+
+abbiamo un problema. Se io adesso spengo
+
+la CPU e do nuovamente alimentazione,
+
+come vedete all'interno del program
+
+counter ci sono dei dati casuali e anche
+
+il contatore microstep
+
+eh è partito in questo caso da T3, ma in
+
+ogni caso eh sono dei valori casuali che
+
+eh vengono presi dal rumore che sta
+
+viaggiando all'interno dei vari bass di
+
+controllo dei vari chip. Quindi mi serve
+
+qualcosa che in una prima fase di boot
+
+mi dia una sorta di reset automatico e
+
+mi resetta sia il program counter sia il
+
+contatore microstep. In realtà ho
+
+implementato questo pezzettino di
+
+circuito. Adesso lo collego e facciamo
+
+un test e poi vi spiego un po' come
+
+funziona questo reset automatico che
+
+avviene durante la fase di avvio.
+
+Ho ripristinato i collegamenti iniziali,
+
+quindi ora la RAM, il wrghtable della
+
+RAM è effettivamente nuovo di nuovo
+
+collegata alla eprom. lo stesso l'output
+
+enable, quindi l'output enable della RAM
+
+lo metto a più 5 V in modo da spegnerla
+
+e l'output enable della EPROM è
+
+collegato alla alla Control Unit. Che
+
+cosa ho fatto? C'è questa parte di
+
+circuito che ora andiamo a vedere un po'
+
+nel dettaglio che mi genera un segnale
+
+di reset che parte qualche frazione di
+
+di secondo dopo l'accensione effettiva
+
+della board. Che cosa fa questo segnale?
+
+Il reset. mando un reset al clear del
+
+program counter che è questo
+
+collegamento qui e al clear del
+
+contatore macrosep che è questo
+
+collegamento qui volante che vedete. Poi
+
+effettivamente andrò a sistemare un po'
+
+tutto meglio e sono collegati qui.
+
+Questo qua è il 7414 che contiene i
+
+trigger di Schmith che avevamo visto
+
+sulla parte relativa alla generazione di
+
+del clock. In pratica, sfruttando una
+
+resistenza e un condensatore, la carica
+
+di un condensatore va a generare un
+
+impulso di reset.
+
+Proviamo a dare alimentazione al
+
+circuito.
+
+In effetti, appena ho dato corrente, il
+
+program counter si trova a zero, quindi
+
+non ha un valore casuale come prima e
+
+anche il contatore dei microstep si
+
+trova a T1, quindi questo discorso del
+
+reset funziona. Proviamo a dare un
+
+impulso di clock,
+
+in effetti siamo a uno e così via e
+
+quindi anche questa parte funziona.
+
+Ultima cosa da chiarire, molto
+
+importante, è che la RAM tutti gli
+
+indirizzi del contatore del program e
+
+quindi del
+
+basse degli indirizzi non sono
+
+direttamente collegati alla RAM, o
+
+meglio, i primi 3 bit, quelli più
+
+significativi, questi tre, se sono
+
+accesi non vanno effettivamente a
+
+puntare alla RAM perché la RAM ha 13
+
+linee di indirizzo, invece Il nostro
+
+base degli indirizzi è formato da 16
+
+linee di indirizzo. L'idea mia qual è
+
+stata? È stata quella di creare di
+
+collegare delle porte OR all'interno di
+
+questo componente che è un OR. Sono
+
+questi cavi eh rossi.
+
+Questi questi ho fatto di fatto un OR
+
+tra i bit più significativi e poi ho
+
+collegato l'enable della RAM che è
+
+questo cavo marrone che poi va dentro
+
+agli OR e quindi ho fatto l'or tra i
+
+primi 3 bit e l'enable che mi gena
+
+l'unità di controllo. L'ho preso e
+
+questo cavo bianco e lo sto utilizzando
+
+come enable della RAM. L'idea è che
+
+l'enable della RAM, del Wright enable
+
+della RAM sarà disabilitato se uno di
+
+questi 3 bit è acceso, perché se uno di
+
+questi 3 bit è acceso, siamo fuori del
+
+range gestibile dalla RAM. In effetti la
+
+mia idea futura è quella di utilizzare
+
+questa sorta di indirizzi restanti per
+
+andare a pilotare una sorta di memoria
+
+video, quindi quindi di VRAM che gestirà
+
+una scheda video che andremo a costruire
+
+in futuro. Brevemente vediamo come ho
+
+realizzato la parte di circuito che va a
+
+generare il reset all'avvio della CPU.
+
+Il circuito è questo che ho disegnato.
+
+Io direi che al momento possiamo
+
+ignorare questa parte e quindi
+
+considerare il circuito da qui in poi.
+
+Questo è semplicemente un bottone che è
+
+un pulsante che ancora non ho collegato
+
+e serve a fare il reset manualmente.
+
+In ogni caso l'idea è quella di
+
+sfruttare la carica di questo
+
+condensatore, il tempo di carica di
+
+questo condensatore per generare un
+
+segnale di reset. Ho utilizzato dei
+
+trigger di Smith, già il componente era
+
+presente all'interno della board,
+
+l'avevo inserito quando abbiamo generato
+
+la parte di di clock. È un 7414.
+
+In pratica, eh, al all'input del 7414,
+
+quindi è uno dei trigger trigger di
+
+Schmith presente all'interno
+
+dell'integrato, vado a collegare un
+
+condensatore che viene situato tra la
+
+massa e questa resistenza che poi è
+
+collegata a + 5 V. Questo nodo è invece
+
+l'ingresso del trigger di Schmith. Qual
+
+è l'idea? L'idea è che il condensatore
+
+inizialmente sarà scarico, quindi al
+
+tempo zero qui avremo un segnale di
+
+massa comunque 0 V. Il trigger di Smith
+
+dà un'uscita negata, quindi avremo uno
+
+in uscita. Questo secondo trigger di
+
+Smith lo utilizzo come not di fatto e
+
+quindi qua mi ritrovo zero in uscita e
+
+quindi sto triggerando il segnale di
+
+reset perché il nostro reset è attivo
+
+basso. Successivamente cosa succede? Il
+
+condensatore si carica e quindi qui non
+
+avrò + 0, ma a un determinato istante di
+
+tempero avrò 1, quindi + 5 V.
+
+In uscita qui avrò zero perché il
+
+segnale è negato. Questo secondo trigger
+
+fa da not e quindi da zero passa ad uno
+
+e quindi il segnale di reset sarà
+
+disattivato perché passiamo a livello
+
+logico 1. Ora eh l'idea è di sfruttare
+
+questo tempo di carica del condensatore.
+
+Ho calcolato che impiega circa 0,22
+
+secondi che comunque sono sufficienti
+
+perché comunque i tempi eh in cui i
+
+segnali in ingresso
+
+hanno dei glitch o comunque hanno dei
+
+problemi sono determinati specialmente
+
+alla control unit, dall'eprom della
+
+control Unit che prima di stabilizzarsi
+
+impiegano qualche nanosecondo.
+
+Quindi con questo sistema eh avrò un
+
+segnale di massa che va a triggerare il
+
+reset e poi appena il condensatore sarà
+
+carico avremo unologico che di fatto
+
+farà partire poi il nostro circuito.
+
+L'altra cosa interessante è che se io
+
+vado a premere questo pulsante di reset,
+
+vado a mettere ammassa il condensatore,
+
+quindi lo vado a scaricare e di fatto
+
+reinnco tutto il tutto il flusso che mi
+
+rigenera il segnale di reset. Questo che
+
+cosa a che cosa mi serve? Principalmente
+
+dopo che ho fatto la fase di boot, se io
+
+faccio il reset riparte il, diciamo, il
+
+il program counter da zero e quindi ho
+
+fatto un restart del programma senza
+
+però dover rifare il boot, che comunque
+
+è la parte che
+
+prende un po' di tempo perché dobbiamo
+
+fisicamente copiare tutta la RAM, tutta
+
+la ROM all'interno della RAM.
+
+Vediamo brevemente anche come ho gestito
+
+il segnale brightenable della RAM.
+
+ricordo che la nostra RAM c'ha solo 13
+
+linee di indirizzo, invece è il bass
+
+della della RAM, quindi il bass degli
+
+indirizzi della CPU è costituito da 16
+
+linee di indirizzo. Ora il problema qual
+
+è? è che se A16, A15 o A14 sono accese,
+
+vuol dire che sono fuori dal range
+
+supportato, gestito dalla RAM e quindi
+
+rischio di andare a fare delle scritture
+
+all'interno della RAM che vanno poi a
+
+corromperla perché non sono destinate al
+
+chip di RAM. Per questo motivo, tramite
+
+delle porte OR, qui ho disegnato le
+
+porte logiche, effettivamente sono
+
+venuto un po' male nel disegno, però ho
+
+scritto che sono delle OR. Vado a
+
+mettere in OR tutti i bit, compreso il
+
+Wright enable. che proviene dalla CPU.
+
+Cosa succede? Succede che se almeno uno
+
+di questi segnali è a un pr enable della
+
+RAM sarà a un quindi, diciamo, abbiamo
+
+protetto la RAM da scritture
+
+accidentali. In effetti qua ho riportato
+
+anche la tabella di verità dell'OR. In
+
+pratica l'unica combinazione che a noi
+
+ci interessa è 00 che è la combinazione
+
+valida che dà in uscita 0, tutto il
+
+resto dà in uscita 1 e wghle a 1
+
+all'interno della RAM vuol dire che ehm
+
+non è disabilitata la scrittura
+
+all'interno della RAM,
+
+quindi abbiamo A16, A15, A14 è enable
+
+control unit e qui in uscita all'ultimo
+
+or abbiamo il bright enable della RAM.
+
+Io direi che per questo video è tutto.
+
+Ci vediamo in un prossimo video. Vi
+
+ricordo di lasciare un mi piace,
+
+commentare questo video e iscrivervi al
+
+mio canale in modo da supportare il mio
+
+lavoro.

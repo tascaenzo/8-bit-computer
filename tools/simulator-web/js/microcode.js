@@ -1,4 +1,5 @@
 import { disassemble } from "./cpu.js";
+import { ALU_OPCODES, FIXED_OPCODES, JUMP_OPCODES } from "./isa.js";
 import { hex } from "./utils.js";
 
 // Nomi funzionali allineati a docs/control-unit-microcode.md.
@@ -37,14 +38,14 @@ const aluResult = (opcode, a, b) => {
   else if (opcode === 0x67) raw = a + b;
   else raw = a - b;
   const result = raw & 0xff;
-  const arithmetic = opcode === 0x68 || opcode === 0x69;
+  const arithmetic = opcode === FIXED_OPCODES.SUB || opcode === FIXED_OPCODES.CMP;
   return {
     result,
     flags: {
-      C: Number(opcode === 0x67 ? raw > 0xff : arithmetic && a < b),
+      C: Number(opcode === FIXED_OPCODES.ADD ? raw > 0xff : arithmetic && a < b),
       Z: Number(result === 0),
       N: Number((result & 0x80) !== 0),
-      O: Number(opcode === 0x67
+      O: Number(opcode === FIXED_OPCODES.ADD
         ? ((~(a ^ b) & (a ^ result) & 0x80) !== 0)
         : arithmetic && ((a ^ b) & (a ^ result) & 0x80) !== 0),
     },
@@ -53,14 +54,14 @@ const aluResult = (opcode, a, b) => {
 
 const jumpTaken = (flags, opcode) => ({
   0xa0: true,
-  0xa1: Boolean(flags.Z),
-  0xa2: !flags.Z,
-  0xa3: Boolean(flags.C),
-  0xa4: !flags.C,
-  0xa5: Boolean(flags.N),
-  0xa6: !flags.N,
-  0xa7: Boolean(flags.O),
-  0xa8: !flags.O,
+  [FIXED_OPCODES.JZ]: Boolean(flags.Z),
+  [FIXED_OPCODES.JNZ]: !flags.Z,
+  [FIXED_OPCODES.JC]: Boolean(flags.C),
+  [FIXED_OPCODES.JNC]: !flags.C,
+  [FIXED_OPCODES.JN]: Boolean(flags.N),
+  [FIXED_OPCODES.JNN]: !flags.N,
+  [FIXED_OPCODES.JO]: Boolean(flags.O),
+  [FIXED_OPCODES.JNO]: !flags.O,
 })[opcode];
 
 const fetch = (address, opcode) => [
@@ -78,6 +79,19 @@ const fetch = (address, opcode) => [
     }),
   ),
 ];
+
+// L'ultimo trasferimento e NEXT_FETCH occupano due microstep distinti.
+const withFetchReturn = (cycles) => {
+  const last = cycles.at(-1);
+  const signals = last.signals.replace(/(?: · )?NEXT_FETCH$/, "");
+  cycles[cycles.length - 1] = { ...last, signals: signals || "NESSUN SEGNALE" };
+  cycles.push(phase(
+    `T${cycles.length + 1}`, "Ritorno al fetch",
+    "Nessun trasferimento: NEXT_FETCH riporta il contatore microstep a T1.",
+    "NEXT_FETCH", [], ["ir-cu"], { dataBus: null, active: [] },
+  ));
+  return cycles;
+};
 
 const addressOperand = (address, low, high, initialMar) => [
   phase(
@@ -119,7 +133,7 @@ export function planMicrocycles(state) {
   const base = fetch(address, opcode);
 
   if (opcode >= 0x20 && opcode <= 0x27) {
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase(
         "T2", "Fetch immediato",
         `Legge ${hex(low)} da ${hex((address + 1) & 0xffff)} e lo salva in MDR.`,
@@ -136,12 +150,12 @@ export function planMicrocycles(state) {
         ["mdr", "registers"], ["mdr-data", "registers-data"],
         { dataBus: low, mdr: low, regs: { [reg]: low }, active: ["data-bus", "mdr", `r${reg}`] },
       ),
-    ]);
+    ]));
   }
 
   if (opcode >= 0x40 && opcode <= 0x47) {
     const data = state.mem[target];
-    return base.concat(addressOperand(address, low, high, state.mar), [
+    return withFetchReturn(base.concat(addressOperand(address, low, high, state.mar), [
       phase(
         "T4", "Leggi dato memoria",
         `MAR pilota ${hex(target, 4)}; la memoria restituisce ${hex(data)} e MDR lo salva.`,
@@ -156,12 +170,12 @@ export function planMicrocycles(state) {
         ["mdr", "registers"], ["mdr-data", "registers-data"],
         { dataBus: data, mdr: data, regs: { [reg]: data }, active: ["data-bus", "mdr", `r${reg}`] },
       ),
-    ]);
+    ]));
   }
 
   if (opcode >= 0x48 && opcode <= 0x4f) {
     const data = state.regs[reg];
-    return base.concat(addressOperand(address, low, high, state.mar), [
+    return withFetchReturn(base.concat(addressOperand(address, low, high, state.mar), [
       phase(
         "T4", `Leggi R${reg}`,
         `R${reg} porta ${hex(data)} sul bus; MDR lo cattura prima della scrittura esterna.`,
@@ -177,12 +191,12 @@ export function planMicrocycles(state) {
         ["mar-selector", "selector-address", "address-memory", "mdr-data", "memory-data"],
         { mar: target, mdr: data, addressSource: "MAR", addressBus: target, dataBus: data, memoryAddress: target, memoryValue: data, active: ["mar", "addrsel", "mdr", "address-bus", "data-bus", "memory"] },
       ),
-    ]);
+    ]));
   }
 
   if (opcode >= 0x50 && opcode <= 0x57) {
     const data = state.mem[state.idx];
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase(
         "T2", "Leggi memoria indicizzata",
         `IDX pilota ${hex(state.idx, 4)}; la RAM porta ${hex(data)} nel MDR.`,
@@ -197,12 +211,12 @@ export function planMicrocycles(state) {
         ["mdr", "registers"], ["mdr-data", "registers-data"],
         { dataBus: data, mdr: data, regs: { [reg]: data }, active: ["data-bus", "mdr", `r${reg}`] },
       ),
-    ]);
+    ]));
   }
 
   if (opcode >= 0x58 && opcode <= 0x5f) {
     const data = state.regs[reg];
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase(
         "T2", `Leggi R${reg}`,
         `R${reg} porta ${hex(data)} sul bus; MDR lo cattura.`,
@@ -217,13 +231,13 @@ export function planMicrocycles(state) {
         ["idx", "addrsel", "mdr", "memory"], ["idx-selector", "selector-address", "mdr-data", "memory-data"],
         { idx: state.idx, mdr: data, addressSource: "IDX", addressBus: state.idx, dataBus: data, memoryAddress: state.idx, memoryValue: data, active: ["idx", "addrsel", "mdr", "address-bus", "data-bus", "memory"] },
       ),
-    ]);
+    ]));
   }
 
-  if (opcode >= 0x60 && opcode <= 0x69) {
+  if (ALU_OPCODES.has(opcode)) {
     const alu = aluResult(opcode, state.ra, state.rb);
-    const cmp = opcode === 0x69;
-    return base.concat([
+    const cmp = opcode === FIXED_OPCODES.CMP;
+    return withFetchReturn(base.concat([
       phase(
         "T2", cmp ? "Confronto e flag" : "ALU e write-back",
         cmp
@@ -244,12 +258,12 @@ export function planMicrocycles(state) {
             : ["data-bus", "ra", "rb", "alu", "flags"],
         },
       ),
-    ]);
+    ]));
   }
 
-  if (opcode >= 0xa0 && opcode <= 0xa8) {
+  if (JUMP_OPCODES.has(opcode)) {
     const taken = jumpTaken(state.flags, opcode);
-    return base.concat(addressOperand(address, low, high, state.mar), [
+    return withFetchReturn(base.concat(addressOperand(address, low, high, state.mar), [
       phase(
         "T4", taken ? "Salto eseguito" : "Salto ignorato",
         taken
@@ -259,63 +273,67 @@ export function planMicrocycles(state) {
         ["pc", "mar", "flags"], taken ? ["mar-pc", "ir-cu"] : ["ir-cu"],
         { pc: taken ? target : (address + 3) & 0xffff, mar: target, active: ["pc", "mar", "flags"] },
       ),
-    ]);
+    ]));
   }
 
   if (opcode >= 0xc0 && opcode <= 0xc7) {
     const data = state.regs[reg];
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase("T2", `R${reg} → RA`, `R${reg} porta ${hex(data)} sul bus; RA lo cattura.`, "RF_EN · RA_EN · RA_RB_RW · NEXT_FETCH", ["registers", "ra"], ["registers-data", "ra-data"], { dataBus: data, ra: data, active: ["data-bus", "ra", `r${reg}`] }),
-    ]);
+    ]));
   }
   if (opcode >= 0xc8 && opcode <= 0xcf) {
     const data = state.regs[reg];
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase("T2", `R${reg} → RB`, `R${reg} porta ${hex(data)} sul bus; RB lo cattura.`, "RF_EN · RB_EN · RA_RB_RW · NEXT_FETCH", ["registers", "rb"], ["registers-data", "data-rb"], { dataBus: data, rb: data, active: ["data-bus", "rb", `r${reg}`] }),
-    ]);
+    ]));
   }
   if (opcode >= 0xd0 && opcode <= 0xd7) {
     const data = state.ra;
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase("T2", `RA → R${reg}`, `RA porta ${hex(data)} sul bus e R${reg} lo cattura.`, "RA_EN · RF_EN · RF_RW · NEXT_FETCH", ["registers", "ra"], ["ra-data", "registers-data"], { dataBus: data, regs: { [reg]: data }, active: ["data-bus", "ra", `r${reg}`] }),
-    ]);
+    ]));
   }
   if (opcode === 0xd8) {
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase("T2", "Carica IDX basso", `Il PC legge ${hex(low)} e lo salva in IDX[7:0].`, "ADDR_SEL=PC(01) · RAM_OE · IDX_L_WE · PC_INC", ["pc", "idx", "addrsel", "memory"], ["pc-selector", "selector-address", "address-memory", "memory-data", "data-idx"], readPreview((address + 1) & 0xffff, low, "PC", { pc: (address + 2) & 0xffff, idx: (state.idx & 0xff00) | low, active: ["pc", "idx"] })),
       phase("T3", "Carica IDX alto", `Il PC legge ${hex(high)} e completa IDX = ${hex(low | (high << 8), 4)}.`, "ADDR_SEL=PC(01) · RAM_OE · IDX_H_WE · PC_INC · NEXT_FETCH", ["pc", "idx", "addrsel", "memory"], ["pc-selector", "selector-address", "address-memory", "memory-data", "data-idx"], readPreview((address + 2) & 0xffff, high, "PC", { pc: (address + 3) & 0xffff, idx: low | (high << 8), active: ["pc", "idx"] })),
-    ]);
+    ]));
   }
 
   // IN/OUT restano simulabili per compatibilita con l'ISA, ma sono test temporanei.
   if (opcode >= 0x80 && opcode <= 0x87) {
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase("T2", `Input → R${reg}`, `La porta di test, non mostrata nello schema, presenta ${hex(state.input)} sul bus e R${reg} lo cattura.`, "IN_OE · RF_EN · RF_RW · NEXT_FETCH", ["registers"], ["registers-data"], { dataBus: state.input, regs: { [reg]: state.input }, active: ["data-bus", `r${reg}`] }),
-    ]);
+    ]));
   }
   if (opcode >= 0x88 && opcode <= 0x8f) {
     const data = state.regs[reg];
-    return base.concat([
+    return withFetchReturn(base.concat([
       phase("T2", `R${reg} → Output`, `R${reg} porta ${hex(data)} sul bus; il registro output di test, non mostrato nello schema, lo cattura.`, "RF_EN · OUT_WE · NEXT_FETCH", ["registers"], ["registers-data"], { dataBus: data, active: ["data-bus", `r${reg}`] }),
-    ]);
+    ]));
   }
 
-  const halt = opcode === 0x01;
-  const nop = opcode === 0x00;
-  return base.concat([
+  const halt = opcode === FIXED_OPCODES.HLT;
+  const nop = opcode === FIXED_OPCODES.NOP;
+  const systemCycles = base.concat([
     phase(
       "T2",
-      halt ? "HLT non cablato" : nop ? "Nessuna operazione" : "Opcode non supportato",
+      halt ? "HLT · arresto esterno" : nop ? "Nessuna operazione" : "Opcode non supportato",
       halt
-        ? "HLT arresta il modello software; il video 25 non assegna ancora una linea fisica di HALT alle EEPROM."
+        ? "HLT arresta il modello software; sulla CPU fisica ROM2 porta SYS_STEP_n a 0 in RUN/T2 e l'OR con IR[2:0] ferma il contatore microstep."
         : nop
         ? "NOP torna direttamente al fetch successivo."
         : `${hex(opcode)} non appartiene alla ISA v0.1: il simulatore arresta la CPU.`,
-      halt ? "NESSUN SEGNALE" : "NEXT_FETCH",
+      opcode <= 0x07
+        ? (halt ? "SYS_STEP_n=0" : "SYS_STEP_n=0 · NEXT_FETCH")
+        : "NEXT_FETCH",
       [],
       ["ir-cu"],
     ),
   ]);
+  // L'OR esterno ferma il contatore in T2: HLT non raggiunge T3.
+  return halt ? systemCycles : withFetchReturn(systemCycles);
 }
 
 export const BLOCK_INFO = {

@@ -269,13 +269,13 @@ Mappa dei 3 bit alti dell'opcode, in ordine binario:
 | Bit `ccc` | Hex range   | Macrocategoria      | Uso                                               |
 | --------- | ----------- | ------------------- | ------------------------------------------------- |
 | `000`     | `0x00-0x1F` | sistema / controllo | `NOP`, `HLT`, istruzioni senza operando speciale  |
-| `001`     | `0x20-0x3F` | load immediate      | caricamento immediato in registro                 |
+| `001`     | `0x20-0x3F` | load immediate      | caricamento immediato in registro; `JO=0x30`     |
 | `010`     | `0x40-0x5F` | memoria             | load/store tra memoria e registri                 |
 | `011`     | `0x60-0x7F` | ALU                 | operazioni aritmetico-logiche                     |
 | `100`     | `0x80-0x9F` | I/O                 | lettura input e scrittura output                  |
-| `101`     | `0xA0-0xBF` | jump                | salti assoluti e condizionati                     |
+| `101`     | `0xA0-0xBF` | jump                | `JMP`, `JNO`, `JZ`, `JNZ`                          |
 | `110`     | `0xC0-0xDF` | trasferimenti       | passaggio dati tra registri generali, `RA` e `RB` |
-| `111`     | `0xE0-0xFF` | riservata           | espansioni future                                 |
+| `111`     | `0xE0-0xFF` | jump                | `JC`, `JNC`, `JN`, `JNN`                           |
 
 La regola generale e:
 
@@ -355,11 +355,16 @@ Sottocategorie:
 
 | Opcode bin              |         Hex | Assembly  | Formato | Effetto            |
 | ----------------------- | ----------: | --------- | ------- | ------------------ |
-| `0b00000000`            |      `0x00` | `NOP`     | `IMP`   | nessuna operazione |
-| `0b00000001`            |      `0x01` | `HLT`     | `IMP`   | ferma la CPU       |
+| `0b00000000`            |      `0x00` | `HLT`     | `IMP`   | ferma la CPU       |
+| `0b00000001`            |      `0x01` | `NOP`     | `IMP`   | nessuna operazione |
 | `0b00000010-0b00011111` | `0x02-0x1F` | riservata | -       | espansioni future  |
 
 Queste istruzioni non usano registri generali e non hanno operandi aggiuntivi.
+Le Control ROM vedono solo `IR[7:3]`: `HLT` e `NOP` condividono quindi le
+stesse uscite operative. ROM2 D6 (`SYS_STEP_n`) vale `0` solo in RUN/T2
+per questo gruppo. La OR esterna fra `SYS_STEP_n` e `IR[2:0]` disabilita
+il conteggio del microstep solo per HLT; per NOP il contatore prosegue
+fino a `NEXT_FETCH`. Non interrompere direttamente il clock.
 
 ## `ccc = 001` load immediate
 
@@ -382,7 +387,7 @@ Sottocategorie:
 | ---- | ------------ | ----------: | -------------- | ------- | ------------------------------------------ |
 | `00` | `0b00100rrr` | `0x20-0x27` | `LDI Rn, imm8` | `IMM8`  | carica un valore immediato a 8 bit in `Rn` |
 | `01` | `0b00101rrr` | `0x28-0x2F` | riservata      | -       | espansioni future                          |
-| `10` | `0b00110rrr` | `0x30-0x37` | riservata      | -       | espansioni future                          |
+| `10` | `0b00110rrr` | `0x30-0x37` | `JO` solo a `0x30` | `ADDR16` | salto se overflow; `0x31..0x37` riservati |
 | `11` | `0b00111rrr` | `0x38-0x3F` | riservata      | -       | espansioni future                          |
 
 Esempio:
@@ -514,10 +519,10 @@ Sottocategorie:
 | `0` | `0101`      | `0b01100101`            |      `0x65` | `XNOR`    | `IMP`   | `RA = RA XNOR RB`                         |
 | `0` | `0110`      | `0b01100110`            |      `0x66` | `NOT`     | `IMP`   | `RA = NOT RA`                             |
 | `0` | `0111`      | `0b01100111`            |      `0x67` | `ADD`     | `IMP`   | `RA = RA + RB`                            |
-| `0` | `1000`      | `0b01101000`            |      `0x68` | `SUB`     | `IMP`   | `RA = RA - RB`                            |
+| `1` | `1000`      | `0b01111000`            |      `0x78` | `SUB`     | `IMP`   | `RA = RA - RB`                            |
 | `0` | `1001`      | `0b01101001`            |      `0x69` | `CMP`     | `IMP`   | confronto cablato nella ALU, salva i flag |
-| `0` | `1010-1111` | `0b01101010-0b01101111` | `0x6A-0x6F` | riservata | -       | espansioni future                         |
-| `1` | `0000-1111` | `0b01110000-0b01111111` | `0x70-0x7F` | riservata | -       | espansioni future                         |
+| `0` | `1000,1010-1111` | `0b01101000,0b01101010-0b01101111` | `0x68,0x6A-0x6F` | riservata | - | espansioni future |
+| `1` | `0000-0111,1001-1111` | `0b01110000-0b01110111,0b01111001-0b01111111` | `0x70-0x77,0x79-0x7F` | riservata | - | espansioni future |
 
 Le istruzioni ALU non selezionano direttamente un registro generale. Operano sui registri dedicati `RA` e `RB`.
 
@@ -688,12 +693,11 @@ Tutte le istruzioni attive di questa categoria richiedono un operando `addr16` e
 opcode addr_low addr_high
 ```
 
-Range:
-
-```text
-0b10100000 - 0b10111111
-0xA0       - 0xBF
-```
+I nove opcode sono distribuiti in **nove gruppi distinti di `IR[7:3]`**.
+Questa scelta permette alle tre Control ROM, che ricevono solo quei cinque bit,
+di scegliere autonomamente la condizione di salto senza una quarta EEPROM.
+I vecchi opcode `0xA1..0xA7` non sono compatibili: occorre riassemblare e
+riprogrammare la EPROM del programma.
 
 Tutti i salti usano un indirizzo a 16 bit in formato little-endian. L'indirizzo rappresenta il valore da caricare nel `PC` se il salto viene eseguito.
 
@@ -706,15 +710,15 @@ Tabella condizioni:
 | Mnemonic     |  Opcode hex | Opcode bin              | Condizione        | Dopo `CMP` unsigned |
 | ------------ | ----------: | ----------------------- | ----------------- | ------------------- |
 | `JMP addr16` |      `0xA0` | `0b10100000`            | sempre            | -                   |
-| `JZ addr16`  |      `0xA1` | `0b10100001`            | `Z = 1`           | salta se `RA == RB` |
-| `JNZ addr16` |      `0xA2` | `0b10100010`            | `Z = 0`           | salta se `RA != RB` |
-| `JC addr16`  |      `0xA3` | `0b10100011`            | `C = 1`           | salta se `RA < RB`  |
-| `JNC addr16` |      `0xA4` | `0b10100100`            | `C = 0`           | salta se `RA >= RB` |
-| `JN addr16`  |      `0xA5` | `0b10100101`            | `N = 1`           | -                   |
-| `JNN addr16` |      `0xA6` | `0b10100110`            | `N = 0`           | -                   |
-| `JO addr16`  |      `0xA7` | `0b10100111`            | `O = 1`           | -                   |
+| `JZ addr16`  |      `0xB0` | `0b10110000`            | `Z = 1`           | salta se `RA == RB` |
+| `JNZ addr16` |      `0xB8` | `0b10111000`            | `Z = 0`           | salta se `RA != RB` |
+| `JC addr16`  |      `0xE0` | `0b11100000`            | `C = 1`           | salta se `RA < RB`  |
+| `JNC addr16` |      `0xE8` | `0b11101000`            | `C = 0`           | salta se `RA >= RB` |
+| `JN addr16`  |      `0xF0` | `0b11110000`            | `N = 1`           | -                   |
+| `JNN addr16` |      `0xF8` | `0b11111000`            | `N = 0`           | -                   |
+| `JO addr16`  |      `0x30` | `0b00110000`            | `O = 1`           | -                   |
 | `JNO addr16` |      `0xA8` | `0b10101000`            | `O = 0`           | -                   |
-| riservata    | `0xA9-0xBF` | `0b10101001-0b10111111` | espansioni future | -                   |
+| altri opcode | — | — | riservati | Non usarli come alias dei salti. |
 
 Per confronti unsigned dopo `CMP`:
 
@@ -831,7 +835,7 @@ Tabella estesa `MOV Rn, RA`:
 | `MOV R6, RA` |     `0xD6` | `0b11010110` |
 | `MOV R7, RA` |     `0xD7` | `0b11010111` |
 
-## `ccc = 111` riservata
+## `ccc = 111` salti condizionati
 
 Range:
 
@@ -840,26 +844,35 @@ Range:
 0xE0       - 0xFF
 ```
 
-Tutto il range `111xxxxx` e riservato per espansioni future.
+I quattro gruppi da otto opcode di questo range sono usati da
+`JC=0xE0`, `JNC=0xE8`, `JN=0xF0` e `JNN=0xF8`. Solo il primo byte di
+ciascun gruppo e definito come istruzione; gli altri restano riservati.
 
 Sottocategorie:
 
 | Campo `xxxxx` | Opcode bin              |   Hex range | Uso       |
 | ------------- | ----------------------- | ----------: | --------- |
-| `00000-11111` | `0b11100000-0b11111111` | `0xE0-0xFF` | riservato |
+| `00000` | `0b11100000` | `0xE0` | `JC` |
+| `01000` | `0b11101000` | `0xE8` | `JNC` |
+| `10000` | `0b11110000` | `0xF0` | `JN` |
+| `11000` | `0b11111000` | `0xF8` | `JNN` |
 
 ## Tabella opcode riassuntiva
 
-La seguente tabella riassume gli opcode attivi, mantenendo l'ordine binario delle macrocategorie `ccc`.
+La seguente tabella riassume gli opcode definiti, mantenendo l'ordine binario delle macrocategorie `ccc`.
 Le tabelle estese delle singole istruzioni sono nelle sezioni precedenti, dove si vede il valore completo per ogni registro.
+`IN` e `OUT` sono ancora **solo nel simulatore/assembler**: i segnali delle
+periferiche non sono presenti nelle tre Control ROM e la prova fisica li esclude.
 
 | Mnemonic         |  Opcode hex | Opcode bin   | Formato  | Byte | Descrizione                                                    |
 | ---------------- | ----------: | ------------ | -------- | ---: | -------------------------------------------------------------- |
-| `NOP`            |      `0x00` | `0b00000000` | `IMP`    |    1 | Nessuna operazione                                             |
-| `HLT`            |      `0x01` | `0b00000001` | `IMP`    |    1 | Ferma la CPU                                                   |
+| `HLT`            |      `0x00` | `0b00000000` | `IMP`    |    1 | Ferma la CPU tramite logica esterna                            |
+| `NOP`            |      `0x01` | `0b00000001` | `IMP`    |    1 | Nessuna operazione                                             |
 | `LDI Rn, imm8`   | `0x20-0x27` | `0b00100rrr` | `IMM8`   |    2 | Carica un valore immediato nel registro `Rn`                   |
 | `LDA Rn, addr16` | `0x40-0x47` | `0b01000rrr` | `ADDR16` |    3 | Carica in `Rn` il byte letto dalla memoria                     |
 | `STA Rn, addr16` | `0x48-0x4F` | `0b01001rrr` | `ADDR16` |    3 | Scrive `Rn` in memoria                                         |
+| `LDAI Rn`       | `0x50-0x57` | `0b01010rrr` | `IMP`    |    1 | Carica `Rn` da `RAM[IDX]` |
+| `STAI Rn`       | `0x58-0x5F` | `0b01011rrr` | `IMP`    |    1 | Scrive `Rn` in `RAM[IDX]` |
 | `AND`            |      `0x60` | `0b01100000` | `IMP`    |    1 | Seleziona operazione ALU `AND`                                 |
 | `OR`             |      `0x61` | `0b01100001` | `IMP`    |    1 | Seleziona operazione ALU `OR`                                  |
 | `XOR`            |      `0x62` | `0b01100010` | `IMP`    |    1 | Seleziona operazione ALU `XOR`                                 |
@@ -868,22 +881,23 @@ Le tabelle estese delle singole istruzioni sono nelle sezioni precedenti, dove s
 | `XNOR`           |      `0x65` | `0b01100101` | `IMP`    |    1 | Seleziona operazione ALU `XNOR`                                |
 | `NOT`            |      `0x66` | `0b01100110` | `IMP`    |    1 | Esegue `RA = NOT RA`                                           |
 | `ADD`            |      `0x67` | `0b01100111` | `IMP`    |    1 | Esegue `RA = RA + RB`                                          |
-| `SUB`            |      `0x68` | `0b01101000` | `IMP`    |    1 | Esegue `RA = RA - RB`                                          |
+| `SUB`            |      `0x78` | `0b01111000` | `IMP`    |    1 | Esegue `RA = RA - RB`                                          |
 | `CMP`            |      `0x69` | `0b01101001` | `IMP`    |    1 | Confronta `RA` e `RB` tramite logica ALU cablata, salva i flag |
 | `IN Rn`          | `0x80-0x87` | `0b10000rrr` | `IMP`    |    1 | Copia input in `Rn`                                            |
 | `OUT Rn`         | `0x88-0x8F` | `0b10001rrr` | `IMP`    |    1 | Copia `Rn` nel registro/periferica di output                   |
 | `JMP addr16`     |      `0xA0` | `0b10100000` | `ADDR16` |    3 | Carica il PC con un nuovo indirizzo                            |
-| `JZ addr16`      |      `0xA1` | `0b10100001` | `ADDR16` |    3 | Salta se il flag zero e attivo                                 |
-| `JNZ addr16`     |      `0xA2` | `0b10100010` | `ADDR16` |    3 | Salta se il flag zero non e attivo                             |
-| `JC addr16`      |      `0xA3` | `0b10100011` | `ADDR16` |    3 | Salta se il flag carry/borrow e attivo                         |
-| `JNC addr16`     |      `0xA4` | `0b10100100` | `ADDR16` |    3 | Salta se il flag carry/borrow non e attivo                     |
-| `JN addr16`      |      `0xA5` | `0b10100101` | `ADDR16` |    3 | Salta se il flag negative e attivo                             |
-| `JNN addr16`     |      `0xA6` | `0b10100110` | `ADDR16` |    3 | Salta se il flag negative non e attivo                         |
-| `JO addr16`      |      `0xA7` | `0b10100111` | `ADDR16` |    3 | Salta se il flag overflow e attivo                             |
+| `JZ addr16`      |      `0xB0` | `0b10110000` | `ADDR16` |    3 | Salta se il flag zero e attivo                                 |
+| `JNZ addr16`     |      `0xB8` | `0b10111000` | `ADDR16` |    3 | Salta se il flag zero non e attivo                             |
+| `JC addr16`      |      `0xE0` | `0b11100000` | `ADDR16` |    3 | Salta se il flag carry/borrow e attivo                         |
+| `JNC addr16`     |      `0xE8` | `0b11101000` | `ADDR16` |    3 | Salta se il flag carry/borrow non e attivo                     |
+| `JN addr16`      |      `0xF0` | `0b11110000` | `ADDR16` |    3 | Salta se il flag negative e attivo                             |
+| `JNN addr16`     |      `0xF8` | `0b11111000` | `ADDR16` |    3 | Salta se il flag negative non e attivo                         |
+| `JO addr16`      |      `0x30` | `0b00110000` | `ADDR16` |    3 | Salta se il flag overflow e attivo                             |
 | `JNO addr16`     |      `0xA8` | `0b10101000` | `ADDR16` |    3 | Salta se il flag overflow non e attivo                         |
 | `MOV RA, Rn`     | `0xC0-0xC7` | `0b11000rrr` | `IMP`    |    1 | Copia `Rn` nel registro `RA`                                   |
 | `MOV RB, Rn`     | `0xC8-0xCF` | `0b11001rrr` | `IMP`    |    1 | Copia `Rn` nel registro `RB`                                   |
 | `MOV Rn, RA`     | `0xD0-0xD7` | `0b11010rrr` | `IMP`    |    1 | Copia `RA` nel registro `Rn`                                   |
+| `LDX addr16`     |      `0xD8` | `0b11011000` | `ADDR16` |    3 | Carica `IDX` in little-endian |
 
 ## Confronti e salti condizionati
 
@@ -916,8 +930,8 @@ HLT
 Codifica proposta:
 
 ```text
-hex: 0x20 0x0A 0x01
-bin: 0b00100000 0b00001010 0b00000001
+hex: 0x20 0x0A 0x00
+bin: 0b00100000 0b00001010 0b00000000
 ```
 
 Layout in memoria:
@@ -926,7 +940,7 @@ Layout in memoria:
 | ------------- | -------------------- | ---------- | ------------ | --------------------- |
 | `0x0000`      | `0b0000000000000000` | `0x20`     | `0b00100000` | opcode `LDI R0, imm8` |
 | `0x0001`      | `0b0000000000000001` | `0x0A`     | `0b00001010` | immediato             |
-| `0x0002`      | `0b0000000000000010` | `0x01`     | `0b00000001` | opcode `HLT`          |
+| `0x0002`      | `0b0000000000000010` | `0x00`     | `0b00000000` | opcode `HLT`          |
 
 ## Esempio ALU con registri RA e RB
 
@@ -990,7 +1004,7 @@ Layout in memoria:
 
 ## Punti ancora da decidere
 
-- codifica definitiva degli opcode;
+- riserva definitiva dei gruppi opcode non usati (gli opcode attivi hanno gruppi CU distinti quando serve);
 - eventuale uso del range riservato `0b11011rrr` nei trasferimenti;
 - codifica delle istruzioni per caricare `IDX_L` e `IDX_H`;
 - codifica e sintassi degli accessi indiretti tramite `[IDX]`;

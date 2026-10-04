@@ -80,6 +80,7 @@ static bool is_jump(MicroOp uop)
 static MicroOp microop_for_ir_group(uint8_t group)
 {
     switch (group) {
+    case 0x00: return UOP_SYSTEM;
     case 0x04: return UOP_LDI;
     case 0x08: return UOP_LDA;
     case 0x09: return UOP_STA;
@@ -87,8 +88,16 @@ static MicroOp microop_for_ir_group(uint8_t group)
     case 0x0B: return UOP_STA_IDX;
     case 0x0C: return UOP_ALU;
     case 0x0D: return UOP_CMP;
+    case 0x0F: return UOP_ALU; /* SUB=0x78 conserva IR[3:0]=1000. */
     case 0x14: return UOP_JMP;
     case 0x15: return UOP_JNO;
+    case 0x16: return UOP_JZ;
+    case 0x17: return UOP_JNZ;
+    case 0x1C: return UOP_JC;
+    case 0x1D: return UOP_JNC;
+    case 0x1E: return UOP_JN;
+    case 0x1F: return UOP_JNN;
+    case 0x06: return UOP_JO;
     case 0x18: return UOP_MOV_RA_RN;
     case 0x19: return UOP_MOV_RB_RN;
     case 0x1A: return UOP_MOV_RN_RA;
@@ -188,6 +197,24 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
     }
 
     /*
+     * Il ritorno a T1 ha un microstep dedicato. Se NEXT_FETCH azzera
+     * asincronamente il contatore, non deve troncare il ciclo che scrive
+     * RAM/registri o aggiorna il PC. Anche con /LOAD sincrono, questa
+     * separazione rende osservabili e verificabili i trasferimenti.
+     */
+    if ((step == 2 && (uop == UOP_INVALID || uop == UOP_NOP ||
+                       uop == UOP_SYSTEM ||
+                       uop == UOP_HLT ||
+                       uop == UOP_ALU || uop == UOP_CMP ||
+                       uop == UOP_MOV_RA_RN || uop == UOP_MOV_RB_RN ||
+                       uop == UOP_MOV_RN_RA)) ||
+        (step == 3 && (uop == UOP_LDI || uop == UOP_LDX ||
+                       uop == UOP_LDA_IDX || uop == UOP_STA_IDX)) ||
+        (step == 4 && is_jump(uop)) ||
+        (step == 5 && (uop == UOP_LDA || uop == UOP_STA)))
+        return ADDRESS_NONE | CTRL_NEXT_FETCH;
+
+    /*
      * Ogni case e un microprogramma. Quando lo step non appartiene alla
      * sequenza, viene restituito ADDRESS_NONE: nessun trasferimento avviene e
      * nessuna memoria viene letta o scritta.
@@ -195,12 +222,16 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
     switch (uop)
     {
     case UOP_INVALID:
-        return step == 1 ? ADDRESS_NONE | CTRL_NEXT_FETCH : ADDRESS_NONE;
+        return ADDRESS_NONE;
     case UOP_NOP:
-        return step == 1 ? ADDRESS_NONE | CTRL_NEXT_FETCH : ADDRESS_NONE;
+        return ADDRESS_NONE;
+    case UOP_SYSTEM:
+        /* Solo RUN/T2 del gruppo IR[7:3]=00000: il pin fisico va a zero.
+           La OR esterna con IR[2:0] distingue HLT=000 da NOP=001. */
+        return step == 1 ? ADDRESS_NONE | CTRL_SYSTEM_STEP : ADDRESS_NONE;
     case UOP_HLT:
-        /* HLT richiede ancora una linea dedicata, non compresa nei 22 segnali
-           del video 25: qui fermiamo il microprogramma senza trasferimenti. */
+        /* L'arresto di IR=0x00 in RUN/T2 e affidato alla logica esterna.
+           La ROM vede solo IR[7:3] e produce la sequenza comune al NOP. */
         return ADDRESS_NONE;
     case UOP_LDI:
         /* T2 legge l'immediato; T3 lo copia da MDR al registro IR[2:0]. */
@@ -211,7 +242,7 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
         }
         return step == 2
                    ? ADDRESS_NONE | CTRL_MDR_OE | CTRL_RF_EN |
-                         CTRL_RF_RW | CTRL_NEXT_FETCH
+                         CTRL_RF_RW
                    : ADDRESS_NONE;
     case UOP_LDA:
         /* T2/T3 formano MAR, T4 legge il dato, T5 scrive il registro. */
@@ -224,7 +255,7 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                    CTRL_RAM_OE | CTRL_MDR_WE;
         return step == 4
                    ? ADDRESS_NONE | CTRL_MDR_OE | CTRL_RF_EN |
-                         CTRL_RF_RW | CTRL_NEXT_FETCH
+                         CTRL_RF_RW
                    : ADDRESS_NONE;
     case UOP_STA:
         /* T2/T3 formano MAR, T4 salva Rn in MDR, T5 scrive la memoria. */
@@ -236,33 +267,31 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
             return ADDRESS_NONE | CTRL_RF_EN | CTRL_MDR_WE;
         return step == 4
                    ? ADDRESS_WORD(CPU8_ADDR_SEL_MAR) |
-                         CTRL_MDR_OE | CTRL_RAM_WE | CTRL_NEXT_FETCH
+                         CTRL_MDR_OE | CTRL_RAM_WE
                    : ADDRESS_NONE;
     case UOP_ALU:
         /* IR[3:0] sceglie l'operazione; la CU salva risultato e flag. */
         return step == 1
                    ? ADDRESS_NONE | CTRL_ALU_EN | CTRL_RA_EN | CTRL_RA_RB_RW |
-                         CTRL_FLAGS_WE | CTRL_NEXT_FETCH
+                         CTRL_FLAGS_WE
                    : ADDRESS_NONE;
     case UOP_CMP:
         /* CMP aggiorna i flag ma non riporta il risultato in RA. */
         return step == 1
-                   ? ADDRESS_NONE | CTRL_FLAGS_WE | CTRL_NEXT_FETCH
+                   ? ADDRESS_NONE | CTRL_FLAGS_WE
                    : ADDRESS_NONE;
     case UOP_MOV_RA_RN:
         return step == 1
-                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RA_EN | CTRL_RA_RB_RW |
-                         CTRL_NEXT_FETCH
+                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RA_EN | CTRL_RA_RB_RW
                    : ADDRESS_NONE;
     case UOP_MOV_RB_RN:
         return step == 1
-                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RB_EN | CTRL_RA_RB_RW |
-                         CTRL_NEXT_FETCH
+                   ? ADDRESS_NONE | CTRL_RF_EN | CTRL_RB_EN | CTRL_RA_RB_RW
                    : ADDRESS_NONE;
     case UOP_MOV_RN_RA:
         return step == 1
                    ? ADDRESS_NONE | CTRL_RA_EN | CTRL_RF_EN |
-                         CTRL_RF_RW | CTRL_NEXT_FETCH
+                         CTRL_RF_RW
                    : ADDRESS_NONE;
     case UOP_LDX:
         /* LDX addr16 carica IDX in little-endian dal flusso istruzioni. */
@@ -271,8 +300,7 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                    CTRL_RAM_OE | CTRL_IDX_L_WE | CTRL_PC_INC;
         return step == 2
                    ? ADDRESS_WORD(CPU8_ADDR_SEL_PC) |
-                         CTRL_RAM_OE | CTRL_IDX_H_WE | CTRL_PC_INC |
-                         CTRL_NEXT_FETCH
+                         CTRL_RAM_OE | CTRL_IDX_H_WE | CTRL_PC_INC
                    : ADDRESS_NONE;
     case UOP_LDA_IDX:
         /* LDA Rn, [IDX]: IDX seleziona RAM, MDR conserva il dato. */
@@ -281,7 +309,7 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                    CTRL_RAM_OE | CTRL_MDR_WE;
         return step == 2
                    ? ADDRESS_NONE | CTRL_MDR_OE | CTRL_RF_EN |
-                         CTRL_RF_RW | CTRL_NEXT_FETCH
+                         CTRL_RF_RW
                    : ADDRESS_NONE;
     case UOP_STA_IDX:
         /* STA Rn, [IDX]: prima Rn -> MDR, poi MDR -> RAM selezionata da IDX. */
@@ -289,7 +317,7 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
             return ADDRESS_NONE | CTRL_RF_EN | CTRL_MDR_WE;
         return step == 2
                    ? ADDRESS_WORD(CPU8_ADDR_SEL_IDX) |
-                         CTRL_MDR_OE | CTRL_RAM_WE | CTRL_NEXT_FETCH
+                         CTRL_MDR_OE | CTRL_RAM_WE
                    : ADDRESS_NONE;
     default:
         /* Tutti i salti condividono il fetch dell'indirizzo a 16 bit. */
@@ -301,7 +329,7 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                 return READ_ADDRESS_HIGH;
             if (step == 3)
             {
-                return ADDRESS_NONE | CTRL_NEXT_FETCH |
+                return ADDRESS_NONE |
                        (jump_is_taken(uop, flags) ? CTRL_PC_LOAD : 0);
             }
         }
@@ -316,9 +344,9 @@ MicroOp dispatch_opcode(uint8_t opcode)
      * l'operazione ALU arrivano direttamente ai rispettivi blocchi hardware.
      */
     if (opcode == 0x00)
-        return UOP_NOP;
-    if (opcode == 0x01)
         return UOP_HLT;
+    if (opcode == 0x01)
+        return UOP_NOP;
     if (opcode >= 0x20 && opcode <= 0x27)
         return UOP_LDI;
     if (opcode >= 0x40 && opcode <= 0x47)
@@ -329,7 +357,7 @@ MicroOp dispatch_opcode(uint8_t opcode)
         return UOP_LDA_IDX;
     if (opcode >= 0x58 && opcode <= 0x5f)
         return UOP_STA_IDX;
-    if (opcode >= 0x60 && opcode <= 0x68)
+    if ((opcode >= 0x60 && opcode <= 0x67) || opcode == 0x78)
         return UOP_ALU;
     if (opcode == 0x69)
         return UOP_CMP;
@@ -347,19 +375,19 @@ MicroOp dispatch_opcode(uint8_t opcode)
     {
     case 0xa0:
         return UOP_JMP;
-    case 0xa1:
+    case 0xb0:
         return UOP_JZ;
-    case 0xa2:
+    case 0xb8:
         return UOP_JNZ;
-    case 0xa3:
+    case 0xe0:
         return UOP_JC;
-    case 0xa4:
+    case 0xe8:
         return UOP_JNC;
-    case 0xa5:
+    case 0xf0:
         return UOP_JN;
-    case 0xa6:
+    case 0xf8:
         return UOP_JNN;
-    case 0xa7:
+    case 0x30:
         return UOP_JO;
     case 0xa8:
         return UOP_JNO;
@@ -375,7 +403,7 @@ const char *microop_name(MicroOp uop)
         "INVALID", "NOP", "HLT", "LDI", "LDA", "STA", "ALU", "CMP",
         "MOV_RA_RN", "MOV_RB_RN", "MOV_RN_RA", "LDX", "LDA_IDX",
         "STA_IDX", "JMP", "JZ", "JNZ",
-        "JC", "JNC", "JN", "JNN", "JO", "JNO"};
+        "JC", "JNC", "JN", "JNN", "JO", "JNO", "SYSTEM"};
 
     return (unsigned)uop < sizeof(names) / sizeof(names[0])
                ? names[uop]
@@ -515,7 +543,7 @@ bool get_control_signal_config(ControlSignal signal, uint8_t *rom, uint8_t *bit,
                                bool *active_low)
 {
     /*
-     * Ricerca lineare: con soli 22 segnali e semplice e viene usata soprattutto
+     * Ricerca lineare: con soli 23 segnali e semplice e viene usata soprattutto
      * da test e diagnostica, quindi non serve una struttura piu complessa.
      */
     size_t index;

@@ -1,4 +1,4 @@
-import { FIXED_OPCODES, MEMORY_SIZE, OPCODE_NAMES } from "./isa.js";
+import { ALU_OPCODES, FIXED_OPCODES, JUMP_OPCODES, MEMORY_SIZE, OPCODE_NAMES } from "./isa.js";
 import { hex } from "./utils.js";
 
 export function createCpuState() {
@@ -96,7 +96,7 @@ export function disassemble(state, opcode, address) {
   if (opcode >= 0x58 && opcode <= 0x5f) return `STAI R${reg}, [IDX]`;
   if (opcode >= 0x80 && opcode <= 0x87) return `IN R${reg}`;
   if (opcode >= 0x88 && opcode <= 0x8f) return `OUT R${reg}`;
-  if (opcode >= 0xa0 && opcode <= 0xa8) {
+  if (JUMP_OPCODES.has(opcode)) {
     return `${OPCODE_NAMES[opcode]} ${hex(operandAddress(), 4)}`;
   }
   if (opcode >= 0xc0 && opcode <= 0xc7) return `MOV RA, R${reg}`;
@@ -123,14 +123,14 @@ const setFlags = (state, result, carry = false, overflow = false) => {
 const jumpCondition = (state, opcode) =>
   ({
     0xa0: true,
-    0xa1: state.flags.Z,
-    0xa2: !state.flags.Z,
-    0xa3: state.flags.C,
-    0xa4: !state.flags.C,
-    0xa5: state.flags.N,
-    0xa6: !state.flags.N,
-    0xa7: state.flags.O,
-    0xa8: !state.flags.O,
+    [FIXED_OPCODES.JZ]: state.flags.Z,
+    [FIXED_OPCODES.JNZ]: !state.flags.Z,
+    [FIXED_OPCODES.JC]: state.flags.C,
+    [FIXED_OPCODES.JNC]: !state.flags.C,
+    [FIXED_OPCODES.JN]: state.flags.N,
+    [FIXED_OPCODES.JNN]: !state.flags.N,
+    [FIXED_OPCODES.JO]: state.flags.O,
+    [FIXED_OPCODES.JNO]: !state.flags.O,
   })[opcode];
 
 function executeAlu(state, opcode) {
@@ -158,7 +158,7 @@ function executeAlu(state, opcode) {
     return;
   }
   result = (a - b) & 0xff;
-  if (opcode === 0x68) state.ra = result;
+  if (opcode === FIXED_OPCODES.SUB) state.ra = result;
   setFlags(state, result, a < b, overflowSub(a, b, result));
 }
 
@@ -196,12 +196,12 @@ export function stepCpu(state, input) {
     state.mdr = state.regs[reg];
     state.mem[state.idx] = state.mdr;
     state.lastWrite = state.idx;
-  } else if (opcode >= 0x60 && opcode <= 0x69) executeAlu(state, opcode);
+  } else if (ALU_OPCODES.has(opcode)) executeAlu(state, opcode);
   else if (opcode >= 0x80 && opcode <= 0x87) {
     state.regs[reg] = input;
   } else if (opcode >= 0x88 && opcode <= 0x8f) {
     state.output = state.regs[reg];
-  } else if (opcode >= 0xa0 && opcode <= 0xa8) {
+  } else if (JUMP_OPCODES.has(opcode)) {
     const target = readProgramByte(state) | (readProgramByte(state) << 8);
     state.mar = target;
     if (jumpCondition(state, opcode)) state.pc = target;

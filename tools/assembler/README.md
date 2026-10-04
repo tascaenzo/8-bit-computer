@@ -32,6 +32,12 @@ Output generati:
 - `.bits`: dump binario testuale per debug visivo;
 - `.h`: array C/C++ da includere in uno sketch Arduino.
 
+Gli opcode di sistema attuali sono `HLT=0x00` e `NOP=0x01`; i binari
+assemblati con la codifica precedente vanno rigenerati prima dell'uso.
+Anche `SUB=0x78` e i salti condizionati hanno opcode aggiornati per essere
+distinguibili dalle tre Control ROM collegate a `IR[7:3]`. Non usare vecchi
+binari con `SUB=0x68` o salti `0xA1..0xA7` sulla CU aggiornata.
+
 Esempio di riga `.bits`:
 
 ```text
