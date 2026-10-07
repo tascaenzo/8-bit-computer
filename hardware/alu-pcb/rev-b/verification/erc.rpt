@@ -1,0 +1,30 @@
+ERC report (2026-10-07T09:27:50, Encoding UTF8)
+Report includes: Errors, Warnings
+
+***** Sheet /
+
+***** Sheet /Components U1 to U20/
+
+***** Sheet /Components U21 to U40/
+
+***** Sheet /Components U41 to C15/
+
+***** Sheet /Components C16 to C35/
+
+***** Sheet /Components C36 to RN3/
+
+***** Sheet /Components RN4 to D4/
+
+***** Sheet /Components R8 to D14/
+
+***** Sheet /Components R18 to D24/
+
+***** Sheet /Components R28 to D30/
+
+ ** ERC messages: 0  Errors 0  Warnings 0
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters

@@ -1,0 +1,1 @@
+(sym_lib_table (version 7) (lib (name "CPU8") (type "KiCad") (uri "${KIPRJMOD}/CPU8.kicad_sym") (options "") (descr "Self-contained ALU symbols")))

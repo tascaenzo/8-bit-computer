@@ -1,0 +1,43 @@
+{
+  "revision": "A",
+  "layout_id": "2026-10-07-slim-led-switch",
+  "designer": "Enzo Tasca",
+  "kicad_version": "10.0.7",
+  "board_size_mm": [
+    300,
+    46
+  ],
+  "layers": 2,
+  "thickness_mm": 1.6,
+  "erc_violations": 0,
+  "drc_violations": 0,
+  "unconnected_items": 0,
+  "schematic_parity_issues": 0,
+  "logic_cases": 131072,
+  "hardware_tested": false,
+  "assumptions": [
+    "5V 74HCT through-hole logic",
+    "Eight parallel 16-bit address ports: A0..A15, four GND pins",
+    "External address source selection: PC/MAR/IDX, one driver at a time",
+    "Sixteen buffered address LEDs plus power LED",
+    "SW1 grounds all LED buffer OE_n pins when ON; 10k pull-up disables them when OFF; PWR remains on",
+    "Compact 4mm LED pitch with 2mm extra nibble gaps",
+    "10k pull-down per bus bit",
+    "Address ports carry GND but no +5V"
+  ],
+  "sha256": {
+    "fabrication/address_bus_rev_a-B_Cu.gbl": "68a0a448b001216ed5733870532fe7cdef9428ebdeeeb83bc5d029a433528cd1",
+    "fabrication/address_bus_rev_a-B_Mask.gbs": "7c18aa385a79d73886495f4fd1f05fa642bcb8426cf73a4f9f02eafd32481156",
+    "fabrication/address_bus_rev_a-Edge_Cuts.gm1": "201d19d9d51552caec4a799cda9624ea163f2901df939342c83c0b24ba42814c",
+    "fabrication/address_bus_rev_a-F_Cu.gtl": "316deeaef42636be3968efffa82e7191c577cb7bfe2612ace42a15656fe78c76",
+    "fabrication/address_bus_rev_a-F_Mask.gts": "9e3f0c29b31c79ee62836e44e85b12ff7815fdc53297a377dcb7677405bd66a7",
+    "fabrication/address_bus_rev_a-NPTH.drl": "9f1ecbd4668757b20de6738514484609175b950825b17e3145bae1759f3462f3",
+    "fabrication/address_bus_rev_a-PTH.drl": "d34f583d0fca38d085fd03714a14cbe2a2591560546b9889dd549e2f8bf75d30",
+    "fabrication/address_bus_rev_a-b_silkscreen.gbo": "a66a79218bd81941d09ab32f5a491cc0803230970fcd7f1fafae126211a02bb2",
+    "fabrication/address_bus_rev_a-f_silkscreen.gto": "6c4fbfa4a9bd2c8f054ebb1aa7ca761fedb10766b425490298b1111774cc6961",
+    "fabrication/address_bus_rev_a-job.gbrjob": "6ea16e11a2b6d47617dfdee479e70aaed3b35a4fd340c8f36a2e5ba5c594a635",
+    "source/address_bus_rev_a.kicad_pcb": "92ce7dbd7a2311028c71c37caf44930fc06d8ce057d555ba3695648bc3bdd98f",
+    "source/address_bus_rev_a.kicad_sch": "31c5adac05cf494a4a5f2a7849a5653a7abac2058e15805c6b137d8d7ee29f72",
+    "verification/drc.json": "a67cd422edaf8a8b5e24219e08744bbf29abc4d3314c4b2c84d21352d3c38ae7"
+  }
+}

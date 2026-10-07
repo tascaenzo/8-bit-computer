@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "input_cases": 131072,
+  "bus_values_per_switch_state": 65536,
+  "switch_states": [
+    "OFF",
+    "ON"
+  ],
+  "checks": [
+    "Actual exported schematic nets match board generation",
+    "All 65,536 16-bit addresses displayed without inversion",
+    "Eight identical 20-pin address ports with four ground pins",
+    "Only receiver inputs connected to shared address bus; no on-board address source",
+    "Both OE pins on both buffers follow SW1 with a 10k default-disable pull-up",
+    "Sixteen 10k pull-downs share ground",
+    "Seventeen LEDs have correct polarity and 2.2k series resistance",
+    "Power and decoupling polarity",
+    "All bit LEDs display data when SW1 ON; outputs high impedance / LEDs inactive when OFF",
+    "All eight bus ports unchanged with LEDs disabled; power LED always on",
+    "4mm LED pitch, 2mm extra gaps between nibbles, MSB at left"
+  ],
+  "limitations": [
+    "Static digital checks only; PC/MAR/IDX arbitration and control are external",
+    "LEDs do not latch address values; visible brightness at speed depends on duty cycle",
+    "No physical prototype tested; cable loads and signal integrity require measurements"
+  ]
+}

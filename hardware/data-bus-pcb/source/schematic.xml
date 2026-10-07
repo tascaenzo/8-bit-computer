@@ -1,0 +1,1623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/Users/enzo/Desktop/cpu-8-bit/hardware/data-bus-pcb/source/data_bus_rev_a.kicad_sch</source>
+    <date>2026-10-07T15:17:56</date>
+    <tool>Eeschema 10.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>CPU8 DATA BUS rev A - 8 ports and buffered LED monitor</title>
+        <company>Enzo Tasca</company>
+        <rev>A</rev>
+        <date>2026-10-07</date>
+        <source>data_bus_rev_a.kicad_sch</source>
+        <comment number="1" value="Progettato da Enzo Tasca - compact LEDs / SW1 enable 2026-10-07"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="2" name="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/">
+      <title_block>
+        <title>CPU8 DATA BUS rev A - U1 ... R5</title>
+        <company>Enzo Tasca</company>
+        <rev>A</rev>
+        <date>2026-10-07</date>
+        <source>data_bus_rev_a_sheet_01.kicad_sch</source>
+        <comment number="1" value="Progettato da Enzo Tasca - compact LEDs / SW1 enable 2026-10-07"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="3" name="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/">
+      <title_block>
+        <title>CPU8 DATA BUS rev A - D5 ... R10</title>
+        <company>Enzo Tasca</company>
+        <rev>A</rev>
+        <date>2026-10-07</date>
+        <source>data_bus_rev_a_sheet_02.kicad_sch</source>
+        <comment number="1" value="Progettato da Enzo Tasca - compact LEDs / SW1 enable 2026-10-07"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>100nF</value>
+      <footprint>CPU8:C_Disc_P2.50mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:C_Disc_P2.50mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="C1" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>9dc52d60-3293-46cf-9e1c-ead7008aa39f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C2">
+      <value>10uF_16V</value>
+      <footprint>CPU8:C_Radial_P2.50mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:C_Radial_P2.50mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="C2" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>d00fb72d-4a84-4149-a058-a9ba32f38058</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D6">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D6" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>4c683e19-f1b6-4559-bd1d-45b09e2790b1</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D7">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D7" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>655102ae-b402-497c-ab90-f4a6bc7cda3e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D8">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D8" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>6ec5eb1a-20d9-45b5-ac25-ec4626434685</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J1">
+      <value>BUS1</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J1" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>2c00a5d6-7568-4d2f-b36a-cf31d837cbac</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J2">
+      <value>BUS2</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J2" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>44056921-33d4-463f-a55a-d1e0dbd354d2</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J3">
+      <value>BUS3</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J3" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>97a7b6e4-86a2-4677-bbf0-bbdfdfb7c14d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J4">
+      <value>BUS4</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J4" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>36dbe69e-19ac-456d-a79c-6e18459092ef</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J5">
+      <value>BUS5</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J5" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>8ece7ab0-dc4d-4966-8793-d4db7731646c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J6">
+      <value>BUS6</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J6" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>85929824-645e-4673-88e9-faeeb97e8773</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J7">
+      <value>BUS7</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J7" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>37b91597-35af-47a5-a7d0-2b85c6b1f877</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J8">
+      <value>BUS8</value>
+      <footprint>CPU8:Header_2x5_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J8" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>c22082f1-d7c7-4e14-9e74-9f391d3dae71</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="10"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J9">
+      <value>POWER_5V</value>
+      <footprint>CPU8:Header_2x2_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:Header_2x2_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="J9" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>8d483d9e-66b7-4f75-be0c-8c9704fc83d5</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="4"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R5">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R5" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>2da823ac-3fa0-4203-9ef9-08df61a72ec8</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R6">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R6" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>03c9a5c5-0e32-414f-a937-95cdb4db0f82</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R7">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R7" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>2d7be689-2e36-47cd-bf97-43b92ed48eb8</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R8">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R8" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>983ed0b9-c9e1-4957-b781-8e77a144ec6b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="RN1">
+      <value>10k_Bussed_SIP9</value>
+      <footprint>CPU8:SIP-9_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:SIP-9_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="RN1" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>f809bc34-e976-4ce4-8067-72d36080bc80</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U1">
+      <value>SN74HCT244N</value>
+      <footprint>CPU8:DIP-20_W7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:DIP-20_W7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="U1" description=""/>
+      <property name="Sheetname" value="Components U1 to R5"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_01.kicad_sch"/>
+      <sheetpath names="/Components U1 to R5/" tstamps="/a74b8294-2ee3-402c-a764-769379476ce5/"/>
+      <tstamps>9093f84f-4312-4f04-991a-9591d6f19383</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="10"/>
+            <pin num="20"/>
+            <pin num="19"/>
+            <pin num="18"/>
+            <pin num="17"/>
+            <pin num="16"/>
+            <pin num="15"/>
+            <pin num="14"/>
+            <pin num="13"/>
+            <pin num="12"/>
+            <pin num="11"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D1">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D1" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>42bdf8c3-55e0-4965-aab4-40a24d2db0fa</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D2">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D2" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>bd590a85-2d86-4586-ac9b-7dfffe0946d0</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D3">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D3" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>544aac9c-d96f-410e-828c-704fe5718973</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D4">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D4" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>db46e9bc-6182-47ea-a6bb-33915394f028</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D5">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm_Vertical</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D5" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>820509a1-95d5-4b8e-bcee-4b2bcf93dd04</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D9">
+      <value>GREEN</value>
+      <footprint>CPU8:LED_D3.0mm_P2.54mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="D9" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>806cd6bb-65ba-4593-8496-d848bf851a31</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R1">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R1" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>43a03442-5a99-4102-bd71-eb85df91e282</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R2">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R2" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>86af6e49-25e5-4da0-a86b-d1fec798ff26</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R3">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R3" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>aea66631-47ee-4c51-b999-ab1ccdc9cc13</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R4">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R4" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>3f9850ec-e357-4aa4-810e-f63137ad2e44</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R9">
+      <value>2.2k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R9" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>4f484e48-59c5-47a6-8ec0-2a5ace67ebdf</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R10">
+      <value>10k</value>
+      <footprint>CPU8:R_Axial_P7.62mm</footprint>
+      <fields>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="R10" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>6fb0bfdf-0cbd-4564-8f67-011b250789a4</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="SW1">
+      <value>SDA01H0BD_LED_ENABLE</value>
+      <footprint>CPU8:SW_DIP_SPST_1_P2.54_W7.62</footprint>
+      <fields>
+        <field name="Footprint">CPU8:SW_DIP_SPST_1_P2.54_W7.62</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CPU8" part="SW1" description=""/>
+      <property name="Sheetname" value="Components D5 to R10"/>
+      <property name="Sheetfile" value="data_bus_rev_a_sheet_02.kicad_sch"/>
+      <sheetpath names="/Components D5 to R10/" tstamps="/f395c5e4-8bd6-4913-ae1b-e49d3c3278c4/"/>
+      <tstamps>761aaccf-1aea-440c-a686-885322483774</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="CPU8" part="C1">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">100nF</field>
+        <field name="Footprint">CPU8:C_Disc_P2.50mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="C2">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">10uF_16V</field>
+        <field name="Footprint">CPU8:C_Radial_P2.50mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D1">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D2">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D3">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D4">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D5">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D6">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D7">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D8">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm_Vertical</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="D9">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">GREEN</field>
+        <field name="Footprint">CPU8:LED_D3.0mm_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J1">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS1</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J2">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS2</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J3">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS3</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J4">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS4</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J5">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS5</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J6">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS6</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J7">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS7</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J8">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">BUS8</field>
+        <field name="Footprint">CPU8:Header_2x5_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+        <pin num="10" name="P10" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="J9">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">POWER_5V</field>
+        <field name="Footprint">CPU8:Header_2x2_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R1">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R10">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">10k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R2">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R3">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R4">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R5">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R6">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R7">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R8">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="R9">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">2.2k</field>
+        <field name="Footprint">CPU8:R_Axial_P7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="RN1">
+      <fields>
+        <field name="Reference">RN</field>
+        <field name="Value">10k_Bussed_SIP9</field>
+        <field name="Footprint">CPU8:SIP-9_P2.54mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+        <pin num="7" name="P7" type="passive"/>
+        <pin num="8" name="P8" type="passive"/>
+        <pin num="9" name="P9" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="SW1">
+      <fields>
+        <field name="Reference">SW</field>
+        <field name="Value">SDA01H0BD_LED_ENABLE</field>
+        <field name="Footprint">CPU8:SW_DIP_SPST_1_P2.54_W7.62</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="LED_OE_n" type="passive"/>
+        <pin num="2" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CPU8" part="U1">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">SN74HCT244N</field>
+        <field name="Footprint">CPU8:DIP-20_W7.62mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="OE1_n" type="input"/>
+        <pin num="2" name="1A1" type="input"/>
+        <pin num="3" name="2Y4" type="output"/>
+        <pin num="4" name="1A2" type="input"/>
+        <pin num="5" name="2Y3" type="output"/>
+        <pin num="6" name="1A3" type="input"/>
+        <pin num="7" name="2Y2" type="output"/>
+        <pin num="8" name="1A4" type="input"/>
+        <pin num="9" name="2Y1" type="output"/>
+        <pin num="10" name="GND" type="power_in"/>
+        <pin num="11" name="2A1" type="input"/>
+        <pin num="12" name="1Y4" type="output"/>
+        <pin num="13" name="2A2" type="input"/>
+        <pin num="14" name="1Y3" type="output"/>
+        <pin num="15" name="2A3" type="input"/>
+        <pin num="16" name="1Y2" type="output"/>
+        <pin num="17" name="2A4" type="input"/>
+        <pin num="18" name="1Y1" type="output"/>
+        <pin num="19" name="OE2_n" type="input"/>
+        <pin num="20" name="VCC" type="power_in"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="CPU8">
+      <uri>${KIPRJMOD}/CPU8.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+5V" class="Default">
+      <node ref="C1" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="C2" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J9" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J9" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="R10" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="R9" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="20" pinfunction="VCC_20" pintype="power_in"/>
+    </net>
+    <net code="2" name="D0" class="Default">
+      <node ref="J1" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J2" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J3" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J4" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J5" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J6" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J7" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="J8" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="RN1" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="U1" pin="2" pinfunction="1A1_2" pintype="input"/>
+    </net>
+    <net code="3" name="D1" class="Default">
+      <node ref="J1" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J2" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J3" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J4" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J5" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J6" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J7" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J8" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="RN1" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="U1" pin="4" pinfunction="1A2_4" pintype="input"/>
+    </net>
+    <net code="4" name="D2" class="Default">
+      <node ref="J1" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="J2" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="J3" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="J4" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="J5" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="J6" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="J7" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="J8" pin="3" pinfunction="P3_3" pintype="passive"/>
+      <node ref="RN1" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="U1" pin="6" pinfunction="1A3_6" pintype="input"/>
+    </net>
+    <net code="5" name="D3" class="Default">
+      <node ref="J1" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="J2" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="J3" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="J4" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="J5" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="J6" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="J7" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="J8" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="RN1" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="U1" pin="8" pinfunction="1A4_8" pintype="input"/>
+    </net>
+    <net code="6" name="D4" class="Default">
+      <node ref="J1" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="J2" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="J3" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="J4" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="J5" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="J6" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="J7" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="J8" pin="5" pinfunction="P5_5" pintype="passive"/>
+      <node ref="RN1" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="U1" pin="11" pinfunction="2A1_11" pintype="input"/>
+    </net>
+    <net code="7" name="D5" class="Default">
+      <node ref="J1" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="J2" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="J3" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="J4" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="J5" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="J6" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="J7" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="J8" pin="6" pinfunction="P6_6" pintype="passive"/>
+      <node ref="RN1" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="U1" pin="13" pinfunction="2A2_13" pintype="input"/>
+    </net>
+    <net code="8" name="D6" class="Default">
+      <node ref="J1" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="J2" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="J3" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="J4" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="J5" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="J6" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="J7" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="J8" pin="7" pinfunction="P7_7" pintype="passive"/>
+      <node ref="RN1" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="U1" pin="15" pinfunction="2A3_15" pintype="input"/>
+    </net>
+    <net code="9" name="D7" class="Default">
+      <node ref="J1" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="J2" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="J3" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="J4" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="J5" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="J6" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="J7" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="J8" pin="8" pinfunction="P8_8" pintype="passive"/>
+      <node ref="RN1" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="U1" pin="17" pinfunction="2A4_17" pintype="input"/>
+    </net>
+    <net code="10" name="GND" class="Default">
+      <node ref="C1" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="C2" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="D1" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D2" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D3" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D4" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D5" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D6" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D7" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D8" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D9" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="J1" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J1" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J2" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J2" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J3" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J3" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J4" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J4" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J5" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J5" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J6" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J6" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J7" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J7" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J8" pin="10" pinfunction="P10_10" pintype="passive"/>
+      <node ref="J8" pin="9" pinfunction="P9_9" pintype="passive"/>
+      <node ref="J9" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="J9" pin="4" pinfunction="P4_4" pintype="passive"/>
+      <node ref="RN1" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="SW1" pin="2" pinfunction="GND_2" pintype="passive"/>
+      <node ref="U1" pin="10" pinfunction="GND_10" pintype="power_in"/>
+    </net>
+    <net code="11" name="LED_D0_A" class="Default">
+      <node ref="D1" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R1" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="12" name="LED_D0_DRIVE" class="Default">
+      <node ref="R1" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="18" pinfunction="1Y1_18" pintype="output"/>
+    </net>
+    <net code="13" name="LED_D1_A" class="Default">
+      <node ref="D2" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R2" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="14" name="LED_D1_DRIVE" class="Default">
+      <node ref="R2" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="16" pinfunction="1Y2_16" pintype="output"/>
+    </net>
+    <net code="15" name="LED_D2_A" class="Default">
+      <node ref="D3" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R3" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="16" name="LED_D2_DRIVE" class="Default">
+      <node ref="R3" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="14" pinfunction="1Y3_14" pintype="output"/>
+    </net>
+    <net code="17" name="LED_D3_A" class="Default">
+      <node ref="D4" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R4" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="18" name="LED_D3_DRIVE" class="Default">
+      <node ref="R4" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="12" pinfunction="1Y4_12" pintype="output"/>
+    </net>
+    <net code="19" name="LED_D4_A" class="Default">
+      <node ref="D5" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R5" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="20" name="LED_D4_DRIVE" class="Default">
+      <node ref="R5" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="9" pinfunction="2Y1_9" pintype="output"/>
+    </net>
+    <net code="21" name="LED_D5_A" class="Default">
+      <node ref="D6" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R6" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="22" name="LED_D5_DRIVE" class="Default">
+      <node ref="R6" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="7" pinfunction="2Y2_7" pintype="output"/>
+    </net>
+    <net code="23" name="LED_D6_A" class="Default">
+      <node ref="D7" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R7" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="24" name="LED_D6_DRIVE" class="Default">
+      <node ref="R7" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="2Y3_5" pintype="output"/>
+    </net>
+    <net code="25" name="LED_D7_A" class="Default">
+      <node ref="D8" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R8" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+    <net code="26" name="LED_D7_DRIVE" class="Default">
+      <node ref="R8" pin="1" pinfunction="P1_1" pintype="passive"/>
+      <node ref="U1" pin="3" pinfunction="2Y4_3" pintype="output"/>
+    </net>
+    <net code="27" name="LED_OE_n" class="Default">
+      <node ref="R10" pin="2" pinfunction="P2_2" pintype="passive"/>
+      <node ref="SW1" pin="1" pinfunction="LED_OE_n_1" pintype="passive"/>
+      <node ref="U1" pin="1" pinfunction="OE1_n_1" pintype="input"/>
+      <node ref="U1" pin="19" pinfunction="OE2_n_19" pintype="input"/>
+    </net>
+    <net code="28" name="LED_PWR_A" class="Default">
+      <node ref="D9" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R9" pin="2" pinfunction="P2_2" pintype="passive"/>
+    </net>
+  </nets>
+</export>

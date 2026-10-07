@@ -1,0 +1,39 @@
+{
+  "revision": "B",
+  "kicad_version": "10.0.7",
+  "board_size_mm": [
+    290,
+    300
+  ],
+  "layers": 2,
+  "thickness_mm": 1.6,
+  "erc_violations": 0,
+  "drc_violations": 0,
+  "unconnected_items": 0,
+  "schematic_parity_issues": 0,
+  "logic_cases": 4194304,
+  "hardware_tested": false,
+  "assumptions": [
+    "5V 74HCT through-hole logic",
+    "External RA/RB and flag register",
+    "Board-specific connector pinouts",
+    "SW4 selects external/local A/B/opcode/enable",
+    "SW5 enables local bus; CMP remains isolated",
+    "30 buffered or decoded LEDs"
+  ],
+  "sha256": {
+    "fabrication/alu_rev_b-B_Cu.gbl": "8c6256ad138972b2d3f3947c65d53b8481687e91b5e56bdcae05f0c88acf8d68",
+    "fabrication/alu_rev_b-B_Mask.gbs": "e3d767ccd2e4eceb9ddab8da57cc961ae17928a849d4df7ad291746b4dd5e374",
+    "fabrication/alu_rev_b-Edge_Cuts.gm1": "d36af3fbf5c77fae28747d89a4d9d873b17451060945c09cf0b3fd5d9f987968",
+    "fabrication/alu_rev_b-F_Cu.gtl": "9ed4ca92325333537385582da063f2e78531ffae83673f4e293ffaccbe69a068",
+    "fabrication/alu_rev_b-F_Mask.gts": "f7530a275c977181e6629b6a7a06c102739555dfd9a1654022bd2e9da9d5953b",
+    "fabrication/alu_rev_b-NPTH.drl": "43144ae14f0108257b79af786ed881a09b360bffef761dfed35aa10643f65c7a",
+    "fabrication/alu_rev_b-PTH.drl": "b305110b8e5d7add95d6a244f76c19e733680dea4b4d2416a5b9960e699c4ba7",
+    "fabrication/alu_rev_b-b_silkscreen.gbo": "3857ed9e2a7b0d5acca34bd81615b37a1fa38b5b150ade21b6dff512aa784454",
+    "fabrication/alu_rev_b-f_silkscreen.gto": "c437fe871233d2b7278fd6f95859107bd2eab9df10bcc5c8c296f572efde62c9",
+    "fabrication/alu_rev_b-job.gbrjob": "c4adf7ac63b161de4fa5acbe1d5b670b5bf1d76208d19a6284223a23a2b9bc8a",
+    "source/alu_rev_b.kicad_pcb": "b7a6603ad6b524defb860dd1cd8c20ce98abee18ef618286f006e06149b73196",
+    "source/alu_rev_b.kicad_sch": "5df9cae1764be5a3cc4de2d92a2a7c381f90c4b79c8bcb414562c625472b08b8",
+    "verification/drc.json": "5e71d2c38c46b5d7e2e38ca9847b3ed0e7fd0ba7613e40cc42fef76b6e3ed452"
+  }
+}

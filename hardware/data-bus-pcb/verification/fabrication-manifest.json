@@ -1,0 +1,43 @@
+{
+  "revision": "A",
+  "layout_id": "2026-10-07-slim-led-switch",
+  "designer": "Enzo Tasca",
+  "kicad_version": "10.0.7",
+  "board_size_mm": [
+    235,
+    40
+  ],
+  "layers": 2,
+  "thickness_mm": 1.6,
+  "erc_violations": 0,
+  "drc_violations": 0,
+  "unconnected_items": 0,
+  "schematic_parity_issues": 0,
+  "logic_cases": 512,
+  "hardware_tested": false,
+  "assumptions": [
+    "5V 74HCT through-hole logic",
+    "Eight parallel 8-bit ports matching ALU J4",
+    "External tri-state writers and external register load controls",
+    "Eight buffered data LEDs plus power LED",
+    "SW1 grounds all LED buffer OE_n pins when ON; 10k pull-up disables them when OFF; PWR remains on",
+    "Compact 4mm LED pitch with 2mm extra nibble gaps",
+    "10k pull-down per bus bit",
+    "Data ports carry GND but no +5V"
+  ],
+  "sha256": {
+    "fabrication/data_bus_rev_a-B_Cu.gbl": "6b6d0ceadce3220164b67408f9ffffa40653c090c639e472b3f0a8ebde535ffa",
+    "fabrication/data_bus_rev_a-B_Mask.gbs": "35e286e0388e6bfd063ec8a599677ffb770795b1ef48d05dad62a5a96d8c4076",
+    "fabrication/data_bus_rev_a-Edge_Cuts.gm1": "e2b401f58f9c1988c02061f59c3617f7efafe1b61d92377fb859abe55c0ccf66",
+    "fabrication/data_bus_rev_a-F_Cu.gtl": "ccc1e3342c881ba42cc41e5a497d72bc9fd8f8fe22db4c4abdf25674e321ec5a",
+    "fabrication/data_bus_rev_a-F_Mask.gts": "50b97127b14463b2e5be7f7640aa941feb2d252c77ec296eb9d32ea2c19dc382",
+    "fabrication/data_bus_rev_a-NPTH.drl": "8a0e2dbe90c4994ee8c5d0253608369e1e58acaa3f9e8725bdbba47bbc1d5f2e",
+    "fabrication/data_bus_rev_a-PTH.drl": "7483c6f00594f7a99cd2a9a75d9288f9d661c8dce72193188817768a6b8f1303",
+    "fabrication/data_bus_rev_a-b_silkscreen.gbo": "6c401b20b3fd3e469e572d5d430fe1e7467b9716ed19577250733c30858f1a3c",
+    "fabrication/data_bus_rev_a-f_silkscreen.gto": "76e8e22bbc9358ba70db8e80f25f2a7a9420b03062dcdfc9e4e14f32ed5da142",
+    "fabrication/data_bus_rev_a-job.gbrjob": "0af34db4725bee7fbd56ecf8338e97e717076408fd56349a04c0b3755e7ad0b2",
+    "source/data_bus_rev_a.kicad_pcb": "3b11544ddbfd5bca7007ed2ebb427ab0faa91f7010e599f0a941685a0e568cc7",
+    "source/data_bus_rev_a.kicad_sch": "2b29e3b0aa3779e6b73f852a3146511277a0dea75bae76ee03728c09597be11c",
+    "verification/drc.json": "b6bbde8d5ece7ed413c6fe86d25da8df1b3e0dff2bfe17805bdbac2edbc53145"
+  }
+}

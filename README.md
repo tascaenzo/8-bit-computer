@@ -12,6 +12,9 @@ In questa fase il repository contiene documentazione, una prima ISA, esempi asse
 ├── examples/
 │   └── assembly/
 ├── hardware/
+│   ├── alu-pcb/
+│   ├── data-bus-pcb/
+│   ├── address-bus-pcb/
 │   └── tang-nano-9k-video/
 ├── tools/
 │   ├── assembler/
@@ -36,6 +39,18 @@ Contiene la documentazione tecnica della CPU:
 ### `examples/assembly`
 
 Contiene programmi assembly didattici usati per provare l'assembler e spiegare le istruzioni della CPU.
+
+### Schede PCB in `hardware`
+
+Progetti KiCad e pacchetti Gerber per l'[ALU con LED e comandi locali](hardware/alu-pcb/rev-b/README.md),
+il [bus dati a otto porte con monitor LED](hardware/data-bus-pcb/README.md)
+e il [bus indirizzi a 16 bit](hardware/address-bus-pcb/README.md).
+I due bus usano il layout slim del 7 ottobre 2026, entrambi **REV A**:
+**235 × 40 mm** per i dati e **300 × 46 mm** per gli indirizzi,
+con la firma «Progettato da Enzo Tasca» sul fronte, LED ravvicinati a gruppi
+di quattro bit e uno switch SW1 per spegnere gli indicatori del bus.
+ALU e bus dati hanno connettori dati compatibili; il bus indirizzi usa porte 2×10 dedicate. I controlli software sono
+completati; i prototipi fisici devono ancora essere montati e collaudati.
 
 ### `hardware/tang-nano-9k-video`
 

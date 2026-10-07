@@ -1,0 +1,90 @@
+(footprint "LED_D3.0mm_P2.54mm_Vertical"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "D1"
+		(at 0 -3 0)
+		(layer "F.Fab")
+		(uuid "8f4f3b53-2610-464d-98ba-4c92b6835263")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "GREEN"
+		(at 0 4.84 0)
+		(layer "F.Fab")
+		(uuid "168a064d-7842-4366-9c1c-a913af9bfc58")
+		(effects
+			(font
+				(size 0.85 0.85)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f7a7c211-5b46-41bb-bb1a-91e168ee4750")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e0688ece-71e7-494a-8c7b-6245ab2b68b8")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -1.2 -1.6)
+		(end 1.2 -1.6)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "883e01c7-b527-4908-8f7e-7423ebe4ecef")
+	)
+	(fp_circle
+		(center 0 1.27)
+		(end 1.5 1.27)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "1081b4c6-fada-47b2-a41c-0385746f8062")
+	)
+	(pad "1" thru_hole rect
+		(at 0 0)
+		(size 1.6 1.6)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "b80124fb-e79a-4752-96e7-55e5864e5a83")
+	)
+	(pad "2" thru_hole circle
+		(at 0 2.54)
+		(size 1.6 1.6)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "9a8aa327-418e-4091-8697-0ecc9d1b99c8")
+	)
+	(embedded_fonts no)
+)

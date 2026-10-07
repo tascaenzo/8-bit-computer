@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "input_cases": 512,
+  "bus_values_per_switch_state": 256,
+  "switch_states": [
+    "OFF",
+    "ON"
+  ],
+  "checks": [
+    "Actual exported schematic nets match board generation",
+    "All 256 bus bytes displayed without inversion",
+    "Eight identical bidirectional port pinouts",
+    "ALU J4/J6 compatibility when ALU project is present",
+    "Only receiver inputs connected to shared bus; no on-board active bus driver",
+    "Both OE pins follow SW1 with a 10k default-disable pull-up",
+    "Eight 10k pull-downs share ground",
+    "Nine LEDs have correct polarity and 2.2k series resistance",
+    "Power and decoupling polarity",
+    "All bit LEDs display data when SW1 ON; outputs high impedance / LEDs inactive when OFF",
+    "All eight bus ports unchanged with LEDs disabled; power LED always on",
+    "4mm LED pitch, 2mm extra gaps between nibbles, MSB at left"
+  ],
+  "limitations": [
+    "Static digital checks only; external writer arbitration is not implemented on this board",
+    "No sample-and-hold: LED visibility at speed depends on data duty cycle",
+    "No physical prototype tested; signal integrity, cable loads and timing require measurements"
+  ]
+}

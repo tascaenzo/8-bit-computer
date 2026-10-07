@@ -1,0 +1,173 @@
+Reference,Value,Footprint,Purpose,Part_or_requirement,Mounting_specification
+U1,74HCT08,DIP-14_W7.62mm,AND,74HCT08 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U2,74HCT08,DIP-14_W7.62mm,AND,74HCT08 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U3,74HCT32,DIP-14_W7.62mm,OR,74HCT32 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U4,74HCT32,DIP-14_W7.62mm,OR,74HCT32 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U5,74HCT86,DIP-14_W7.62mm,XOR,74HCT86 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U6,74HCT86,DIP-14_W7.62mm,XOR,74HCT86 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U7,74HCT02,DIP-14_W7.62mm,NOR,74HCT02 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U8,74HCT02,DIP-14_W7.62mm,NOR,74HCT02 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U9,74HCT00,DIP-14_W7.62mm,NAND,74HCT00 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U10,74HCT00,DIP-14_W7.62mm,NAND,74HCT00 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U11,74HCT04,DIP-14_W7.62mm,XNOR / NOT,74HCT04 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U12,74HCT04,DIP-14_W7.62mm,XNOR / NOT,74HCT04 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U13,74HCT04,DIP-14_W7.62mm,XNOR / NOT,74HCT04 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U14,74HCT86,DIP-14_W7.62mm,B complement,74HCT86 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U15,74HCT86,DIP-14_W7.62mm,B complement,74HCT86 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U16,74HCT283,DIP-16_W7.62mm,Adder bits 0..3,CD74HCT283E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U17,74HCT283,DIP-16_W7.62mm,Adder bits 4..7,CD74HCT283E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U18,74HCT151,DIP-16_W7.62mm,Result select bit 0,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U19,74HCT151,DIP-16_W7.62mm,Result select bit 1,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U20,74HCT151,DIP-16_W7.62mm,Result select bit 2,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U21,74HCT151,DIP-16_W7.62mm,Result select bit 3,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U22,74HCT151,DIP-16_W7.62mm,Result select bit 4,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U23,74HCT151,DIP-16_W7.62mm,Result select bit 5,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U24,74HCT151,DIP-16_W7.62mm,Result select bit 6,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U25,74HCT151,DIP-16_W7.62mm,Result select bit 7,CD74HCT151E,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U26,74HCT32,DIP-14_W7.62mm,Opcode / output control,74HCT32 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U27,74HCT32,DIP-14_W7.62mm,Opcode / output control,74HCT32 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U28,74HCT08,DIP-14_W7.62mm,Opcode / output control,74HCT08 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U29,74HCT86,DIP-14_W7.62mm,Carry / overflow,74HCT86 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U30,74HCT08,DIP-14_W7.62mm,Carry / overflow,74HCT08 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U31,74HCT32,DIP-14_W7.62mm,Zero flag,74HCT32 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U32,74HCT32,DIP-14_W7.62mm,Zero flag,74HCT32 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U33,74HCT244,DIP-20_W7.62mm,Shared bus output,SN74HCT244N,5V HCT; PDIP-20; rows 7.62mm; optional socket
+U34,74HCT157,DIP-16_W7.62mm,External / standalone input selection,SN74HCT157N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U35,74HCT157,DIP-16_W7.62mm,External / standalone input selection,SN74HCT157N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U36,74HCT157,DIP-16_W7.62mm,External / standalone input selection,SN74HCT157N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U37,74HCT157,DIP-16_W7.62mm,External / standalone input selection,SN74HCT157N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U38,74HCT157,DIP-16_W7.62mm,External / standalone input selection,SN74HCT157N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U39,74HCT157,DIP-16_W7.62mm,External / standalone input selection,SN74HCT157N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U40,74HCT244,DIP-20_W7.62mm,Operand / flag LED driver,SN74HCT244N,5V HCT; PDIP-20; rows 7.62mm; optional socket
+U41,74HCT244,DIP-20_W7.62mm,Operand / flag LED driver,SN74HCT244N,5V HCT; PDIP-20; rows 7.62mm; optional socket
+U42,74HCT244,DIP-20_W7.62mm,Operand / flag LED driver,SN74HCT244N,5V HCT; PDIP-20; rows 7.62mm; optional socket
+U43,74HCT04,DIP-14_W7.62mm,Opcode LED decoder enable,74HCT04 compatible pinout,5V HCT; PDIP-14; rows 7.62mm; optional socket
+U44,74HCT138,DIP-16_W7.62mm,Operation LED decoder,SN74HCT138N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+U45,74HCT138,DIP-16_W7.62mm,Operation LED decoder,SN74HCT138N,5V HCT; PDIP-16; rows 7.62mm; optional socket
+C1,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C2,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C3,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C4,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C5,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C6,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C7,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C8,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C9,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C10,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C11,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C12,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C13,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C14,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C15,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C16,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C17,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C18,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C19,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C20,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C21,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C22,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C23,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C24,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C25,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C26,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C27,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C28,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C29,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C30,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C31,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C32,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C33,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C34,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C35,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C36,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C37,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C38,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C39,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C40,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C41,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C42,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C43,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C44,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+C45,100nF,C_Disc_P2.50mm,Local bypass,100nF 25V ceramic,Pitch 2.50mm; body max 4x3mm; nonpolarized
+J1,A_INPUT,Header_2x5_P2.54mm,A_INPUT,2-row male pin header,Pitch 2.54mm; 5x2 contacts; unshrouded
+J2,B_INPUT,Header_2x5_P2.54mm,B_INPUT,2-row male pin header,Pitch 2.54mm; 5x2 contacts; unshrouded
+J3,CONTROL,Header_2x4_P2.54mm,CONTROL,2-row male pin header,Pitch 2.54mm; 4x2 contacts; unshrouded
+J4,DATA_BUS,Header_2x5_P2.54mm,DATA_BUS,2-row male pin header,Pitch 2.54mm; 5x2 contacts; unshrouded
+J5,FLAGS_CZNO,Header_2x3_P2.54mm,FLAGS_CZNO,2-row male pin header,Pitch 2.54mm; 3x2 contacts; unshrouded
+J6,POWER_5V,Header_2x2_P2.54mm,POWER_5V,2-row male pin header,Pitch 2.54mm; 2x2 contacts; unshrouded
+J7,RESULT_TEST,Header_2x5_P2.54mm,RESULT_TEST,2-row male pin header,Pitch 2.54mm; 5x2 contacts; unshrouded
+RN1,10k_Bussed_SIP9,SIP-9_P2.54mm,Input pull-downs,Bussed 8x10k SIP-9,Common pin 1; pitch 2.54mm; isolated networks incompatible
+RN2,10k_Bussed_SIP9,SIP-9_P2.54mm,Input pull-downs,Bussed 8x10k SIP-9,Common pin 1; pitch 2.54mm; isolated networks incompatible
+RN3,10k_Bussed_SIP9,SIP-9_P2.54mm,Input pull-downs,Bussed 8x10k SIP-9,Common pin 1; pitch 2.54mm; isolated networks incompatible
+RN4,10k_Bussed_SIP9,SIP-9_P2.54mm,Input pull-downs,Bussed 8x10k SIP-9,Common pin 1; pitch 2.54mm; isolated networks incompatible
+RN5,10k_Bussed_SIP9,SIP-9_P2.54mm,Input pull-downs,Bussed 8x10k SIP-9,Common pin 1; pitch 2.54mm; isolated networks incompatible
+RN6,10k_Bussed_SIP9,SIP-9_P2.54mm,Input pull-downs,Bussed 8x10k SIP-9,Common pin 1; pitch 2.54mm; isolated networks incompatible
+R1,4.7k,R_Axial_P7.62mm,External default bus disable,4.7k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+C46,10uF_16V,C_Radial_P2.50mm,Supply bulk,10uF 16V electrolytic,Pitch 2.50mm; diameter max 5mm; pad 1 positive
+SW1,LOCAL_A,SW_DIP_SPST_8_P2.54_W7.62,Local input DIP switches,SDA08H0BD,C&K; through-hole SPST; pitch 2.54mm; rows 7.62mm; 8 contacts
+SW2,LOCAL_B,SW_DIP_SPST_8_P2.54_W7.62,Local input DIP switches,SDA08H0BD,C&K; through-hole SPST; pitch 2.54mm; rows 7.62mm; 8 contacts
+SW3,LOCAL_OP,SW_DIP_SPST_4_P2.54_W7.62,Local input DIP switches,SDA04H0BD,C&K; through-hole SPST; pitch 2.54mm; rows 7.62mm; 4 contacts
+SW4,MODE_LOCAL,SW_DIP_SPST_1_P2.54_W7.62,"OFF=external, ON=standalone",SDA01H0BD,C&K; through-hole SPST; pitch 2.54mm; rows 7.62mm; 1 contacts
+SW5,LOCAL_BUS_ENABLE,SW_DIP_SPST_1_P2.54_W7.62,"OFF=bus disabled, ON=bus enabled in standalone",SDA01H0BD,C&K; through-hole SPST; pitch 2.54mm; rows 7.62mm; 1 contacts
+R2,10k,R_Axial_P7.62mm,Default external mode,10k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+R3,4.7k,R_Axial_P7.62mm,Local default bus disable,4.7k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+R4,2.2k,R_Axial_P7.62mm,A7 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D1,GREEN,LED_D3.0mm_P2.54mm,Selected A7 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R5,2.2k,R_Axial_P7.62mm,A6 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D2,GREEN,LED_D3.0mm_P2.54mm,Selected A6 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R6,2.2k,R_Axial_P7.62mm,A5 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D3,GREEN,LED_D3.0mm_P2.54mm,Selected A5 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R7,2.2k,R_Axial_P7.62mm,A4 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D4,GREEN,LED_D3.0mm_P2.54mm,Selected A4 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R8,2.2k,R_Axial_P7.62mm,A3 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D5,GREEN,LED_D3.0mm_P2.54mm,Selected A3 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R9,2.2k,R_Axial_P7.62mm,A2 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D6,GREEN,LED_D3.0mm_P2.54mm,Selected A2 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R10,2.2k,R_Axial_P7.62mm,A1 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D7,GREEN,LED_D3.0mm_P2.54mm,Selected A1 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R11,2.2k,R_Axial_P7.62mm,A0 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D8,GREEN,LED_D3.0mm_P2.54mm,Selected A0 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R12,2.2k,R_Axial_P7.62mm,B7 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D9,GREEN,LED_D3.0mm_P2.54mm,Selected B7 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R13,2.2k,R_Axial_P7.62mm,B6 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D10,GREEN,LED_D3.0mm_P2.54mm,Selected B6 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R14,2.2k,R_Axial_P7.62mm,B5 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D11,GREEN,LED_D3.0mm_P2.54mm,Selected B5 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R15,2.2k,R_Axial_P7.62mm,B4 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D12,GREEN,LED_D3.0mm_P2.54mm,Selected B4 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R16,2.2k,R_Axial_P7.62mm,B3 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D13,GREEN,LED_D3.0mm_P2.54mm,Selected B3 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R17,2.2k,R_Axial_P7.62mm,B2 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D14,GREEN,LED_D3.0mm_P2.54mm,Selected B2 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R18,2.2k,R_Axial_P7.62mm,B1 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D15,GREEN,LED_D3.0mm_P2.54mm,Selected B1 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R19,2.2k,R_Axial_P7.62mm,B0 LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D16,GREEN,LED_D3.0mm_P2.54mm,Selected B0 indicator,GREEN high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R20,2.2k,R_Axial_P7.62mm,C LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D17,YELLOW,LED_D3.0mm_P2.54mm,Selected C indicator,YELLOW high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R21,2.2k,R_Axial_P7.62mm,Z LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D18,YELLOW,LED_D3.0mm_P2.54mm,Selected Z indicator,YELLOW high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R22,2.2k,R_Axial_P7.62mm,N LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D19,YELLOW,LED_D3.0mm_P2.54mm,Selected N indicator,YELLOW high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R23,2.2k,R_Axial_P7.62mm,O LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D20,YELLOW,LED_D3.0mm_P2.54mm,Selected O indicator,YELLOW high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R24,2.2k,R_Axial_P7.62mm,AND LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D21,BLUE,LED_D3.0mm_P2.54mm,AND selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R25,2.2k,R_Axial_P7.62mm,OR LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D22,BLUE,LED_D3.0mm_P2.54mm,OR selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R26,2.2k,R_Axial_P7.62mm,XOR LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D23,BLUE,LED_D3.0mm_P2.54mm,XOR selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R27,2.2k,R_Axial_P7.62mm,NOR LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D24,BLUE,LED_D3.0mm_P2.54mm,NOR selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R28,2.2k,R_Axial_P7.62mm,NAND LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D25,BLUE,LED_D3.0mm_P2.54mm,NAND selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R29,2.2k,R_Axial_P7.62mm,XNOR LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D26,BLUE,LED_D3.0mm_P2.54mm,XNOR selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R30,2.2k,R_Axial_P7.62mm,NOT LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D27,BLUE,LED_D3.0mm_P2.54mm,NOT selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R31,2.2k,R_Axial_P7.62mm,ADD LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D28,BLUE,LED_D3.0mm_P2.54mm,ADD selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R32,2.2k,R_Axial_P7.62mm,SUB LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D29,BLUE,LED_D3.0mm_P2.54mm,SUB selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode
+R33,2.2k,R_Axial_P7.62mm,CMP LED series resistor,2.2k 1/4W 5%,Axial; pitch 7.62mm; body max 6.3x2.5mm
+D30,BLUE,LED_D3.0mm_P2.54mm,CMP selected indicator,BLUE high efficiency LED,Through-hole 3mm; pitch 2.54mm; pad 1 cathode; pad 2 anode

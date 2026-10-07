@@ -1,0 +1,53 @@
+Reference,Value,Footprint,Purpose,Mounting_requirement
+U1,SN74HCT244N,DIP-20_W7.62mm,High-impedance address sensing; isolated LED outputs,PDIP-20; rows 7.62mm; add one DIP-20 socket
+U2,SN74HCT244N,DIP-20_W7.62mm,High-impedance address sensing; isolated LED outputs,PDIP-20; rows 7.62mm; add one DIP-20 socket
+J1,ADDR1,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J2,ADDR2,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J3,ADDR3,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J4,ADDR4,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J5,ADDR5,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J6,ADDR6,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J7,ADDR7,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J8,ADDR8,Header_2x10_P2.54mm,Bidirectional parallel 16-bit address port,Unshrouded 2-row male header; pitch 2.54mm
+J9,POWER_5V,Header_2x2_P2.54mm,5V power; ALU J6 / data bus J9 pinout compatible,Unshrouded 2-row male header; pitch 2.54mm
+C1,100nF,C_Disc_P2.50mm,Local ceramic bypass,Ceramic 100nF 25V; pitch 2.50mm; body <=4x3mm
+C2,100nF,C_Disc_P2.50mm,Local ceramic bypass,Ceramic 100nF 25V; pitch 2.50mm; body <=4x3mm
+C3,10uF_16V,C_Radial_P2.50mm,Bulk decoupling; pin 1 positive,Electrolytic 10uF 16V; pitch 2.50mm; diameter <=5mm; pin 1 positive
+RN1,10k_Bussed_SIP9,SIP-9_P2.54mm,Eight 10k address pull-downs; common pin 1,Bussed SIP-9 8x10k; common pin 1; pitch 2.54mm
+RN2,10k_Bussed_SIP9,SIP-9_P2.54mm,Eight 10k address pull-downs; common pin 1,Bussed SIP-9 8x10k; common pin 1; pitch 2.54mm
+R16,2.2k,R_Axial_P7.62mm,A15 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D16,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 15 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R15,2.2k,R_Axial_P7.62mm,A14 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D15,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 14 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R14,2.2k,R_Axial_P7.62mm,A13 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D14,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 13 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R13,2.2k,R_Axial_P7.62mm,A12 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D13,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 12 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R12,2.2k,R_Axial_P7.62mm,A11 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D12,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 11 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R11,2.2k,R_Axial_P7.62mm,A10 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D11,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 10 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R10,2.2k,R_Axial_P7.62mm,A9 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D10,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 9 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R9,2.2k,R_Axial_P7.62mm,A8 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D9,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 8 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R8,2.2k,R_Axial_P7.62mm,A7 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D8,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 7 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R7,2.2k,R_Axial_P7.62mm,A6 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D7,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 6 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R6,2.2k,R_Axial_P7.62mm,A5 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D6,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 5 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R5,2.2k,R_Axial_P7.62mm,A4 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D5,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 4 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R4,2.2k,R_Axial_P7.62mm,A3 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D4,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 3 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R3,2.2k,R_Axial_P7.62mm,A2 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D3,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 2 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R2,2.2k,R_Axial_P7.62mm,A1 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D2,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 1 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R1,2.2k,R_Axial_P7.62mm,A0 LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D1,GREEN,LED_D3.0mm_P2.54mm_Vertical,Address bit 0 indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+R17,2.2k,R_Axial_P7.62mm,Power LED current limit,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm
+D17,GREEN,LED_D3.0mm_P2.54mm,5V supply indicator,3mm high efficiency LED; pitch 2.54mm; pin 1 cathode
+SW1,SDA01H0BD_LED_ENABLE,SW_DIP_SPST_1_P2.54_W7.62,ON=bit LEDs enabled; OFF=bit LEDs disabled; power LED remains on,"C&K SDA01H0BD SPST through-hole; rows 7.62mm; pin 1 OE_n, pin 2 GND; ON closes"
+R18,10k,R_Axial_P7.62mm,Pull-up disables LED buffers when SW1 is OFF,Axial 1/4W 5%; pitch 7.62mm; body <=6.3x2.5mm

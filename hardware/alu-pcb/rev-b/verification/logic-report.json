@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "input_cases": 4194304,
+  "tested_operations": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "checks": [
+    "Actual IC pin netlist simulation",
+    "Carry/borrow convention",
+    "Signed overflow",
+    "Zero/negative independent of bus enable",
+    "CMP bus isolation",
+    "Reserved opcode isolation",
+    "Unused inputs tied",
+    "No duplicate push-pull drivers",
+    "External/local source isolation including opcode and enable",
+    "Selected A/B LED buffers",
+    "Four flag LED buffers",
+    "Ten one-hot operation LEDs",
+    "Local switch contacts and pull-down networks"
+  ],
+  "limitations": [
+    "Static digital logic verification; propagation delays, loading and hardware operation require prototype measurements."
+  ]
+}
