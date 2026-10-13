@@ -7,18 +7,22 @@ formano insieme la microistruzione della CPU.
 La sorgente di verita usata dal generatore dei binari e
 [`tools/cu-bytecode/config/control_signals.c`](../tools/cu-bytecode/config/control_signals.c).
 
-## Pin dati AT28C64
+## Pin dati AT28C64B DIP-28 (vista dall’alto)
 
 | Uscita | Pin DIP-28 |
 | --- | ---: |
-| `D0` | 9 |
-| `D1` | 10 |
-| `D2` | 11 |
-| `D3` | 13 |
-| `D4` | 14 |
-| `D5` | 15 |
-| `D6` | 16 |
-| `D7` | 17 |
+| `D0` | 11 |
+| `D1` | 12 |
+| `D2` | 13 |
+| `D3` | 15 |
+| `D4` | 16 |
+| `D5` | 17 |
+| `D6` | 18 |
+| `D7` | 19 |
+
+Pin verificati sul [datasheet Microchip](https://ww1.microchip.com/downloads/en/DeviceDoc/doc0270.pdf).
+Il pin 14 e GND, non D4; VCC=28, /CE=20, /OE=22, /WE=27.
+Non usare questa numerazione per altri package.
 
 `Attivo basso` significa che il segnale e attivo quando la EEPROM presenta
 uno zero logico sul rispettivo pin.
@@ -30,14 +34,14 @@ ciclo BOOT.
 
 | Uscita | Pin | Segnale | Polarita | Uso |
 | --- | ---: | --- | --- | --- |
-| `D0` | 9 | `ADDR_SEL_0` | attivo alto | Bit 0 del selettore PC/MAR/IDX. |
-| `D1` | 10 | `ADDR_SEL_1` | attivo alto | Bit 1 del selettore PC/MAR/IDX. |
-| `D2` | 11 | `PC_INC` | attivo alto | Incrementa PC dopo la copia. |
-| `D3` | 13 | `MDR_WE` | attivo alto | Salva il byte letto da EPROM in MDR. |
-| `D4` | 14 | `MDR_OE` | attivo basso | Porta MDR sul data bus per la scrittura RAM. |
-| `D5` | 15 | `RAM_WE` | attivo basso | Scrive nella RAM il byte presente sul bus dati. |
-| `D6` | 16 | `EPROM_OE` | attivo basso | Abilita l'EPROM programma sul data bus. |
-| `D7` | 17 | `NEXT_FETCH_n` | attivo basso | Richiede il ritorno a `T1`; con `/LOAD` del 74161 avviene al clock successivo. |
+| `D0` | 11 | `ADDR_SEL_0` | attivo alto | Bit 0 del selettore PC/MAR/IDX. |
+| `D1` | 12 | `ADDR_SEL_1` | attivo alto | Bit 1 del selettore PC/MAR/IDX. |
+| `D2` | 13 | `PC_INC` | attivo alto | Incrementa PC dopo la copia. |
+| `D3` | 15 | `MDR_WE` | attivo alto | Salva il byte letto da EPROM in MDR. |
+| `D4` | 16 | `MDR_OE` | attivo basso | Porta MDR sul data bus per la scrittura RAM. |
+| `D5` | 17 | `RAM_WE` | attivo basso | Scrive nella RAM il byte presente sul bus dati. |
+| `D6` | 18 | `EPROM_OE` | attivo basso | Abilita l'EPROM programma sul data bus. |
+| `D7` | 19 | `NEXT_FETCH_n` | attivo basso | Richiede il ritorno a `T1`; con `/LOAD` del 74161 avviene al clock successivo. |
 
 Sequenza BOOT generata quando `BOOT_RUN = 0`:
 
@@ -70,27 +74,27 @@ dati e `D7=0` attiva `NEXT_FETCH`; `D5=1` impedisce la scrittura nella RAM.
 
 | Uscita | Pin | Segnale | Polarita | Uso |
 | --- | ---: | --- | --- | --- |
-| `D0` | 9 | `IR_WE` | attivo alto | Salva l'opcode in IR. |
-| `D1` | 10 | `PC_LOAD` | attivo basso | Carica PC dal MAR durante un salto. |
-| `D2` | 11 | `MAR_L_WE` | attivo alto | Salva il byte basso di MAR. |
-| `D3` | 13 | `RF_EN` | attivo alto | Abilita il banco registri `R0..R7`. |
-| `D4` | 14 | `RF_RW` | attivo alto | Con `RF_EN`, alto = scrittura; basso = lettura. |
-| `D5` | 15 | `RA_EN` | attivo alto | Abilita il registro operando RA. |
-| `D6` | 16 | `RA_RB_RW` | attivo alto | Alto = scrittura RA/RB; basso = lettura RA. |
-| `D7` | 17 | `RB_EN` | attivo alto | Abilita il registro operando RB. |
+| `D0` | 11 | `IR_WE` | attivo alto | Salva l'opcode in IR. |
+| `D1` | 12 | `PC_LOAD` | attivo basso | Carica PC dal MAR durante un salto. |
+| `D2` | 13 | `MAR_L_WE` | attivo alto | Salva il byte basso di MAR. |
+| `D3` | 15 | `RF_EN` | attivo alto | Abilita il banco registri `R0..R7`. |
+| `D4` | 16 | `RF_RW` | attivo alto | Con `RF_EN`, alto = scrittura; basso = lettura. |
+| `D5` | 17 | `RA_EN` | attivo alto | Abilita il registro operando RA. |
+| `D6` | 18 | `RA_RB_RW` | attivo alto | Alto = scrittura RA/RB; basso = lettura RA. |
+| `D7` | 19 | `RB_EN` | attivo alto | Abilita il registro operando RB. |
 
 ## Control ROM 2 — ALU, RAM e IDX
 
 | Uscita | Pin | Segnale | Polarita | Uso |
 | --- | ---: | --- | --- | --- |
-| `D0` | 9 | `ALU_EN` | attivo basso | Abilita il risultato della ALU sul data bus. |
-| `D1` | 10 | `FLAGS_WE` | attivo alto | Salva i flag `C`, `Z`, `N`, `O`. |
-| `D2` | 11 | `MAR_H_WE` | attivo alto | Salva il byte alto di MAR. |
-| `D3` | 13 | `RAM_OE` | attivo basso | Abilita la RAM sul data bus. |
-| `D4` | 14 | `IDX_L_WE` | attivo alto | Salva il byte basso di IDX. |
-| `D5` | 15 | `IDX_H_WE` | attivo alto | Salva il byte alto di IDX. |
-| `D6` | 16 | `SYS_STEP_n` | attivo basso | Vale `0` solo in RUN/T2 con `IR[7:3]=00000`; si combina con `IR[2:0]` per HLT. |
-| `D7` | 17 | riservato | — | Disponibile per un'estensione futura. |
+| `D0` | 11 | `ALU_EN` | attivo basso | Abilita il risultato della ALU sul data bus. |
+| `D1` | 12 | `FLAGS_WE` | attivo alto | Salva i flag `C`, `Z`, `N`, `O`. |
+| `D2` | 13 | `MAR_H_WE` | attivo alto | Salva il byte alto di MAR. |
+| `D3` | 15 | `RAM_OE` | attivo basso | Abilita la RAM sul data bus. |
+| `D4` | 16 | `IDX_L_WE` | attivo alto | Salva il byte basso di IDX. |
+| `D5` | 17 | `IDX_H_WE` | attivo alto | Salva il byte alto di IDX. |
+| `D6` | 18 | `SYS_STEP_n` | attivo basso | Vale `0` solo in RUN/T2 con `IR[7:3]=00000`; si combina con `IR[2:0]` per HLT. |
+| `D7` | 19 | riservato | — | Disponibile per un'estensione futura. |
 
 ## Verifica rapida del primo chip
 
@@ -106,9 +110,11 @@ Le uscite attive basse inattive restano a `1`: in particolare `D5`, `D6` e
 `D7` sono normalmente alte.
 
 In RUN, il microstep che esegue l'ultima operazione ha sempre `D7=1`.
-La fase successiva ha `ROM0=0x73`, `ROM1=0x00`, `ROM2=0x49`: solo
-`NEXT_FETCH_n` e attivo. Il ritorno e in T3 per NOP/ALU/CMP/MOV, in T4
+La fase successiva ha normalmente `ROM0=0x73`, `ROM1=0x02`, `ROM2=0x49`:
+solo `NEXT_FETCH_n` e attivo. Il ritorno e in T3 per NOP/CMP/MOV, in T4
 per LDI/LDX/LDA-STA IDX, in T5 per i salti e in T6 per LDA/STA diretti.
+Per ALU il ritorno T6 mantiene `MDR_OE`: `ROM0=0x63`, `ROM1=0x02`,
+`ROM2=0x49`. Risultato e flag sono salvati in T3, RA in T5.
 Le immagini fisiche devono essere rigenerate e riprogrammate per ottenere
 questa nuova sequenza; il BOOT di ROM0 resta `0x91, 0xB5, 0x31`.
 Per la ISA RUN completa senza IN/OUT anche la EPROM programma va

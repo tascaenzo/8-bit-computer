@@ -1,0 +1,47 @@
+{
+  "slug": "graphite-notebook",
+  "name": "Graphite Notebook",
+  "tagline": "Fogli a quadretti, scrittura a mano e schizzi a matita: un quaderno per le tue idee.",
+  "mood": [
+    "notebook",
+    "handwritten",
+    "warm",
+    "paper",
+    "quaderno",
+    "matita",
+    "quadretti"
+  ],
+  "tone": [
+    "thoughtful",
+    "informal",
+    "human",
+    "sketch"
+  ],
+  "occasion": [
+    "lesson",
+    "creative workshop",
+    "project notes",
+    "storytelling"
+  ],
+  "formality": "medium-low",
+  "density": "medium",
+  "scheme": "light",
+  "best_for": "Lezioni, progetti, brainstorming e racconti con il tono personale di un quaderno di appunti.",
+  "avoid_for": "Contesti che richiedono una gerarchia istituzionale rigida o tabelle molto dense.",
+  "slide_count": 8,
+  "origin": "custom",
+  "offline": true,
+  "palette": {
+    "paper": "#f7f3e8",
+    "graphite": "#393832",
+    "soft": "#5c584f",
+    "grid": "#adc6d1",
+    "margin": "#cd9992"
+  },
+  "typography": {
+    "display": "Caveat",
+    "body": "Caveat",
+    "font_source": "Bundled local variable TTF, SIL OFL 1.1"
+  },
+  "navigation": "deck-stage local runtime"
+}

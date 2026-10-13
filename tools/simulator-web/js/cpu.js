@@ -147,18 +147,18 @@ function executeAlu(state, opcode) {
   };
   if (logic[opcode]) {
     result = logic[opcode]();
-    state.ra = result & 0xff;
+    state.ra = state.mdr = result & 0xff;
     setFlags(state, result);
     return;
   }
   if (opcode === 0x67) {
     const full = a + b;
-    state.ra = full & 0xff;
+    state.ra = state.mdr = full & 0xff;
     setFlags(state, full, full > 0xff, overflowAdd(a, b, full));
     return;
   }
   result = (a - b) & 0xff;
-  if (opcode === FIXED_OPCODES.SUB) state.ra = result;
+  if (opcode === FIXED_OPCODES.SUB) state.ra = state.mdr = result;
   setFlags(state, result, a < b, overflowSub(a, b, result));
 }
 

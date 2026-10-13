@@ -176,6 +176,7 @@ test("il boot copia gli 8 KiB EPROM in RAM e riporta PC a zero", () => {
 test("ADD e SUB impostano carry/borrow, zero, negativo e overflow", () => {
   const signedAdd = executeAlu(FIXED_OPCODES.ADD, 0x7f, 0x01);
   assert.equal(signedAdd.ra, 0x80);
+  assert.equal(signedAdd.mdr, 0x80);
   assert.deepEqual(signedAdd.flags, { C: 0, Z: 0, N: 1, O: 1 });
 
   const wrappedAdd = executeAlu(FIXED_OPCODES.ADD, 0xff, 0x01);
@@ -184,6 +185,7 @@ test("ADD e SUB impostano carry/borrow, zero, negativo e overflow", () => {
 
   const borrowedSub = executeAlu(FIXED_OPCODES.SUB, 0x00, 0x01);
   assert.equal(borrowedSub.ra, 0xff);
+  assert.equal(borrowedSub.mdr, 0xff);
   assert.deepEqual(borrowedSub.flags, { C: 1, Z: 0, N: 1, O: 0 });
 
   const signedSub = executeAlu(FIXED_OPCODES.SUB, 0x80, 0x01);
@@ -280,7 +282,7 @@ test("CMP non abilita il data bus e gli opcode invalidi tornano al fetch", () =>
 });
 
 test("NEXT_FETCH ha un microstep dedicato dopo le scritture", () => {
-  for (const bytes of [[0x20, 0x42], [0x48, 0x34, 0x12], [0x58], [0x60], [0xa0, 0x34, 0x12]]) {
+  for (const bytes of [[0x20, 0x42], [0x48, 0x34, 0x12], [0x58], [0xa0, 0x34, 0x12]]) {
     const phases = planMicrocycles(loadBytes(bytes));
     assert.ok(!phases.at(-2).signals.includes("NEXT_FETCH"));
     assert.equal(phases.at(-1).signals, "NEXT_FETCH");
@@ -394,4 +396,25 @@ test("I/O e FPGA non compaiono nel datapath corrente", async () => {
   }
   assert.equal(diagramSource.includes('pathKey: "io-data"'), false);
   assert.equal(diagramSource.includes('pathKey: "memory-vram"'), false);
+});
+
+
+test("ALU prepara il bus, salva MDR e flag, poi trasferisce MDR a RA", () => {
+  const state = loadBytes([FIXED_OPCODES.ADD]);
+  state.ra = 1; state.rb = 4; state.mdr = 0xaa;
+  const phases = planMicrocycles(state);
+  assert.deepEqual(phases.map(p => p.signals).slice(1), [
+    "ALU_EN", "ALU_EN · MDR_WE · FLAGS_WE", "MDR_OE",
+    "MDR_OE · RA_EN · RA_RB_RW", "MDR_OE · NEXT_FETCH",
+  ]);
+  assert.equal(phases[2].preview.mdr, 5);
+  assert.equal(phases[2].preview.ra, undefined);
+  assert.deepEqual(phases[2].preview.flags, { C: 0, Z: 0, N: 0, O: 0 });
+  assert.equal(phases[4].preview.ra, 5);
+  assert.equal(phases[5].preview.dataBus, 5);
+  stepCpu(state, 0);
+  assert.equal(state.ra, 5); assert.equal(state.mdr, 5);
+  const cmp = loadBytes([FIXED_OPCODES.CMP]);
+  cmp.mdr = 0xaa; stepCpu(cmp, 0);
+  assert.equal(cmp.mdr, 0xaa);
 });

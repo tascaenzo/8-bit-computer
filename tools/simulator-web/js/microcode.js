@@ -146,7 +146,7 @@ export function planMicrocycles(state) {
       phase(
         "T3", `Scrivi R${reg}`,
         `MDR porta ${hex(low)} sul bus e R${reg} lo cattura.`,
-        "MDR_OE · RF_EN · RF_RW · NEXT_FETCH",
+        "MDR_OE · RF_EN · RF_RW",
         ["mdr", "registers"], ["mdr-data", "registers-data"],
         { dataBus: low, mdr: low, regs: { [reg]: low }, active: ["data-bus", "mdr", `r${reg}`] },
       ),
@@ -237,28 +237,31 @@ export function planMicrocycles(state) {
   if (ALU_OPCODES.has(opcode)) {
     const alu = aluResult(opcode, state.ra, state.rb);
     const cmp = opcode === FIXED_OPCODES.CMP;
-    return withFetchReturn(base.concat([
-      phase(
-        "T2", cmp ? "Confronto e flag" : "ALU e write-back",
-        cmp
-          ? `${text}: la ALU calcola RA − RB solo per produrre C, Z, N, O; RA e RB restano invariati.`
-          : `${text}: la ALU porta ${hex(alu.result)} sul bus, RA e il registro flag catturano il risultato.`,
-        cmp ? "FLAGS_WE · NEXT_FETCH" : "ALU_EN · RA_EN · RA_RB_RW · FLAGS_WE · NEXT_FETCH",
-        ["ra", "rb", "alu", "flags"],
-        cmp
-          ? ["ra-alu", "rb-alu", "alu-flags"]
-          : ["ra-alu", "rb-alu", "alu-data", "ra-data", "alu-flags"],
-        {
-          dataBus: cmp ? null : alu.result,
-          alu: alu.result,
-          ra: cmp ? state.ra : alu.result,
-          flags: alu.flags,
-          active: cmp
-            ? ["ra", "rb", "alu", "flags"]
-            : ["data-bus", "ra", "rb", "alu", "flags"],
-        },
-      ),
+    if (cmp) return withFetchReturn(base.concat([
+      phase("T2", "Confronto e flag", `${text}: RA − RB aggiorna solo i flag.`,
+        "FLAGS_WE · NEXT_FETCH", ["ra", "rb", "alu", "flags"],
+        ["ra-alu", "rb-alu", "alu-flags"],
+        { dataBus: null, alu: alu.result, flags: alu.flags, active: ["alu", "flags"] }),
     ]));
+    const captured = { mdr: alu.result, flags: alu.flags };
+    const stored = { ...captured, ra: alu.result };
+    return base.concat([
+      phase("T2", "Prepara ALU", `ALU presenta ${hex(alu.result)}; nessuna scrittura.`,
+        "ALU_EN", ["ra", "rb", "alu"], ["ra-alu", "rb-alu", "alu-data"],
+        { dataBus: alu.result, alu: alu.result, active: ["alu", "data-bus"] }),
+      phase("T3", "ALU → MDR e flag", `MDR cattura ${hex(alu.result)}; RA resta invariato.`,
+        "ALU_EN · MDR_WE · FLAGS_WE", ["alu", "mdr", "flags"], ["alu-data", "mdr-data", "alu-flags"],
+        { ...captured, dataBus: alu.result, alu: alu.result, active: ["mdr", "flags", "data-bus"] }),
+      phase("T4", "Prepara MDR", `MDR presenta ${hex(alu.result)}; nessuna scrittura.`,
+        "MDR_OE", ["mdr"], ["mdr-data"],
+        { ...captured, dataBus: alu.result, active: ["mdr", "data-bus"] }),
+      phase("T5", "MDR → RA", `RA cattura il risultato stabile ${hex(alu.result)} da MDR.`,
+        "MDR_OE · RA_EN · RA_RB_RW", ["mdr", "ra"], ["mdr-data", "ra-data"],
+        { ...stored, dataBus: alu.result, active: ["mdr", "ra", "data-bus"] }),
+      phase("T6", "Ritorno al fetch", "MDR mantiene il risultato sul bus; il sequencer torna a T1.",
+        "MDR_OE · NEXT_FETCH", ["mdr"], ["mdr-data", "ir-cu"],
+        { ...stored, dataBus: alu.result, active: ["mdr", "data-bus"] }),
+    ]);
   }
 
   if (JUMP_OPCODES.has(opcode)) {

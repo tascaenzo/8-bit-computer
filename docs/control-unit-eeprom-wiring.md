@@ -131,7 +131,7 @@ di riprogrammare la ROM0 fisica, verificare quale cablaggio e presente.
 ### Arresto HLT esterno alla CU
 
 `HLT=0x00` e `NOP=0x01` hanno entrambi `IR[7:3]=00000`. Control ROM 2
-usa ora `D6` (pin DIP-28 **16**) per `SYS_STEP_n`, attivo basso:
+usa ora `D6` (pin DIP-28 **18**) per `SYS_STEP_n`, attivo basso:
 `D6=0` solo se `BOOT_RUN=1`, `µSTEP[2:0]=001` (T2) e
 `IR[7:3]=00000`. In tutti gli altri indirizzi, inclusi BOOT e T1, `D6=1`.
 Le linee `IR[2:0]` restano esterne alle EEPROM. Per HLT basta una OR:

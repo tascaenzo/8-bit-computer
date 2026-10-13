@@ -202,10 +202,14 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
      * RAM/registri o aggiorna il PC. Anche con /LOAD sincrono, questa
      * separazione rende osservabili e verificabili i trasferimenti.
      */
+    /* Mantiene MDR valido anche durante il ritorno dopo MDR -> RA. */
+    if (step == 5 && uop == UOP_ALU)
+        return ADDRESS_NONE | CTRL_MDR_OE | CTRL_NEXT_FETCH;
+
     if ((step == 2 && (uop == UOP_INVALID || uop == UOP_NOP ||
                        uop == UOP_SYSTEM ||
                        uop == UOP_HLT ||
-                       uop == UOP_ALU || uop == UOP_CMP ||
+                       uop == UOP_CMP ||
                        uop == UOP_MOV_RA_RN || uop == UOP_MOV_RB_RN ||
                        uop == UOP_MOV_RN_RA)) ||
         (step == 3 && (uop == UOP_LDI || uop == UOP_LDX ||
@@ -270,11 +274,17 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                          CTRL_MDR_OE | CTRL_RAM_WE
                    : ADDRESS_NONE;
     case UOP_ALU:
-        /* IR[3:0] sceglie l'operazione; la CU salva risultato e flag. */
-        return step == 1
-                   ? ADDRESS_NONE | CTRL_ALU_EN | CTRL_RA_EN | CTRL_RA_RB_RW |
-                         CTRL_FLAGS_WE
-                   : ADDRESS_NONE;
+        /* RA/RB restano invariati mentre ALU -> MDR salva risultato e flag.
+         * Prima di ciascuna cattura, una fase prepara il dato senza scrivere.
+         * MDR conserva il risultato mentre RA cambia e alimenta di nuovo ALU.
+         */
+        if (step == 1) return ADDRESS_NONE | CTRL_ALU_EN;
+        if (step == 2)
+            return ADDRESS_NONE | CTRL_ALU_EN | CTRL_MDR_WE | CTRL_FLAGS_WE;
+        if (step == 3) return ADDRESS_NONE | CTRL_MDR_OE;
+        if (step == 4)
+            return ADDRESS_NONE | CTRL_MDR_OE | CTRL_RA_EN | CTRL_RA_RB_RW;
+        return ADDRESS_NONE;
     case UOP_CMP:
         /* CMP aggiorna i flag ma non riporta il risultato in RA. */
         return step == 1

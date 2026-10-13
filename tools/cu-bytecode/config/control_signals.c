@@ -14,7 +14,7 @@
  * Ogni segnale e ogni coppia ROM/bit devono comparire una sola volta.
  *
  * Esempio:
- * {CTRL_RAM_OE, "RAM_OE", 0, 6, 16, ACTIVE_LOW}
+ * {CTRL_RAM_OE, "RAM_OE", 0, 6, 18, ACTIVE_LOW}
  * significa che RAM_OE usa D6 della Control ROM 0 e vale elettricamente 0
  * quando la RAM deve presentare un byte sul data bus.
  */

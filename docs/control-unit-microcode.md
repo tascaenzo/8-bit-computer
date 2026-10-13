@@ -114,7 +114,7 @@ Nella configurazione corrente non serve una EEPROM di dispatch: `LDA`,
 Gli opcode di `SUB` e dei salti sono stati scelti di conseguenza; i vecchi
 binari dei programmi vanno riassemblati.
 
-Il contatore `µSTEP[2:0]` identifica i tempi da `T1` a `T8`: `000` corrisponde a `T1` e `111` a `T8`. Ogni microsequenza termina con una fase dedicata in cui solo `NEXT_FETCH` e attivo; nessuna scrittura o caricamento del PC avviene nella stessa fase. La fase di ritorno piu tarda e `T6`, quindi `T7` e `T8` rimangono disponibili. Sul 74161, collegare `NEXT_FETCH_n` a `/LOAD` con dati `0000` per tornare a T1 al fronte di clock successivo, mantenendo il reset esterno su `/CLR`.
+Il contatore `µSTEP[2:0]` identifica i tempi da `T1` a `T8`: `000` corrisponde a `T1` e `111` a `T8`. Ogni microsequenza termina con una fase dedicata in cui `NEXT_FETCH` e attivo senza scritture (per ALU resta attivo anche `MDR_OE`); nessuna scrittura o caricamento del PC avviene nella stessa fase. La fase di ritorno piu tarda e `T6`, quindi `T7` e `T8` rimangono disponibili. Sul 74161, collegare `NEXT_FETCH_n` a `/LOAD` con dati `0000` per tornare a T1 al fronte di clock successivo, mantenendo il reset esterno su `/CLR`.
 
 Eccezione: ROM2 D6 emette `SYS_STEP_n=0` solo in RUN/T2 per il gruppo
 `IR[7:3]=00000`. Le ROM non vedono `IR[2:0]`, quindi HLT e NOP hanno le
@@ -184,7 +184,11 @@ meccanismo.
 
 | Istruzione | Microstep execute | Segnali |
 | --- | --- | --- |
-| ALU eccetto `CMP` | `T2` | `ALU_EN`, `RA_EN`, `RA_RB_RW`, `FLAGS_WE` |
+| ALU eccetto `CMP` | `T2` | `ALU_EN`: prepara il risultato senza scritture. |
+| ALU eccetto `CMP` | `T3` | `ALU_EN`, `MDR_WE`, `FLAGS_WE`: salva risultato e flag con RA/RB invariati. |
+| ALU eccetto `CMP` | `T4` | `MDR_OE`: prepara il risultato memorizzato sul bus. |
+| ALU eccetto `CMP` | `T5` | `MDR_OE`, `RA_EN`, `RA_RB_RW`: copia MDR in RA. |
+| ALU eccetto `CMP` | `T6` | `MDR_OE`, `NEXT_FETCH`: mantiene il dato durante il ritorno. |
 | `CMP` | `T2` | `FLAGS_WE` |
 | `MOV RA, Rn` | `T2` | `RF_EN`, `RA_EN`, `RA_RB_RW` |
 | `MOV RB, Rn` | `T2` | `RF_EN`, `RB_EN`, `RA_RB_RW` |
@@ -196,7 +200,12 @@ meccanismo.
 | `STAI Rn` | `T2` | `RF_EN`, `MDR_WE` |
 | `STAI Rn` | `T3` | `ADDR_SEL=IDX`, `MDR_OE`, `RAM_WE` |
 
-Per ALU, CMP, MOV e NOP la fase di solo `NEXT_FETCH` e `T3`; per HLT e
+Le operazioni ALU sovrascrivono MDR con il risultato; CMP conserva MDR e RA.
+La preparazione separata precede ciascuna cattura, evitando il trasferimento
+diretto ALU -> RA mentre RA modifica gli ingressi ALU. La verifica elettrica
+dei clock generati dalle porte AND resta da fare sul circuito.
+
+Per CMP, MOV e NOP la fase di solo `NEXT_FETCH` e `T3`; per HLT e
 prevista la stessa parola in T3, ma l'arresto esterno impedisce di raggiungerla. Per LDX,
 LDAI e STAI e `T4`.
 

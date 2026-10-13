@@ -77,16 +77,22 @@ static void test_dispatch(void)
 static void test_shared_address_input_config(void)
 {
     static const uint8_t expected_pins[] = {
-        CPU8_CONTROL_ROM_PIN_USTEP_2, CPU8_CONTROL_ROM_PIN_USTEP_1,
-        CPU8_CONTROL_ROM_PIN_USTEP_0, CPU8_CONTROL_ROM_PIN_IR_3,
-        CPU8_CONTROL_ROM_PIN_IR_4, CPU8_CONTROL_ROM_PIN_IR_5,
-        CPU8_CONTROL_ROM_PIN_IR_6, CPU8_CONTROL_ROM_PIN_IR_7,
-        CPU8_CONTROL_ROM_PIN_FLAG_C, CPU8_CONTROL_ROM_PIN_FLAG_Z,
-        CPU8_CONTROL_ROM_PIN_FLAG_N, CPU8_CONTROL_ROM_PIN_FLAG_O,
-        CPU8_CONTROL_ROM_PIN_BOOT_RUN};
+        /* Numeri indipendenti dalle costanti: AT28C64B DIP-28, doc0270.
+         * µSTEP0/1/2 -> A2/A1/A0, IR3..7 -> A3..7, C/Z/N/O -> A8..11.
+         */
+        8, 9, 10, 7, 6, 5, 4, 3, 25, 24, 21, 23, 2};
     size_t index;
 
     assert(CPU8_CONTROL_EEPROM_ADDRESS_CONFIG_COUNT == 13);
+    assert(CPU8_CONTROL_ROM_PIN_GND == 14);
+    assert(CPU8_CONTROL_ROM_PIN_VCC == 28);
+    assert(CPU8_CONTROL_ROM_PIN_CE == 20);
+    assert(CPU8_CONTROL_ROM_PIN_OE == 22);
+    assert(CPU8_CONTROL_ROM_PIN_WE == 27);
+    static const uint8_t data_pins[] = {11, 12, 13, 15, 16, 17, 18, 19};
+    for (index = 0; index < CPU8_CONTROL_SIGNAL_CONFIG_COUNT; index++)
+        assert(CPU8_CONTROL_SIGNAL_CONFIGS[index].eeprom_pin ==
+               data_pins[CPU8_CONTROL_SIGNAL_CONFIGS[index].bit]);
     for (index = 0; index < CPU8_CONTROL_EEPROM_ADDRESS_CONFIG_COUNT; index++)
     {
         assert(CPU8_CONTROL_EEPROM_ADDRESS_CONFIGS[index].signal == index);
@@ -140,7 +146,7 @@ static void test_dedicated_fetch_return(void)
         uint8_t action_step;
     } cases[] = {
         {UOP_INVALID, 1}, {UOP_NOP, 1}, {UOP_HLT, 1},
-        {UOP_SYSTEM, 1}, {UOP_ALU, 1},
+        {UOP_SYSTEM, 1}, {UOP_ALU, 4},
         {UOP_CMP, 1}, {UOP_MOV_RA_RN, 1}, {UOP_MOV_RB_RN, 1},
         {UOP_MOV_RN_RA, 1}, {UOP_LDI, 2}, {UOP_LDX, 2},
         {UOP_LDA_IDX, 2}, {UOP_STA_IDX, 2},
@@ -155,7 +161,8 @@ static void test_dedicated_fetch_return(void)
                                CPU_MODE_RUN) & CTRL_NEXT_FETCH) == 0);
         assert(microcode_word((uint8_t)(action + 1), cases[index].op,
                               clear, CPU_MODE_RUN) ==
-               (address_word(CPU8_ADDR_SEL_NONE) | CTRL_NEXT_FETCH));
+               (address_word(CPU8_ADDR_SEL_NONE) | CTRL_NEXT_FETCH |
+                (cases[index].op == UOP_ALU ? CTRL_MDR_OE : 0)));
     }
     assert(microcode_word(4, UOP_STA, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_MAR) | CTRL_MDR_OE | CTRL_RAM_WE));
@@ -269,9 +276,25 @@ static void test_isa_groups_and_jump_flags(void)
     unsigned bits;
 
     assert(build_control_roms(roms, message, sizeof(message)));
+    /* Tutte le pagine flag: preparazione, cattura MDR/flag, preparazione
+     * MDR, cattura RA, ritorno con MDR ancora sul bus. */
+    for (bits = 0; bits < 16; bits++) {
+        static const uint8_t offsets[] = {4, 2, 6, 1, 5};
+        static const uint8_t expected[5][3] = {
+            {0xf3, 0x02, 0x48}, {0xfb, 0x02, 0x4a},
+            {0xe3, 0x02, 0x49}, {0xe3, 0x62, 0x49},
+            {0x63, 0x02, 0x49}
+        };
+        unsigned group, phase, chip;
+        for (group = 0x60; group <= 0x78; group += 0x18)
+            for (phase = 0; phase < 5; phase++)
+                for (chip = 0; chip < 3; chip++)
+                    assert(roms[chip][0x1000 | (bits << 8) | group |
+                                      offsets[phase]] == expected[phase][chip]);
+    }
     /* SUB e CMP devono avere gruppi diversi pur condividendo l'ALU. */
-    assert(roms[1][0x1000u | 0x78u | 4u] == 0x62);
-    assert(roms[2][0x1000u | 0x78u | 4u] == 0x4a);
+    assert(roms[1][0x1000u | 0x78u | 4u] == 0x02);
+    assert(roms[2][0x1000u | 0x78u | 4u] == 0x48);
     assert(roms[1][0x1000u | 0x68u | 4u] == 0x02);
     assert(roms[2][0x1000u | 0x68u | 4u] == 0x4b);
 

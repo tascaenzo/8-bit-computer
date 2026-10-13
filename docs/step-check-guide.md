@@ -1,124 +1,183 @@
-# Verifica manuale: 5 + 3, poi HLT
+# Step check: registri e stati della CPU passo per passo — somma 4 + 1
 
-Programma: `examples/assembly/step_check.asm`. Immagine da 8 byte:
-`20 05 21 03 C0 C9 67 00`.
-Caricare `tools/assembler/build/step_check.hex` nella EEPROM **programma**.
-Le EEPROM CU restano quelle già programmate.
+Programma: `examples/assembly/step_check.asm`, 8 byte `26 04 27 01 C7 CE 67 00`.
+**LDI:** T2 carica MDR, T3 scrive Rn, T4 torna al fetch.
+**ALU:** T2 prepara il risultato, T3 salva MDR e flag, T4 prepara MDR sul bus,
+T5 copia MDR in RA, T6 mantiene MDR sul bus e torna al fetch. Il programma carica R6=4 e R7=1,
+poi calcola **1 + 4 = 5** tramite RA e RB.
 
-## Come leggere la prova
+Dopo BOOT prepara RUN con PC=`0000 / 0000000000000000`, microstep=`000` e clock manuale fermo basso.
+T1=`000` (il tuo T0), T2=`001`, T3=`010`, T4=`011`, T5=`100`, T6=`101`.
 
-1. Completa BOOT, poi prepara RUN con PC=0000 e contatore microstep=000,
-   tramite il controllo/reset esterno previsto dalla scheda. Tieni il clock
-   basso durante il cambio e lascia assestare le uscite.
-2. Per ogni riga: PRIMA del fronte di esecuzione controlla microstep e segnali
-   della prima tabella. DOPO il fronte e l'assestamento controlla i registri
-   della seconda tabella. Le uscite CU dopo il fronte sono già quelle del
-   passo seguente: non confrontarle con la riga appena eseguita.
-3. Un impulso esegue un microstep, non una intera istruzione. La tabella
-   descrive la sequenza funzionale a fronti corretti; eventuali clock locali
-   anticipati/spuri vanno diagnosticati sul circuito.
+Per ogni riga **fermati prima dell'impulso**, misura, poi dai un solo impulso
+basso→alto→basso. La colonna DOPO indica il risultato atteso dopo quel fronte.
+I numeri contano gli impulsi RUN: bastano 21; il punto 22 è già fermo.
 
-T1=000 è il tuo T0; T2=001, T3=010, T4=011. Gli ingressi fisici EEPROM
-sono invertiti: A0=µSTEP2, A1=µSTEP1, A2=µSTEP0. Gli offset EEPROM dei primi
-quattro passi sono quindi 0,4,2,6.
+Tester in V DC, nero su GND, rosso su un bit alla volta. `DB` è il bus dati;
+`Q` sono le uscite del registro. Nella tabella i valori sono **esadecimale / binario**:
+8 bit per dati e registri (bit7..0), 16 bit per PC (bit15..0).
+Nel binario **1 = livello alto**, **0 = livello basso**; i flag sono in ordine C/Z/N/O.
 
-Ogni valore dei registri e delle ROM è mostrato come **decimale / esadecimale / binario**.
-Esempio: `5 / 0x05 / 00000101`. I binari si leggono da bit più significativo
-a bit meno significativo (LED da sinistra a destra: bit 7..0; PC bit 15..0). `?` significa
-non ancora inizializzato da questo programma: non richiediamo che il reset
-azzerri tutti i registri. PC è a 16 bit, gli altri valori mostrati a 8 bit.
-IR resta sull'opcode mentre vengono letti gli immediati: non deve mostrare
-05 o 03. I flag sono scritti nell'ordine **C Z N O**.
+## Programma e byte in memoria
 
-## Segnali PRIMA del fronte
+```asm
+.code 0x0000
+LDI R6, 4
+LDI R7, 1
+MOV RA, R7
+MOV RB, R6
+ADD
+HLT
+```
 
-“Attivi” indica la funzione, non sempre un livello elettrico alto.
-MDR_OE, RAM_OE, ALU_EN, NEXT_FETCH e SYS_STEP sono attivi bassi.
-PC_LOAD è attivo basso e resta **inattivo (ROM1 D1=1)** per tutta la prova.
-ADDR_SEL=01 sceglie PC; 11 nessuna sorgente. Le colonne ROM0/1/2 danno
-anche tutti i livelli inattivi e permettono il confronto dei pin D7..D0.
-In questo programma i byte non dipendono dai flag; al fetch non dipendono
-neppure dal precedente contenuto di IR.
+| Indirizzo RAM | Byte hex / binario | Significato |
+|---|---|---|
+| `0000` | `26 / 00100110` | Opcode `LDI R6` |
+| `0001` | `04 / 00000100` | Immediato 4 |
+| `0002` | `27 / 00100111` | Opcode `LDI R7` |
+| `0003` | `01 / 00000001` | Immediato 1 |
+| `0004` | `C7 / 11000111` | `MOV RA, R7` |
+| `0005` | `CE / 11001110` | `MOV RB, R6` |
+| `0006` | `67 / 01100111` | `ADD` |
+| `0007` | `00 / 00000000` | `HLT` |
 
-| # | Istruzione | Passo µSTEP | ADDR_SEL | Controlli attivi | ROM0 / ROM1 / ROM2 | Azione al fronte |
-|---|---|---|---|---|---|---|
-| 1 | LDI R0, 5 | T1 `000` | `01` | IR_WE, PC_INC, RAM_OE | ROM0: `245 / 0xF5 / 11110101`<br>ROM1: `3 / 0x03 / 00000011`<br>ROM2: `65 / 0x41 / 01000001` | Opcode → IR; PC++ |
-| 2 | LDI R0, 5 | T2 `001` | `01` | MDR_WE, PC_INC, RAM_OE | ROM0: `253 / 0xFD / 11111101`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `65 / 0x41 / 01000001` | Immediato → MDR; PC++ |
-| 3 | LDI R0, 5 | T3 `010` | `11` | MDR_OE, RF_EN, RF_RW | ROM0: `227 / 0xE3 / 11100011`<br>ROM1: `26 / 0x1A / 00011010`<br>ROM2: `73 / 0x49 / 01001001` | MDR → R0 |
-| 4 | LDI R0, 5 | T4 `011` | `11` | NEXT_FETCH | ROM0: `115 / 0x73 / 01110011`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `73 / 0x49 / 01001001` | Carica 000 nel microstep; nessun registro dati cambia |
-| 5 | LDI R1, 3 | T1 `000` | `01` | IR_WE, PC_INC, RAM_OE | ROM0: `245 / 0xF5 / 11110101`<br>ROM1: `3 / 0x03 / 00000011`<br>ROM2: `65 / 0x41 / 01000001` | Opcode → IR; PC++ |
-| 6 | LDI R1, 3 | T2 `001` | `01` | MDR_WE, PC_INC, RAM_OE | ROM0: `253 / 0xFD / 11111101`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `65 / 0x41 / 01000001` | Immediato → MDR; PC++ |
-| 7 | LDI R1, 3 | T3 `010` | `11` | MDR_OE, RF_EN, RF_RW | ROM0: `227 / 0xE3 / 11100011`<br>ROM1: `26 / 0x1A / 00011010`<br>ROM2: `73 / 0x49 / 01001001` | MDR → R1 |
-| 8 | LDI R1, 3 | T4 `011` | `11` | NEXT_FETCH | ROM0: `115 / 0x73 / 01110011`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `73 / 0x49 / 01001001` | Carica 000 nel microstep; nessun registro dati cambia |
-| 9 | MOV RA, R0 | T1 `000` | `01` | IR_WE, PC_INC, RAM_OE | ROM0: `245 / 0xF5 / 11110101`<br>ROM1: `3 / 0x03 / 00000011`<br>ROM2: `65 / 0x41 / 01000001` | Opcode → IR; PC++ |
-| 10 | MOV RA, R0 | T2 `001` | `11` | RA_EN, RA_RB_RW, RF_EN | ROM0: `243 / 0xF3 / 11110011`<br>ROM1: `106 / 0x6A / 01101010`<br>ROM2: `73 / 0x49 / 01001001` | R0 → RA |
-| 11 | MOV RA, R0 | T3 `010` | `11` | NEXT_FETCH | ROM0: `115 / 0x73 / 01110011`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `73 / 0x49 / 01001001` | Carica 000 nel microstep; nessun registro dati cambia |
-| 12 | MOV RB, R1 | T1 `000` | `01` | IR_WE, PC_INC, RAM_OE | ROM0: `245 / 0xF5 / 11110101`<br>ROM1: `3 / 0x03 / 00000011`<br>ROM2: `65 / 0x41 / 01000001` | Opcode → IR; PC++ |
-| 13 | MOV RB, R1 | T2 `001` | `11` | RA_RB_RW, RB_EN, RF_EN | ROM0: `243 / 0xF3 / 11110011`<br>ROM1: `202 / 0xCA / 11001010`<br>ROM2: `73 / 0x49 / 01001001` | R1 → RB |
-| 14 | MOV RB, R1 | T3 `010` | `11` | NEXT_FETCH | ROM0: `115 / 0x73 / 01110011`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `73 / 0x49 / 01001001` | Carica 000 nel microstep; nessun registro dati cambia |
-| 15 | ADD | T1 `000` | `01` | IR_WE, PC_INC, RAM_OE | ROM0: `245 / 0xF5 / 11110101`<br>ROM1: `3 / 0x03 / 00000011`<br>ROM2: `65 / 0x41 / 01000001` | Opcode → IR; PC++ |
-| 16 | ADD | T2 `001` | `11` | ALU_EN, FLAGS_WE, RA_EN, RA_RB_RW | ROM0: `243 / 0xF3 / 11110011`<br>ROM1: `98 / 0x62 / 01100010`<br>ROM2: `74 / 0x4A / 01001010` | RA + RB → RA; salva flag |
-| 17 | ADD | T3 `010` | `11` | NEXT_FETCH | ROM0: `115 / 0x73 / 01110011`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `73 / 0x49 / 01001001` | Carica 000 nel microstep; nessun registro dati cambia |
-| 18 | HLT | T1 `000` | `01` | IR_WE, PC_INC, RAM_OE | ROM0: `245 / 0xF5 / 11110101`<br>ROM1: `3 / 0x03 / 00000011`<br>ROM2: `65 / 0x41 / 01000001` | Opcode → IR; PC++ |
-| 19 | HLT | T2 `001` | `11` | SYS_STEP | ROM0: `243 / 0xF3 / 11110011`<br>ROM1: `2 / 0x02 / 00000010`<br>ROM2: `9 / 0x09 / 00001001` | Arresto: µSTEP_EN=0, resta in 001 |
+La somma richiesta è **4 + 1 = 5**. Questo programma usa gli operandi
+in ordine inverso: **RA=1, RB=4**, quindi la ALU esegue `RA + RB = 1 + 4`.
+Il risultato viene salvato in MDR e poi in RA; R6 e R7 conservano gli operandi.
 
-## Registri DOPO il fronte
+## Contenuto completo dei registri dopo ogni impulso
 
-MAR, IDX e R2..R7 non vengono modificati da questa prova. MDR resta **3 / 0x03 / 00000011** dopo
-il secondo LDI; non contiene il risultato della somma. Il risultato è in RA.
+La tabella seguente mostra il **contenuto memorizzato dopo l'impulso**,
+quando il clock è tornato basso e i segnali si sono assestati. Il microstep
+eseguito è quello presente **prima** dell'impulso; la colonna «Step dopo»
+indica la fase pronta per l'impulso successivo. Esempio: dopo l'impulso 2
+sei già in T3, con MDR=04, ma R6 riceverà 04 all'impulso 3.
 
-| # | PC | IR | MDR | R0 | R1 | RA | RB | C Z N O |
-|---|---|---|---|---|---|---|---|---|
-| 1 | `1 / 0x0001 / 0000000000000001` | `32 / 0x20 / 00100000` | ? | ? | ? | ? | ? | ? ? ? ? |
-| 2 | `2 / 0x0002 / 0000000000000010` | `32 / 0x20 / 00100000` | `5 / 0x05 / 00000101` | ? | ? | ? | ? | ? ? ? ? |
-| 3 | `2 / 0x0002 / 0000000000000010` | `32 / 0x20 / 00100000` | `5 / 0x05 / 00000101` | `5 / 0x05 / 00000101` | ? | ? | ? | ? ? ? ? |
-| 4 | `2 / 0x0002 / 0000000000000010` | `32 / 0x20 / 00100000` | `5 / 0x05 / 00000101` | `5 / 0x05 / 00000101` | ? | ? | ? | ? ? ? ? |
-| 5 | `3 / 0x0003 / 0000000000000011` | `33 / 0x21 / 00100001` | `5 / 0x05 / 00000101` | `5 / 0x05 / 00000101` | ? | ? | ? | ? ? ? ? |
-| 6 | `4 / 0x0004 / 0000000000000100` | `33 / 0x21 / 00100001` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | ? | ? | ? | ? ? ? ? |
-| 7 | `4 / 0x0004 / 0000000000000100` | `33 / 0x21 / 00100001` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | ? | ? | ? ? ? ? |
-| 8 | `4 / 0x0004 / 0000000000000100` | `33 / 0x21 / 00100001` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | ? | ? | ? ? ? ? |
-| 9 | `5 / 0x0005 / 0000000000000101` | `192 / 0xC0 / 11000000` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | ? | ? | ? ? ? ? |
-| 10 | `5 / 0x0005 / 0000000000000101` | `192 / 0xC0 / 11000000` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | ? | ? ? ? ? |
-| 11 | `5 / 0x0005 / 0000000000000101` | `192 / 0xC0 / 11000000` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | ? | ? ? ? ? |
-| 12 | `6 / 0x0006 / 0000000000000110` | `201 / 0xC9 / 11001001` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | ? | ? ? ? ? |
-| 13 | `6 / 0x0006 / 0000000000000110` | `201 / 0xC9 / 11001001` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | ? ? ? ? |
-| 14 | `6 / 0x0006 / 0000000000000110` | `201 / 0xC9 / 11001001` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | ? ? ? ? |
-| 15 | `7 / 0x0007 / 0000000000000111` | `103 / 0x67 / 01100111` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | ? ? ? ? |
-| 16 | `7 / 0x0007 / 0000000000000111` | `103 / 0x67 / 01100111` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `8 / 0x08 / 00001000` | `3 / 0x03 / 00000011` | `0 0 0 0` |
-| 17 | `7 / 0x0007 / 0000000000000111` | `103 / 0x67 / 01100111` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `8 / 0x08 / 00001000` | `3 / 0x03 / 00000011` | `0 0 0 0` |
-| 18 | `8 / 0x0008 / 0000000000001000` | `0 / 0x00 / 00000000` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `8 / 0x08 / 00001000` | `3 / 0x03 / 00000011` | `0 0 0 0` |
-| 19 | `8 / 0x0008 / 0000000000001000` | `0 / 0x00 / 00000000` | `3 / 0x03 / 00000011` | `5 / 0x05 / 00000101` | `3 / 0x03 / 00000011` | `8 / 0x08 / 00001000` | `3 / 0x03 / 00000011` | `0 0 0 0` |
+I valori dei registri sono in **esadecimale**; PC ha 16 bit, gli altri
+registri elencati hanno 8 bit. Per i bit da misurare usa la tabella sotto.
+`?` significa **contenuto iniziale non garantito**, non zero. `F₀` indica i
+quattro flag iniziali: restano invariati fino all'impulso 17. Nel simulatore
+il reset li azzera, quindi `?=00` per i registri a 8 bit e `F₀=0000`;
+sulla scheda vale solo se è previsto e verificato il reset di quei registri.
 
-## Arresto e risultato
+| Impulso | Fase eseguita | PC dopo | IR | MDR | R6 | R7 | RA | RB | Flag C/Z/N/O | Step dopo | Stato CPU dopo |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0 | Preparazione RUN | `0000` | `?` | `?` | `?` | `?` | `?` | `?` | `F₀` | T1 `000` | Pronta al fetch |
+| 1 | LDI R6 · T1 | `0001` | `26` | `?` | `?` | `?` | `?` | `?` | `F₀` | T2 `001` | Legge l'immediato |
+| 2 | LDI R6 · T2 | `0002` | `26` | `04` | `?` | `?` | `?` | `?` | `F₀` | T3 `010` | Pronta a scrivere R6 |
+| 3 | LDI R6 · T3 | `0002` | `26` | `04` | `04` | `?` | `?` | `?` | `F₀` | T4 `011` | R6 caricato |
+| 4 | LDI R6 · T4 | `0002` | `26` | `04` | `04` | `?` | `?` | `?` | `F₀` | T1 `000` | Fetch successivo |
+| 5 | LDI R7 · T1 | `0003` | `27` | `04` | `04` | `?` | `?` | `?` | `F₀` | T2 `001` | Legge l'immediato |
+| 6 | LDI R7 · T2 | `0004` | `27` | `01` | `04` | `?` | `?` | `?` | `F₀` | T3 `010` | Pronta a scrivere R7 |
+| 7 | LDI R7 · T3 | `0004` | `27` | `01` | `04` | `01` | `?` | `?` | `F₀` | T4 `011` | R7 caricato |
+| 8 | LDI R7 · T4 | `0004` | `27` | `01` | `04` | `01` | `?` | `?` | `F₀` | T1 `000` | Fetch successivo |
+| 9 | MOV RA · T1 | `0005` | `C7` | `01` | `04` | `01` | `?` | `?` | `F₀` | T2 `001` | Pronta a copiare R7 |
+| 10 | MOV RA · T2 | `0005` | `C7` | `01` | `04` | `01` | `01` | `?` | `F₀` | T3 `010` | Operando A caricato |
+| 11 | MOV RA · T3 | `0005` | `C7` | `01` | `04` | `01` | `01` | `?` | `F₀` | T1 `000` | Fetch successivo |
+| 12 | MOV RB · T1 | `0006` | `CE` | `01` | `04` | `01` | `01` | `?` | `F₀` | T2 `001` | Pronta a copiare R6 |
+| 13 | MOV RB · T2 | `0006` | `CE` | `01` | `04` | `01` | `01` | `04` | `F₀` | T3 `010` | Operando B caricato |
+| 14 | MOV RB · T3 | `0006` | `CE` | `01` | `04` | `01` | `01` | `04` | `F₀` | T1 `000` | Fetch di ADD |
+| 15 | ADD · T1 | `0007` | `67` | `01` | `04` | `01` | `01` | `04` | `F₀` | T2 `001` | ALU presenta 05 |
+| 16 | ADD · T2 | `0007` | `67` | `01` | `04` | `01` | `01` | `04` | `F₀` | T3 `010` | Pronta a salvare risultato e flag |
+| 17 | ADD · T3 | `0007` | `67` | `05` | `04` | `01` | `01` | `04` | `0000` | T4 `011` | Risultato salvato in MDR |
+| 18 | ADD · T4 | `0007` | `67` | `05` | `04` | `01` | `01` | `04` | `0000` | T5 `100` | Pronta a scrivere RA |
+| 19 | ADD · T5 | `0007` | `67` | `05` | `04` | `01` | `05` | `04` | `0000` | T6 `101` | Risultato salvato in RA |
+| 20 | ADD · T6 | `0007` | `67` | `05` | `04` | `01` | `05` | `04` | `0000` | T1 `000` | Fetch di HLT |
+| 21 | HLT · T1 | `0008` | `00` | `05` | `04` | `01` | `05` | `04` | `0000` | T2 `001` | Arrestata in HLT |
+| 22 (solo misura) | HLT · T2 | `0008` | `00` | `05` | `04` | `01` | `05` | `04` | `0000` | T2 `001` | Resta arrestata |
 
-Dopo il fetch di HLT (riga 18), IR=**0 / 0x00 / 00000000**,
-PC=**8 / 0x0008 / 0000000000001000** e il contatore entra in `001`.
-Le uscite della riga 19 danno ROM2 D6=0; con IR2..IR0=000 la OR vale zero.
-HLT non attende un altro impulso per rendere basso il consenso: entrando
-in T2 il contatore è già inibito. La riga 19 indica lo stato fermo e il
-comportamento con ulteriori impulsi, non un microstep che avanza.
+**Registri invariati in tutte le righe:** R0, R1, R2, R3, R4, R5, MAR e IDX
+mantengono ciascuno il proprio valore iniziale. Il programma non li scrive.
+Nel simulatore sono tutti zero dopo reset (MAR=IDX=`0000`); sulla scheda
+annota i valori iniziali se noti, altrimenti considerali `?`.
+Il fetch legge la RAM tramite **PC**, senza caricare MAR. Non avvengono
+scritture RAM né operazioni di ingresso/uscita durante questo programma.
 
-Conseguentemente bastano **18 fronti utili RUN** per raggiungere l'arresto.
-Altri impulsi devono lasciare microstep=`001` e i registri invariati:
-PC=**8 / 0x0008 / 0000000000001000**, IR=**0 / 0x00 / 00000000**,
-RA=**8 / 0x08 / 00001000**, RB=**3 / 0x03 / 00000011**.
-Il clock principale può continuare se è inibito soltanto il contatore.
+I flag memorizzati all'impulso 17 sono: **C=0** (nessun riporto oltre 8 bit),
+**Z=0** (5 non è zero), **N=0** (bit 7 del risultato a zero),
+**O=0** (nessun overflow con segno). Dopo l'impulso 19 la ALU combinatoria
+può calcolare `05 + 04 = 09`, ma MDR e flag conservano il risultato catturato
+al 17 e RA conserva il dato copiato al 19.
 
-I LED su IR verificano questa sequenza:
+## Stati e segnali della control unit prima dell'impulso
 
-| Istruzione | Decimale | Esadecimale | Binario IR[7:0] |
-|---|---|---|---|
-| LDI R0, 5 | 32 | 0x20 | `00100000` |
-| LDI R1, 3 | 33 | 0x21 | `00100001` |
-| MOV RA, R0 | 192 | 0xC0 | `11000000` |
-| MOV RB, R1 | 201 | 0xC9 | `11001001` |
-| ADD | 103 | 0x67 | `01100111` |
-| HLT | 0 | 0x00 | `00000000` |
+Questi sono i **segnali funzionalmente attivi** nella fase misurata prima
+di ciascun impulso. Un nome attivo non implica sempre un livello elettrico
+alto: per le polarità e i pin usa la
+[mappa delle uscite CU](control-unit-eeprom-output-map.md).
+`ADDR_SEL` è riportato nell'ordine bit 1, bit 0; `—` sul bus indica nessuna
+sorgente abilitata, quindi nessun valore dati garantito.
 
-Per verificare anche i dati usa LED/probe o misure sui registri indicati:
-IR da solo non dimostra che R0, R1 e RA contengano i risultati corretti.
+| Punti | Fase | ADDR_SEL | Bus indirizzi prima | Bus dati prima | Segnali attivi / azione CU |
+|---|---|---|---|---|---|
+| 1, 5, 9, 12, 15, 21 | T1 · fetch | `01` PC | Rispettivamente `0000`, `0002`, `0004`, `0005`, `0006`, `0007` | RAM: `26`, `27`, `C7`, `CE`, `67`, `00` | `RAM_OE`, `IR_WE`, `PC_INC` |
+| 2, 6 | T2 · immediato LDI | `01` PC | Rispettivamente `0001`, `0003` | RAM: `04`, `01` | `RAM_OE`, `MDR_WE`, `PC_INC` |
+| 3, 7 | T3 · scrivi R6/R7 | `11` nessuna | — | MDR: `04`, `01` | `MDR_OE`, `RF_EN`, `RF_RW`; registro scelto da IR[2:0] |
+| 4, 8 | T4 · fine LDI | `11` nessuna | — | — | `NEXT_FETCH` |
+| 10 | T2 · scrivi RA | `11` nessuna | — | R7: `01` | `RF_EN`, `RA_EN`, `RA_RB_RW`; `RF_RW=0` |
+| 11, 14 | T3 · fine MOV | `11` nessuna | — | — | `NEXT_FETCH` |
+| 13 | T2 · scrivi RB | `11` nessuna | — | R6: `04` | `RF_EN`, `RB_EN`, `RA_RB_RW`; `RF_RW=0` |
+| 16 | T2 · prepara ADD | `11` nessuna | — | ALU: `05` | `ALU_EN`; nessuna scrittura |
+| 17 | T3 · cattura ADD | `11` nessuna | — | ALU: `05` | `ALU_EN`, `MDR_WE`, `FLAGS_WE` |
+| 18 | T4 · prepara MDR | `11` nessuna | — | MDR: `05` | `MDR_OE`; nessuna scrittura |
+| 19 | T5 · scrivi RA | `11` nessuna | — | MDR: `05` | `MDR_OE`, `RA_EN`, `RA_RB_RW` |
+| 20 | T6 · fine ADD | `11` nessuna | — | MDR: `05` | `MDR_OE`, `NEXT_FETCH` |
+| 22 (solo misura) | T2 · HLT | `11` nessuna | — | — | `SYS_STEP_n=0`; conteggio microstep disabilitato |
 
-Tabella confrontata con i bit delle tre immagini CU attuali; programma
-assemblato e verificato anche nel simulatore funzionale. Questo programma
-non prova scrittura RAM, salti, CMP, IDX o tutti i casi dei flag: serve come
-prima prova breve per localizzare il primo passo divergente.
+Durante tutta la sequenza **BOOT_RUN=1 (RUN)**. `SYS_STEP_n=1` nei punti
+1–21 e diventa `0` entrando in HLT/T2 dopo l'impulso 21.
+La logica esterna `µSTEP_EN = SYS_STEP_n OR IR2 OR IR1 OR IR0` vale allora
+zero, perché IR=`00`: il contatore resta in `001`. **HLT blocca il conteggio
+dei microstep**; il clock esterno può continuare a commutare. In T2 non
+sono attive scritture né incremento PC, quindi ulteriori impulsi non
+modificano lo stato. Il punto 22 serve solo a misurare questo stato fermo.
+
+## Misure con il tester prima e dopo ogni impulso
+
+| Punto | Istruzione | Step | Operazione | Misura PRIMA dell'impulso | Atteso DOPO |
+|---|---|---|---|---|---|
+| 1 | `LDI R6, 4` | T1 `000` | RAM -> IR; PC++ | DB=`26 / 00100110` dalla RAM | IR=`26 / 00100110`; PC=`0001 / 0000000000000001` |
+| 2 | `LDI R6, 4` | T2 `001` | RAM -> MDR; PC++ | DB=`04 / 00000100` dalla RAM | MDR=`04 / 00000100`; PC=`0002 / 0000000000000010` |
+| 3 | `LDI R6, 4` | T3 `010` | MDR -> R6 | MDR in lettura: DB=`04 / 00000100`; ingresso R6 uguale | R6 memorizza `04 / 00000100` |
+| 4 | `LDI R6, 4` | T4 `011` | Ritorno al fetch | Nessuna sorgente DB | T1 `000`; PC=`0002 / 0000000000000010` |
+| 5 | `LDI R7, 1` | T1 `000` | RAM -> IR; PC++ | DB=`27 / 00100111` dalla RAM | IR=`27 / 00100111`; PC=`0003 / 0000000000000011` |
+| 6 | `LDI R7, 1` | T2 `001` | RAM -> MDR; PC++ | DB=`01 / 00000001` dalla RAM | MDR=`01 / 00000001`; PC=`0004 / 0000000000000100` |
+| 7 | `LDI R7, 1` | T3 `010` | MDR -> R7 | MDR in lettura: DB=`01 / 00000001`; ingresso R7 uguale | R7 memorizza `01 / 00000001` |
+| 8 | `LDI R7, 1` | T4 `011` | Ritorno al fetch | Nessuna sorgente DB | T1 `000`; PC=`0004 / 0000000000000100` |
+| 9 | `MOV RA, R7` | T1 `000` | RAM -> IR; PC++ | DB=`C7 / 11000111` dalla RAM | IR=`C7 / 11000111`; PC=`0005 / 0000000000000101` |
+| 10 | `MOV RA, R7` | T2 `001` | R7 -> RA | R7 in lettura: Q R7 e DB=`01 / 00000001` | RA memorizza `01 / 00000001` |
+| 11 | `MOV RA, R7` | T3 `010` | Ritorno al fetch | Nessuna sorgente DB | T1 `000`; PC=`0005 / 0000000000000101` |
+| 12 | `MOV RB, R6` | T1 `000` | RAM -> IR; PC++ | DB=`CE / 11001110` dalla RAM | IR=`CE / 11001110`; PC=`0006 / 0000000000000110` |
+| 13 | `MOV RB, R6` | T2 `001` | R6 -> RB | R6 in lettura: Q R6 e DB=`04 / 00000100` | RB memorizza `04 / 00000100` |
+| 14 | `MOV RB, R6` | T3 `010` | Ritorno al fetch | Nessuna sorgente DB | T1 `000`; PC=`0006 / 0000000000000110` |
+| 15 | `ADD` | T1 `000` | RAM -> IR; PC++ | DB=`67 / 01100111` dalla RAM | IR=`67 / 01100111`; PC=`0007 / 0000000000000111` |
+| 16 | `ADD` | T2 `001` | Prepara ALU; nessuna scrittura | ALU A=`01 / 00000001`, B=`04 / 00000100`; uscita e DB=`05 / 00000101` | RA resta `01 / 00000001`; ALU pronto per MDR |
+| 17 | `ADD` | T3 `010` | ALU -> MDR; salva flag | DB e ingresso MDR=`05 / 00000101`; RA=`01 / 00000001` | MDR=`05 / 00000101`; C Z N O=0 0 0 0; RA invariato |
+| 18 | `ADD` | T4 `011` | Prepara MDR sul bus; nessuna scrittura | MDR in lettura: DB=`05 / 00000101`; ingresso RA uguale | MDR=`05 / 00000101`; dato pronto per RA |
+| 19 | `ADD` | T5 `100` | MDR -> RA | DB e ingresso RA=`05 / 00000101` da MDR | RA=`05 / 00000101`; MDR=`05 / 00000101`; flag invariati |
+| 20 | `ADD` | T6 `101` | Mantiene MDR; ritorno al fetch | DB=`05 / 00000101` da MDR; RA=`05 / 00000101` | T1 `000`; PC=`0007 / 0000000000000111` |
+| 21 | `HLT` | T1 `000` | RAM -> IR; PC++ | DB=`00 / 00000000` dalla RAM | IR=`00 / 00000000`; PC=`0008 / 0000000000001000`; T2 `001` fermo |
+| 22 | `HLT` | T2 `001` | Arresto; nessun impulso necessario | PC=`0008 / 0000000000001000`; IR=`00 / 00000000`; flag=`0000` (C/Z/N/O) | Nessun cambiamento |
+
+**Quando puoi leggere i registri:** un registro con `/OE` alto ha uscite
+in alta impedenza: il tester su Q non mostra il suo contenuto. Perciò verifica
+MDR sul bus nei punti **3, 7 e 18–20**, R7 nel **10**, R6 nel **13**, quando sono
+in lettura. I valori DOPO dei registri sono attesi, ma misurabili sulle Q
+solo se quelle uscite sono abilitate. Non forzare `/OE` per leggerli.
+
+**Per verificare la somma:** dopo l'impulso **15**, misura ALU A=`01 / 00000001`,
+B=`04 / 00000100`, uscita ALU e DB=`05 / 00000101`. Dopo il **17**, verifica
+MDR sul bus al punto **18**: deve dare `05 / 00000101`. Dopo il **19**, verifica
+RA sulle Q verso ALU: `05 / 00000101`; RB resta `04 / 00000100` e i flag sono `0000`.
+L'uscita combinatoria ALU può ora diventare `09 / 00001001` perché RA è cambiato:
+il dato da trasferire resta in MDR, con ALU disabilitata sul bus.
+Alla fine R6=`04 / 00000100`, R7=`01 / 00000001`, RA=MDR=`05 / 00000101`.
+
+**Aggiornare tutte e tre le ROM CU** prima di usare questa tabella; gli 8 byte
+nella EEPROM programma restano gli stessi. Nei ritorni al fetch diversi da ADD
+e durante HLT, DB non ha una sorgente prevista: una lettura `00` non verifica
+un registro. Se una misura non coincide, annota punto, segnale e valore letto.
+I valori DOPO descrivono le catture previste; con i clock ottenuti da porte AND,
+una cattura può avvenire anche entrando nella fase mentre CK è alto.
+Il tester verifica i livelli stabili; per stabilire l'ordine dei fronti serve
+un oscilloscopio o un analizzatore logico.

@@ -95,7 +95,10 @@ non e prevista una quarta EEPROM di dispatch.
 `IR[2:0]` disabilita il conteggio del microstep solo per HLT.
 
 In RUN l'ultima operazione e separata dalla fase di ritorno a T1: il
-microstep successivo attiva soltanto `NEXT_FETCH_n` (ROM0 D7 basso). La
+microstep successivo attiva `NEXT_FETCH_n` (ROM0 D7 basso) senza scritture.
+Per ALU il risultato passa da MDR: T2 prepara ALU, T3 salva MDR e flag,
+T4 prepara MDR sul bus, T5 scrive RA, T6 mantiene MDR e torna a T1.
+MDR viene sovrascritto; CMP mantiene la sequenza precedente. La
 fase piu lunga e `STA`/`LDA` diretto: operazione in T5, ritorno in T6.
 Per un 74161 e consigliato collegare D7 a `/LOAD` con gli ingressi paralleli
 a zero e lasciare `/POR` su `/CLR` (vedi

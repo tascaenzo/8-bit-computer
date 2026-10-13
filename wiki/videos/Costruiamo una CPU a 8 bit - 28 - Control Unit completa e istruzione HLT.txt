@@ -1,0 +1,480 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Io sono Enzo. Oggi
+continuiamo la progettazione della
+Control Unit della nostra CPU a 8 bit.
+Ma prima di iniziare vi ricordo di
+lasciare un mi piace, commentare questo
+video e iscrivervi al canale in modo da
+supportare il mio lavoro.
+Nel video precedente abbiamo programmato
+la prima epromit
+e abbiamo concluso la fase di boot della
+nostra CPU. Nel video di oggi voglio
+continuare la programmazione delle
+successive due eprom e completare i
+cablaggi. Però prima di iniziare
+dobbiamo rivedere l'istruction set
+architecture della nostra CPU.
+All'interno della nostra CPU possiamo
+avere istruzioni con un numero di byte
+che può variare da 1 2 o 3 a seconda
+della tipologia delle istruzioni. La
+cosa principale è che il primo byte di
+informazioni va a racchiudere
+l'opticode. Che cos'è l'opticode?
+Diciamo che è il codice che va a
+identificare la tipologia di operazione.
+Con questo singolo byte, con la lettura
+di questo singolo byte, la control Unit
+sa quali sono i segnali da generare, di
+controllo da generare, quindi diciamo
+che il primo byte racchiude tutte le
+informazioni necessarie per l'esecuzione
+stessa dell'operazione.
+Perché eh ci sono operazioni con un
+numero di byte che può variare?
+Essenzialmente dipende dalla tipologia
+di operazioni. Ci sono operazioni che
+avranno un solo byte, come ad esempio
+che ne so, l'AD, che va a sommare eh il
+valore che c'è all'interno del registro
+A con il valore che c'è nel registro B e
+quindi abbiamo solo bisogno
+dell'opticode.
+Poi abbiamo istruzioni come quelle di
+caricamento di un registro, ad esempio
+LTR010,
+vuol dire che carichiamo all'interno del
+registro R0 il valore 10. Quindi che
+cosa succede? Succede che il primo byte
+mi fa capire che è una un'istruzione di
+caricamento e qual è il registro
+coinvolto R0. Il successivo byte è il
+valore immediato, il 10, quindi abbiamo
+bisogno di 2 byte. Invece istruzioni
+come salti condizionali hanno bisogno
+ovviamente del primo byte per capire
+sempre qual è il tipo di istruzione. I
+successivi 2 byte sono un indirizzo a 16
+bit che va a rappresentare eh la memoria
+in cui punta il salto.
+Inizialmente avevo pensato di
+suddividere i primi 8 bit, quindi
+l'opticode, in due gruppi. I primi 3 bit
+di informazione vanno a identificare una
+sorta di categoria dell'istruzione
+e successivi i bit invece servono a dare
+contesto e informazioni relative
+all'esecuzione vera e propria del
+dell'istruzione.
+Ad esempio l'istruzione Jump e Jump Zero
+fanno parte dello stesso gruppo perché
+sono istruzioni di salto condizionale,
+quindi hanno 10 come bit iniziali.
+Invece istruzioni come sub e compare
+fanno parte delle istruzioni relative
+all'alu e hanno i primi 3 bit uguali che
+sono 0 1 e così via. Qual è il problema?
+Il problema è che la nostra control unit
+in ingresso c'ha soltanto i primi 5 bit
+dell'opticode.
+Non abbiamo tutti 8 bit perché
+effettivamente le prom che stiamo
+utilizzando hanno un numero limitato
+limitato di ingressi.
+Il bass dei registri banalmente è
+limitato a 13 e già stiamo utilizzando
+altri ingressi
+per l'input dei flag, il segnale di boot
+e così via. Quindi, effettivamente, eh
+abbiamo in ingresso soltanto, abbiamo la
+possibilità di inserire in ingresso
+nelle soltanto i primi 5 bit della
+dell'istraction register. Che cosa
+succede? Succede che per come avevo
+inizialmente codificato tutte le varie
+operazioni, ci sono delle istruzioni
+delle operazioni che non sono
+distinguibili leggendo soltanto i primi
+5 bit. Ad esempio queste istruzioni che
+ho riportato qui, eh ad esempio jump e
+jump zero,
+se non vado a leggere gli ultimi due
+bit, quindi i primi bit solo i primi 5
+bit, non posso distinguerle, saranno
+uguali all'occhio della control unit e
+questo è un problema. lo stesso
+l'istruzione sub e compare sembreranno
+uguali, anche se per la sub e la compare
+potrebbe essere un falso problema perché
+comunque eh quando noi andiamo a fare eh
+la compare di fatto andiamo a fare una
+sub, andiamo a fare una sottrazione.
+Risolviamo questo problema dell'Optic
+Code andando a ridefinire tutte tutte le
+istruzioni. In pratica dobbiamo fare in
+modo che all'interno dei 5 bit la
+control Unit per distinguere ogni
+singolo caso.
+C'è da notare che alcune tipologie di
+istruzioni eh già sono state sono state
+strutturate in questo modo. Ad esempio,
+tutte le istruzioni relative a
+caricamenti o comunque relative al ai
+registri hanno la parte più bassa, gli
+ultimi 3 bit che non che non servono
+all'interno della Control Unit collegati
+direttamente al selettore dei registri.
+Lo stesso vale per le per le istruzioni
+relative all'alu. Qui abbiamo gli ultimi
+4 bit, ad esempio, che vanno
+direttamente a pilotare il selettore
+dell'operazione all'interno dell'alu.
+Quindi, diciamo, questa queste parti non
+passano dalla control Unit e vengono
+gestite direttamente dalla
+dall'istruction register che è collegato
+ai vari selettori.
+Questa è una tabella di rimappatura dove
+ci sono tutte le istruzioni che avevono
+problemi. In pratica la maggior parte
+sono tutte le istruzioni di salto
+condizionale, poi abbiamo la compare e
+la sub. Tralasciamo per ora queste due
+istruzioni Alt e NOP.
+Per tutta questa serie di istruzioni ho
+fatto una rimappatura. L'unico l'unica
+cosa che va a cambiare che non verrà più
+rispettata la regola iniziale che
+istruzioni facende parte alla stessa
+categoria hanno i primi tre bit in
+comune. Ad esempio questa istruzione di
+salto a 101. Quest'altra istruzione
+invece ha tutti i primi 3 bit a 1.
+Per quanto riguarda invece le istruzioni
+alte no fanno parte della categoria
+istruzioni di sistema. Hanno i primi 3
+bit a zero
+e l'istruzione di Alt in sostanza ferma
+la CPU. Viene messa a fine di ogni
+programma per dire che la CPU è ferma.
+Siamo abbiamo completato l'esecuzione di
+quel programma e quindi fermiamo
+l'esecuzione della CPU. Invece
+l'istruzione noi eh in pratica non fa
+nulla, cioè viene eseguita, viene fatto
+un ciclo di fetch decode execute, però
+durante la fase di esecuzione non viene
+modificato lo stato interno della della
+CPU. ci può essere utile, ad esempio,
+per fare tutti i test di fetch e così
+via o comunque fermare la CPU per un
+numero di cicli potrebbe potrebbe
+tornarci utile. Queste istruzioni le ho
+inserite qui dentro perché m per come
+sono codificate eh ognuna di loro ha eh
+sempre tutti i bit a zero. Ora, in
+realtà non è un grosso problema perché
+effettivamente sia l'AL che la NOP hanno
+la stessa gestione dei segnali in output
+di controllo che dovrà generare la
+control unit. L'unica differenza è che
+nell istruzione di Alt in qualche modo
+dobbiamo fermare la la CPU. Per fare ciò
+ho pensato di stoppare il clock e quindi
+che cosa ho fatto? Oggi ho inserito
+all'interno dell'ultima e promovo
+segnale in output, dato che avevo ancora
+degli indirizzi
+di porte input output libere di io
+libere e quando i primi 5 bit saranno
+tutti a zero, vado a identificare che
+sono all'interno di un'istruzione di
+sistema e quindi questo bit in uscita
+dall'ultima eprom sarà a zero. Ora,
+tramite una logica cablata esterna, vado
+a gestirmi l'ALT che andrà a fermarmi eh
+la CPU.
+All'interno del repository del nostro
+progetto invece ho aggiornato tutta la
+documentazione con i file MD con le
+relative modifiche e poi ho fatto una
+serie di modifiche anche al control unit
+byte code. C'è quel programma che va a
+generarmi il byte code da inserire
+all'interno dell'EPROM.
+Ciò che ci può interessare è tutta la
+parte relativa, ad esempio, ai segnali
+di controllo dove all'interno
+dell'ultima eprom in uscita su D6 ho
+aggiunto il segnale di controllo eh
+system che mi va a identificare che i
+primi 5 bit in ingresso alla control
+unit relativa all'istruction register
+sono tutti a zero. Quindi quando si
+verifica questa condizione in output
+questo segnale sarà zero. La mia idea è
+quella di prendere questo segnale input,
+fare degli oranti bit dell distruction
+register. Se eh il risultato è zero, so
+che sono all'interno di unistruzione di
+alta e quindi partirà tutta una serie di
+controlli, una logica cablata fatta ad
+hoc che andrà a gestirmi lo stop della
+CPU, l'alt della CPU.
+Vediamo a questo punto tutta la parte di
+logica cablata esterna alle eprom da
+inserire all'interno della control Unit.
+La prima cosa da fare è cercare di
+ricavarsi il segnale di Alt. Sappiamo
+che dalla dall'ultima eprom della
+Control Unit abbiamo un segnale che sarà
+a zero quando tutti e primi i primi 5
+bit dell'istruction register saranno a
+zero. Quindi mi prendo questo segnale
+che ho identificato qui come 5 bit alt
+cu e lo inserisco in input all'interno
+di questa porta OR. Poi il trucchetto è
+fare l'OR con i singoli con i singoli
+bit restanti, quindi ho l'istruction
+register 6 che va in OR, l'uscita va
+all'interno di quest'altra porta OR dove
+c'è in ingresso anche l'istruction
+register pin 7 e così via. E ciò che
+risulta è il segnale di Alt che sarà a
+logica negata, quindi quando sarà zero
+vuol dire che siamo all'interno
+dell'istruzione di Alt che dovrà
+stoppare la CPU.
+Una volta generato quindi il segnale di
+Alt, voglio fermare la CPU in due casi.
+Il primo caso, quello più semplice, è
+quando vado a ehm eseguire l'istruzione
+Alt all'interno di un programma e quindi
+lì fermo la CPU perché ho completato
+l'esecuzione del programma. L'altro caso
+invece è durante la fase di boot. In
+effetti, quando faccio io il boot, una
+volta che ho eh ciclato tutto il bass
+degli indirizzi, quindi ho copiato tutte
+le caselle, le celle della della eprom
+all'interno della RAM, devo stoppar devo
+fermare la CPU e andare nella fase di
+run, quindi col pulsante che mi va a
+portare la CPU dalla fase di boot, vado
+nella fase di run. Ora ho gestito nel
+nello scorso video tutta questa questa
+gestione tutta a mano, però ovviamente
+non va bene poi per l'esecuzione vera e
+propria di un programma durante poi
+l'utilizzo della CPU. Quindi ho creato
+questo piccolo circuito, è una rete
+logica a cui metto in input eh il bit
+più significativo del basso degli
+indirizzi, il segnale boot di boot,
+il macrostep T3 e il segnale di Alt.
+Devo rispettare queste due condizioni
+per andare a abilitare l'enable
+mettendolo a zero. In effetti questa
+enable poi andrà in end con il clock e
+il clock sarà collegato al contatore di
+macrostep, al clock del contatore
+macroep e in questo modo m vado a
+stoppare il clock al contatore macrostep
+che di fatto mi va a fermare la CPU.
+Questa è una rete combinatoria classica
+fatta da porte endor, poi abbiamo
+qualche not. Comunque ciò che ci
+interessa è esaminare la tabella di
+verità.
+Quindi all'interno della tabella di
+verità ho eh il bit più significativo
+del basso negli indirizzi, il bit run
+boot t.
+Abbiamo due casistiche. Diciamo che
+quando sono in fase di boot è la seconda
+casistica, quindi ho mi devo fermare
+quando l'indirizzo
+è a un vuol dire che vado a prendermi il
+bit più significativo del bass degli
+indirizzi. Appena sarà uno, eh, mi devo
+fermare se nel frattempo boot sarà a
+zero. Siamo nell'istante T3, nel macro
+step T3, che è l'ultimo istante utile. A
+seguito di T3 già ho completato la copia
+della cella di
+memoria dalla EPROM alla RAM e per
+qualunque valore il segnale alto e
+quindi vado a fermarmi. L'altra
+casistica invece quando effettivamente
+sono in fase di run e ricevo
+l'istruzione Alt. Quindi in questo caso
+il basso degli indirizzi non mi
+interessa quale sia il suo valore,
+quindi ho inserito una X. But a 1, non
+mi interessa neanche il valore di di T3,
+quindi l'ho messo a X e il segnale al è
+a zero. E diciamo che questa tabella di
+verità è rispecchiata da questo piccolo
+schema logico che andremo a realizzare
+all'interno della nostra CPU.
+Rispetto all'ultimo video, ho
+riprogrammato tutte e tre le eprom della
+Control Unit e le ho collegate. Ho
+completato tutta una serie di cablaggi e
+ho realizzato anche la l'ultima parte di
+logica esterna che abbiamo visto eh
+durante questo video. In pratica ho
+queste questi componenti che vanno a
+realizzarla. Sono una porta end,
+poi c'ho delle porte OR per fare l'or
+degli ultimi bit dell'istruction
+register col segnale che proviene da
+questa control unit, questo chi di
+control unit che gestisce il segnale di
+Alt quando sono all'interno di
+un'operazione di sistema. Poi qui c'ho
+una porta XOR che già utilizzavo per
+realizzare il flip flop, il segnale R
+start che ho utilizzato anche per
+gestire questa logica esterna perché
+avevo dei delle porte libere e poi
+essenzialmente questo è il contatore
+microstep e qui dentro abbiamo il
+segnale di clock in ingresso che è stato
+messo in end con il segnale di Alt
+generato dalla dalla logica esterna. Ora
+è difficile farvi vedere un po' tutti i
+cablaggi. Comunque ho completato tutti i
+cablaggi, ad esempio questi cavi blu che
+vedete sono tutti i cavi che provengono
+dal dai registri, quindi abbiamo il
+segnale bright enable TRAB dei registri
+generali e così via. Quindi abbiamo
+tutti i vari controlli e eh diciamo
+all'interno delle delle tre control
+unit, dei chip delle tre control unit,
+ho fatto tutti i vari collegamenti.
+È difficile farvi vedere tutto il
+computer per intero. Comunque ci provo
+così cerchiamo di capire anche un po'
+meglio i vari cablaggi, anche se non
+sarò molto dettagliato.
+In ogni caso questi qua che sono i
+segnali relativi al blocco dei registri,
+come vedete passano da qui, arrivano qui
+sotto e poi ci sono tutti i vari
+collegamenti che ho fatto. Una cosa
+abbastanza importante invece sono gli
+ultimi bitruction register che vanno poi
+a pilotare direttamente l'alu e il
+selettore registri. Sono questi cavi
+arancioni che vediamo qui. In effetti e
+vi giro un po' la telecamera. eh
+arrivano da qua, m sono collegati anche
+all'alu da qua e comunque c'è tutta una
+serie di cablaggi che è stata fatta eh
+facendoli passare da questo raccoglitore
+nero e poi da qua sopra eh ci sono tutti
+i vari collegamenti verso l'istruction
+register.
+Poi ovviamente ho fatto tutta una serie
+di altri collegamenti con la RAM, la
+ROM, tutti i vari registri DX, flag e
+così via che partono dai vari dai vari
+segnali di enable e arrivano poi fino a
+questa parte di circuito dove ci sono le
+varie e aprom. A questo punto io direi
+che per questo video possiamo fare una
+prima prova d'accensione. Vediamo se
+effettivamente funziona questa piccola
+logica di di Alt, quindi facciamo la
+fase di boot. Poi ho caricato già un un
+piccolo programma all'interno della ROM
+del codice dove c'è un'istruzione di
+alta e vediamo se effettivamente la CPU
+si ferma. Non entriamo non entriamo
+troppo nel merito vedendo effettivamente
+che cosa esegue la CPU, però lo possiamo
+fare poi in un video successivo, però
+già iniziamo a capire se questa CPU
+inizia a eseguire del codice e
+funzionano queste piccole logiche di Alt
+della CPU.
+Ho dato alimentazione al computer, sono
+nella fase di boot, lo vedo da questo
+LED che comunque va a indicarmi la fase
+di boot. Sicuramente non riuscite a
+leggere nell'etichetta, comunque siamo
+in fase di boot.
+Che cosa faccio? Vado a questo punto a
+mettere il clock da manuale ad
+automatico. Dovrei finire tutta la fase
+di boot e fermarmi. Vediamo se è vero.
+Sì, in effetti è quello che è successo
+perché la CPU è ferma. Sono all'interno
+del bass del degli indirizzi. Ho ciclato
+tutto il bass degli indirizzi. In realtà
+non l'ho ciclato tutto perché ho
+collegato eh il segnale che va a
+stopparmi il basso degli indirizzi a
+questo LED, a questo a questo singolo
+bit. Non non ha senso che vada a
+ciclarmelo tutto per il momento perché
+il perché il programma che sto caricando
+all'interno della eprom è molto piccolo,
+quindi non servono tutte e tre le linee
+di indirizzo. Però la cosa importante è
+che in effetti ho fatto questa prima
+fase e la CPU si è fermata ed è la cosa
+corretta. Adesso, se io vado a premere
+questo tasto, dovrei andare in
+esecuzione in run e dovrebbe in
+automatico fermarsi la CPU appena eh
+viene completato il programma. Vediamo
+se effettivamente è vero.
+Ok, sì, in effetti è successo tutto in
+maniera molto veloce perché il clock è
+automatico. Sono andato nella fase di
+boot e mi si è acceso anche il LED Alt
+che è questo qua blu. Quindi in effetti
+m la CPU ha eseguito un programma, ha
+eseguito un programma che è caricato
+all'interno di questa di questa eprom e
+si è fermata alla fine. Proviamo a fare
+un reset, però prima passiamo al clock
+manuale.
+Facciamo un reset. Quindi facendo un
+reset, la fase di boot viene riciclata,
+non viene ricaricato, però dando io
+degli impulsi di clock,
+avanzo il contatore di microstep e vado
+avanti. Quindi, effettivamente, per ora
+sto eseguendo il programma. Eh, ho
+eseguito tutte le righe del programma
+manualmente e sono tornato nella
+condizione di Alt. Quindi diciamo che
+questa prima fase eh funziona, tutta
+questa prima fase eh del circuito
+funziona e diciamo che già sono
+abbastanza soddisfatto perché non era
+scontato riuscire a arrivare a questo
+punto dove la nostra CPU effettivamente
+sta eseguendo un programma, sta
+eseguendo un programma che abbiamo
+scritto da zero e già questo è un buon
+risultato. Ora nel prossimo video,
+andiamo effettivamente ad analizzare
+l'esecuzione vera e propria di questo
+piccolo programma di test e cerchiamo di
+capire effettivamente cosa succede per
+ogni singolo macrostep. So già che c'è
+effettivamente un problema che vedremo
+nel prossimo video perché eh c'è un
+piccolo un problemino durante la fase eh
+di salvataggio delle informazioni
+all'interno dei registri generali.
+è dovuta al al timing delle varie
+operazioni, però cercheremo di risolvere
+e vedremo nel dettaglio tutto nel
+prossimo video.

@@ -38,10 +38,10 @@ il bus dati mentre la CU riporta il contatore alla fase T1.
 `0` = livello logico basso, `1` = livello logico alto. Per questa prova fissiamo
 `IR[7:3]=00000` e i quattro flag a `0000`, cosi ogni ingresso e l'indirizzo
 risultante hanno un valore preciso. Su tutte e tre le EEPROM la piedinatura e:
-`A12` pin 1 = `BOOT_RUN`; `A11..A8` pin 21, 19, 22, 23 = `O,N,Z,C`;
-`A7..A3` pin 2, 3, 4, 5, 6 = `IR[7:3]`;
-`A2` pin 7 = `µSTEP[0]`, `A1` pin 8 = `µSTEP[1]`,
-`A0` pin 24 = `µSTEP[2]`.
+`A12` pin 2 = `BOOT_RUN`; `A11..A8` pin 23, 21, 24, 25 = `O,N,Z,C`;
+`A7..A3` pin 3, 4, 5, 6, 7 = `IR[7:3]`;
+`A2` pin 8 = `µSTEP[0]`, `A1` pin 9 = `µSTEP[1]`,
+`A0` pin 10 = `µSTEP[2]` (AT28C64B DIP-28, vista dall'alto).
 
 | Fase temporale | Bit logici del contatore `µSTEP[2:0]` | `A12` | `A11..A8` | `A7..A3` | `A2` | `A1` | `A0` | Indirizzo EEPROM `A12..A0` in binario |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | ---: |
@@ -58,7 +58,7 @@ l'indirizzo numerico cambia. Nel banco BOOT le uscite attese restano identiche.
 Ogni cella e il livello logico atteso **sul pin di uscita della Control ROM 0
 durante quella fase**, non il contenuto del registro controllato. Uno `0` su
 un segnale con `/` nel nome lo attiva. I pin `D7..D0` della AT28C64 DIP-28
-sono rispettivamente `17, 16, 15, 14, 13, 11, 10, 9`.
+sono rispettivamente `19, 18, 17, 16, 15, 13, 12, 11`.
 
 | Fase temporale | `D7`<br>`NEXT_FETCH_n` | `D6`<br>`/OE_EPROM` | `D5`<br>`/WE_RAM` | `D4`<br>`/OE_MDR` | `D3`<br>`MDR_WE` | `D2`<br>`PC_INC` | `D1`<br>`ADDR_SEL_1` | `D0`<br>`ADDR_SEL_0` | Byte ROM0 `D7..D0` in binario |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | ---: |
@@ -164,8 +164,9 @@ salto `JNO`.
 Come in BOOT, i bit fisici `A2:A1:A0` sono nell'ordine
 `µSTEP[0]:µSTEP[1]:µSTEP[2]`: `T1=000`, `T2=100`, `T3=010`, `T4=110`,
 `T5=001`, `T6=101`. Dopo l'ultima operazione c'e un microstep dedicato che
-attiva solo `NEXT_FETCH`: T3 per NOP/ALU/CMP/MOV, T4 per LDI/LDX/LDA-STA IDX,
-T5 per i salti, T6 per LDA/STA diretti. **A T1 IR contiene ancora l'opcode
+attiva solo `NEXT_FETCH`: T3 per NOP/CMP/MOV, T4 per LDI/LDX/LDA-STA IDX,
+T5 per i salti, T6 per LDA/STA diretti. ALU torna in T6 con `MDR_OE`
+ancora attivo, senza scritture. **A T1 IR contiene ancora l'opcode
 precedente**: il nuovo opcode viene acquisito al clock che chiude T1. Per
 questo T1 e identico per tutti i gruppi; da T2 in poi `A7..A3` contiene il
 gruppo della nuova istruzione.
@@ -180,7 +181,7 @@ di segnali attivi. Le posizioni si leggono cosi (un nome con `/` e attivo a
 | 1 | `RB_EN` | `RA_RB_RW` | `RA_EN` | `RF_RW` | `RF_EN` | `MAR_L_WE` | `PC_LOAD` | `IR_WE` |
 | 2 | riservato | `SYS_STEP_n` | `IDX_H_WE` | `IDX_L_WE` | `/OE_RAM` | `MAR_H_WE` | `FLAGS_WE` | `/OE_ALU` (`ALU_EN`) |
 
-I pin DIP-28 corrispondenti a `D7..D0` sono `17,16,15,14,13,11,10,9`.
+I pin AT28C64B DIP-28 corrispondenti a `D7..D0` sono `19,18,17,16,15,13,12,11`.
 Le uscite della ROM non includono le ulteriori porte presenti sul cablaggio:
 per esempio `/WE_RAM` **sul pin della RAM** puo essere forzato alto dalla
 logica di protezione indirizzi/reset anche quando ROM0 `D5=0`.
@@ -211,7 +212,7 @@ conteggio del 74161, **non** il suo ingresso di clock.
 | `PC_INC` | ROM0 `D2` | Alto nel fetch T1: il PC avanza anche quando l'opcode letto e HLT. |
 | `/OE_RAM` | ROM2 `D3` | Basso nel fetch T1 per presentare l'opcode al bus dati; alto in T2/T3 di questo gruppo. |
 | `NEXT_FETCH_n` | ROM0 `D7` | Alto in T1/T2; basso in T3 per chiedere il ritorno a T1. Con `/LOAD` del 74161 il ritorno avviene al clock che chiude T3. |
-| `SYS_STEP_n` | ROM2 `D6`, pin 16 | Basso solo in RUN, gruppo `IR[7:3]=00000`, T2; alto durante BOOT, T1 e T3. |
+| `SYS_STEP_n` | ROM2 `D6`, pin 18 | Basso solo in RUN, gruppo `IR[7:3]=00000`, T2; alto durante BOOT, T1 e T3. |
 | `µSTEP_EN` | OR esterno verso il 74161 | `1` lascia contare; `0` mantiene T2. Non interrompere direttamente il filo del clock. |
 
 Formula della logica prevista, assumendo che non esistano altri motivi per
@@ -316,9 +317,15 @@ gruppo `IR[7:3]` a cinque bit. La riga T1 usa il gruppo **precedente**;
 | STA Rn, [IDX] | T3 | `010` | `01011` | `010` | `0x105A` |
 | STA Rn, [IDX] | T4 reset | `011` | `01011` | `110` | `0x105E` |
 | ALU | T2 | `001` | `01100` | `100` | `0x1064` |
-| ALU | T3 reset | `010` | `01100` | `010` | `0x1062` |
+| ALU | T3 | `010` | `01100` | `010` | `0x1062` |
+| ALU | T4 | `011` | `01100` | `110` | `0x1066` |
+| ALU | T5 | `100` | `01100` | `001` | `0x1061` |
+| ALU | T6 reset | `101` | `01100` | `101` | `0x1065` |
 | SUB (`0x78`) | T2 | `001` | `01111` | `100` | `0x107C` |
-| SUB (`0x78`) | T3 reset | `010` | `01111` | `010` | `0x107A` |
+| SUB (`0x78`) | T3 | `010` | `01111` | `010` | `0x107A` |
+| SUB (`0x78`) | T4 | `011` | `01111` | `110` | `0x107E` |
+| SUB (`0x78`) | T5 | `100` | `01111` | `001` | `0x1079` |
+| SUB (`0x78`) | T6 reset | `101` | `01111` | `101` | `0x107D` |
 | CMP | T2 | `001` | `01101` | `100` | `0x106C` |
 | CMP | T3 reset | `010` | `01101` | `010` | `0x106A` |
 | JMP addr16 | T2 | `001` | `10100` | `100` | `0x10A4` |
@@ -359,8 +366,8 @@ di mappatura sopra; ROM2 D7 resta riservata a zero, mentre D6 e
 | HLT / NOP, uscite CU comuni | T2 | `11110011` | `00000000` | `00001001` | `SYS_STEP_n=0`; l'OR con `IR[2:0]` blocca il microstep solo per `HLT=0x00`. |
 | HLT / NOP, uscite CU comuni | T3 reset | `01110011` | `00000000` | `01001001` | Solo `NEXT_FETCH`; raggiunto da `NOP=0x01`, non da HLT se il decoder e collegato. |
 | LDI Rn, imm8 | T2 | `11111101` | `00000000` | `01000001` | RAM[PC] → MDR; PC avanza. |
-| LDI Rn, imm8 | T3 | `11100011` | `00011000` | `01001001` | MDR → Rn; il segnale resta valido fino al clock. |
-| LDI Rn, imm8 | T4 reset | `01110011` | `00000000` | `01001001` | Solo `NEXT_FETCH`. |
+| LDI Rn, imm8 | T3 | `11100011` | `00011010` | `01001001` | MDR → Rn. |
+| LDI Rn, imm8 | T4 reset | `01110011` | `00000010` | `01001001` | Solo `NEXT_FETCH`; MDR disabilitato. |
 | LDA Rn, [addr16] | T2 | `11110101` | `00000100` | `01000001` | RAM[PC] → MAR basso; PC avanza. |
 | LDA Rn, [addr16] | T3 | `11110101` | `00000000` | `01000101` | RAM[PC] → MAR alto; PC avanza. |
 | LDA Rn, [addr16] | T4 | `11111010` | `00000000` | `01000001` | MAR seleziona A; RAM[MAR] → MDR. |
@@ -377,10 +384,16 @@ di mappatura sopra; ROM2 D7 resta riservata a zero, mentre D6 e
 | STA Rn, [IDX] | T2 | `11111011` | `00001000` | `01001001` | Rn → MDR. |
 | STA Rn, [IDX] | T3 | `11000000` | `00000000` | `01001001` | IDX seleziona A; MDR pilota D; `/WE_RAM=0`. |
 | STA Rn, [IDX] | T4 reset | `01110011` | `00000000` | `01001001` | `/WE_RAM=1`; solo `NEXT_FETCH`. |
-| ALU | T2 | `11110011` | `01100000` | `01001010` | ALU pilota D; RA scrive il risultato; flag acquisiti. |
-| ALU | T3 reset | `01110011` | `00000000` | `01001001` | Solo `NEXT_FETCH`. |
-| SUB (`0x78`) | T2 | `11110011` | `01100000` | `01001010` | Come ALU: `IR[3:0]=1000`, RA scrive il risultato e i flag si aggiornano. |
-| SUB (`0x78`) | T3 reset | `01110011` | `00000000` | `01001001` | Solo `NEXT_FETCH`. |
+| ALU | T2 | `11110011` | `00000010` | `01001000` | Prepara ALU sul bus. |
+| ALU | T3 | `11111011` | `00000010` | `01001010` | ALU -> MDR; salva flag, RA invariato. |
+| ALU | T4 | `11100011` | `00000010` | `01001001` | Prepara MDR sul bus; ALU disabilitata. |
+| ALU | T5 | `11100011` | `01100010` | `01001001` | MDR -> RA; flag invariati. |
+| ALU | T6 reset | `01100011` | `00000010` | `01001001` | MDR mantiene il risultato; NEXT_FETCH. |
+| SUB (`0x78`) | T2 | `11110011` | `00000010` | `01001000` | Prepara ALU sul bus. |
+| SUB (`0x78`) | T3 | `11111011` | `00000010` | `01001010` | ALU -> MDR; salva flag, RA invariato. |
+| SUB (`0x78`) | T4 | `11100011` | `00000010` | `01001001` | Prepara MDR sul bus; ALU disabilitata. |
+| SUB (`0x78`) | T5 | `11100011` | `01100010` | `01001001` | MDR -> RA; flag invariati. |
+| SUB (`0x78`) | T6 reset | `01100011` | `00000010` | `01001001` | MDR mantiene il risultato; NEXT_FETCH. |
 | CMP | T2 | `11110011` | `00000000` | `01001011` | `FLAGS_WE=1`, senza `/OE_ALU`. |
 | CMP | T3 reset | `01110011` | `00000000` | `01001001` | Solo `NEXT_FETCH`. |
 | JMP addr16 | T2 | `11110101` | `00000100` | `01000001` | RAM[PC] → MAR basso; PC avanza. |
@@ -487,9 +500,10 @@ per fermare il conteggio del microstep.
   Data/misura: _da compilare_.
 - [ ] **IDX:** verificare `LDX` basso/alto e `LDA/STA [IDX]` con un indirizzo
   noto. Data/misura: _da compilare_.
-- [ ] **ALU, CMP, MOV:** verificare i livelli T2, poi risultato, flag e
-  registro destinazione al clock che chiude T2; T3 deve avere solo
-  `NEXT_FETCH`. Data/misura: _da compilare_.
+- [ ] **ALU:** verificare bus in T2, MDR e flag in T3, MDR sul bus in T4,
+  RA in T5 e mantenimento MDR in T6. Data/misura: _da compilare_.
+- [ ] **CMP, MOV:** verificare risultato/flag in T2 e ritorno T3 senza
+  scritture. Data/misura: _da compilare_.
 - [ ] **Tutti i salti:** per ciascuno dei nove opcode provare sia flag che
   prende il salto sia flag che non lo prende; in T4 ROM1 `D1` deve essere
   rispettivamente `1` e `0`. Data/misura: _da compilare_.

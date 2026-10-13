@@ -1,0 +1,1061 @@
+{"kind":"deck","id":"pr/z9sbxa","name":"Deck"}
+{"kind":"layout","id":"ly/583up036","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/dc7it0r6","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/50vql47q","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/dovu98v6","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/9kf25srm","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"Left column","type":"body"},{"name":"Right column","type":"body"}]}
+{"kind":"layout","id":"ly/9wbat432","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/ds7mp8ri","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/z5vwuc","slideIndex":0,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":15,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/ojqdgbat","slideIndex":0,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3ixc76t8","slideIndex":0,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2hove1sn","slideIndex":0,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d8zed0ba","slideIndex":0,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cnqdkva5","slideIndex":0,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bmhwbqtk","slideIndex":0,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ql8vilsz","slideIndex":0,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lcjeh0bm","slideIndex":0,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0badova1","slideIndex":0,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qxkfex4r","slideIndex":0,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rytg725c","slideIndex":0,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cz2xgnmx","slideIndex":0,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d0by9sni","slideIndex":0,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e1kfix43","slideIndex":0,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z2tgb2l8","slideIndex":0,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/032xk7mt","slideIndex":0,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/14vydc3e","slideIndex":0,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u50f6d4j","slideIndex":0,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f69wzy54","slideIndex":0,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jyl4rahk","slideIndex":0,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yxc3i5gf","slideIndex":0,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l0nmtkzq","slideIndex":0,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kzulkfy5","slideIndex":0,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/balknaho","slideIndex":0,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/a9c3e5g3","slideIndex":0,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xw3mp0zu","slideIndex":0,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wbulgvy9","slideIndex":0,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/v654zuxs","slideIndex":0,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u5w3qpg7","slideIndex":0,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sbq1krep","slideIndex":0,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dczidwfa","slideIndex":0,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/q98jihwz","slideIndex":0,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rah0bmx4","slideIndex":0,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0fq1ore1","slideIndex":0,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1gzihwfm","slideIndex":0,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ed8jm1wv","slideIndex":0,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/feh0f6xg","slideIndex":0,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o3a1sbex","slideIndex":0,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/p4jilgfi","slideIndex":0,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9cbi1wjy","slideIndex":0,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8b218rid","slideIndex":0,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/na90z61s","slideIndex":0,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m90j6107","slideIndex":0,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lorixwjm","slideIndex":0,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0ni14ri1","slideIndex":0,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zm90vm1g","slideIndex":0,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yl0j2h0b","slideIndex":0,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5kv29gjq","slideIndex":0,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4jm1gbil","slideIndex":0,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2dc7etcr","slideIndex":0,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3elonydc","slideIndex":0,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4fepgjuh","slideIndex":0,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pgnqpov2","slideIndex":0,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u9c7a9cf","slideIndex":0,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/falojed0","slideIndex":0,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gbupcjul","slideIndex":0,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hc36lov6","slideIndex":0,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e5w7mdcz","slideIndex":0,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z6p8vid4","slideIndex":0,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vqh4natw","slideIndex":0,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ap83e5sb","slideIndex":0,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xszmp0bm","slideIndex":0,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wrqlgfah","slideIndex":0,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jeh4rats","slideIndex":0,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/it8ni5s7","slideIndex":0,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5gjmtkby","slideIndex":0,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kfa5kfad","slideIndex":0,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7i14vut4","slideIndex":0,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6hsnmpsj","slideIndex":0,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4nulczqh","slideIndex":0,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/po3m5472","slideIndex":0,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2ls3ap8r","slideIndex":0,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3ml43upw","slideIndex":0,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gjal8fql","slideIndex":0,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hkj21k76","slideIndex":0,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/uhs3658f","slideIndex":0,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fi1kzap0","slideIndex":0,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sval4fq9","slideIndex":0,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tgj2xkru","slideIndex":0,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ls3ahsri","slideIndex":0,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0rut87qx","slideIndex":0,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zqlsf29c","slideIndex":0,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ypcb6xs7","slideIndex":0,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9wnalcru","slideIndex":0,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8vetc7q9","slideIndex":0,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nu5sj29o","slideIndex":0,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mtwbax83","slideIndex":0,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xknupcrq","slideIndex":0,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wjetgrq5","slideIndex":0,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e587a98n","slideIndex":0,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f6h8jep8","slideIndex":0,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/grqpcj6t","slideIndex":0,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/1szqlo7e","slideIndex":0,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/2t87etoz","slideIndex":0,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/3u18nyp4","slideIndex":0,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/ovapg36p","slideIndex":0,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/pwjqp87a","slideIndex":0,"position":{"left":940,"top":60,"width":572,"height":40},"text":"Copertina · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/qxsritov","slideIndex":0,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/by18rypg","slideIndex":0,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 1 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/kvut4j29","slideIndex":0,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"dalle porte logiche al codice","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/5wnudo3u","slideIndex":0,"position":{"left":192,"top":217,"width":850,"height":335},"text":"Costruire una\nCPU a 8 bit,\npasso dopo passo.","geometry":"rect","lineWidth":0,"style":{"fontSize":98,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/i9cb29k3","slideIndex":0,"position":{"left":202,"top":580,"width":610,"height":0},"geometry":"line","lineColor":"#5C584F","lineWidth":2}
+{"kind":"textbox","id":"sh/julsbelo","slideIndex":0,"position":{"left":192,"top":607,"width":850,"height":140},"text":"Un percorso per capire come funziona un computer:\nprogettare i circuiti, scrivere assembly\ne seguire ogni istruzione.","geometry":"rect","lineWidth":0,"style":{"fontSize":33,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/szet8325","slideIndex":0,"position":{"left":192,"top":756,"width":850,"height":50},"text":"Hardware · Assembly · Simulatore web","geometry":"rect","lineWidth":0,"style":{"fontSize":29,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/t0nuhojq","slideIndex":0,"position":{"left":1050,"top":228,"width":425,"height":365},"geometry":"rect","lineColor":"#5C584F","lineWidth":2}
+{"kind":"textbox","id":"sh/6xwb6tkz","slideIndex":0,"position":{"left":1080,"top":245,"width":365,"height":45},"text":"dentro la CPU","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"center"}}
+{"kind":"shape","id":"sh/7y5cfylk","slideIndex":0,"position":{"left":1080,"top":315,"width":170,"height":82},"geometry":"rect","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"textbox","id":"sh/83atwz21","slideIndex":0,"position":{"left":1084,"top":327,"width":162,"height":67},"text":"registri","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"center"}}
+{"kind":"shape","id":"sh/943a543m","slideIndex":0,"position":{"left":1280,"top":315,"width":155,"height":82},"geometry":"rect","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"textbox","id":"sh/bat4r69g","slideIndex":0,"position":{"left":1284,"top":327,"width":147,"height":67},"text":"ALU","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"center"}}
+{"kind":"shape","id":"sh/a9kny18v","slideIndex":0,"position":{"left":1080,"top":480,"width":170,"height":90},"geometry":"rect","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"textbox","id":"sh/xwb6tw76","slideIndex":0,"position":{"left":1084,"top":492,"width":162,"height":75},"text":"unità di\ncontrollo","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"center"}}
+{"kind":"shape","id":"sh/cv250bql","slideIndex":0,"position":{"left":1280,"top":480,"width":155,"height":90},"geometry":"rect","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"textbox","id":"sh/n694nm94","slideIndex":0,"position":{"left":1284,"top":492,"width":147,"height":75},"text":"memoria","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"center"}}
+{"kind":"shape","id":"sh/250nuh8j","slideIndex":0,"position":{"left":1067,"top":438,"width":390,"height":0},"geometry":"line","lineColor":"#5C584F","lineWidth":2}
+{"kind":"shape","id":"sh/p8bmpwra","slideIndex":0,"position":{"left":1165,"top":397,"width":0,"height":41},"geometry":"line","lineColor":"#5C584F","lineWidth":2}
+{"kind":"shape","id":"sh/o7i5wrqp","slideIndex":0,"position":{"left":1165,"top":438,"width":0,"height":42},"geometry":"line","lineColor":"#5C584F","lineWidth":2}
+{"kind":"shape","id":"sh/f294jm98","slideIndex":0,"position":{"left":1355,"top":397,"width":0,"height":41},"geometry":"line","lineColor":"#5C584F","lineWidth":2}
+{"kind":"shape","id":"sh/e10nqh8n","slideIndex":0,"position":{"left":1355,"top":438,"width":0,"height":42},"geometry":"line","lineColor":"#5C584F","lineWidth":2}
+{"kind":"textbox","id":"sh/ixgn2hsf","slideIndex":0,"position":{"left":1173,"top":405,"width":180,"height":34},"text":"bus dati · 8 bit","geometry":"rect","lineWidth":0,"style":{"fontSize":25,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/3ypov2t0","slideIndex":0,"position":{"left":1070,"top":630,"width":390,"height":55},"text":"capire, costruendo.","geometry":"rect","lineWidth":0,"style":{"fontSize":35,"typeface":"Caveat","color":"#5C584F","alignment":"center"}}
+{"kind":"notes","id":"nt/z5vwuc","slideIndex":0,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/9etinw","slideIndex":1,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":18,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/87m58zml","slideIndex":1,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/76d4zul0","slideIndex":1,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ml4n6p4f","slideIndex":1,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hcfm5432","slideIndex":1,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wb65czmx","slideIndex":1,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vad43ulc","slideIndex":1,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u94nap4r","slideIndex":1,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dgbmt03y","slideIndex":1,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cf2l0fmd","slideIndex":1,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ax4fmlov","slideIndex":1,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bydwfq5g","slideIndex":1,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wzmxov61","slideIndex":1,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xkvehgnm","slideIndex":1,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yl4fqlo7","slideIndex":1,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jmdwjq5c","slideIndex":1,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/knmxsvmx","slideIndex":1,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lovel0ni","slideIndex":1,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6pofu543","slideIndex":1,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7qxwna5o","slideIndex":1,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3uxwbalw","slideIndex":1,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/itovi5kb","slideIndex":1,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5wzedk3m","slideIndex":1,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4v6dkf21","slideIndex":1,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vqxw7qlk","slideIndex":1,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/upovelkz","slideIndex":1,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hsfe903q","slideIndex":1,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gr6dgv25","slideIndex":1,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7mdc3qlo","slideIndex":1,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6l4valk3","slideIndex":1,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/c72t4ri1","slideIndex":1,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xsbadwj6","slideIndex":1,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/a5kb2h0v","slideIndex":1,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/b6tsbm1g","slideIndex":1,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kv2t8rix","slideIndex":1,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lwbahwji","slideIndex":1,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ytkb610r","slideIndex":1,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zutsfm1c","slideIndex":1,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0zi9w7it","slideIndex":1,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/10ra5cje","slideIndex":1,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tw325cji","slideIndex":1,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/svulc7ix","slideIndex":1,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7ulk321c","slideIndex":1,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6tsjax0r","slideIndex":1,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lsj21sjm","slideIndex":1,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kra18ni1","slideIndex":1,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jq1kzi1g","slideIndex":1,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ypsj6d0v","slideIndex":1,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xoj2xsja","slideIndex":1,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w3a14nip","slideIndex":1,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m9ozetgn","slideIndex":1,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nux07eh8","slideIndex":1,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ovqhgjyt","slideIndex":1,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9wzi9oze","slideIndex":1,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e5oza9gr","slideIndex":1,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z6xg3ehw","slideIndex":1,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/076hcjyh","slideIndex":1,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/18fi5oz2","slideIndex":1,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/q14z69gf","slideIndex":1,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/r2dgzuh0","slideIndex":1,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f6tw7axs","slideIndex":1,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u5kfe5w7","slideIndex":1,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h8be90fy","slideIndex":1,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/g72xgved","slideIndex":1,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3atwbaxo","slideIndex":1,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/29kfi5wj","slideIndex":1,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pcvedkfu","slideIndex":1,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4bmxkfe9","slideIndex":1,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/je9wzqxk","slideIndex":1,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/id0v6lgz","slideIndex":1,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ojet07ux","slideIndex":1,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9knu9cvi","slideIndex":1,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mhwbyhwr","slideIndex":1,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ni5c7mdc","slideIndex":1,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0fetw7el","slideIndex":1,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1gna5cv6","slideIndex":1,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/etwbaxwv","slideIndex":1,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zu5s32dg","slideIndex":1,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kbyt8bu5","slideIndex":1,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5cruhwvq","slideIndex":1,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tsb6h8nu","slideIndex":1,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sr2p83m9","slideIndex":1,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rq9ofy54","slideIndex":1,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6p076d4j","slideIndex":1,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1gbqls36","slideIndex":1,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gf2pcnml","slideIndex":1,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/futoji50","slideIndex":1,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/etk7ad4f","slideIndex":1,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hkr69onm","slideIndex":1,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wjip0jm1","slideIndex":1,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mpw3apkz","slideIndex":1,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7q54julk","slideIndex":1,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8relcz25","slideIndex":1,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/9s7ml43q","slideIndex":1,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/utgne9kb","slideIndex":1,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/vup4nulw","slideIndex":1,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/wvy5gz21","slideIndex":1,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/hw7mp43m","slideIndex":1,"position":{"left":940,"top":60,"width":572,"height":40},"text":"L’idea · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/axc325kr","slideIndex":1,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/byl4balc","slideIndex":1,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 2 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/c3alsval","slideIndex":1,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"il punto di partenza","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/x4j210rq","slideIndex":1,"position":{"left":192,"top":201,"width":1322,"height":190},"text":"Come fa un circuito\na eseguire un programma?","geometry":"rect","lineWidth":0,"style":{"fontSize":82,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/a1s3qlsf","slideIndex":1,"position":{"left":192,"top":418,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/b21kzq90","slideIndex":1,"position":{"left":192,"top":421,"width":73,"height":65},"text":"1","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/krulwfah","slideIndex":1,"position":{"left":292,"top":422,"width":540,"height":60},"text":"Partire dalle basi","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/ls325kr2","slideIndex":1,"position":{"left":292,"top":494,"width":545,"height":100},"text":"Porte logiche, segnali, clock:\nrendere visibili i meccanismi.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/y5s3u5sb","slideIndex":1,"position":{"left":882,"top":418,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/z61k3a9w","slideIndex":1,"position":{"left":882,"top":421,"width":73,"height":65},"text":"2","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/8vul0fqd","slideIndex":1,"position":{"left":982,"top":422,"width":540,"height":60},"text":"Costruire i blocchi","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/9w3m9kry","slideIndex":1,"position":{"left":982,"top":494,"width":545,"height":100},"text":"Collegare ALU, registri e memoria\nin una CPU didattica.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/jqpozetg","slideIndex":1,"position":{"left":192,"top":602,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/ipwn69cv","slideIndex":1,"position":{"left":192,"top":605,"width":73,"height":65},"text":"3","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/5s761ob6","slideIndex":1,"position":{"left":292,"top":606,"width":540,"height":60},"text":"Scrivere il software","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/4ry58jul","slideIndex":1,"position":{"left":292,"top":678,"width":545,"height":100},"text":"Tradurre semplici programmi\nin istruzioni eseguibili.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/vm5ovet4","slideIndex":1,"position":{"left":882,"top":602,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/ulwn29cj","slideIndex":1,"position":{"left":882,"top":605,"width":73,"height":65},"text":"4","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/hon6xoba","slideIndex":1,"position":{"left":982,"top":606,"width":540,"height":60},"text":"Seguire ogni passaggio","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/wne54jup","slideIndex":1,"position":{"left":982,"top":678,"width":545,"height":100},"text":"Osservare dati e controllo\nper capire cosa accade.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"notes","id":"nt/9etinw","slideIndex":1,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/rb3u4x","slideIndex":2,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":22,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/y1kjepcj","slideIndex":2,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l4v294ba","slideIndex":2,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k3m1gzup","slideIndex":2,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/byt03ut8","slideIndex":2,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/axkjapcn","slideIndex":2,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x0bi5kby","slideIndex":2,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wz21czut","slideIndex":2,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vuxkfetc","slideIndex":2,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/utojm9cr","slideIndex":2,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o3690365","slideIndex":2,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/p4zqt87q","slideIndex":2,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/21orydoz","slideIndex":2,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/32x8ripk","slideIndex":2,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gz69w36t","slideIndex":2,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/10fqp87e","slideIndex":2,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/edo7uto3","slideIndex":2,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fyx8nyp8","slideIndex":2,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sbmpsjqx","slideIndex":2,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tcfqlo7i","slideIndex":2,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9gny9gvu","slideIndex":2,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8vex0ve9","slideIndex":2,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nulw7qd4","slideIndex":2,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mtcfylwj","slideIndex":2,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ls3e5gvy","slideIndex":2,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0ruxwbed","slideIndex":2,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zqlw36ds","slideIndex":2,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ypcfu1w7","slideIndex":2,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5o7yh0v2","slideIndex":2,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4nyx8feh","slideIndex":2,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2t8v2xcz","slideIndex":2,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3uhcb2tk","slideIndex":2,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ovqd47u5","slideIndex":2,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pwjuxcbq","slideIndex":2,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e58byxc3","slideIndex":2,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fqhc72to","slideIndex":2,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/grqt07u9","slideIndex":2,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1szu9cbe","slideIndex":2,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/y1svahc7","slideIndex":2,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zm1c3mts","slideIndex":2,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jeh8zyx8","slideIndex":2,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/it8r6tgn","slideIndex":2,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5gzq1ofe","slideIndex":2,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kfq983yt","slideIndex":2,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vqh8vexw","slideIndex":2,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/apor29gr","slideIndex":2,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xszqxof2","slideIndex":2,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wrq94jyh","slideIndex":2,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fm1s7ixg","slideIndex":2,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ulsredwv","slideIndex":2,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/crm58fed","slideIndex":2,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dsv61kvy","slideIndex":2,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qpkn65w7","slideIndex":2,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rqtozads","slideIndex":2,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0vm5cfe9","slideIndex":2,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lwv65kvu","slideIndex":2,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/et4na5wj","slideIndex":2,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zudo3ado","slideIndex":2,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8z6pgzel","slideIndex":2,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9kf694v6","slideIndex":2,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x4red0jy","slideIndex":2,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w3ix4vid","slideIndex":2,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/b29wbq1s","slideIndex":2,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/a10f2l07","slideIndex":2,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/58beh0ju","slideIndex":2,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k72x8vip","slideIndex":2,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/j69wfa14","slideIndex":2,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/i50f650j","slideIndex":2,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1c7e5gjq","slideIndex":2,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0bydwb25","slideIndex":2,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qhwb6hg3","slideIndex":2,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ri5czmho","slideIndex":2,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/c3et8ry9","slideIndex":2,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d4nu1cze","slideIndex":2,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e5wbahgz","slideIndex":2,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z65c3mhk","slideIndex":2,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/07etcry5","slideIndex":2,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/187u5wzq","slideIndex":2,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u9cbyx0v","slideIndex":2,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/falsr2hg","slideIndex":2,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zi943itw","slideIndex":2,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yx03udcb","slideIndex":2,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lkbm5sbm","slideIndex":2,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kjilwnuh","slideIndex":2,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7mt472ts","slideIndex":2,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mlk3yxc7","slideIndex":2,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9obm9sby","slideIndex":2,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8n2507ud","slideIndex":2,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nqp4vyto","slideIndex":2,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2pg32tc3","slideIndex":2,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sve1wza1","slideIndex":2,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dwni54rm","slideIndex":2,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qtcjupsv","slideIndex":2,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/ru503u9g","slideIndex":2,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/47u1szap","slideIndex":2,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/583i14ra","slideIndex":2,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/i5cjqpsj","slideIndex":2,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/36l0zu94","slideIndex":2,"position":{"left":940,"top":60,"width":572,"height":40},"text":"Il percorso · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/o3y14ja9","slideIndex":2,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/po72dore","slideIndex":2,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 3 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/q1w761cv","slideIndex":2,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"un progetto che cresce per esperimenti","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/r25of6dg","slideIndex":2,"position":{"left":192,"top":201,"width":1322,"height":115},"text":"Dalla logica al computer.","geometry":"rect","lineWidth":0,"style":{"fontSize":82,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/c3ep8bu1","slideIndex":2,"position":{"left":192,"top":384,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/d476hgvm","slideIndex":2,"position":{"left":192,"top":387,"width":73,"height":65},"text":"1","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/ixwni1wz","slideIndex":2,"position":{"left":192,"top":493,"width":290,"height":65},"text":"Segnali e porte","geometry":"rect","lineWidth":0,"style":{"fontSize":38,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/3y5obmd4","slideIndex":2,"position":{"left":192,"top":572,"width":295,"height":135},"text":"0 e 1, livelli logici\ne operazioni booleane.","geometry":"rect","lineWidth":0,"style":{"fontSize":31,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/4ze54rep","slideIndex":2,"position":{"left":444,"top":384,"width":75,"height":65},"text":"⟶","geometry":"rect","lineWidth":0,"style":{"fontSize":52,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/p0n6dwva","slideIndex":2,"position":{"left":528,"top":384,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/u9cnehwn","slideIndex":2,"position":{"left":528,"top":387,"width":73,"height":65},"text":"2","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/valo7md8","slideIndex":2,"position":{"left":528,"top":493,"width":290,"height":65},"text":"Calcolo e stato","geometry":"rect","lineWidth":0,"style":{"fontSize":38,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/xobadkfq","slideIndex":2,"position":{"left":528,"top":572,"width":295,"height":135},"text":"Somma, sottrazione,\nregistri e flag.","geometry":"rect","lineWidth":0,"style":{"fontSize":31,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/wn29kfe5","slideIndex":2,"position":{"left":780,"top":384,"width":75,"height":65},"text":"⟶","geometry":"rect","lineWidth":0,"style":{"fontSize":52,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/b298baxk","slideIndex":2,"position":{"left":864,"top":384,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/a10ripwf","slideIndex":2,"position":{"left":864,"top":387,"width":73,"height":65},"text":"3","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/90rq9kfu","slideIndex":2,"position":{"left":864,"top":493,"width":290,"height":65},"text":"Dati e controllo","geometry":"rect","lineWidth":0,"style":{"fontSize":38,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/ozi9gfe9","slideIndex":2,"position":{"left":864,"top":572,"width":295,"height":135},"text":"Bus, memoria,\nclock e microcodice.","geometry":"rect","lineWidth":0,"style":{"fontSize":31,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/ny987axo","slideIndex":2,"position":{"left":1116,"top":384,"width":75,"height":65},"text":"⟶","geometry":"rect","lineWidth":0,"style":{"fontSize":52,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/mx0re5g3","slideIndex":2,"position":{"left":1200,"top":384,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/1wrq50fi","slideIndex":2,"position":{"left":1200,"top":387,"width":73,"height":65},"text":"4","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/0vi9cvyx","slideIndex":2,"position":{"left":1200,"top":493,"width":290,"height":65},"text":"Programmi","geometry":"rect","lineWidth":0,"style":{"fontSize":38,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/sf29sv6t","slideIndex":2,"position":{"left":1200,"top":572,"width":295,"height":135},"text":"Assembly, byte macchina\ne prove di esecuzione.","geometry":"rect","lineWidth":0,"style":{"fontSize":31,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/dgval0ne","slideIndex":2,"position":{"left":192,"top":760,"width":1322,"height":83},"text":"Ogni blocco si studia, si prova e si collega agli altri.","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"notes","id":"nt/rb3u4x","slideIndex":2,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/cs46g4","slideIndex":3,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":16,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/3idkb2lk","slideIndex":3,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4jml4725","slideIndex":3,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pkv2dc3q","slideIndex":3,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/utk3yx43","slideIndex":3,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/futk72lo","slideIndex":3,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gvml0nm9","slideIndex":3,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hwv29s3u","slideIndex":3,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ypo3ahk7","slideIndex":3,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zqxkjmls","slideIndex":3,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bi1srqtg","slideIndex":3,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ahsbilcb","slideIndex":3,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x43at0bm","slideIndex":3,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/c3utkvu1","slideIndex":3,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z6lsvats","slideIndex":3,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/y5cbm5c7","slideIndex":3,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l83ah0by","slideIndex":3,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k7utovud","slideIndex":3,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7a5sjato","slideIndex":3,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m9cbq5c3","slideIndex":3,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2h0nyd0n","slideIndex":3,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3i947yh8","slideIndex":3,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4ji503it","slideIndex":3,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/p4rm98ze","slideIndex":3,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/udgnat0r","slideIndex":3,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fep43yhc","slideIndex":3,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gfi5c3ix","slideIndex":3,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hgrm58z2","slideIndex":3,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e9kn6x0v","slideIndex":3,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zat4f2hg","slideIndex":3,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/94vq5wji","slideIndex":3,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o3mpcr2x","slideIndex":3,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/n2d83m1s","slideIndex":3,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m147ahk7","slideIndex":3,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/10vq1cjm","slideIndex":3,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0zmp8721","slideIndex":3,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zytoz21g","slideIndex":3,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/edk76hkv","slideIndex":3,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lwfqdgjq","slideIndex":3,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kv6pkb25","slideIndex":3,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/s3apo7yp","slideIndex":3,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/t436hcfa","slideIndex":3,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/61s7mhgj","slideIndex":3,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/r21of2x4","slideIndex":3,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/grupsry1","slideIndex":3,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1s3qlwf6","slideIndex":3,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e5c7qhgv","slideIndex":3,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fqlojmxg","slideIndex":3,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ovupwryx","slideIndex":3,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pwnqpwfi","slideIndex":3,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z290bulw","slideIndex":3,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/y10j2p4b","slideIndex":3,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l4rid432","slideIndex":3,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k3i14zmh","slideIndex":3,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/byp07alk","slideIndex":3,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/axgjyp4f","slideIndex":3,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x07i9k3q","slideIndex":3,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/czy10fm5","slideIndex":3,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vutkjel4","slideIndex":3,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/utkja94j","slideIndex":3,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qp432dor","slideIndex":3,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rqd4bi5c","slideIndex":3,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/srml4n6x","slideIndex":3,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dsfmdsn2","slideIndex":3,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/eto36d4n","slideIndex":3,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fux4fi58","slideIndex":3,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0v658nmt","slideIndex":3,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1wfmhsne","slideIndex":3,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/uxk3utoj","slideIndex":3,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vyt43y54","slideIndex":3,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xcj69w7m","slideIndex":3,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cbapgr61","slideIndex":3,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bqho7mpg","slideIndex":3,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ap87eh8v","slideIndex":3,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lgj6dg7i","slideIndex":3,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kfapkb6d","slideIndex":3,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ze1ob6ps","slideIndex":3,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yds7i1o7","slideIndex":3,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1kz61c7e","slideIndex":3,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0jqp87qt","slideIndex":3,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sjmt8vyp","slideIndex":3,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tkvu10fa","slideIndex":3,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6h4b65gj","slideIndex":3,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7idszqx4","slideIndex":3,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kfmt4vyd","slideIndex":3,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5gvax0fy","slideIndex":3,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/id4b2lg7","slideIndex":3,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jedsvqxs","slideIndex":3,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ob6tgfyx","slideIndex":3,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pczu9kf2","slideIndex":3,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z61wzehk","slideIndex":3,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/y5sv6t0z","slideIndex":3,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l8je1oza","slideIndex":3,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/07ax8ji5","slideIndex":3,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/na1w3yhg","slideIndex":3,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/m9sfat0v","slideIndex":3,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/9w3e58zm","slideIndex":3,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/8buxc3i1","slideIndex":3,"position":{"left":940,"top":60,"width":572,"height":40},"text":"L’architettura · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/3ehw7uhc","slideIndex":3,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/2d8vyp0r","slideIndex":3,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 4 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/nm1wz2hc","slideIndex":3,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"le scelte di base della ISA","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/ml8fqx0r","slideIndex":3,"position":{"left":192,"top":201,"width":1322,"height":115},"text":"Piccola, ma con una struttura completa.","geometry":"rect","lineWidth":0,"style":{"fontSize":82,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/98je1czi","slideIndex":3,"position":{"left":192,"top":369,"width":419,"height":310},"geometry":"rect","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/8naxs7ix","slideIndex":3,"position":{"left":215,"top":391,"width":375,"height":58},"text":"Bus dati","geometry":"rect","lineWidth":0,"style":{"fontSize":35,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/zihwvi1g","slideIndex":3,"position":{"left":215,"top":452,"width":375,"height":125},"text":"8 bit","geometry":"rect","lineWidth":0,"style":{"fontSize":103,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/yh8fmx0v","slideIndex":3,"position":{"left":215,"top":591,"width":375,"height":78},"text":"Un byte alla volta\ntra i blocchi della CPU.","geometry":"rect","lineWidth":0,"style":{"fontSize":31,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/lkzexsjm","slideIndex":3,"position":{"left":641,"top":369,"width":419,"height":310},"geometry":"rect","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/0jqxoni1","slideIndex":3,"position":{"left":664,"top":391,"width":375,"height":58},"text":"Bus indirizzi","geometry":"rect","lineWidth":0,"style":{"fontSize":35,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/jelg7mhk","slideIndex":3,"position":{"left":664,"top":452,"width":375,"height":125},"text":"16 bit","geometry":"rect","lineWidth":0,"style":{"fontSize":103,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/idsfyh0z","slideIndex":3,"position":{"left":664,"top":591,"width":375,"height":78},"text":"Spazio indirizzabile:\n64 KiB, un byte per cella.","geometry":"rect","lineWidth":0,"style":{"fontSize":31,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/g72lcfu5","slideIndex":3,"position":{"left":1090,"top":369,"width":419,"height":310},"geometry":"rect","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/h8b25kbq","slideIndex":3,"position":{"left":1113,"top":391,"width":375,"height":58},"text":"Registri generali","geometry":"rect","lineWidth":0,"style":{"fontSize":35,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/ulk3apcf","slideIndex":3,"position":{"left":1113,"top":452,"width":375,"height":125},"text":"8","geometry":"rect","lineWidth":0,"style":{"fontSize":103,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/fmtk3ad0","slideIndex":3,"position":{"left":1113,"top":591,"width":375,"height":78},"text":"R0–R7 conservano i dati\nusati dai programmi.","geometry":"rect","lineWidth":0,"style":{"fontSize":31,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/4bmlgzuh","slideIndex":3,"position":{"left":192,"top":717,"width":1322,"height":83},"text":"Architettura di Von Neumann: codice e dati condividono la memoria.\nLo spazio indirizzabile descrive la ISA; la memoria fisica dipende dalla board.","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"notes","id":"nt/cs46g4","slideIndex":3,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/7isr0o","slideIndex":4,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":18,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/2t8jutgv","slideIndex":4,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pwj258f6","slideIndex":4,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4va1w3y1","slideIndex":4,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ry1k7ixc","slideIndex":4,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qxsjydgr","slideIndex":4,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d0j298fi","slideIndex":4,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cza103yx","slideIndex":4,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/72x0vex8","slideIndex":4,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/61ojm9gn","slideIndex":4,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/svypcnmt","slideIndex":4,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tw7qls3e","slideIndex":4,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/69w7ad43","slideIndex":4,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7ap8jil8","slideIndex":4,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gzypg7m5","slideIndex":4,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h07qpc3q","slideIndex":4,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/uxg7ex4z","slideIndex":4,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fyp8n2lk","slideIndex":4,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w3ep43ml","slideIndex":4,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x4nqd836","slideIndex":4,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x0f6h4fa","slideIndex":4,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cz658zep","slideIndex":4,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bydofux4","slideIndex":4,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ax4n6pwj","slideIndex":4,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lof6l4f6","slideIndex":4,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k365czel","slideIndex":4,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z2xojex0","slideIndex":4,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/y1ona9wf","slideIndex":4,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9sz6pofi","slideIndex":4,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8rq5gjex","slideIndex":4,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6d03alcf","slideIndex":4,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ry9k3qdk","slideIndex":4,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/szilcbu5","slideIndex":4,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/t0b25gvq","slideIndex":4,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e1k3elcb","slideIndex":4,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f2tk7qdw","slideIndex":4,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/032lgvuh","slideIndex":4,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/14b290v2","slideIndex":4,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/25k3i5c7","slideIndex":4,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/n6tkbads","slideIndex":4,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bapcf610","slideIndex":4,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/a9gb610f","slideIndex":4,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xc7uhgjq","slideIndex":4,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cbyt8bil","slideIndex":4,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zepcj6hw","slideIndex":4,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ydgbal0b","slideIndex":4,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lgrulgz2","slideIndex":4,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kfytcbih","slideIndex":4,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fi5s7m1s","slideIndex":4,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ehwbyh07","slideIndex":4,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4na98ny5","slideIndex":4,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5ojqhszq","slideIndex":4,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ilsr6dgz","slideIndex":4,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jm18fihk","slideIndex":4,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wjap43yt","slideIndex":4,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hkjqd8ze","slideIndex":4,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ux872dgn","slideIndex":4,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vi18byh8","slideIndex":4,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gfu9g7yd","slideIndex":4,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1g3qpcfi","slideIndex":4,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pcjq9c72","slideIndex":4,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/obq907qh","slideIndex":4,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nah872pw","slideIndex":4,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2987yx8b","slideIndex":4,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/18zq5s7q","slideIndex":4,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/07qpwnq5","slideIndex":4,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f6h83i9k","slideIndex":4,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e587ud8z","slideIndex":4,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d4fq1sru","slideIndex":4,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/s36psnq9","slideIndex":4,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/i94n29or","slideIndex":4,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3adove5c","slideIndex":4,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4bm54j6x","slideIndex":4,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5cv6xoni","slideIndex":4,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ul4ny9ov","slideIndex":4,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vmd4repg","slideIndex":4,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gnm50j61","slideIndex":4,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h8v6to7m","slideIndex":4,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6hknupoz","slideIndex":4,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7it4nup4","slideIndex":4,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/b6xgb2lc","slideIndex":4,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/a54fih4r","slideIndex":4,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x8fydc3i","slideIndex":4,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w76xk7mx","slideIndex":4,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nidg72l0","slideIndex":4,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mh4fex4v","slideIndex":4,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/94vy9c36","slideIndex":4,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o3mxg7ml","slideIndex":4,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7ehgjmlk","slideIndex":4,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6d8zq14z","slideIndex":4,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4jidkj2h","slideIndex":4,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pkrudoj2","slideIndex":4,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2h0vitkb","slideIndex":4,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/3i9cbe1w","slideIndex":4,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/cn2do32d","slideIndex":4,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/dobeh8jy","slideIndex":4,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/ql0vmtkn","slideIndex":4,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/rm9wfy1s","slideIndex":4,"position":{"left":940,"top":60,"width":572,"height":40},"text":"I blocchi · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/0b2ds32p","slideIndex":4,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/1cbel8ja","slideIndex":4,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 5 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/yt8rmtwz","slideIndex":4,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"chi fa cosa dentro la CPU","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/zuh8vydk","slideIndex":4,"position":{"left":192,"top":201,"width":1322,"height":115},"text":"Quattro ruoli, un sistema.","geometry":"rect","lineWidth":0,"style":{"fontSize":82,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/0vq9o3e5","slideIndex":4,"position":{"left":192,"top":369,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/lwzqx8vq","slideIndex":4,"position":{"left":192,"top":372,"width":73,"height":65},"text":"1","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/mxsrqdwb","slideIndex":4,"position":{"left":292,"top":373,"width":540,"height":60},"text":"ALU · calcolare","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/ny18zidw","slideIndex":4,"position":{"left":292,"top":445,"width":545,"height":100},"text":"Operazioni logiche e aritmetiche.\nI flag descrivono il risultato.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/8za9s3eh","slideIndex":4,"position":{"left":882,"top":369,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/90jq18vm","slideIndex":4,"position":{"left":882,"top":372,"width":73,"height":65},"text":"2","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/a1srudw7","slideIndex":4,"position":{"left":982,"top":373,"width":540,"height":60},"text":"Registri · conservare","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/v21s3ids","slideIndex":4,"position":{"left":982,"top":445,"width":545,"height":100},"text":"Dati temporanei e stato della CPU.\nRA e RB alimentano la ALU.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/58n29gj6","slideIndex":4,"position":{"left":192,"top":553,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/47elgb2l","slideIndex":4,"position":{"left":192,"top":556,"width":73,"height":65},"text":"3","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/365k7610","slideIndex":4,"position":{"left":292,"top":557,"width":540,"height":60},"text":"Memoria e bus · trasferire","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/i5w3e1kv","slideIndex":4,"position":{"left":292,"top":629,"width":545,"height":100},"text":"La memoria contiene codice e dati.\nI bus li collegano alla CPU.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/dw72dgji","slideIndex":4,"position":{"left":882,"top":553,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/svylkb2x","slideIndex":4,"position":{"left":882,"top":556,"width":73,"height":65},"text":"4","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/rupkbq1c","slideIndex":4,"position":{"left":982,"top":557,"width":540,"height":60},"text":"Control Unit · coordinare","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/qtw3ilkr","slideIndex":4,"position":{"left":982,"top":629,"width":545,"height":100},"text":"Il microcodice attiva i segnali\nnell’ordine previsto dal clock.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"notes","id":"nt/7isr0o","slideIndex":4,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/eks606","slideIndex":5,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":16,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/3mp8n6p0","slideIndex":5,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4nypgb6l","slideIndex":5,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5o7qpg76","slideIndex":5,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qp07i1or","slideIndex":5,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rq98r6pw","slideIndex":5,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sripkb6h","slideIndex":5,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dcrqtg72","slideIndex":5,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mtw76h87","slideIndex":5,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7u58fmps","slideIndex":5,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fe50z2xg","slideIndex":5,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/udwjqxwv","slideIndex":5,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h0ni1cfm","slideIndex":5,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gze1s7e1","slideIndex":5,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7al0v2xk","slideIndex":5,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/69cjmxwz","slideIndex":5,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tcnixsfa","slideIndex":5,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sbe1o7e5","slideIndex":5,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/j6l0rix8","slideIndex":5,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/i5czidwn","slideIndex":5,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m1sjad0v","slideIndex":5,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/n21k3ih0","slideIndex":5,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o3a1cnil","slideIndex":5,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/94325sz6","slideIndex":5,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/a5cjex0r","slideIndex":5,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/v6lk72hc","slideIndex":5,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w7u1gnix","slideIndex":5,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x8329szi","slideIndex":5,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/i9cjix03","slideIndex":5,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jalkb2h8","slideIndex":5,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tgrex0nm","slideIndex":5,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sfydov6h","slideIndex":5,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/repwvq5w","slideIndex":5,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6dgvmlob","slideIndex":5,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/14re10ny","slideIndex":5,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/g3idsv6d","slideIndex":5,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f29wza5s","slideIndex":5,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/eh0vq5o7","slideIndex":5,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/p8be5knu","slideIndex":5,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o7idwf69","slideIndex":5,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/03mhojqh","slideIndex":5,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l4vyxo72","slideIndex":5,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/y14zm98r","slideIndex":5,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z2dgvepc","slideIndex":5,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/czmxkzql","slideIndex":5,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d0vyt476","slideIndex":5,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qxkfi98f","slideIndex":5,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bytgrup0","slideIndex":5,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wv6hw3qp","slideIndex":5,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xwfy587a","slideIndex":5,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rq1kv29c","slideIndex":5,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6p8jmxs7","slideIndex":5,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tsj2xcri","slideIndex":5,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sra1o7ax","slideIndex":5,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fu1kz29o","slideIndex":5,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/etsjqxs3","slideIndex":5,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1wj21cru","slideIndex":5,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gva1s7q9","slideIndex":5,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vyx0ni9k","slideIndex":5,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/axojedsz","slideIndex":5,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ydwn2lsn","slideIndex":5,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ze54vqts","slideIndex":5,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0fe54vad","slideIndex":5,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lgnmx0by","slideIndex":5,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qpw3y1cb","slideIndex":5,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bq54r6tw","slideIndex":5,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cbe50buh","slideIndex":5,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dcnmtgb2","slideIndex":5,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2lc3u1cf","slideIndex":5,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3ml4n6tk","slideIndex":5,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5cbyp8ze","slideIndex":5,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4r2hg3yt","slideIndex":5,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3qtgnyho","slideIndex":5,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ipkfetg3","slideIndex":5,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hobylozi","slideIndex":5,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wn2xcjix","slideIndex":5,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vmtgjehc","slideIndex":5,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ul0fa90r","slideIndex":5,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9kryh4z6","slideIndex":5,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8jix8ji1","slideIndex":5,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/knat4v6x","slideIndex":5,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lojud07i","slideIndex":5,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ylsb2lor","slideIndex":5,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zm1cbqpc","slideIndex":5,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8rud8v6t","slideIndex":5,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9c3uh07e","slideIndex":5,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mpsv65o3","slideIndex":5,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7q1cfqp8","slideIndex":5,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wfudcf65","slideIndex":5,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hg3ulk7q","slideIndex":5,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rmporyd4","slideIndex":5,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qlgnytcj","slideIndex":5,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dor6t8vu","slideIndex":5,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/sni503up","slideIndex":5,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/3iponyds","slideIndex":5,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/ihgnutc7","slideIndex":5,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/5k76p8vy","slideIndex":5,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/4jy5w3ud","slideIndex":5,"position":{"left":940,"top":60,"width":572,"height":40},"text":"Le istruzioni · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/ne9ozidc","slideIndex":5,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/2d076xcr","slideIndex":5,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 6 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/jat43ipg","slideIndex":5,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"un’istruzione diventa una sequenza di azioni","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/y9k3ad8v","slideIndex":5,"position":{"left":192,"top":201,"width":1322,"height":115},"text":"Leggere. Interpretare. Eseguire.","geometry":"rect","lineWidth":0,"style":{"fontSize":82,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/lcbm5876","slideIndex":5,"position":{"left":192,"top":369,"width":406,"height":0},"geometry":"line","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"shape","id":"sh/kb2lcnq1","slideIndex":5,"position":{"left":204,"top":395,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/7ed47ipc","slideIndex":5,"position":{"left":204,"top":398,"width":73,"height":65},"text":"1","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/6dkned8r","slideIndex":5,"position":{"left":204,"top":494,"width":395,"height":62},"text":"Fetch","geometry":"rect","lineWidth":0,"style":{"fontSize":44,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/tgvm9s7i","slideIndex":5,"position":{"left":204,"top":576,"width":405,"height":190},"text":"Il Program Counter indica\nil prossimo byte da leggere.\nL’opcode entra nel registro IR.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/8fm5gnqx","slideIndex":5,"position":{"left":641,"top":369,"width":406,"height":0},"geometry":"line","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"shape","id":"sh/ni94vyp8","slideIndex":5,"position":{"left":653,"top":395,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/mh032t8n","slideIndex":5,"position":{"left":653,"top":398,"width":73,"height":65},"text":"2","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/cny1cz6l","slideIndex":5,"position":{"left":653,"top":494,"width":395,"height":62},"text":"Decodifica","geometry":"rect","lineWidth":0,"style":{"fontSize":44,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/do7i54n6","slideIndex":5,"position":{"left":653,"top":576,"width":405,"height":190},"text":"L’opcode identifica l’operazione\ne gli eventuali operandi.\nLa Control Unit sceglie le fasi.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/qlwjapof","slideIndex":5,"position":{"left":1090,"top":369,"width":406,"height":0},"geometry":"line","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"shape","id":"sh/rm503u50","slideIndex":5,"position":{"left":1102,"top":395,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/4je18f69","slideIndex":5,"position":{"left":1102,"top":398,"width":73,"height":65},"text":"3","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/pkni1knu","slideIndex":5,"position":{"left":1102,"top":494,"width":395,"height":62},"text":"Esecuzione","geometry":"rect","lineWidth":0,"style":{"fontSize":44,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/2hwj65o3","slideIndex":5,"position":{"left":1102,"top":576,"width":405,"height":190},"text":"Si muovono dati, si calcola\noppure si cambia il flusso.\nPoi si passa all’istruzione seguente.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/3i50za5o","slideIndex":5,"position":{"left":192,"top":760,"width":1322,"height":83},"text":"Il clock scandisce i passaggi; i salti possono cambiare la prossima istruzione.","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"notes","id":"nt/eks606","slideIndex":5,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/mzwf2p","slideIndex":6,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":10,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/ahs7uxoj","slideIndex":6,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xkj6psnu","slideIndex":6,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cjapw76p","slideIndex":6,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zm1or250","slideIndex":6,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yls7yxof","slideIndex":6,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lo3qtcn6","slideIndex":6,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/knup076l","slideIndex":6,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7al8vm5c","slideIndex":6,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mpc72hor","slideIndex":6,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/obe58z65","slideIndex":6,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9cn614nq","slideIndex":6,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m9cn69of","slideIndex":6,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nalozu50","slideIndex":6,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wfe5cj6h","slideIndex":6,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xgn65on2","slideIndex":6,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/adwna9ob","slideIndex":6,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/be5o3e5w","slideIndex":6,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kjy5gj6d","slideIndex":6,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/54769ony","slideIndex":6,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/t036tof2","slideIndex":6,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/szu50jyh","slideIndex":6,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ryl4rexc","slideIndex":6,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6xsny9gr","slideIndex":6,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1436x8fe","slideIndex":6,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/g3u543yt","slideIndex":6,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f2lovyx8","slideIndex":6,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e1cn2tgn","slideIndex":6,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x8jml4fu","slideIndex":6,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w7a5szyp","slideIndex":6,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mdo3m5w7","slideIndex":6,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nexkvads","slideIndex":6,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8zqlofed","slideIndex":6,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/90z2xkvy","slideIndex":6,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/a183qpwj","slideIndex":6,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/v2hkzad4","slideIndex":6,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w3qlsfe9","slideIndex":6,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x4z21kvu","slideIndex":6,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/q54jelwz","slideIndex":6,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/b6dknqdk","slideIndex":6,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rq58vi1c","slideIndex":6,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6pcr2dkr","slideIndex":6,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tsnqxsji","slideIndex":6,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sre94n2x","slideIndex":6,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fu5sz218","slideIndex":6,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/etwr6xkn","slideIndex":6,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1wna1sje","slideIndex":6,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gve98n2t","slideIndex":6,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3ips321k","slideIndex":6,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2hgraxkz","slideIndex":6,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0ny907ix","slideIndex":6,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lorqtczi","slideIndex":6,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ylg7yx07","slideIndex":6,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zmp8r2hc","slideIndex":6,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cjypw7i1","slideIndex":6,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dk7qpszm","slideIndex":6,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qxg7ux0v","slideIndex":6,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/byp8n2hg","slideIndex":6,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ovepsnip","slideIndex":6,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pwnqlsza","slideIndex":6,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5cf6pore","slideIndex":6,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4r65wjat","slideIndex":6,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3qxone98","slideIndex":6,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/iponu9sn","slideIndex":6,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hof6l4r2","slideIndex":6,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wn65szah","slideIndex":6,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vmxoju9w","slideIndex":6,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ul4nq9sr","slideIndex":6,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1kj6x8rm","slideIndex":6,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0jqp43a1","slideIndex":6,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yd0b2147","slideIndex":6,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ze9cb6ls","slideIndex":6,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0fit4bmd","slideIndex":6,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lgrudg3i","slideIndex":6,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qp0by14v","slideIndex":6,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bq9c7mlg","slideIndex":6,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cbit0rm1","slideIndex":6,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dcru9w3m","slideIndex":6,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/alkval4f","slideIndex":6,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vmtcjql0","slideIndex":6,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/j2pcnqd4","slideIndex":6,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/i1gbulwj","slideIndex":6,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/54rup0vu","slideIndex":6,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/43itwvep","slideIndex":6,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vypcj6ds","slideIndex":6,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/uxgbq1w7","slideIndex":6,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h07ulgvy","slideIndex":6,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wzytsbed","slideIndex":6,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7a5cf6dw","slideIndex":6,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m9wbm1wb","slideIndex":6,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cfu9w7u9","slideIndex":6,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xg3qpcbu","slideIndex":6,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/adcruxc3","slideIndex":6,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/bel8n2to","slideIndex":6,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/k3u907u5","slideIndex":6,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/l4natcbq","slideIndex":6,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/yhcryxcz","slideIndex":6,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/z2l8r2tk","slideIndex":6,"position":{"left":940,"top":60,"width":572,"height":40},"text":"Un primo programma · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/07a9onu1","slideIndex":6,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/18jqhsbm","slideIndex":6,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 7 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/qt87mpc7","slideIndex":6,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"dal testo al risultato","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/ruh8vuts","slideIndex":6,"position":{"left":192,"top":201,"width":1322,"height":115},"text":"Una somma, vista dall’interno.","geometry":"rect","lineWidth":0,"style":{"fontSize":82,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/cvqpozud","slideIndex":6,"position":{"left":192,"top":369,"width":530,"height":390},"geometry":"rect","lineColor":"#5C584F","lineWidth":1.8}
+{"kind":"textbox","id":"sh/dwzqx4by","slideIndex":6,"position":{"left":230,"top":397,"width":450,"height":355},"text":"LDI R0, 3\nLDI R1, 5\nMOV RA, R0\nMOV RB, R1\nADD\nMOV R2, RA\nHLT","geometry":"rect","lineWidth":0,"style":{"fontSize":39,"typeface":"Caveat","color":"#393832","alignment":"left"}}
+{"kind":"textbox","id":"sh/exs7q9cj","slideIndex":6,"position":{"left":797,"top":397,"width":690,"height":95},"text":"3 + 5 → R2","geometry":"rect","lineWidth":0,"style":{"fontSize":63,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/zy18zet4","slideIndex":6,"position":{"left":797,"top":514,"width":720,"height":192},"text":"Carichiamo due valori nei registri.\nLi trasferiamo in RA e RB.\nLa ALU somma e salva in RA.\nIl risultato torna in R2.","geometry":"rect","lineWidth":0,"style":{"fontSize":33,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/0japsjup","slideIndex":6,"position":{"left":797,"top":708,"width":720,"height":85},"text":"Risultato atteso: R2 = 8.\nHLT arresta l’esecuzione.","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"notes","id":"nt/mzwf2p","slideIndex":6,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/i5pzgh","slideIndex":7,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":19,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/by50nitw","slideIndex":7,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wzehwnah","slideIndex":7,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x0nipsbm","slideIndex":7,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/mtczqdsz","slideIndex":7,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/nul0jitk","slideIndex":7,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ovuhsna5","slideIndex":7,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/9w3ilsbq","slideIndex":7,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6pgj2hsj","slideIndex":7,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7qp0vmt4","slideIndex":7,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bi10z6dw","slideIndex":7,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ah8jq1cb","slideIndex":7,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xkj21gv2","slideIndex":7,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cja1sbuh","slideIndex":7,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z61k3qd8","slideIndex":7,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ylsjulcn","slideIndex":7,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l8j25gvy","slideIndex":7,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k7a1wvut","slideIndex":7,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7alk7qt4","slideIndex":7,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/m9cjylcj","slideIndex":7,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/i5w3qpwr","slideIndex":7,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/j654zuxc","slideIndex":7,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/47e5szex","slideIndex":7,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/58nm14vi","slideIndex":7,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u1w3mpwv","slideIndex":7,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/v254vuxg","slideIndex":7,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/w3elofe1","slideIndex":7,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h4nmxkf6","slideIndex":7,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/exgny9wz","slideIndex":7,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fyp47edk","slideIndex":7,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/psb6x8fm","slideIndex":7,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/oripo3y1","slideIndex":7,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3q9ovixw","slideIndex":7,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/2507mdgb","slideIndex":7,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/14r6t8zq","slideIndex":7,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/g3ipk3y5","slideIndex":7,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f29oryhk","slideIndex":7,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e107itgz","slideIndex":7,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l0vq5sfu","slideIndex":7,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0zmpwny9","slideIndex":7,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/s3qxwny5","slideIndex":7,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/t4jypsfq","slideIndex":7,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/618fuxgz","slideIndex":7,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/72hgn2xk","slideIndex":7,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/g7ax07y1","slideIndex":7,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h8jytcfm","slideIndex":7,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u5sfyxgb","slideIndex":7,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/f61gr2xg","slideIndex":7,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4vux4ryd","slideIndex":7,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/pw3yxcfy","slideIndex":7,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zq503qh0","slideIndex":7,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ypwjul0f","slideIndex":7,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lsni5gz6","slideIndex":7,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/0re1wbil","slideIndex":7,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/b2l0z6ho","slideIndex":7,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/q1czq10j","slideIndex":7,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/doni1gzu","slideIndex":7,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/c3ehsbi9","slideIndex":7,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vyp0bah8","slideIndex":7,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/axgj250n","slideIndex":7,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6dk3u9kv","slideIndex":7,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7et43u1g","slideIndex":7,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sf2lwz21","slideIndex":7,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tgbm54jm","slideIndex":7,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/uhk3y9kr","slideIndex":7,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fit47e1c","slideIndex":7,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gj2l0j2x","slideIndex":7,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hkbm9oji","slideIndex":7,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/alg3mpkn","slideIndex":7,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vm9kva18","slideIndex":7,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dgf61s3q","slideIndex":7,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/cf6psnm5","slideIndex":7,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rexozilk","slideIndex":7,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qdonqd4z","slideIndex":7,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/14z65s3m","slideIndex":7,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/036pwnmh","slideIndex":7,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zixo3ilw","slideIndex":7,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/eho7ux4b","slideIndex":7,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/h8v6t83i","slideIndex":7,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/g7m5k3mx","slideIndex":7,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/872t0rut","slideIndex":7,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/t8batwve","slideIndex":7,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/650byhcn","slideIndex":7,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/76tsrmd8","slideIndex":7,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k3itw7uh","slideIndex":7,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l4rapcv2","slideIndex":7,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yh0buhcr","slideIndex":7,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ji9snmdw","slideIndex":7,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4zmt8bu1","slideIndex":7,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/50vu1gb6","slideIndex":7,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fuxwraxo","slideIndex":7,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/etovy5w3","slideIndex":7,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1wfetkfe","slideIndex":7,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/0v6d0fe9","slideIndex":7,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/nyhwvuxk","slideIndex":7,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/2x8v2pwz","slideIndex":7,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/p0zexkvq","slideIndex":7,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/ozqd4fe5","slideIndex":7,"position":{"left":940,"top":60,"width":572,"height":40},"text":"Gli strumenti · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/32dcjqxg","slideIndex":7,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/i14vqlwv","slideIndex":7,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 8 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/rmhs3uxo","slideIndex":7,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"hardware e software si incontrano","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/ql8bu9w3","slideIndex":7,"position":{"left":192,"top":201,"width":1322,"height":115},"text":"Un laboratorio da esplorare.","geometry":"rect","lineWidth":0,"style":{"fontSize":82,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/doza54fe","slideIndex":7,"position":{"left":192,"top":369,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/cnqtwze9","slideIndex":7,"position":{"left":192,"top":372,"width":73,"height":65},"text":"1","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/3ixszuxc","slideIndex":7,"position":{"left":292,"top":373,"width":540,"height":60},"text":"Documentazione","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/2horqpwr","slideIndex":7,"position":{"left":292,"top":445,"width":545,"height":100},"text":"ISA, linguaggio assembly\ne guide ai circuiti.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/pkza14fi","slideIndex":7,"position":{"left":882,"top":369,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/4jqtszex","slideIndex":7,"position":{"left":882,"top":372,"width":73,"height":65},"text":"2","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/ne1sbexw","slideIndex":7,"position":{"left":982,"top":373,"width":540,"height":60},"text":"Assembler in C","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/mdsb2twb","slideIndex":7,"position":{"left":982,"top":445,"width":545,"height":100},"text":"Converte i sorgenti assembly\nin byte macchina e file di output.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/kz2pwbut","slideIndex":7,"position":{"left":192,"top":553,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/50vq5gvy","slideIndex":7,"position":{"left":192,"top":556,"width":73,"height":65},"text":"3","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/ixk7ulcn","slideIndex":7,"position":{"left":292,"top":557,"width":540,"height":60},"text":"Microcodice ed EEPROM","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/jyt836d8","slideIndex":7,"position":{"left":292,"top":629,"width":545,"height":100},"text":"Generatore delle Control ROM\ne programmatore con Arduino Mega.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"shape","id":"sh/snmp0vup","slideIndex":7,"position":{"left":882,"top":553,"width":73,"height":73},"geometry":"ellipse","lineColor":"#777268","lineWidth":1.8}
+{"kind":"textbox","id":"sh/tovq90va","slideIndex":7,"position":{"left":882,"top":556,"width":73,"height":65},"text":"4","geometry":"rect","lineWidth":0,"style":{"fontSize":53,"typeface":"Caveat","color":"#393832","alignment":"center"}}
+{"kind":"textbox","id":"sh/6147ylcj","slideIndex":7,"position":{"left":982,"top":557,"width":540,"height":60},"text":"Simulatore web","geometry":"rect","lineWidth":0,"style":{"fontSize":43,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/7md87qd4","slideIndex":7,"position":{"left":982,"top":629,"width":545,"height":100},"text":"Esecuzione passo passo con vista\ndi registri, flag e memoria.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/grmp4vu1","slideIndex":7,"position":{"left":192,"top":760,"width":1322,"height":83},"text":"Il progetto è in evoluzione: simulazione e prove sulla board accompagnano lo sviluppo.","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"notes","id":"nt/i5pzgh","slideIndex":7,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}
+{"kind":"slide","id":"sl/dqf1zj","slideIndex":8,"layout":{"id":"ly/ds7mp8ri","name":"Blank"},"title":"appunti / CPU 8-bit","textShapes":8,"backgroundColor":"rgba(247,243,232,1)"}
+{"kind":"shape","id":"sh/0nidwn2p","slideIndex":8,"position":{"left":0,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zm9cnil4","slideIndex":8,"position":{"left":28,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yl0vudkj","slideIndex":8,"position":{"left":56,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d0rul83y","slideIndex":8,"position":{"left":84,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/czids32d","slideIndex":8,"position":{"left":112,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/by9cjyls","slideIndex":8,"position":{"left":140,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qx0vqtk7","slideIndex":8,"position":{"left":168,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xgvexsj2","slideIndex":8,"position":{"left":196,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wv2d472h","slideIndex":8,"position":{"left":224,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ihcnqpcv","slideIndex":8,"position":{"left":252,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3il4zutg","slideIndex":8,"position":{"left":280,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4je5szu1","slideIndex":8,"position":{"left":308,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5knm1kbm","slideIndex":8,"position":{"left":336,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/udcnm5cz","slideIndex":8,"position":{"left":364,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vel4vat4","slideIndex":8,"position":{"left":392,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gfu5ofup","slideIndex":8,"position":{"left":420,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hg3mxkba","slideIndex":8,"position":{"left":448,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/e9wny9s3","slideIndex":8,"position":{"left":476,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fa5o7eto","slideIndex":8,"position":{"left":504,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/buhkz690","slideIndex":8,"position":{"left":532,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/at8jq1sf","slideIndex":8,"position":{"left":560,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/xwz21gr6","slideIndex":8,"position":{"left":588,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/wvq1sbal","slideIndex":8,"position":{"left":616,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/jihk369w","slideIndex":8,"position":{"left":644,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yh8ju1sr","slideIndex":8,"position":{"left":672,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lkj25gr2","slideIndex":8,"position":{"left":700,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kjq1wbah","slideIndex":8,"position":{"left":728,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/7m1k7q98","slideIndex":8,"position":{"left":756,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6ls3ylsn","slideIndex":8,"position":{"left":784,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/4ru1ov6l","slideIndex":8,"position":{"left":812,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/5s3ih076","slideIndex":8,"position":{"left":840,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ipsjmlov","slideIndex":8,"position":{"left":868,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/3q10fqpg","slideIndex":8,"position":{"left":896,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gna1kb6p","slideIndex":8,"position":{"left":924,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/hojidg7a","slideIndex":8,"position":{"left":952,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/ulsjiloj","slideIndex":8,"position":{"left":980,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vm10b6p4","slideIndex":8,"position":{"left":1008,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/8jq1gb6t","slideIndex":8,"position":{"left":1036,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tkji9g7y","slideIndex":8,"position":{"left":1064,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/dsv618ju","slideIndex":8,"position":{"left":1092,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/crmps3i9","slideIndex":8,"position":{"left":1120,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/bqdozy1o","slideIndex":8,"position":{"left":1148,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/qp47qd03","slideIndex":8,"position":{"left":1176,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/lgfq5sjq","slideIndex":8,"position":{"left":1204,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/kf6pwni5","slideIndex":8,"position":{"left":1232,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/zedo3i1k","slideIndex":8,"position":{"left":1260,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/yd47ud0f","slideIndex":8,"position":{"left":1288,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1kb6tojm","slideIndex":8,"position":{"left":1316,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gj2pkji1","slideIndex":8,"position":{"left":1344,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6p03upgz","slideIndex":8,"position":{"left":1372,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rq943uhk","slideIndex":8,"position":{"left":1400,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/srilwzyp","slideIndex":8,"position":{"left":1428,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tsrm54za","slideIndex":8,"position":{"left":1456,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/et0ny9gv","slideIndex":8,"position":{"left":1484,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fu947ehg","slideIndex":8,"position":{"left":1512,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gvi50zy1","slideIndex":8,"position":{"left":1540,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/1wbm94zm","slideIndex":8,"position":{"left":1568,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/uxg3m5gr","slideIndex":8,"position":{"left":1596,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vyp4vahc","slideIndex":8,"position":{"left":0,"top":0,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/z2l036x4","slideIndex":8,"position":{"left":0,"top":28,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/y1cju1wj","slideIndex":8,"position":{"left":0,"top":56,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/l43i5gfu","slideIndex":8,"position":{"left":0,"top":84,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/k3u1wbe9","slideIndex":8,"position":{"left":0,"top":112,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/byl0z6xs","slideIndex":8,"position":{"left":0,"top":140,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/adsjq1g7","slideIndex":8,"position":{"left":0,"top":168,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/x03i1wfy","slideIndex":8,"position":{"left":0,"top":196,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/czu1sred","slideIndex":8,"position":{"left":0,"top":224,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/vu5kbqxw","slideIndex":8,"position":{"left":0,"top":252,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/u9wj2lwr","slideIndex":8,"position":{"left":0,"top":280,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/sfqxwne9","slideIndex":8,"position":{"left":0,"top":308,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/tgzypsve","slideIndex":8,"position":{"left":0,"top":336,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/6dofudw3","slideIndex":8,"position":{"left":0,"top":364,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/rehgnido","slideIndex":8,"position":{"left":0,"top":392,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gjqh07u5","slideIndex":8,"position":{"left":0,"top":420,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/14zytsvq","slideIndex":8,"position":{"left":0,"top":448,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/eh8zyxcz","slideIndex":8,"position":{"left":0,"top":476,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/fihgr2dk","slideIndex":8,"position":{"left":0,"top":504,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o7ah47u1","slideIndex":8,"position":{"left":0,"top":532,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/p8jyxcvm","slideIndex":8,"position":{"left":0,"top":560,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/d87ulwje","slideIndex":8,"position":{"left":0,"top":588,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/c7ytcr2t","slideIndex":8,"position":{"left":0,"top":616,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/b6psj61o","slideIndex":8,"position":{"left":0,"top":644,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/q5gba1k3","slideIndex":8,"position":{"left":0,"top":672,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/p47ahwji","slideIndex":8,"position":{"left":0,"top":700,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/o3et8r2x","slideIndex":8,"position":{"left":0,"top":728,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/325sfm1c","slideIndex":8,"position":{"left":0,"top":756,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/21wb6hkr","slideIndex":8,"position":{"left":0,"top":784,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/10nadcj6","slideIndex":8,"position":{"left":0,"top":812,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/gzet472l","slideIndex":8,"position":{"left":0,"top":840,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/65cred0j","slideIndex":8,"position":{"left":0,"top":868,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/r6l8nih4","slideIndex":8,"position":{"left":0,"top":896,"width":1600,"height":0},"geometry":"line","lineColor":"#DCE3DF","lineWidth":0.65}
+{"kind":"shape","id":"sh/s7u9gnip","slideIndex":8,"position":{"left":132,"top":0,"width":0,"height":900},"geometry":"line","lineColor":"#CD9992","lineWidth":1.5}
+{"kind":"shape","id":"sh/t83qpsza","slideIndex":8,"position":{"left":43,"top":152,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/ihs7ad0n","slideIndex":8,"position":{"left":43,"top":450,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"shape","id":"sh/ji18jih8","slideIndex":8,"position":{"left":43,"top":748,"width":23,"height":23},"geometry":"ellipse","fillColor":"#DDD9CF","lineColor":"#C4BFB2","lineWidth":0.8}
+{"kind":"textbox","id":"sh/4japc3id","slideIndex":8,"position":{"left":192,"top":60,"width":650,"height":40},"text":"appunti / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/543ql8zy","slideIndex":8,"position":{"left":940,"top":60,"width":572,"height":40},"text":"Da dove iniziare · progetto didattico","geometry":"rect","lineWidth":0,"style":{"fontSize":26,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/ads76t0b","slideIndex":8,"position":{"left":192,"top":829,"width":1000,"height":40},"text":"Serie didattica YouTube / CPU 8-bit","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/ve18fyhw","slideIndex":8,"position":{"left":1370,"top":829,"width":145,"height":40},"text":"pag. 9 / 9","geometry":"rect","lineWidth":0,"style":{"fontSize":22,"typeface":"Caveat","color":"#5C584F","alignment":"right"}}
+{"kind":"textbox","id":"sh/wre9cn6l","slideIndex":8,"position":{"left":192,"top":145,"width":1280,"height":42},"text":"il prossimo esperimento","geometry":"rect","lineWidth":0,"style":{"fontSize":28,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/hsnq5s76","slideIndex":8,"position":{"left":192,"top":237,"width":1250,"height":300},"text":"Scrivi un programma.\nSegui i dati.\nCapisci il circuito.","geometry":"rect","lineWidth":0,"style":{"fontSize":92,"typeface":"Caveat","color":"#393832","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/upwradof","slideIndex":8,"position":{"left":192,"top":580,"width":1230,"height":145},"text":"Parti da un esempio assembly nel simulatore web.\nAvanza un’istruzione alla volta e osserva i registri.\nRitrova ogni passaggio nei blocchi hardware.","geometry":"rect","lineWidth":0,"style":{"fontSize":34,"typeface":"Caveat","color":"#5C584F","alignment":"left"}}
+{"kind":"textbox","id":"sh/vq583ip0","slideIndex":8,"position":{"left":192,"top":743,"width":1230,"height":55},"text":"Un byte alla volta, dal circuito al codice.","geometry":"rect","lineWidth":0,"style":{"fontSize":32,"typeface":"Caveat","color":"#393832","alignment":"left"}}
+{"kind":"shape","id":"sh/8ne9836p","slideIndex":8,"position":{"left":192,"top":796,"width":760,"height":0},"geometry":"line","lineColor":"#393832","lineWidth":1.3}
+{"kind":"notes","id":"nt/dqf1zj","slideIndex":8,"text":"Fonti: README.md; docs/isa.md; tools/assembler/README.md; tools/simulator-web/README.md del repository CPU 8-bit. Stile Graphite Notebook, beautiful-html-slides. Runtime HTML originale Zara Zhang, MIT. Font Caveat, SIL OFL 1.1."}

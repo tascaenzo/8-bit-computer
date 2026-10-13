@@ -89,7 +89,7 @@ typedef struct
     const char *name;
     uint8_t rom;
     uint8_t bit;
-    /* Pin DIP AT28C64 corrispondente a D0..D7 (9,10,11,13..17). */
+    /* Pin DIP AT28C64 corrispondente a D0..D7 (11,12,13,15..19). */
     uint8_t eeprom_pin;
     ControlPolarity polarity;
 } ControlSignalConfig;
