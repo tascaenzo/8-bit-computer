@@ -39,8 +39,10 @@ Contiene programmi assembly didattici usati per provare l'assembler e spiegare l
 
 ### `hardware/tang-nano-9k-video`
 
-Contiene il progetto Gowin per la Tang Nano 9K. Il primo milestone verifica
-l'uscita HDMI prima di introdurre VRAM e interfaccia al bus TTL.
+Contiene il progetto FPGA video completo: interfaccia CPU, VRAM 16 KiB,
+font ASCII e uscita HDMI 640 × 480. Il [README FPGA](hardware/tang-nano-9k-video/README.md)
+include build, test, pinout e caricamento del bitstream. La build e' verificata
+con OSS CAD Suite; il collaudo sulla scheda fisica resta da eseguire.
 
 ### `tools/assembler`
 

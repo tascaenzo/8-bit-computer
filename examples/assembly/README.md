@@ -89,3 +89,11 @@ HLT
 .data
 counter: .byte 0x00
 ```
+
+## Scheda video FPGA con IDX
+
+[video_idx.asm](video_idx.asm) scrive `HELLO WORLD FROM 8 BIT COMPUTER` nella prima riga della VRAM
+e `A` in riga 2, colonna 5 (`0x4105`); rilegge la cella in R1 e termina con HLT.
+Richiede la [build video Tang Nano 9K](../../hardware/tang-nano-9k-video/README.md)
+e l'avvio della CPU dopo LED1 acceso (VRAM pronta). IDX non si incrementa automaticamente:
+l'esempio ricarica gli indirizzi con LDX.
