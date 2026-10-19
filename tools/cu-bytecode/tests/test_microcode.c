@@ -117,8 +117,22 @@ static void test_sequences(void)
            (address_word(CPU8_ADDR_SEL_NONE) |
             CTRL_MDR_OE | CTRL_RF_EN | CTRL_RF_RW));
     assert(microcode_word(1, UOP_CMP, clear, CPU_MODE_RUN) ==
+           (address_word(CPU8_ADDR_SEL_NONE) | CTRL_ALU_EN));
+    assert(microcode_word(2, UOP_CMP, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_NONE) |
-            CTRL_FLAGS_WE));
+            CTRL_ALU_EN | CTRL_FLAGS_WE));
+    /* CMP deve mantenere operandi e MDR per ogni combinazione dei flag. */
+    for (unsigned flag_bits = 0; flag_bits < 16; flag_bits++) {
+        CpuFlags flags = {(flag_bits & 1) != 0, (flag_bits & 2) != 0,
+                          (flag_bits & 4) != 0, (flag_bits & 8) != 0};
+        for (uint8_t step = 0; step < 8; step++) {
+            ControlWord word = microcode_word(step, UOP_CMP, flags, CPU_MODE_RUN);
+            assert((word & (CTRL_RA_EN | CTRL_RB_EN | CTRL_MDR_WE |
+                            CTRL_RF_EN | CTRL_RAM_WE)) == 0);
+            assert(((word & CTRL_ALU_EN) != 0) == (step == 1 || step == 2));
+            assert(((word & CTRL_FLAGS_WE) != 0) == (step == 2));
+        }
+    }
     assert((microcode_word(3, UOP_JZ, clear, CPU_MODE_RUN) &
             CTRL_PC_LOAD) == 0);
     assert((microcode_word(3, UOP_JZ, zero, CPU_MODE_RUN) &
@@ -147,7 +161,7 @@ static void test_dedicated_fetch_return(void)
     } cases[] = {
         {UOP_INVALID, 1}, {UOP_NOP, 1}, {UOP_HLT, 1},
         {UOP_SYSTEM, 1}, {UOP_ALU, 4},
-        {UOP_CMP, 1}, {UOP_MOV_RA_RN, 1}, {UOP_MOV_RB_RN, 1},
+        {UOP_CMP, 2}, {UOP_MOV_RA_RN, 1}, {UOP_MOV_RB_RN, 1},
         {UOP_MOV_RN_RA, 1}, {UOP_LDI, 2}, {UOP_LDX, 2},
         {UOP_LDA_IDX, 2}, {UOP_STA_IDX, 2},
         {UOP_JMP, 3}, {UOP_JNO, 3}, {UOP_LDA, 4}, {UOP_STA, 4}
@@ -169,7 +183,7 @@ static void test_dedicated_fetch_return(void)
     assert(microcode_word(2, UOP_STA_IDX, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_IDX) | CTRL_MDR_OE | CTRL_RAM_WE));
     assert(microcode_word(3, UOP_JNO, clear, CPU_MODE_RUN) ==
-           (address_word(CPU8_ADDR_SEL_NONE) | CTRL_PC_LOAD));
+           (address_word(CPU8_ADDR_SEL_MAR) | CTRL_PC_LOAD));
 }
 
 static void test_boot_sequence(void)
@@ -296,7 +310,19 @@ static void test_isa_groups_and_jump_flags(void)
     assert(roms[1][0x1000u | 0x78u | 4u] == 0x02);
     assert(roms[2][0x1000u | 0x78u | 4u] == 0x48);
     assert(roms[1][0x1000u | 0x68u | 4u] == 0x02);
-    assert(roms[2][0x1000u | 0x68u | 4u] == 0x4b);
+    /* CMP fisica: ALU attiva in T2/T3; flag solo T3; ritorno T4. */
+    for (bits = 0; bits < 16; bits++) {
+        static const uint8_t offsets[] = {4, 2, 6};
+        static const uint8_t expected[3][3] = {
+            {0xf3, 0x02, 0x48}, {0xf3, 0x02, 0x4a},
+            {0x73, 0x02, 0x49}
+        };
+        unsigned phase, chip;
+        for (phase = 0; phase < 3; phase++)
+            for (chip = 0; chip < 3; chip++)
+                assert(roms[chip][0x1000u | (bits << 8) | 0x68u |
+                                  offsets[phase]] == expected[phase][chip]);
+    }
 
     for (index = 0; index < sizeof(jumps) / sizeof(jumps[0]); index++) {
         for (bits = 0; bits < 16; bits++) {
@@ -309,7 +335,11 @@ static void test_isa_groups_and_jump_flags(void)
             bool pc_load = (roms[1][address] & 0x02u) == 0;
             assert(dispatch_opcode(jumps[index].opcode) == jumps[index].uop);
             assert(pc_load == expected_jump_taken(jumps[index].uop, flags));
-            assert(roms[0][address] == 0xf3); /* Niente NEXT_FETCH in T4. */
+            /* T4: MAR abilitato solo quando il PC deve caricarlo.
+             * RAM/EPROM e data bus restano disabilitati, PC_INC=0.
+             */
+            assert(roms[0][address] == (pc_load ? 0xf2 : 0xf3));
+            assert(roms[2][address] == 0x49);
             assert(roms[0][microcode_address(4,
                 (MicroOp)(jumps[index].opcode >> 3), flags, CPU_MODE_RUN)] ==
                 0x73); /* T5 ritorna al fetch. */

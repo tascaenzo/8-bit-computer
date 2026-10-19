@@ -53,7 +53,7 @@ dimostra l'assenza di errori fra i fronti di clock.
 | LDAI | T2 memoria[IDX] → MDR; T3 MDR → Rn | T4 |
 | STAI | T2 Rn → MDR; T3 MDR → memoria[IDX] | T4 |
 | ALU | T2 risultato → RA e flag | T3 |
-| CMP | T2 solo flag, RA/RB conservati | T3 |
+| CMP | T2 prepara ALU; T3 salva flag, RA/RB/MDR conservati | T4 |
 | MOV | T2 trasferimento fra Rn e RA/RB previsto dall'opcode | T3 |
 | Salti | T2/T3 indirizzo → MAR e PC++; T4 eventuale MAR → PC | T5 |
 | NOP / HLT | T2 inattivo; HLT blocca qui il contatore con la OR esterna | T3 per NOP |
@@ -136,17 +136,16 @@ scrittura e mantenimento successivo. Come riferimento di metodo vedere la
 Non trasferire i suoi valori numerici alla RAM Hitachi descritta nel video 18:
 serve la sigla completa del componente realmente montato.
 
-## 3. Da accertare: CMP con ALU_EN inattivo
+## 3. CMP: ALU attiva durante preparazione e cattura dei flag
 
-CMP T2 attiva solo FLAGS_WE. È corretto **se i flag sono generati sul risultato
-interno dell'ALU anche quando il buffer verso il bus CPU è disabilitato**.
-Nei video 7 e 8 Z/N sono descritti come derivati dal bus del risultato; il
-testo da solo non distingue con certezza un bus interno dal bus CPU attuale.
+La revisione del 18 ottobre 2026 corregge la precedente sequenza T2 con solo
+FLAGS_WE. Nel cablaggio descritto nel video 9, ALU_EN abilita il decoder e
+la generazione di K: disabilitarlo puo invalidare il confronto.
 
-Se ALU_EN disabilita anche il decoder interno che seleziona il risultato,
-oppure Z/N sono prelevati a valle del buffer disabilitato, CMP campiona flag
-non validi. In quel cablaggio occorre abilitare il percorso ALU durante CMP
-senza abilitare la scrittura di RA, oppure prelevare i flag a monte.
+CMP ora abilita ALU_EN in T2 senza scritture, mantiene ALU_EN e salva i flag
+in T3, poi torna al fetch in T4. RA, RB e MDR restano invariati.
+Il bus dati puo presentare la sottrazione a 8 bit durante T2 e T3.
+La verifica elettrica di setup/hold e dei clock resta da eseguire sul banco.
 
 Provare RA=RB (Z=1), RA=0/RB=1 (C=1,N=1), RA=0x80/RB=1 (O=1,N=0),
 con RA e RB invariati dopo CMP. Controllare anche C=borrow per SUB/CMP e

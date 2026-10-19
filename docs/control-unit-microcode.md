@@ -189,7 +189,9 @@ meccanismo.
 | ALU eccetto `CMP` | `T4` | `MDR_OE`: prepara il risultato memorizzato sul bus. |
 | ALU eccetto `CMP` | `T5` | `MDR_OE`, `RA_EN`, `RA_RB_RW`: copia MDR in RA. |
 | ALU eccetto `CMP` | `T6` | `MDR_OE`, `NEXT_FETCH`: mantiene il dato durante il ritorno. |
-| `CMP` | `T2` | `FLAGS_WE` |
+| `CMP` | `T2` | `ALU_EN`: abilita decoder, K e percorso di confronto senza scritture. |
+| `CMP` | `T3` | `ALU_EN`, `FLAGS_WE`: salva i flag con confronto stabile; RA/RB/MDR invariati. |
+| `CMP` | `T4` | `NEXT_FETCH`: disabilita ALU e torna al fetch. |
 | `MOV RA, Rn` | `T2` | `RF_EN`, `RA_EN`, `RA_RB_RW` |
 | `MOV RB, Rn` | `T2` | `RF_EN`, `RB_EN`, `RA_RB_RW` |
 | `MOV Rn, RA` | `T2` | `RA_EN`, `RF_EN`, `RF_RW` |
@@ -201,11 +203,13 @@ meccanismo.
 | `STAI Rn` | `T3` | `ADDR_SEL=IDX`, `MDR_OE`, `RAM_WE` |
 
 Le operazioni ALU sovrascrivono MDR con il risultato; CMP conserva MDR e RA.
+CMP abilita ALU anche sul bus dati: nel cablaggio il segnale abilita i decoder
+e la generazione di K, quindi deve restare attivo fino alla cattura dei flag.
 La preparazione separata precede ciascuna cattura, evitando il trasferimento
 diretto ALU -> RA mentre RA modifica gli ingressi ALU. La verifica elettrica
 dei clock generati dalle porte AND resta da fare sul circuito.
 
-Per CMP, MOV e NOP la fase di solo `NEXT_FETCH` e `T3`; per HLT e
+Per MOV e NOP la fase di solo `NEXT_FETCH` e `T3`; per CMP e `T4`; per HLT e
 prevista la stessa parola in T3, ma l'arresto esterno impedisce di raggiungerla. Per LDX,
 LDAI e STAI e `T4`.
 
@@ -215,7 +219,7 @@ LDAI e STAI e `T4`.
 | --- | --- | --- |
 | `T2` | `ADDR_SEL=PC`, `RAM_OE`, `MAR_L_WE`, `PC_INC` | Legge `addr_low`. |
 | `T3` | `ADDR_SEL=PC`, `RAM_OE`, `MAR_H_WE`, `PC_INC` | Legge `addr_high`. |
-| `T4` | `PC_LOAD` se la condizione e vera | Carica il PC dal MAR oppure prosegue sequenzialmente. |
+| `T4` | `ADDR_SEL=MAR`, `PC_LOAD` se il salto e eseguito; nessuna sorgente altrimenti | Abilita le uscite di MAR e carica il PC; se la condizione e falsa prosegue sequenzialmente. |
 | `T5` | `NEXT_FETCH` | Ritorna a T1 senza modificare il PC. |
 
 ## 6. Organizzazione suggerita delle EEPROM
@@ -236,7 +240,7 @@ Una EEPROM di dispatch opzionale usa `IR[7:0]` come indirizzo e produce `µOP[4:
 ## 7. Checklist prima del cablaggio finale
 
 - [ ] Verificare sul cablaggio reale i codici `00=IDX`, `01=PC`, `10=MAR`, `11=nessuna sorgente`.
-- [ ] Verificare il percorso fisico `MAR -> PC` necessario a `PC_LOAD`.
+- [x] Percorso `MAR -> PC` verificato con `JMP 4` sul circuito il 19 ottobre 2026; MAR abilitato in T4.
 - [ ] Verificare che il banco registri implementi esattamente la semantica `RF_EN` e `RF_RW` descritta qui.
 - [ ] Verificare se il risultato ALU ha un enable indipendente (`ALU_EN`).
 - [ ] Verificare se MDR e realmente richiesto in ogni accesso dati o solo nelle scritture.

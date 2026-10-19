@@ -1,19 +1,33 @@
 # Verifiche della Control Unit
 
+> Aggiornamento 19 ottobre 2026: in T4 dei salti eseguiti MAR deve essere
+> abilitato (`ADDR_SEL=10`): ROM0 passa da `0xF3` a `0xF2`.
+> Le tabelle storiche con selettore inattivo in quel punto sono superate.
+> ROM0 programmata e verificata su 8192 byte con CRC-16.
+> Il test `JMP 4` e stato confermato funzionante sul circuito il 19 ottobre 2026.
+
+> Aggiornamento 18 ottobre 2026: le righe CMP storiche sotto sono superate.
+> La nuova sequenza e T2 ALU_EN, T3 ALU_EN + FLAGS_WE, T4 NEXT_FETCH.
+> RA/RB/MDR invariati. ROM0 e ROM2 aggiornate sulle EEPROM fisiche
+> e verificate con CRC-16; la prova specifica dei flag CMP resta da confermare.
+> Vedere [microsequenze aggiornate](control-unit-microcode.md).
+
 Questo documento raccoglie, una fase alla volta, le operazioni da provare sulla
 CPU fisica, i livelli attesi e le misure effettuate. Ogni riga delle tabelle
 BOOT e RUN corrisponde a un preciso intervallo temporale `T1..T8` del
 contatore dei microstep. Gli ingressi `A0..A12` sono comuni alle tre Control
 ROM; ogni ROM presenta contemporaneamente il proprio byte `D7..D0`.
 
-**Stato delle misure:** da eseguire. I valori nelle tabelle sono quelli
-generati dal microcodice, non letture gia effettuate sulla scheda.
+**Stato delle misure:** test fisico `JMP 4` riuscito secondo la verifica
+dell'utente. Le altre misure dettagliate restano da eseguire; i valori nelle
+tabelle sono previsioni del microcodice, salvo indicazione esplicita.
 
 **Versione della ROM0 da testare:** il binario aggiornato contiene `0x91` in
 T1, `0xB5` in T2 e `0x31` in T3. Il 23 settembre 2026 la EEPROM fisica e
 stata riprogrammata con questo binario: 8192 byte scritti e verifica CRC-16
-finale riuscita. Il nuovo binario RUN descritto sotto **non e ancora stato
-caricato nelle tre EEPROM fisiche**. Restano da misurare i livelli sulla CU.
+finale riuscita. Le tre EEPROM sono state successivamente programmate e verificate con CRC-16
+durante la sessione del 18-19 ottobre 2026; ROM0 include la correzione MAR
+del 19 ottobre. Restano da misurare i livelli dettagliati sulla CU.
 
 Riferimenti: [configurazione dei pin](../tools/cu-bytecode/config/control_signals.c),
 [generatore del microcodice](../tools/cu-bytecode/src/microcode.c),

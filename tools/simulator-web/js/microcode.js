@@ -238,10 +238,14 @@ export function planMicrocycles(state) {
     const alu = aluResult(opcode, state.ra, state.rb);
     const cmp = opcode === FIXED_OPCODES.CMP;
     if (cmp) return withFetchReturn(base.concat([
-      phase("T2", "Confronto e flag", `${text}: RA − RB aggiorna solo i flag.`,
-        "FLAGS_WE · NEXT_FETCH", ["ra", "rb", "alu", "flags"],
-        ["ra-alu", "rb-alu", "alu-flags"],
-        { dataBus: null, alu: alu.result, flags: alu.flags, active: ["alu", "flags"] }),
+      phase("T2", "Prepara confronto", `ALU attiva: ${state.ra} - ${state.rb}; nessuna scrittura.`,
+        "ALU_EN", ["ra", "rb", "alu"],
+        ["ra-alu", "rb-alu", "alu-data"],
+        { dataBus: alu.result, alu: alu.result, active: ["alu", "data-bus"] }),
+      phase("T3", "Salva flag confronto", `${text}: salva i flag con ALU attiva; RA, RB e MDR invariati.`,
+        "ALU_EN · FLAGS_WE · NEXT_FETCH", ["ra", "rb", "alu", "flags"],
+        ["ra-alu", "rb-alu", "alu-data", "alu-flags"],
+        { dataBus: alu.result, alu: alu.result, flags: alu.flags, active: ["alu", "data-bus", "flags"] }),
     ]));
     const captured = { mdr: alu.result, flags: alu.flags };
     const stored = { ...captured, ra: alu.result };
@@ -272,9 +276,13 @@ export function planMicrocycles(state) {
         taken
           ? `${text}: la condizione sui flag e vera, quindi PC riceve ${hex(target, 4)} dal MAR.`
           : `${text}: la condizione sui flag e falsa; PC mantiene ${hex((address + 3) & 0xffff, 4)}.`,
-        taken ? "PC_LOAD · NEXT_FETCH" : "NEXT_FETCH",
-        ["pc", "mar", "flags"], taken ? ["mar-pc", "ir-cu"] : ["ir-cu"],
-        { pc: taken ? target : (address + 3) & 0xffff, mar: target, active: ["pc", "mar", "flags"] },
+        taken ? "ADDR_SEL=MAR(10) · PC_LOAD · NEXT_FETCH" : "NEXT_FETCH",
+        ["pc", "mar", "flags", ...(taken ? ["addrsel"] : [])],
+        taken ? ["mar-selector", "selector-address", "mar-pc", "ir-cu"] : ["ir-cu"],
+        { pc: taken ? target : (address + 3) & 0xffff, mar: target,
+          dataBus: null, addressBus: taken ? target : null,
+          addressSource: taken ? "MAR" : null,
+          active: ["pc", "mar", "flags", ...(taken ? ["addrsel", "address-bus"] : [])] },
       ),
     ]));
   }

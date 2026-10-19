@@ -98,7 +98,8 @@ In RUN l'ultima operazione e separata dalla fase di ritorno a T1: il
 microstep successivo attiva `NEXT_FETCH_n` (ROM0 D7 basso) senza scritture.
 Per ALU il risultato passa da MDR: T2 prepara ALU, T3 salva MDR e flag,
 T4 prepara MDR sul bus, T5 scrive RA, T6 mantiene MDR e torna a T1.
-MDR viene sovrascritto; CMP mantiene la sequenza precedente. La
+MDR viene sovrascritto; CMP usa T2 per attivare ALU, T3 per salvare i flag
+con ALU ancora attiva e T4 per tornare al fetch, senza scrivere RA/RB/MDR. La
 fase piu lunga e `STA`/`LDA` diretto: operazione in T5, ritorno in T6.
 Per un 74161 e consigliato collegare D7 a `/LOAD` con gli ingressi paralleli
 a zero e lasciare `/POR` su `/CLR` (vedi
@@ -125,3 +126,13 @@ Prima di generare le immagini, il tool verifica automaticamente che:
 `IDX_L_WE` e `IDX_H_WE` sono usati da `LDX=0xD8`. I banchi BOOT e RUN
 sono distinti: il BOOT copia EPROM programma in RAM in T1, incrementa PC
 in T2 e torna a T1 in T3. `EPROM_OE` resta attivo nelle tre fasi BOOT.
+
+## Salti: abilitazione MAR durante il caricamento PC
+
+In T4, un salto eseguito seleziona `ADDR_SEL=MAR (10)` insieme a `PC_LOAD`.
+Le uscite del MAR devono essere abilitate per presentare l'indirizzo agli
+ingressi paralleli del PC. Se la condizione e falsa, MAR e PC_LOAD restano
+disabilitati. T5 disabilita MAR e torna al fetch.
+La correzione modifica solo ROM0; ROM1, ROM2 e il programma sono invariati.
+Il fronte di clock del PC deve essere verificato sul banco: questa modifica
+non altera PC_INC, che resta inattivo durante il caricamento.

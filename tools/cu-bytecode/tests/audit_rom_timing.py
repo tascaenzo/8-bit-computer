@@ -73,11 +73,13 @@ def expected(op, flags):
     if 0x58 <= op <= 0x5f:
         return [fetch, w(3, 'RE MW'), w(0, 'MO WW'), end]
     if 0x60 <= op <= 0x67 or op == 0x78:
-        return [fetch, w(3, 'AO RA ABW FW'), end]
+        return [fetch, w(3, 'AO'), w(3, 'AO MW FW'), w(3, 'MO'),
+                w(3, 'MO RA ABW'), w(3, 'MO NF')]
     if op == 0x69:
-        return [fetch, w(3, 'FW'), end]
+        return [fetch, w(3, 'AO'), w(3, 'AO FW'), end]
     if op in jumps:
-        return [fetch, low, high, w(3, 'PL' if jumps[op](flags) else ''), end]
+        return [fetch, low, high,
+                w(2, 'PL') if jumps[op](flags) else w(3), end]
     if 0xc0 <= op <= 0xc7:
         return [fetch, w(3, 'RE RA ABW'), end]
     if 0xc8 <= op <= 0xcf:

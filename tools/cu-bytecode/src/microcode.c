@@ -209,10 +209,9 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
     if ((step == 2 && (uop == UOP_INVALID || uop == UOP_NOP ||
                        uop == UOP_SYSTEM ||
                        uop == UOP_HLT ||
-                       uop == UOP_CMP ||
                        uop == UOP_MOV_RA_RN || uop == UOP_MOV_RB_RN ||
                        uop == UOP_MOV_RN_RA)) ||
-        (step == 3 && (uop == UOP_LDI || uop == UOP_LDX ||
+        (step == 3 && (uop == UOP_CMP || uop == UOP_LDI || uop == UOP_LDX ||
                        uop == UOP_LDA_IDX || uop == UOP_STA_IDX)) ||
         (step == 4 && is_jump(uop)) ||
         (step == 5 && (uop == UOP_LDA || uop == UOP_STA)))
@@ -286,9 +285,13 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
             return ADDRESS_NONE | CTRL_MDR_OE | CTRL_RA_EN | CTRL_RA_RB_RW;
         return ADDRESS_NONE;
     case UOP_CMP:
-        /* CMP aggiorna i flag ma non riporta il risultato in RA. */
-        return step == 1
-                   ? ADDRESS_NONE | CTRL_FLAGS_WE
+        /* Il decoder ALU e K richiedono ALU_EN anche per CMP.
+         * T2 prepara il confronto; T3 salva i flag con ALU ancora attiva.
+         * RA, RB e MDR restano invariati; T4 torna al fetch.
+         */
+        if (step == 1) return ADDRESS_NONE | CTRL_ALU_EN;
+        return step == 2
+                   ? ADDRESS_NONE | CTRL_ALU_EN | CTRL_FLAGS_WE
                    : ADDRESS_NONE;
     case UOP_MOV_RA_RN:
         return step == 1
@@ -339,8 +342,12 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                 return READ_ADDRESS_HIGH;
             if (step == 3)
             {
-                return ADDRESS_NONE |
-                       (jump_is_taken(uop, flags) ? CTRL_PC_LOAD : 0);
+                /* Le uscite tri-state del MAR devono essere abilitate
+                 * durante il caricamento parallelo del PC.
+                 */
+                return jump_is_taken(uop, flags)
+                           ? ADDRESS_WORD(CPU8_ADDR_SEL_MAR) | CTRL_PC_LOAD
+                           : ADDRESS_NONE;
             }
         }
         return ADDRESS_NONE;

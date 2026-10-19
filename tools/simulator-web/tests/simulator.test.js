@@ -203,11 +203,18 @@ test("CMP aggiorna solo i flag e non modifica RA o RB", () => {
 test("i salti condizionati distinguono condizione vera e falsa", () => {
   const taken = loadBytes([FIXED_OPCODES.JZ, 0x34, 0x12]);
   taken.flags.Z = 1;
+  const takenT4 = planMicrocycles(taken)[3];
+  assert.equal(takenT4.signals, "ADDR_SEL=MAR(10) · PC_LOAD");
+  assert.equal(takenT4.preview.addressBus, 0x1234);
+  assert.equal(takenT4.preview.dataBus, null);
   stepCpu(taken, 0);
   assert.equal(taken.pc, 0x1234);
 
   const skipped = loadBytes([FIXED_OPCODES.JZ, 0x34, 0x12]);
   skipped.flags.Z = 0;
+  const skippedT4 = planMicrocycles(skipped)[3];
+  assert.equal(skippedT4.signals, "NESSUN SEGNALE");
+  assert.equal(skippedT4.preview.addressBus, null);
   stepCpu(skipped, 0);
   assert.equal(skipped.pc, 0x0003);
 });
@@ -267,11 +274,20 @@ start:
   assert.equal(sourceExecutionFor(state).line, 5);
 });
 
-test("CMP non abilita il data bus e gli opcode invalidi tornano al fetch", () => {
+test("CMP prepara ALU prima dei flag senza scrivere RA/RB/MDR; invalidi tornano al fetch", () => {
   const cmp = loadBytes([FIXED_OPCODES.CMP]);
-  const cmpExecute = planMicrocycles(cmp).at(-2);
-  assert.equal(cmpExecute.signals, "FLAGS_WE");
-  assert.equal(cmpExecute.preview.dataBus, null);
+  cmp.ra = 3; cmp.rb = 10; cmp.mdr = 0xaa;
+  const phases = planMicrocycles(cmp);
+  assert.deepEqual(phases.map(p => p.t), ["T1", "T2", "T3", "T4"]);
+  assert.equal(phases[1].signals, "ALU_EN");
+  assert.equal(phases[1].preview.flags, undefined);
+  const cmpExecute = phases[2];
+  assert.equal(cmpExecute.signals, "ALU_EN · FLAGS_WE");
+  assert.equal(cmpExecute.preview.dataBus, 249);
+  assert.deepEqual(cmpExecute.preview.flags, { C: 1, Z: 0, N: 1, O: 0 });
+  for (const phase of phases.slice(1)) {
+    for (const key of ["ra", "rb", "mdr", "regs"]) assert.equal(phase.preview[key], undefined);
+  }
   assert.equal(cmpExecute.paths.includes("alu-ra"), false);
   assert.equal(planMicrocycles(cmp).at(-1).signals, "NEXT_FETCH");
 

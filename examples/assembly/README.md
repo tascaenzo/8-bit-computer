@@ -18,9 +18,11 @@ La sintassi usata negli esempi e descritta in [`docs/assembly-language.md`](../.
 | `05_compare_unsigned.asm` | confronto unsigned con `CMP`, `JZ`, `JC` e `JMP` |
 | `06_labels_and_two_passes.asm` | label in avanti e assemblaggio in due passate |
 | `07_jump_conditions.asm` | panoramica di `JZ`, `JNZ`, `JC`, `JNC`, `JN`, `JNN`, `JO` e `JNO` |
+| `08_count_to_ten.asm` | contatore in RAM da un valore iniziale a 10 con `LDA`, `STA`, `ADD`, `CMP`, `JZ` e `JMP`, poi `HLT` |
 | `cu_isa_smoke.asm` | prova fisica senza IN/OUT: SUB, CMP, JNZ, memoria diretta/IDX e HLT; scrive tre byte verificabili in RAM |
+| `test_mar_pc.asm` | esegue subito `JMP 4` per verificare il caricamento MAR -> PC; distingue il salto riuscito dall'arresto a indirizzo 3 |
 
-`demo.asm` non e numerato perche serve come template autonomo. Gli altri file seguono l'ordine didattico consigliato da `01` a `07`.
+`demo.asm` non e numerato perche serve come template autonomo. Gli altri file seguono l'ordine didattico consigliato da `01` a `08`.
 Riassemblare gli esempi prima di caricarli nella EPROM programma: i nuovi
 opcode di `SUB` e dei salti condizionati non sono compatibili con i vecchi
 binari.

@@ -111,10 +111,14 @@ Le uscite attive basse inattive restano a `1`: in particolare `D5`, `D6` e
 
 In RUN, il microstep che esegue l'ultima operazione ha sempre `D7=1`.
 La fase successiva ha normalmente `ROM0=0x73`, `ROM1=0x02`, `ROM2=0x49`:
-solo `NEXT_FETCH_n` e attivo. Il ritorno e in T3 per NOP/CMP/MOV, in T4
-per LDI/LDX/LDA-STA IDX, in T5 per i salti e in T6 per LDA/STA diretti.
+solo `NEXT_FETCH_n` e attivo. Il ritorno e in T3 per NOP/MOV, in T4
+per CMP/LDI/LDX/LDA-STA IDX, in T5 per i salti e in T6 per LDA/STA diretti.
 Per ALU il ritorno T6 mantiene `MDR_OE`: `ROM0=0x63`, `ROM1=0x02`,
 `ROM2=0x49`. Risultato e flag sono salvati in T3, RA in T5.
+Per CMP: T2 attiva `/ALU_EN` (ROM2 D0 = 0); T3 mantiene `/ALU_EN`
+e attiva `FLAGS_WE` (ROM2 D1 = 1); T4 attiva solo `NEXT_FETCH`.
+RA, RB e MDR non vengono scritti. Questa revisione richiede ROM0 e ROM2 aggiornate.
+
 Le immagini fisiche devono essere rigenerate e riprogrammate per ottenere
 questa nuova sequenza; il BOOT di ROM0 resta `0x91, 0xB5, 0x31`.
 Per la ISA RUN completa senza IN/OUT anche la EPROM programma va
@@ -128,3 +132,11 @@ fase D6 vale `1`, compresi BOOT e T1. La OR esterna
 l'abilitazione del contatore microstep. Questa **nuova uscita cambia il
 binario della Control ROM 2**: va riprogrammata prima di collegare D6
 alla logica esterna. ROM0 e ROM1 non cambiano per il solo decoder di sistema.
+
+## Correzione del 19 ottobre 2026: MAR durante i salti
+
+Durante T4 di un salto eseguito ROM0 vale `0xF2` (selettore MAR `10`),
+ROM1 vale `0x00` (`PC_LOAD` attivo basso) e ROM2 vale `0x49`.
+Per un salto non eseguito restano `0xF3`, `0x02`, `0x49`.
+La modifica riguarda solo ROM0 e abilita le uscite MAR durante il caricamento.
+PC_INC resta a zero: verificare che il PC riceva comunque il fronte di clock.
