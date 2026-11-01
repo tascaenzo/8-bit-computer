@@ -1,5 +1,7 @@
 # Collegamento CPU HC → Tang Nano 9K con SN74LVC8T245
 
+> **Architettura aggiornata — 21 ottobre 2026:** questo documento conserva il precedente cablaggio video. Il [bus memoria e I/O](io-bus.md) sceglie RAM da 8 KiB selezionata tramite chip enable e richieste `/RD` e `/WR` generali; decoder, mappa video e timing vanno adeguati prima del collegamento.
+
 14 ottobre 2026. Scelta finale: quattro SN74LVC8T245PWR su adattatori
 TSSOP-24 → foro passante. Progetto FPGA aggiornato, simulazione e bitstream
 verificati; cablaggio reale e HDMI ancora da collaudare.

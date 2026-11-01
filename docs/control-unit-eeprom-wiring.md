@@ -1,5 +1,7 @@
 # Collegamenti EEPROM della Control Unit
 
+> **Scelta I/O — 21 ottobre 2026:** il [bus memoria e I/O](io-bus.md) riutilizza la OR dei tre bit alti per il chip enable della RAM; `RAM_OE` e `RAM_WE` diventano richieste generali. ROM2 D7 resta riservato. Il collegamento al chip enable e il timing vanno verificati; gli interblocchi di boot e reset descritti sotto restano necessari.
+
 Le tre EEPROM di controllo condividono lo stesso bus indirizzi. Il segnale
 `BOOT_RUN` può utilizzare `A12` per selezionare due banchi di microcodice da
 4096 byte: `0` per boot e `1` per run.

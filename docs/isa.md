@@ -1,5 +1,7 @@
 # ISA CPU 8-bit
 
+> **Aggiornamento I/O — 21 ottobre 2026:** la scelta corrente e descritta nel [bus memoria e I/O](io-bus.md): RAM da 8 KiB selezionata tramite chip enable, spazio esterno per periferiche, `RAM_OE`/`RAM_WE` usati come richieste generali `/RD` e `/WR`. Gli accessi usano `LDA`/`STA` e `LDAI`/`STAI`; le proposte di `IN`/`OUT` tramite IDX e direzione su A4 sono superate. La precedente mappa video resta da adeguare.
+
 Bozza della Instruction Set Architecture della CPU didattica a 8 bit.
 
 Questa specifica descrive l'architettura visibile al software, la semantica delle istruzioni e la loro codifica macchina: CPU a 8 bit, architettura di Von Neumann, memoria unica per codice e dati, bus dati a 8 bit e bus indirizzi a 16 bit.

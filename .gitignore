@@ -8,6 +8,8 @@ build/
 .next/
 coverage/
 tmp/
+__pycache__/
+*.py[cod]
 
 # Logs
 *.log

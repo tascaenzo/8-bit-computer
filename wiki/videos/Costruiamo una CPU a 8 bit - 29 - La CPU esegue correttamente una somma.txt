@@ -1,0 +1,610 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Oggi continuiamo la
+serie della CPU a 8 bit e vediamo il
+primo programma in esecuzione
+all'interno del nostro computer. Ma
+prima di iniziare vi ricordo di lasciare
+un mi piace, commentare questo video e
+iscrivervi al mio canale in modo da
+supportare il mio lavoro.
+Nello scorso video abbiamo completato il
+cablaggio della prima versione della
+Control Unit collegando le restanti e
+all'interno del circuito. Nel video di
+oggi voglio fare un primo test dove
+provo a eseguire un semplice programma
+in assembly.
+In pratica si tratta di un piccolo
+programma che va a caricare due valori
+all'interno del registro R6 ed R7. Fa lo
+spostamento in RA ed RB e fa la somma
+tra i due registri. Quindi alla fine io
+mi aspetto che all'interno del registro
+RA ho il risultato 4 + 1 della somma.
+Analizziamo brevemente il codice.
+Iniziamo con questa istruzione che è
+semplicemente va a dire all'assemblatore
+che il programma parte dal blocco zero,
+dall'indirizzo zero. Come prima
+istruzione abbiamo il caricamento del
+valore 4 immediato all'interno del
+registro R6. La seconda istruzione
+invece carica il valore 1 all'interno di
+R7, poi viene fatto lo spostamento di R7
+all'interno del registro RA e di R6
+all'interno del registro RB. A questo
+punto viene fatta la somma tra RA ed RB
+perché ricordo che all'interno della
+nostra CPU l'AD funziona tra gli
+operandi RA ed RB il valore contenuto
+all'interno di questi due registri e
+alla fine viene fatto l'ALT che va a
+bloccare la CPU.
+Qui di seguito abbiamo lo stesso
+programma, però ho inserito un po' di
+documentazione
+che mi aiuta nelle fasi di debug. In
+pratica mi va a dire per ogni singolo
+macrostep che cosa mi devo aspettare,
+quali segnali di enable vengono
+attivati, cosa devo trovare all'interno
+dell'istruction register, eh all'interno
+del bass degli indirizzi, del bass della
+dei dati e così via. Quindi tutte questi
+questi commenti saranno poi utili in una
+fase di debug. Quindi ho già caricato
+questo programma all'interno della eprom
+del codice. Non ci resta che provare a
+eseguire questo programma all'interno
+del nostro computer.
+Ho eseguito il programma che abbiamo
+appena visto all'interno della nostra
+CPU. Il problema è che alla fine
+dell'esecuzione io mi aspetto il valore
+5 all'interno del registro RA come
+risultato finale dell'esecuzione del
+programma. però non ho questo risultato.
+Meglio, a volte ho questo risultato, a
+volte non ho questo risultato. Ho capito
+che probabilmente il problema è dovuto
+ad alcuni glitch che vanno a generare le
+eprom della Control Unit durante la
+variazione
+dei loro ingressi, quindi delle linee di
+indirizzo delle eprom e diciamo che
+queste piccole questi piccoli glitch
+vanno a creare dei dei segnali scuri che
+ehm il i vari registri vanno a scambiare
+come degli impulsi di clock di
+attivazione e quindi i dati che vengono
+vengono salvati all'interno dei
+registri, sono dati errati, sono dati
+sbagliati, comunque è qualcosa che sta
+transitando all'interno del Bastati che
+però non dovrebbe essere salvato
+all'interno del registro.
+Ho fatto un po' di ricerca online e ho
+visto che questo è un problema noto
+perché comunque le varie control, le
+varie e aproma, che danno degli impulsi
+stabili
+passa qualche eh nanosecondo da quando
+cambiano gli indirizzi a quando abbiamo
+un valore effettivamente stabile in
+uscita. Ora proviamo a cercare di capire
+come risolvere questo problema per
+provare quindi a eseguire nuovamente il
+programma salvato all'interno della
+eprom contente. E cerchiamo di trovare
+una soluzione.
+All'interno di questa slide vediamo un
+diagramma a blocchi che spiega un po' il
+funzionamento della nostra unità
+aritmeticologica all'interno della CPU e
+il programma che abbiamo appena
+eseguito. Se vado a vedere il programma,
+dopo che ho fatto un caricamento
+all'interno dei registri R6 ed R7,
+vediamo subito che abbiamo due
+istruzioni di move che vanno a spostare
+R7 in RA ed R6 in RB. Quindi al fine
+alla fine di queste due istruzioni
+dovrei avere i valori 4 e 1 all'interno
+di questi due registri e questo ha senso
+perché in effetti questi due registri
+sono collegati direttamente agli
+operandi dell'alu. Quando vado a fare
+l'istruzione, quando vado a eseguire
+l'istruzione di ad si va a attivare la
+l'unità aritmeticologica che prenderà
+questi ingressi e in uscita mi darà la
+loro somma.
+Ora, che cosa succede? In teoria
+rispetto al progetto iniziale il
+risultato doveva essere salvato
+direttamente in Ra. Siccome avevo paura
+che il problema dovuto al risultato
+falsato in RA era dovuto al fatto che eh
+salvando direttamente il risultato in Ra
+va subito a variare l'ingresso dell'alo
+e questo poteva creare dei problemi
+causando poi un un successivo ricalcolo
+dell'uscita.
+Però in effetti non era questo il
+problema. In ogni caso ho provato a
+inserire il registro MDR come registro
+temporaneo, quindi il risultato viene
+salvato all'interno di MDR e poi da MDR
+in uno step successivo viene salvato in
+RA. Per fare questo ho fatto una piccola
+modifica semplicemente al codice eh
+della delle, dato che dopo la modifica
+che ho fatto all'interno del dell'alu,
+quindi salvando il risultato prima nell
+MDR e poi all'interno del registro A,
+non ha risolto il problema del valore
+errato alla fine dell'esecuzione. Ho
+cercato altrove. Facendo una ricerca
+online sembra che sia un problema noto
+dovuto all'EPROM. Lo schema attuale qual
+è? Attualmente
+l'ingresso degli indirizzi delle che
+costituiscono la Control Unit è
+collegato a Opticode, flag, microstep
+in realtà abbiamo anche il segnale Root.
+Che cosa succede? Succede che quando
+cambia uno di questi ingressi, uno di
+questi segnali, c'è un breve periodo
+d'assestamento
+durante il cambiamento prima che le prom
+diano in output un'uscita stabile.
+Durante questo periodo d'assestamento si
+possono creare dei clock spuri, cioè dei
+clock non voluti dei segnali dei clock
+non voluti che vanno a innescare dei
+salvataggi all'interno dei registri. Lo
+capiamo meglio seguendo questa piccola
+slide.
+Prendiamo il caso in cui abbiamo il
+clock principale. Sul fronte di salita
+del clock è cambiato l'indirizzo delle
+dell'eprom della control unit. Abbiamo
+un breve periodo in cui le control unit
+danno dei glitch. Ad esempio, facciamo
+il caso che questo sia un enable di un
+determinato registro. Durante questo
+glitch, durante questa fase di
+transizione va a + 5 V il segnale per un
+brevissimo istante l'uscita dell'Eprum e
+poi torna al valore logico basso che è
+quello che ci aspettiamo dalla dal
+risultato dell'input dell'Eprom. Che
+cosa succede? Succede che il clock del
+registro coinvolto è collegato tramite
+una porta end a questi due segnali. Che
+cosa vuol dire? Vuol dire che nell'end
+va il clock principale e va l'enable
+della eprom. Arrivati a questo istante
+di tempo abbiamo i due segnali a + 5 V,
+quindi passa il segnale di clock e il
+registro vede questo, vede un
+involontario segnale di clock spurio.
+Questo segnale di clock va a innescare
+il salvataggio del dato che sta
+transitando all'interno del bass dei
+dati, però potrebbe non essere questo
+quel valore destinato a quel determinato
+registro e quindi abbiamo un valore che
+va a sporcare il nostro registro e poi
+va a falsare i risultati della nostra
+CPU. Per risolvere questo problema ho
+pensato di inserire tra gli ingressi
+della EPROM e i vari segnali, quindi
+Opticod, flag e microstep, un registro.
+L'idea qual è? È che vado a salvare una
+determinata il valore di Opticode, flag,
+microstep e il segnale di boot
+all'interno di un registro e poi
+l'uscita del registro lo vado a
+collegare direttamente alla agli
+indirizzi delle control unit. Però la
+particolarità è che voglio che venga
+fatto il salvataggio all'interno del
+registro soltanto sui fronti di discesa
+del clock. Cosa vuol dire? Vuol dire che
+se io vado a prendermi questo piccolo
+schema dove c'ho il clock della CPU e
+c'ho il clock negato,
+ottengo un secondo segnale di clock che
+andrà ad avere un fronte di salita
+quando il clock principale è sul fronte
+di discesa. La mia idea è di sfruttare
+il momento in cui abbiamo il fronte di
+discesa del clock per aggiornare il
+registro che poi andrà a pilotare gli
+ingressi della eprom. In questo modo
+abbiamo tutta una serie
+temporale in cui si stabilizzeranno le
+uscite della control unit e poi sul
+fronte di salita del clock, quando noi
+effettivamente dovremmo fare dei
+salvataggi, avremo delle uscite stabili.
+e quindi dovremmo in questo modo
+risolvere il problema del del glitch.
+Lo vediamo meglio in questa in questa
+slide dove abbiamo tutti i vari fronti,
+abbiamo il clock originale, gli
+indirizzi della eprom
+su che cosa succede? Succede che sul
+fronte di discesa del clock, che è
+rappresentato qui, qualche istante dopo
+avremo il nuovo indirizzo della EPROM,
+quindi avremo il nuovo indirizzo valido
+che eh viene dall'uscita del del dei
+registri che abbiamo appena inserito.
+Invece sul fronte di salita, eh che cosa
+succede? avremo l'esecuzione vera e
+propria di quel macrostep, quindi un
+eventuale salvataggio, comunque
+un'operazione, però eh il periodo di
+transitorio che è indicato qui è ehm
+avviene durante tutta la fase in cui il
+clock principale è eh giù, quindi è sul
+fronte di discesa, quindi non dovrebbero
+esserci problemi. Invece poi sul fronte
+di salita avremo un valore stabile e con
+questa soluzione dovremmo risolvere il
+problema.
+I registri che voglio utilizzare per
+fare questa modifica sono 274 377, sono
+registri 8 bit. Finora nel progetto
+abbiamo utilizzato i 74574
+che erano sempre registri 8 bit, però
+avevano la comodità di avere le uscite
+tutte da un lato e gli ingressi tutto da
+unaltro lato più un segnale per la
+gestione dell'alta impedenza. I 74377
+invece non hanno il segnale che gestisce
+l'alta impedenza, quindi abbiamo sempre
+le uscite disponibili, ma per quello che
+dobbiamo fare va bene così perché non
+esistono mai dei casi in cui le uscite
+devono andare all'alta impedenza. Vi
+prendo uno schema. M qui abbiamo, ok, la
+pietra natura, però forse con questo
+schema riusciamo a inquadrare meglio la
+situazione. In pratica abbiamo otto flip
+flop e il segnale di clock e poi un
+enable generale. L'enable generale lo
+metto sempre a massa perché è attivo
+basso. Invece il segnale di clock sarà
+il clock negato. Il clock negato andrà a
+salvare la nuova informazione ogni in
+ogni ciclo di clock. Quindi ogni ciclo
+blocco sul fronte di discesa avremo il
+salvataggio. Qui abbiamo i classici otto
+flip flop di tipo D. Su ogni flip flop
+abbiamo eh l'ingresso Duscita Q.
+Ho realizzato questa piccola tabella che
+ci va a indicare per ogni istruzione
+tutti i macrostep che la compongono,
+dandoci un'informazione sulla tipologia
+di operazione che viene eseguita per
+ogni macrostep.
+Ad esempio, partiamo con l'istruzione di
+Load che carica l'immediato 4
+all'interno del registro R6. Capiamo
+subito che questa questa istruzione ha
+bisogno di quattro macrostep.
+Nel primo macro step, quindi siamo in
+T1, facciamo la il fetch e quindi
+andiamo a leggere l'istruction register
+e andiamo dopodiché a incrementare il
+program counter.
+Nell'istruzione T2 invece carichiamo eh
+l'immediato all'interno dell MTR che è
+il memory data register e facciamo un
+altro incremento del program counter.
+Nel del macrostep T3 invece facciamo la
+copia da MDR ad R6 che è il registro
+effettivamente
+destinatario del dell'immediato 4. E
+invece nell'istruzione T4 andiamo nella
+fase di fetch dell'istruzione
+successiva, quindi andiamo a resettare
+il contatore macrostep
+qui questa istruzione ha i medesimi
+passaggi perché comunque è la stessa
+istruzione va a cambiare il registro e
+in ogni caso l'istruzione di fetch,
+quindi la fase T1 è uguale per tutte le
+istruzioni perché di fatto andiamo a
+leggere l'istruction register e a fare
+un incremento del program counter.
+Successivamente abbiamo il move, quindi
+andiamo a spostare R7 su RA. Ovviamente
+io dico spostare, ma in realtà non è un
+vero e proprio spostamento, ma stiamo
+copiando i registri perché poi in R7 in
+ogni caso continuiamo ad avere il valore
+che abbiamo appena copiato in RA.
+Al solito T1 è uguale. Facciamo il
+fetch, quindi leggiamo instruction
+register e incrementiamo il program
+counter. In T2 facciamo la copia
+da ehm R7 a RA e poi in T3 andiamo a
+fare il reset del contatore microstep,
+quindi passiamo all'istruzione
+successiva. Ovviamente anche qui questa
+questa istruzione è la medesima perché
+eh cambia soltanto i due registri da
+passione ad RB R6, ma i passaggi sono
+sempre quelli. Successivamente viene
+fatta l'AD.
+L'AD ha bisogno di sei macrostep.
+Nel primo macro step al solito abbiamo
+il fetch, quindi viene eletta
+l'istruzione dall'istruction register e
+poi viene incrementato il program
+counter.
+Poi eh nel passaggio T2 eh l'alu fa
+effettivamente
+viene present
+dei valori che ha in ingresso nei
+registri IP e quindi sul bass dati già
+qua dovremmo leggere il il valore 5
+all'interno del macrostep T2. Su T3
+invece andiamo a fare il salvataggio dei
+flag
+e contemporaneamente
+salviamo in MDR. Il risultato. Lo
+salviamo in MDR e non in A perché
+abbiamo detto che avevo fatto quella
+piccola modifica eh passando
+temporaneamente dal registro MDR.
+Nel macrostep successivo MDR va a
+impostare la propria uscita sul bass
+dati, quindi sul bass dati abbiamo
+sempre il valore 5, però viene letto dal
+registro MDR.
+Sullo step T5 invece viene fatta
+effettivamente la copia da MDR ad R ad
+RA. Su T6 invece abbiamo il reset del
+contatore di Macrostep e quindi eh
+abbiamo
+il fetch successivo.
+Poi passiamo all'istruzione di Alt. Qui
+abbiamo solo due macrostep. Abbiamo la
+lettura del del
+segnale di Alt dal dall'istraction
+register, quindi facciamo al solito il
+fetch. viene incrementato il program
+counter e a quel punto eh la logica
+delle control unit al piccolo circuito
+esterno che fa l'or bit a bit vanno a
+fermare la CPU andando a interrompere il
+segnale di clock che va a incrementare
+il contatore nei macrostep. Quindi
+diciamo che eh questa qua è la sequenza
+corretta che noi ci aspettiamo
+all'interno della nostra CPU eseguendo
+il programma che attualmente è salvato
+all'interno della promodice.
+Adesso lo step successivo è provare a
+rieseguire questo programma all'interno
+della nostra CPU a 8 bit, del nostro
+computer a 8 bit e vedere se
+effettivamente dopo aver fatto la
+modifica dei registri riusciamo a
+ottenere il risultato 5 all'interno del
+registro RA. Alla fine dell'esecuzione
+ho aggiunto i due registri 74377,
+modificato i vari cablaggi che portano
+poi i segnali al basso degli indirizzi
+delle tre eprom. A questo punto non ci
+resta che provare a fare una esecuzione
+vera e propria del programma di esempio
+di AD che abbiamo appena visto.
+A questo punto arriva la parte più
+difficile, cioè farvi vedere un po' la
+prima esecuzione del nostro programma.
+Da questa inquadratura dovremmo avere
+una panoramica di tutta tutto il nostro
+computer. Ho collegato il tester per
+fare alcune misurazioni. Qui ho la
+tabella che vi avevo appena mostrato,
+così cerco di avere un riscontro del
+macrostep delle istruzione
+effettivamente in esecuzione. Quindi ora
+dovremmo avviare tutto e vedere se
+effettivamente riusciamo a eh riusciamo
+a eseguire il nostro programma e ci
+ritroviamo con i vari macrostep
+descritti in questa tabella.
+A questo punto do alimentazione alla
+CPU.
+Siamo in fase di boot, lo vediamo da
+questo led. Proviamo a eseguire il boot.
+Ok,
+ho passato dal clock manuale a quello
+automatico, ho fatto la fase di boot,
+quindi andiamo in run.
+A questo punto dovremmo fare un reset
+del contatore macrostep. Oltre a fare un
+reset del contatore macrostep, dobbiamo
+anche far trascorrere un intervallo di
+clock, in modo che in fase di discesa eh
+del clock si va a resettare pure i
+registri che vanno a fare da
+intermediari tra gli ingressi della
+control unit e i vari
+e vari segnali destinati ad esse.
+Quindi, oltre a fare il reset, premiamo
+il pulsante
+giallo per fare per dare un impulso di
+clock. Ok,
+a questo punto dovremmo essere pronti a
+fare l'esecuzione vera e propria del
+programma. Siamo nell'istante T1, lo
+vediamo da qui. Quindi siamo in fase di
+fetch. Sta comandando attualmente il
+basso degli indirizzi il program
+counter. Lo vediamo da questo LED
+acceso. Se do un impulso di clock dovrei
+fare la fase di fetch, quindi copiare
+questo valore che è all'interno della
+prima laella prima cella della della RAM
+all'interno dell'istruction register.
+Quindi do un impulso di clock. È stato
+fatto ed è anche stato incrementato il
+program counter ed è corretto rispetto a
+questa tabella. A questo punto stiamo
+facendo stiamo spostando all'interno
+dell MDR, quindi memory data register il
+secondo valore dell'istruzione della
+prima istruzione che stiamo eseguendo
+che è il valore 4 che poi dovrà essere
+salvato all'interno del registro R6
+attualmente, quindi lo stiamo copiando
+all'interno di MDR. Do un altro impulso
+di clock.
+Siamo all'interno dell'istante T3. E che
+cosa succede? Succede che devo fare
+effettivamente il salvataggio
+all'interno del registro R6. In effetti
+dal selettore registri si è acceso il
+LED relativo a R6 e si è acceso anche
+questo LED rosso che va a segnarmi, mi
+va a indicare la scrittura all'interno
+di R6 ed è coerente perché vuol dire
+siamo pronti a scrivere questo valore 4
+all'interno di eh R6.
+Do un altro impulso di clock, vado in
+T4.
+A questo punto il salvataggio dovrebbe
+essere stato eseguito e dando un nuovo
+impulso ai clock faccio il reset del
+contatore macrostep e quindi passo
+all'istruzione successiva alla nuova
+fetch. Vediamo se è vero. In effetti è
+così.
+A questo punto che cosa succede? Succede
+che
+sono di nuovo in fase di fetch. Quindi
+questo questo valore è l'istruzione che
+deve essere salvata nell'istruction
+register do un altro impulso di clock.
+Ok, a questo punto ho il valore 1 che
+sto leggendo dalla RAM ed effettivamente
+il valore 1 è quello che poi sarà
+destinato a R7. Nel primo passaggio mi
+aspetto che venga salvato all'interno
+del dell MDR.
+Ok. Eh, per errore ho cliccato due
+volte. In ogni caso siamo a questo punto
+a T3. Che cosa succede? Succede che
+all'interno del R7 devo salvare il
+valore 1. Ho il valore 1 che arriva dal
+dall MDR. C'ho ehm selezionato il
+registro R7 e sono in scrittura, quindi
+anche questo è coerente. Do un altro
+impulso di clock, arrivo a T4.
+A questo punto viene fatto il reset
+della del contatore microstep e quindi
+dando un altro impulso di clock vado
+avanti e dovrei trovarmi all'interno
+dell'istruzione di move.
+Vado avanti, faccio il fetch
+dell'istruzione di move
+un altro impulso. Che cosa succede?
+Succede che da sono ho attivo R7, quindi
+sono in lettura su R7. è coerente perché
+ho il valore uno che era quello che
+avevo appena salvato, quindi in effetti
+il salvataggio è andato a buon fine. Mi
+si accende questo LED rosso che va a
+indicarmi che sto facendo una scrittura
+all'interno del blocco dei registri R o
+RB.
+Vado avanti
+e sono su T3. Vado ancora avanti e
+dovrei andare nell'istruzione
+successiva. Faccio il fetch.
+A questo punto dovrei essere nel blocco
+successivo, quindi dovrei spostare
+seguendo questa tabella, dovremmo essere
+su move R6 su RB. Do un altro impulso di
+clock.
+In effetti su R6, sono in lettura su R6,
+ho il valore 4 ed è coerente con la
+lettura che sto facendo. Mi si è acceso
+anche il questo LED va a indicarmi la
+scrittura su il blocco registri R ed RB.
+Vado avanti.
+Ok, dovrei aver salvato questo valore
+all'interno del registro
+RB. Vado ancora avanti. Ok. Sto facendo
+il fetch di questa istruzione che
+dovrebbe essere l'AD. Vado ancora
+avanti.
+Ok, mi soffermerei su questo step perché
+siamo 22,
+viene abilitata la l'alu e si vede da
+questo LED che ho selezionato
+l'istruzione di AD, ma la cosa
+importante è che in output sul bass dati
+ho 5, che in effetti è la somma tra 4 +
+1, quindi l'alu sta eseguendo la somma e
+nel bass del dati o 5 risultato
+dell'alu.
+Vado ancora avanti.
+A questo punto dovrei aver salvato
+questo cinque all'interno del registro
+MDR. Vado avanti.
+A questo punto dovrei spostare questo
+cinque all'interno del registro RA. Vado
+ancora avanti. Sto facendo
+effettivamente la scrittura su RA. Ok,
+sono andato avanti e sto facendo il
+fecch dell'istruzione successiva. Come
+vedete il fecchio dell'istruzione
+successiva sono tutti bit a zero. Tutti
+bit a zero coincide con l'alt della CPU.
+Vado ancora avanti.
+Sono su T2. Mi si è acceso l'alt della
+CPU e in effetti è coerente perché ho
+fermato la CPU. Ora, se do altri impulsi
+di clock, non succede assolutamente
+nulla perché perché la CPU è la CPU è in
+alto e quindi l'esecuzione vera e
+propria del programma è avvenuta con
+successo.
+A questo punto proverei a leggermi RA e
+dovrei aspettarmi il valore 5. Poi
+vediamo se è vero. Vado a fare una
+lettura col tester.
+Allora, questo è il bit meno
+significativo, l'ultimo ed è a + 5 V ed
+è corretto.
+Il successivo è a zero e anche questo è
+corretto.
+Vado avanti
+e il bit successivo a 1 e anche questo è
+corretto, quindi siamo a 5. Ora dovrei
+aspettarmi tutti gli altri bit a zero,
+però là ho il valore 5. Gli altri sono a
+zero. Questo è a zer.
+Quello successivo ancora è a 0
+e 0. Quindi in effetti abbiamo eseguito
+la nostra il nostro programma e come
+risultato finale in Ra ho il valore 5. E
+già questo qua secondo me è un successo
+perché vuol dire che la nostra CPU ha
+eseguito un programma vero e proprio che
+eh avevamo caricato all'interno della
+ROM, nella fase di boot, l'abbiamo
+spostato nella RAM e poi l'esecuzione
+vera e propria eh si è completata
+fermando la CPU.
+Io direi che per questo video è tutto.
+Ci vediamo in un prossimo video.

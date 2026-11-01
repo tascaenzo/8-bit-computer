@@ -1,5 +1,7 @@
 # Indice delle specifiche FPGA
 
+> **Architettura aggiornata — 21 ottobre 2026:** il riferimento corrente e il [bus memoria e I/O](io-bus.md): chip enable della RAM dalla OR dei tre bit alti e richieste `/RD` e `/WR` condivise. La mappa sotto e il decoder della precedente implementazione sono da adeguare; non sono previsti `IO_ENABLE` da EEPROM o direzione su A4.
+
 > **Versione:** 1.0
 > **Data:** 3 settembre 2026
 

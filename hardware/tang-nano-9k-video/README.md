@@ -1,5 +1,7 @@
 # Scheda video CPU 8-bit — Tang Nano 9K
 
+> **Architettura aggiornata — 21 ottobre 2026:** il [bus memoria e I/O](../../docs/io-bus.md) sceglie RAM CPU da 8 KiB selezionata tramite chip enable e richieste `/RD` e `/WR` condivise. RTL e bitstream qui descritti conservano la precedente mappa video; decoder, pinout e contratto temporale vanno verificati e adeguati alla nuova interfaccia.
+
 Progetto RTL completo per il sottosistema video. Bitstream generato con
 Yosys/nextpnr/Apicula; non ancora provato su una Tang collegata alla CPU.
 

@@ -1,5 +1,7 @@
 # Scheda video FPGA: bus CPU, VRAM e caratteri
 
+> **Architettura aggiornata — 21 ottobre 2026:** il video sara una periferica del [bus memoria e I/O](io-bus.md), con RAM CPU da 8 KiB esclusa tramite chip enable. Gli accessi usano le normali istruzioni memoria e `/RD`/`/WR`; la finestra video e il decoder sotto descrivono la precedente implementazione. La nuova mappa registri resta da definire.
+
 Stato: RTL video integrato, test passati e bitstream generato; collaudo fisico da eseguire.
 Data: 14 ottobre 2026.
 

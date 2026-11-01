@@ -21,6 +21,7 @@ La sintassi usata negli esempi e descritta in [`docs/assembly-language.md`](../.
 | `08_count_to_ten.asm` | contatore in RAM da un valore iniziale a 10 con `LDA`, `STA`, `ADD`, `CMP`, `JZ` e `JMP`, poi `HLT` |
 | `cu_isa_smoke.asm` | prova fisica senza IN/OUT: SUB, CMP, JNZ, memoria diretta/IDX e HLT; scrive tre byte verificabili in RAM |
 | `test_mar_pc.asm` | esegue subito `JMP 4` per verificare il caricamento MAR -> PC; distingue il salto riuscito dall'arresto a indirizzo 3 |
+| `countdown_from_ram.asm` | conto alla rovescia di 7 istruzioni: legge 3 dalla RAM e conta fino a zero con `SUB` e `JNZ`; 13 byte incluso il dato |
 
 `demo.asm` non e numerato perche serve come template autonomo. Gli altri file seguono l'ordine didattico consigliato da `01` a `08`.
 Riassemblare gli esempi prima di caricarli nella EPROM programma: i nuovi

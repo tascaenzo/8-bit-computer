@@ -1,5 +1,7 @@
 # Specifica I/O, tastiera PS/2 e timer — Tang Nano 9K
 
+> **Architettura aggiornata — 21 ottobre 2026:** tastiera e timer seguiranno il [bus memoria e I/O](io-bus.md), con selezione nello spazio esterno alla RAM da 8 KiB e richieste generali `/RD` e `/WR`. Gli indirizzi sotto appartengono alla specifica precedente; ID e nuova mappa registri restano da definire.
+
 > **Stato:** baseline implementabile
 > **Versione:** 1.0
 > **Data:** 3 settembre 2026

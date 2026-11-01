@@ -27,6 +27,7 @@ In questa fase il repository contiene documentazione, una prima ISA, esempi asse
 
 Contiene la documentazione tecnica della CPU:
 
+- [`docs/io-bus.md`](docs/io-bus.md) definisce il bus memoria e I/O: RAM da 8 KiB selezionata tramite chip enable e richieste di lettura/scrittura condivise; include conservazione dei dati e stato della migrazione.
 - [`docs/isa.md`](docs/isa.md) definisce architettura, istruzioni e opcode;
 - [`docs/assembly-language.md`](docs/assembly-language.md) definisce la sintassi dei programmi assembly.
 - [`docs/control-unit-microcode.md`](docs/control-unit-microcode.md) definisce segnali e microsequenze della Control Unit.

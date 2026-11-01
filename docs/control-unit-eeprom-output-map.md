@@ -1,5 +1,7 @@
 # Mappa uscite EEPROM della Control Unit
 
+> **Scelta I/O — 21 ottobre 2026:** nel [bus memoria e I/O](io-bus.md), `RAM_OE` e `RAM_WE` hanno ruolo di richieste generali `/RD` e `/WR`. Le assegnazioni EEPROM non cambiano e ROM2 D7 resta riservato; la precedente proposta `IO_ENABLE` e superata.
+
 Questa e la mappa di cablaggio delle uscite `D0..D7` delle tre AT28C64 della
 Control Unit. Le tre EEPROM condividono gli ingressi `A0..A12`; le loro uscite
 formano insieme la microistruzione della CPU.

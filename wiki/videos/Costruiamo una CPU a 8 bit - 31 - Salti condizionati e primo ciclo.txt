@@ -1,0 +1,389 @@
+Bentornati sul mio canale YouTube. Oggi
+continuiamo la serie sulla CPU a 8 bit.
+Nel video di oggi continuiamo a provare
+dei programmi all'interno del nostro
+computer, ma prima di iniziare vi
+ricordo di lasciare un mi piace,
+commentare questo video e iscrivervi al
+mio canale in modo da supportare il mio
+lavoro.
+Nel video precedente abbiamo parlato dei
+salti e abbiamo fatto un test con un
+programma che seguiva un salto
+incondizionato. Nel video di oggi voglio
+scrivere un piccolo programma che
+utilizza un salto condizionato, quindi
+salta solo se si verificano determinate
+condizioni. Fa un caricamento di un dato
+dalla RAM, quindi testiamo anche il
+caricamento dalla RAM e unendo un po'
+tutte queste cose andiamo a realizzare
+una sorta di ciclo all'interno del
+nostro programma. Ho rappresentato il
+diagramma a blocchi in questa piccola
+slide. In pratica, eh, l'algoritmo che
+dobbiamo realizzare deve fare un
+conteggio decrementando a ogni ciclo il
+valore di una variabile, quindi una
+sorta di contatore. Nel primo ciclo sarà
+tre, poi andremo a due, poi andremo a 1
+e poi andremo a zero e poi si fermerà il
+programma.
+Partiamo subito analizzando il diagramma
+a blocchi. Abbiamo l'inizio del nostro
+programma e la prima operazione da fare
+è la lettura. Ho pensato di caricare in
+memoria RAM un valore, ad esempio 3,
+viene preso dalla RAM, viene letto dalla
+RAM e viene spostato su un registro. Per
+ora l'ho chiamato contatore, comunque lo
+sposteremo in un registro.
+Successivamente viene spostato
+all'interno del registro
+il contatore -1.
+Successivamente si fa una comparazione.
+Se il contatore è diverso da zero, si
+riva a questo punto e si esegue
+nuovamente la sottrazione. Quando questa
+condizione sarà verificata, faremo l'alt
+della CPU e quindi fermeremo la CPU.
+Questo programma in assembly va a
+rappresentare ciò che abbiamo appena
+visto all'interno del diagramma a
+blocchi. Partiamo subito con
+l'istruzione punto code che va a dire
+semplicemente all'assemblatore che eh il
+blocco di codice inizia dal primo
+indirizzo della RAM, l'indirizzo 0.
+Subito dopo abbiamo il caricamento del
+valore 1 all'interno del registro R1. ci
+servirà, ci servirà poi per andare a
+fare eh le sottrazioni.
+Successivamente carichiamo all'interno
+di R0 il valore contenuto nella
+variabile start. La variabile start è
+definita qui nel blocco data e in
+pratica è un byte che contiene il valore
+3. Quindi qua andiamo effettivamente a
+testare il caricamento dalla RAM.
+Poi facciamo la move per spostare R0 in
+Ra e poi R1 in RB. Facciamo questo
+spostamento perché effettivamente
+ricordo che all'interno della nostra CPU
+l'alu è collegata ai registri RA ed RB.
+Poi facciamo poi abbiamo l'etichetta
+loop e inizia effettivamente eh il loop
+del nostro programma. Abbiamo la prima
+istruzione che è la sub fa la
+sottrazione tra RA - RB. Successivamente
+abbiamo l'istruzione di jump.
+L'istruzione jump if not zero. In
+pratica torna al loop se Z il flag Z è
+uguale a 0. Che cosa succede?
+Utilizziamo la subistruzione
+compare perché potremmo anche aspettarci
+che qui abbiamo prima il compare e poi
+facciamo eh la verifica col con
+l'istruzione di jump. Non facciamo
+questo perché di fatto la sub eh la
+compra e la substruzione perché la
+comper va a fare a - b, quindi rab.
+Abbiamo dato istruzione nel estruction
+set architecture della nostra CPU perché
+semplicemente ho pensato che eh è meglio
+logicamente avere due istruzioni
+separate ci può aiutare con la scrittura
+del codice, però di fatto poi vanno a
+fare la stessa cosa all'interno
+dell'alu.
+A questo punto quindi andremo a fare il
+salto e andremo a fare la sottrazione.
+Questa cosa avverrà fino a quando non
+sarà vera la condizione, quindi il flag
+zero eh sarà a un valore diverso da
+zero, quindi sarà a un
+dopo. Quindi appena che usciamo dal loop
+abbiamo l'istruzione Alt che andrà a
+fermare la CPU.
+Qui abbiamo invece la tabella di tutti i
+vari macrostep che va a generare il
+codice assembly che poi viene assemblato
+e quindi diventa un binario da caricare
+all'interno della eprom del codice.
+Di fatto si parte con l'istruzione di
+caricamento, anche se l'abbiamo vista
+nei video precedenti. Nel primo step in
+T1 facciamo il fetch, quindi andiamo a
+leggere dalla RAM e salvare il valore
+all'interno dell'istraction register. il
+program counter viene incrementato. Su
+T2 invece viene fatto il caricamento del
+memory data register e eh viene
+incrementato il program counter. Su T3
+invece viene fatta la copia dal memory
+data register sul registro R1 che quindi
+passa al valore uminale.
+>> Invece su T4 viene fatto il reset del
+contatore macrostep.
+Invece l'istruzione successiva è
+un'istruzione nuova che non abbiamo
+ormai analizzato nei video precedenti, è
+il caricamento della variabile
+all'interno
+del registro R0. Quindi stiamo facendo
+un caricamento alla RAM. Al solito
+nell'istruzione T1 è uguale un po' per
+tutte le per tutte le istruzioni.
+Facciamo la lettura, facciamo il fetch
+dell'istruction register, quindi dalla
+RAM passa all'istruction register, viene
+fatto quell'incremento del program
+counter su T2 invece eh che cosa
+succede? Viene fatto il caricamento eh
+del MAR. MAR sta per memory address
+register, quindi la parte bassa del MAR
+viene caricata.
+Nella fase di T3 invece viene fatto il
+caricamento della parte alta del MAR,
+quindi sostanzialmente abbiamo letto
+siamo ancora in una fase di fetch,
+quindi T1, T2 e T3 di fatto sono una
+fase di fetch e stiamo leggendo su T2 e
+T3 il registro, stiamo caricando
+all'interno del registro a 16 bit un
+indirizzo di memoria perché ricordo la
+memoria è gestita dal basso di indirizzi
+che è a 16 bit, quindi utilizziamo due
+registri a 8 bit. Di fatto il marro è
+composto registri 8 bit.
+Nello step T4 invece facciamo
+effettivamente la lettura. In pratica a
+questo punto sarà il MAR che andrà a eh
+pilotare il basso degli indirizzi con il
+valore che è stato appena caricato nel
+fetch, quindi su T2 e T e T3. Quindi su
+T4 facciamo la lettura della RAM dalla
+RAM.
+Su T5 invece copiamo il valore appena
+letto all'interno del registro R0.
+T6 invece è l'istruzione che fa il reset
+del contatore macrostep e quindi
+passiamo all'istruzione successiva.
+Poi abbiamo l'istruzione di move, eh
+spostiamo da R0 a RA e eh
+nell'istruzione successiva R1 e RP.
+Questa istruzione l'abbiamo anche vista
+nel nei video precedenti, in ogni caso
+sono tre step. Nel primo step facciamo
+il fetch dellistruction register, invece
+su T2 facciamo la copia vera e propria,
+quindi abbiamo eh R0 in
+scrittura, quindi andremo a scrivere in
+scrittura e poi, scusate, abbiamo
+RA in scrittura e R0 in lettura. E poi
+al successivo macrostep torniamo
+al fetch della prossima istruzione
+facendo il reset del contatore
+macrostep.
+Successivamente invece abbiamo queste
+istruzioni che ho segnato in blu.
+Facciamo tutta questa serie di
+istruzioni. Di fatto questo è il loop,
+quindi tutte le istruzioni che si
+ripetono ciclicamente.
+Partiamo dalla sub. La sub va a fare la
+sottrazione tra RA ed RB,
+quindi su T1 abbiamo il fetch, su T2
+abbiamo effettivamente
+l'alu che viene abilitato e viene fatta
+effettivamente la sottrazione
+e quindi già su T2 vediamo eh il
+risultato 3 - 1 = 2 che viene scritto
+sul bass dati dall'ali su T3 invece
+viene fatto il salvataggio eh
+del dei flag C, Z.
+E poi abbiamo anche il salvataggio nel
+memory data register che non so se vi
+ricordate, ma qualche video fa avevamo
+deciso di utilizzare l'MDR come
+variabile d'appoggio.
+Poi, successivamente su T4 l'MDR va in
+lettura e va in lettura e quindi tra
+virgolette l'MDR va a pilotare il bass
+dati. Su T5 invece viene fatta la copia
+dall'MDR a RA. che poi è il registro
+dove viene salvata l'informazione,
+quindi avremo due. E invece su T6
+facciamo il reset del contatore Crossep
+e passiamo all'istruzione successiva. La
+cosa importante è qua da notare che su
+T3 viene fatto che cosa viene fatto?
+Viene viene fatto il salvataggio dei
+flag. Quindi per questo andiamo a
+inserire l'operazione compare perché eh
+non servirebbe la nostra casistica
+perché la sottrazione perché farebbe
+comunque una sottrazione e quindi già
+abbiamo i flag salvati.
+Andiamo avanti. Abbiamo l'istruzione di
+jump. L'istruzione di jump. Eh, partiamo
+da T1, cioè viene fatto il fetch del
+dell'istruction register, poi andiamo su
+T2, viene caricato la parte bassa del
+MAR, su T3 viene caricata la parte alta
+del MAR, ovviamente abbiamo il MAR
+perché eh sono sempre indirizzi che poi
+potranno andare a pilotare eh la memoria
+successivamente e quindi passano sempre
+dal registro MAR che tra virgolette una
+variabile d'appoggio interna della CPU
+che viene utilizzata proprio per questi
+scopi.
+Successivamente abbiamo effettivamente
+la verifica. La control Unit andrà a
+controllare se Z è ug
+è ugc?
+Eh, vuol dire che comunque non dobbiamo
+dobbiamo saltare,
+non dobbiamo andare avanti e quindi eh
+viene fatto il salto verso l'operazione
+di la la il target jump, quindi
+l'indirizzo dei jump,
+per intenderci, se prendo
+se prendo il codice
+Andiamo qui all'interno del loop.
+Quindi, successivamente
+abbiamo la ripetizione di tutti gli step
+perché comunque siamo all'interno del
+ciclo, abbiamo di nuovo la sub, abbiamo
+di nuovo la il jump,
+successivamente sempre sub jump, ogni
+volta viene decrementato fino a quando
+non arriviamo all'ultimo ciclo. L'ultimo
+ciclo di fatto va a fare la certrazione
+di 1 -1 che fa 0. A questo punto che
+succede? In quest'ultima sublag,
+cambiano i flag, il flag Z passa uno e
+quindi a questo punto che cosa succede?
+Succede che non facciamo più il salto e
+scorriamo, andiamo avanti e ci troviamo
+quindi nell'istruzione di Alt.
+L'istruzione di Alt ferma la CPU e
+quindi a questo punto dovremmo avere la
+CPU ferma e abbiamo finito l'esecuzione
+del programma.
+A questo punto io direi che posso
+caricare questo questo codice
+all'interno della eprom e vediamo
+effettivamente all'interno della CPU se
+tutto ci torna e se riusciamo a fare
+questo questo loop, questo ciclo
+testando sia un'istruzione di salto
+condizionato, sia il caricamento della
+memoria eh verso il registro e poi anche
+effettivamente l'operazione sub, ma
+quella quella non ho molti dubbi,
+dovrebbe funzionare.
+Ho caricato il programma che abbiamo
+appena visto nel computer all'interno
+della eprom del codice, questa qua, e ho
+anche fatto la fase di boot, quindi ho
+passato il contenuto della eprom
+all'interno del chip di RAM che è
+questo. Possiamo a questo punto provare
+l'esecuzione vera e propria del
+programma. Già siamo in fase di run e ho
+stampato la tabella con i macrostep che
+abbiamo appena visto in modo da
+raccapezzarmi durante l'esecuzione del
+programma vero e proprio. La prima
+istruzione è il caricamento del valore 1
+all'interno del registro R1. Su questo
+andrò abbastanza veloce perché già
+l'abbiamo vista in altri video. In ogni
+caso abbiamo quattro macro step.
+Vado avanti. Sono su T2. Vado su T3.
+Su T3. Faccio notare che ho il valore
+uno sul bass dati, il LED rosso che mi
+segnala la scrittura sul sul registro e
+poi il registro R1 attivo, quindi già
+questo è corretto.
+Vado avanti.
+Sono a questo punto nell'istruzione di
+LDA, quindi carico la variabile start
+all'interno del registro zero. Sono
+andato già per errore nel macroep T2
+perché ho dato due impulsi di clock. In
+ogni caso sono in fase di fetch. Sto
+copiando questo valore all'interno del
+memory address register parte alta. do
+un altro impulso di clock, vado avanti e
+in pratica ho copiato questa che è la
+parte bassa all'interno del memory
+address register parte bassa. Vado
+ancora avanti.
+Ecco, su T4 c'è da notare una cosa molto
+importante. Sono su T4 e c'ho questo
+valore che è 3. In pratica questo è il
+valore che sto leggendo realmente dalla
+RAM. Se ci fate caso, a questo punto la
+RAM è pilotato il bass da il basso degli
+indirizzi è pilotato dal MAR che questo
+LED questo LED acceso mi indica che il
+MAR sta pilotando il bass degli
+indirizzi e quindi sto facendo una
+lettura dalla RAM. Anche questo è
+corretto. Vado avanti, sto salvando il
+valore all'interno di R0 mi si accende
+il LED rosso per la scrittura e il LED
+R0 che mi indica che ho selezionato
+questo registro. Vado ancora avanti.
+Ok, ho completato il caricamento.
+A questo punto c'ho due istruzioni che
+sono la move da R0
+RA e da R1 RB. Su questa andrò veloce.
+Ok,
+a questo punto sono andato avanti fino
+alla sub. Già ho fatto il fetch
+dell'istruzione
+l'istruction register e quindi sto
+effettivamente facendo eh la
+sottrazione. Sono al macroep T2. La cosa
+da notare è che mi si è attivato il LED
+della sub dell'alu
+e mi si è anche attivato nel bass dato
+il valore della sottrazione. Per ora ho
+due ed è corretto perché sto ho fatto 3
+- 1 che fa 2. Quindi siamo all'interno
+del primo ciclo. Vado ancora avanti.
+Ok, sono nella sub del secondo ciclo. Ho
+saltato anche l'istruzione di jump che
+mi ha riportato all'interno della
+sottrazione.
+Sono sempre su T2 e c'ho il valore 1,
+quindi è corretto perché ho ancora
+decrementato, quindi il ciclo sta
+funzionando.
+Vado ancora avanti.
+Ok, sono all'interno dell'ultima subet
+zero. Quindi io mi aspetto che poi
+successivamente sono nella prossima
+pagina,
+il salto non avviene e vado
+nell'istruzione di Alt. Vediamo se è
+vero.
+Ok, sono nell'istruzione jump.
+Passo la jump e sono nell'istruzione di
+Alt. In effetti si è fermata la CPU e se
+do altri impulsi di clock non succede
+niente. Quindi diciamo che abbiamo
+eseguito effettivamente un primo loop
+all'interno della nostra CPU. Abbiamo
+creato un ciclo e in effetti funziona
+tutto correttamente, anche il
+caricamento della RAM. Io direi che per
+questo video è tutto e possiamo vederci
+un prossimo video. Vi ricordo di
+lasciare un mi piace, commentare questo
+video e iscrivervi al canale per
+supportare il mio lavoro.

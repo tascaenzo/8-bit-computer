@@ -1,5 +1,7 @@
 # Control Unit a microcodice — segnali di controllo
 
+> **Aggiornamento I/O — 21 ottobre 2026:** il [bus memoria e I/O](io-bus.md) riutilizza `RAM_OE` e `RAM_WE` come `/RD` e `/WR` generali, con selezione RAM tramite chip enable. ROM2 D7 resta riservato: la proposta `IO_ENABLE` e superata. Le microsequenze memoria restano il riferimento, con timing da verificare anche per le periferiche.
+
 > **Stato:** bozza da verificare sul cablaggio reale
 > **Versione:** 0.1
 > **Ambito:** CPU TTL a 8 bit, bus dati a 8 bit e bus indirizzi a 16 bit.
@@ -12,7 +14,7 @@ richiesto dalla configurazione, per esempio attivo basso per `/OE`, `/WE` o
 Non sono inclusi:
 
 - i segnali `IN` e `OUT` usati provvisoriamente per test sulla board;
-- segnali specifici per video, tastiera e timer: questi dispositivi sono memory-mapped e usano i normali cicli `RAM_OE` e `RAM_WE`.
+- segnali dedicati di direzione I/O: le periferiche usano le richieste generali `RAM_OE` e `RAM_WE`, con selezione da indirizzo secondo il [bus memoria e I/O](io-bus.md).
 
 ## 1. Vincoli dei bus
 

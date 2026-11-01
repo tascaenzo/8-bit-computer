@@ -1,0 +1,325 @@
+Salve a tutti e bentornati sul mio
+canale YouTube. Nel video di oggi voglio
+continuare a testare programmi
+all'interno della nostra CPU 8 bit. In
+questo video voglio provare l'esecuzione
+di un programma che contiene
+un'istruzione di jump, quindi un salto.
+Ma prima di iniziare vi ricordo di
+lasciare un mi piace, commentare questo
+video e iscrivervi al mio canale in modo
+da supportare il mio lavoro.
+Nel video precedente abbiamo eseguito un
+primo programma che faceva la somma tra
+due valori. Nel video di oggi voglio
+continuare a a provare la CPU testando
+altre tipologie di istruzioni. nello
+specifico le istruzioni di salto. Prima
+di iniziare però dobbiamo fare un breve
+recap di come funziona la nostra CPU nel
+dettaglio vedere un po' l'architettura
+che la compone.
+Preciso che ci sono due tipi di salti:
+salti condizionati e salti invece
+assoluti. Un salto assoluto è
+un'istruzione, ad esempio jump salta un
+determinato punto del programma. Questa,
+diciamo, è l'istruzione del salto più
+semplice perché non prevede nessun
+confronto tra registri. Invece i salti
+condizionati sono dei salti che
+avvengono solo se si verificano
+determinate condizioni. Per fare ciò
+abbiamo l'alu che dovrà m fare la la
+comparazione tra i registri RA ed RB.
+Quindi all'interno della nostra delle
+nostre CPU del nostro programma dovremmo
+andare a inserire all'interno DRA e DRB
+i due valori che vanno confrontati. Poi
+andremo a selezionare all'interno
+dell'alu l'operazione compare. Alla fine
+di questa operazione vengono
+memorizzati, vengono aggiornati i flag
+da parte dell'al stessa e alla fine
+nell'istruzione successiva dovremmo
+decidere se saltare una determinato
+punto del programma in base al valore di
+CZN e o che sono i flag che gestisce la
+nostra CPU. Quindi, eh, diciamo che un
+salto ha bisogno di più istruzioni. La
+prima istruzione è quella di compare e
+la seconda istruzione è quella vera e
+propria del salto in cui si fa si
+analizzano i flag.
+Un salto condizionale, oltre a
+coinvolgere quindi l'alu con
+l'istruzione compare, andrà a
+coinvolgere i registri che vanno a
+pilotare il bass dati.
+Quando incontriamo un'istruzione di
+salto, ad esempio la jump, verrà più
+semplice perché non ha bisogno del
+confronto, come dicevamo prima, durante
+la fase di fetch, dopo che abbiamo
+caricato l'istraction register, i due
+cicli successivi serviranno a caricare
+all'interno del MAR, questo registro qui
+che sta per memory address register, la
+parte di indirizzo a cui dovremo
+saltare.
+Abbiamo bisogno di due caricamenti
+perché questo è un indirizzo a 16 bit.
+Andiamo a sfruttare parte alta e parte
+bassa del registro e a due andremo a
+caricare questo registro. Una volta
+caricato questo registro, se deve essere
+fatto il salto, se c'è un un'istruzione
+jump, sicuramente dovremmo fare il
+salto. Se invece è un'istruzione che
+prevede di verificare i flag, non è
+detto dobbiamo fare il salto. In ogni
+caso, se va fatto il salto, dobbiamo
+salvare l'informazione che abbiamo preso
+durante la fase di fecile e abbiamo
+salvato nel mare, la dobbiamo trasferire
+all'interno del program counter che poi
+andrà a pilotare effettivamente la
+memoria. Per fare ciò, che cosa
+facciamo? Abbiamo collegato all'interno
+della nostra CPU le uscite del MAR anche
+agli ingressi del program counter,
+quindi l'unità di controllo andrà a
+salvare un determinato macrostep
+l'uscita del MAR all'interno del program
+counter e e successivamente
+quando faremo il dell'istruzione
+successiva il program counter non verrà
+incrementato, ma già avrà il valore a
+cui sta puntando
+la nuova istruzione dopo il salto.
+Qui di fianco ho una tabella che
+rappresenta un po' tutte le casistiche
+di salto del nostro CPU. Partiamo con la
+più semplice, è il jump, quindi saltiamo
+sempre senza nessun controllo a un
+determinato indirizzo. Poi abbiamo
+jump if zero. In pratica si esegue il
+salto se dopo l'operazione di compare il
+flag eh zero risulta 1. Che cosa vuol
+dire? Vuol dire che essenzialmente la
+variabile a uguale alla variabile b
+perché perché ricordo che il compare non
+fa altro che a - b. Quindi se la loro
+sottrazione risulta zero vuol dire che i
+valori sono uguali e in questo caso
+abbiamo il salto.
+Poi abbiamo
+jump if not zero. In pratica salta se Z
+è è uguale a 0.
+In sostanza si traduce in A diverso da
+B. Poi abbiamo jump if carry. In pratica
+se C è = 1, il flag C è uguale a 1 che
+si traduce in A B. Poi abbiamo jump if
+not carry. In sostanza si traduce in a
+magore uguale a b. E poi abbiamo tutta
+un'altra serie di casistiche e jump if
+negative, jump if not negative. jump if
+overflow, jump if no overflow. Diciamo
+queste sono un po' più rare, comunque
+abbiamo queste casistiche. Di fatto noi
+non abbiamo tutte le classiche
+operazioni di confronto che abbiamo una
+normale C+ moderna, ma abbiamo questo
+sottolimite, questo sottogruppo di
+operazioni eh di comparazioni, però già
+con queste possiamo fare un po' tutte le
+nostre le possibili operazioni
+all'interno della CPU, gestire un po'
+tutti i cicli eh di flusso nostra CPU.
+Tra l'altro io faccio notare che ehm
+penso che una CPU si possa definire una
+C+ se abbia istruzioni di controllo che
+ci permettono di gestire
+il ciclo di esecuzione di un di un
+programma, quindi avere condizioni a
+maggiore di B, a minore di B e così via,
+altrimenti sarebbe una sorta di
+calcolatrice più o meno se non avremmo
+controllo all'interno del ciclo di
+esecuzione del del di un programma.
+Qui di fianco abbiamo un programma che
+ho scritto che utilizzeremo per testare
+la l'istruzione di jump, quindi di salto
+incondizionato.
+Di fatto che cosa ho fatto? Ho detto
+l'assemblatore che parto ovviamente
+dall'istruzione zero, quindi della prima
+cella di memoria della RAM. Poi faccio
+un jump, quindi un salto all'interno
+della label target. target punterà a
+questo indirizzo.
+Eh, sotto questo indirizzo abbiamo delle
+istruzioni. Sotto il jump invece abbiamo
+l'istruzione Alt. Adesso io mi aspetto
+che se tutto funziona correttamente io
+non arrivi mai a questa istruzione di
+alto, perché se arrivo a questa
+istruzione di alto vuol dire che non ha
+funzionato il salto e quindi c'è qualche
+problema all'interno della control unit
+della CPU. Se invece funziona
+correttamente il salto, subito dopo il
+jump, la seconda istruzione essere
+eseguita è questo load del valore 4
+all'interno del registro R0 e
+successivamente abbiamo l'ALT. Ho già
+caricato questo programma all'interno
+della eprom del codice della nostra CPU.
+Vi dico già da subito che per far
+funzionare questo programma ho fatto una
+piccola modifica perché c'era un errore
+all'interno della gestione delle delle
+control Unit, quindi il codice binario
+che era stato generato per le control
+Unit era sbagliato. In sostanza non
+funzionava il passaggio dal memory
+address register al programva
+il salto. c'era un errore nella gestione
+del dell'output enable del MAR, però ho
+risolto questo problema, quindi dovrebbe
+funzionare. Quindi ora andiamo a testare
+questa casistica.
+Come nell'esempio del video precedente,
+anche questo codice poi va a generare
+tutta una serie di macrostep che ho
+racchiuso all'interno di questa tabella.
+Io partirei con l'istruzione di jump,
+cioè la prima. ha in totale cinque
+macroep che vanno quindi da T1 a T5.
+Nel primo macrostep facciamo il fetch
+dell'istruction register,
+successivamente andiamo a fare il fetch
+della parte bassa del MAR, quindi memory
+address register. Terzo macroep, la
+parte alta.
+Quarto macro step, invece, andiamo a
+fare lo spostamento dal MAR al programo
+per prepararci di fatto al salto. E
+nell'ultimo step invece
+andiamo a resettare il contatore
+macrostep. Quindi dopo questo questo
+quinto macro questo micro quinto macroep
+dovremmo trovarci all'interno
+dell'istruzione
+LT che va a caricare un immediato
+all'interno del registro zero. Queste
+due istruzioni invece, questi due
+macrostepi all'istruzione di Alt che ho
+segnato qui in rosso, se tutto funziona
+correttamente non dovranno mai essere
+eseguite, tra virgolette del codice
+morto, cioè del codice che non viene mai
+eseguito, sarebbe anche un errore
+inserire questo questo codice, quindi
+un'istruzione di Alt dopo un salto
+perché perché effettivamente non
+verrebbe mai raggiunta, però per fare il
+test a noi va più che bene. Quindi, una
+volta fatto il salto ci troviamo
+all'interno del caricamento
+dell'immediato.
+Questa istruzione l'abbiamo vista nel
+video precedente, in pratica abbiamo
+quattro macro step e andremo a caricare
+l'immediato 4 all'interno del registro
+R0. Invece l'istruzione successiva è
+l'alt che dovrà fermare la CPU. è
+composta da due macrostep, quindi
+abbiamo il macrostep di Fetch e poi eh
+Decoded Execute che di fatto avvengono
+in T2 contemporaneamente e vanno a
+fermare la CPU. Non ci resta che provare
+questo programma all'interno del nostro
+computer a 8 bit.
+Ho eseguito la fase di boot della nostra
+CPU e quindi ho caricato il programma
+all'interno della RAM. A questo punto
+siamo pronti a fare l'esecuzione.
+Sono all'interno della fase di fetch,
+sono all'istante T1. Questo valore in
+effetti andrà a finire all'interno
+dell'istruction register. Provo a dare
+un impulso di clock, sono su T2. Sto
+copiando questo valore che è presente
+all'interno della RAM sulla parte bassa
+del memory address register.
+Do un altro impulso di clock. Siamo su
+T3. Stiamo ehm salvando questo valore,
+cioè zero, all'interno della parte alta
+del memory address register. Questo
+avviene eh in pratica in due fasi perché
+il memory address register è un registro
+a 16 bit. Do un altro impulso di clock.
+Siamo su T4. In pratica su T4 dovrei
+copiare questo valore dal MAR al
+programo che poi sarà il punto target su
+cui dovrebbe saltare la CPU.
+Siamo su T5. Se do un altro impulso di
+clock dovrei eh fare il reset del
+contatore macrostep e quindi completare
+la fase di patch. Vediamo se è vero.
+In effetti è vero. A questo punto dovrei
+trovarmi eh qui, cioè dovrei eseguire
+l'istruzione di caricamento del valore
+immediato 4 all'interno del registro R0.
+Se mi trovo qui vuol dire che in effetti
+il salto condizionale è riuscito. Se
+invece sono all'interno dell'istruzione
+di Alt c'è qualche problema. prova a
+eseguire queste queste istruzioni,
+quindi vediamo se in effetti combacia
+con con ciò che mi aspetto. Attualmente
+sono in T1, ma già comunque so che non è
+un alt perché lo vedo dal bass dati. Se
+ehm durante la fase dei fetch su T1
+avevo tutti zero, vuol dire che stavo
+facendo il fetch dell'istruzione Alt,
+quindi già questo è incoraggiante. Do un
+altro impulso di clock. Ok, anche questo
+è incoraggiante. C'ho il valore 4 che è
+il valore immediato che sto leggendo
+dalla RAM che poi è il valore che devo
+fare nel caricamento verso il registro
+R0, quindi sembra che stiamo
+effettivamente siamo riusciti a fare il
+salto. Do un altro impulso di clock.
+Qui ho la copia del valore 4 all'interno
+del registro R0 che è in scrittura. Do
+un altro impulso di clock.
+dovre avver fatto già il salvataggio,
+quindi dando altro impulso di clock
+dovrei andare all'istruzione successiva
+che sarà l'Alt ver e proprio. Vediamo se
+è vero. Sì, per errore ho dato due
+impulsi di clock, quindi già mi sono mi
+trovo su T2, ma eh il programma si è
+fermato, la CPU si è fermata, c'ho il
+LED Alt che è acceso e se do altri
+impulsi di clock non succede nulla.
+Quindi diciamo che questa prima
+istruzione, questo primo programma per
+testare il salto funziona. Ovviamente
+questo è un salto incondizionato, cioè
+non devo verificare nessuna condizione,
+quindi nessun flag generato dall'alu,
+però comunque già un primo indizio che
+ci fa capire che il sistema di utilizzo
+del dell'MDR memory del MAR M memory
+address register che poi va a pilotare,
+va a salvare il dato nel programo
+counter, funziona per eseguire i salti.
+Io direi che per questo video è tutto.
+Ci vediamo in un prossimo video. Vi
+ricordo di lasciare un like, commentare
+questo video e iscrivervi al mio canale
+in modo da supportare il mio lavoro.
