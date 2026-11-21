@@ -136,3 +136,12 @@ disabilitati. T5 disabilita MAR e torna al fetch.
 La correzione modifica solo ROM0; ROM1, ROM2 e il programma sono invariati.
 Il fronte di clock del PC deve essere verificato sul banco: questa modifica
 non altera PC_INC, che resta inattivo durante il caricamento.
+
+## Audit delle scritture e del reset
+
+`python3 tools/cu-bytecode/audit_memory_safety.py` dalla radice controlla
+le 8192 parole fisiche dei tre binari di build, senza richiamare il generatore
+C per decodificarle. Verifica le sole scritture attese in BOOT e RUN e
+l'assenza di scritture in HLT; segnala le transizioni STA/STAI che rilasciano
+i bus insieme a /WR. Non simula i ritardi ne legge le EEPROM fisiche.
+Dettagli: [analisi RAM del 12 novembre 2026](../../docs/control-unit-memory-audit-20261112.md).

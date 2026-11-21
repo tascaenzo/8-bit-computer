@@ -12,17 +12,25 @@ IO_LOC "tmds_d_n[1]" 72;
 IO_LOC "tmds_d_n[2]" 74;
 IO_LOC "tmds_clk_n" 68;
 
+// BOOT_RUN on J6-2 is a 1.8 V bank: use U4 then the documented 3.3 V / 1.8 V divider.
+IO_LOC "boot_run" 86;
+IO_PORT "boot_run" IO_TYPE=LVCMOS18 PULL_MODE=NONE;
+// CPU /RESET, active low, J6-3: U4 B3/A3 then 3.3k / 3.9k divider.
+IO_LOC "cpu_reset_n" 85;
+IO_PORT "cpu_reset_n" IO_TYPE=LVCMOS18 PULL_MODE=UP;
 IO_LOC "resetn" 4;
 IO_PORT "resetn" IO_TYPE=LVCMOS18 PULL_MODE=UP;
 IO_LOC "clk" 52;
 IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=UP;
-IO_LOC "cpu_addr[0]" 25;
-IO_PORT "cpu_addr[0]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
-IO_LOC "cpu_addr[1]" 26;
-IO_PORT "cpu_addr[1]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
-IO_LOC "cpu_addr[2]" 27;
-IO_PORT "cpu_addr[2]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
-IO_LOC "cpu_addr[3]" 28;
+IO_LOC "video_select" 25;
+IO_PORT "video_select" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "key_select" 26;
+IO_PORT "key_select" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "ps2_clk" 27;
+IO_PORT "ps2_clk" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "ps2_data" 28;
+IO_PORT "ps2_data" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC "cpu_addr[3]" 31;
 IO_PORT "cpu_addr[3]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 IO_LOC "cpu_addr[4]" 29;
 IO_PORT "cpu_addr[4]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
@@ -68,11 +76,13 @@ IO_LOC "cpu_rd_n" 77;
 IO_PORT "cpu_rd_n" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 IO_LOC "cpu_wr_n" 76;
 IO_PORT "cpu_wr_n" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
-IO_LOC "cpu_enable" 31;
-IO_PORT "cpu_enable" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 IO_LOC "cpu_buffer_oe_n" 32;
 IO_PORT "cpu_buffer_oe_n" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 IO_LOC "cpu_buffer_dir" 63;
 IO_PORT "cpu_buffer_dir" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
 IO_LOC "video_ready_n" 10;
 IO_PORT "video_ready_n" IO_TYPE=LVCMOS18 PULL_MODE=NONE DRIVE=4;
+
+// Onboard BL702 USB-UART connection; no header wires required.
+IO_LOC "debug_tx" 17;
+IO_PORT "debug_tx" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=4;

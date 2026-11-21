@@ -163,8 +163,8 @@ static void test_dedicated_fetch_return(void)
         {UOP_SYSTEM, 1}, {UOP_ALU, 4},
         {UOP_CMP, 2}, {UOP_MOV_RA_RN, 1}, {UOP_MOV_RB_RN, 1},
         {UOP_MOV_RN_RA, 1}, {UOP_LDI, 2}, {UOP_LDX, 2},
-        {UOP_LDA_IDX, 2}, {UOP_STA_IDX, 2},
-        {UOP_JMP, 3}, {UOP_JNO, 3}, {UOP_LDA, 4}, {UOP_STA, 4}
+        {UOP_LDA_IDX, 2}, {UOP_STA_IDX, 4},
+        {UOP_JMP, 3}, {UOP_JNO, 3}, {UOP_LDA, 4}, {UOP_STA, 6}
     };
     CpuFlags clear = {false, false, false, false};
     size_t index;
@@ -178,12 +178,70 @@ static void test_dedicated_fetch_return(void)
                (address_word(CPU8_ADDR_SEL_NONE) | CTRL_NEXT_FETCH |
                 (cases[index].op == UOP_ALU ? CTRL_MDR_OE : 0)));
     }
-    assert(microcode_word(4, UOP_STA, clear, CPU_MODE_RUN) ==
+    assert(microcode_word(5, UOP_STA, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_MAR) | CTRL_MDR_OE | CTRL_RAM_WE));
-    assert(microcode_word(2, UOP_STA_IDX, clear, CPU_MODE_RUN) ==
+    assert(microcode_word(3, UOP_STA_IDX, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_IDX) | CTRL_MDR_OE | CTRL_RAM_WE));
     assert(microcode_word(3, UOP_JNO, clear, CPU_MODE_RUN) ==
            (address_word(CPU8_ADDR_SEL_MAR) | CTRL_PC_LOAD));
+}
+
+static void test_write_bus_setup_and_hold(void)
+{
+    static const struct {
+        MicroOp op;
+        uint8_t opcode;
+        uint8_t prepare;
+        unsigned selector;
+        uint8_t inactive_rom0;
+        uint8_t active_rom0;
+    } cases[] = {
+        {UOP_STA, 0x48, 4, CPU8_ADDR_SEL_MAR, 0xe2, 0xc2},
+        {UOP_STA_IDX, 0x58, 2, CPU8_ADDR_SEL_IDX, 0xe0, 0xc0}
+    };
+    uint8_t roms[3][CPU8_CONTROL_ROM_SIZE];
+    char message[128];
+    unsigned bits;
+    size_t index;
+
+    assert(build_control_roms(roms, message, sizeof(message)));
+    for (bits = 0; bits < 16; bits++) {
+        CpuFlags flags = {
+            (bits & 1u) != 0, (bits & 2u) != 0,
+            (bits & 4u) != 0, (bits & 8u) != 0
+        };
+        for (index = 0; index < sizeof(cases) / sizeof(cases[0]); index++) {
+            uint8_t phase;
+            unsigned writes = 0;
+            ControlWord held = address_word(cases[index].selector) | CTRL_MDR_OE;
+            for (phase = 0; phase < CPU8_MICROSTEP_COUNT; phase++) {
+                ControlWord word = microcode_word(phase, cases[index].op,
+                                                  flags, CPU_MODE_RUN);
+                if (word & CTRL_RAM_WE) {
+                    writes++;
+                    assert(phase == cases[index].prepare + 1);
+                    /* One full phase with the same address/data on each side
+                     * of /WE: no PC/register action is allowed in the window.
+                     */
+                    assert(microcode_word(phase - 1, cases[index].op,
+                                          flags, CPU_MODE_RUN) == held);
+                    assert(word == (held | CTRL_RAM_WE));
+                    assert(microcode_word(phase + 1, cases[index].op,
+                                          flags, CPU_MODE_RUN) == held);
+                }
+            }
+            assert(writes == 1);
+            for (phase = 0; phase < 4; phase++) {
+                uint16_t address = microcode_address(cases[index].prepare + phase,
+                    (MicroOp)(cases[index].opcode >> 3), flags, CPU_MODE_RUN);
+                uint8_t expected0 = phase == 3 ? 0x73 : phase == 1
+                    ? cases[index].active_rom0 : cases[index].inactive_rom0;
+                assert(roms[0][address] == expected0);
+                assert(roms[1][address] == 0x02);
+                assert(roms[2][address] == 0x49);
+            }
+        }
+    }
 }
 
 static void test_boot_sequence(void)
@@ -397,6 +455,7 @@ int main(void)
     test_shared_address_input_config();
     test_sequences();
     test_dedicated_fetch_return();
+    test_write_bus_setup_and_hold();
     test_boot_sequence();
     test_addresses_and_images();
     test_system_decode_output();

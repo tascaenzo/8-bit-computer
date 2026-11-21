@@ -1,0 +1,3350 @@
+[
+  {
+    "point": 1,
+    "label": "LDA R0, 2018",
+    "step": 1,
+    "a": 0,
+    "d": 64,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 2,
+    "label": "LDA R0, 2018",
+    "step": 2,
+    "a": 1,
+    "d": 24,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 3,
+    "label": "LDA R0, 2018",
+    "step": 3,
+    "a": 2,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 4,
+    "label": "LDA R0, 2018",
+    "step": 4,
+    "a": 8216,
+    "d": 1,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 5,
+    "label": "LDA R0, 2018",
+    "step": 5,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 6,
+    "label": "LDA R0, 2018",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 7,
+    "label": "LDI R1, 01",
+    "step": 1,
+    "a": 3,
+    "d": 33,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 8,
+    "label": "LDI R1, 01",
+    "step": 2,
+    "a": 4,
+    "d": 1,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 9,
+    "label": "LDI R1, 01",
+    "step": 3,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 10,
+    "label": "LDI R1, 01",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 11,
+    "label": "MOV RA, R0",
+    "step": 1,
+    "a": 5,
+    "d": 192,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 12,
+    "label": "MOV RA, R0",
+    "step": 2,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 13,
+    "label": "MOV RA, R0",
+    "step": 3,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 14,
+    "label": "MOV RB, R1",
+    "step": 1,
+    "a": 6,
+    "d": 201,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 15,
+    "label": "MOV RB, R1",
+    "step": 2,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 16,
+    "label": "MOV RB, R1",
+    "step": 3,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 17,
+    "label": "CMP",
+    "step": 1,
+    "a": 7,
+    "d": 105,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 18,
+    "label": "CMP",
+    "step": 2,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 19,
+    "label": "CMP",
+    "step": 3,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 20,
+    "label": "CMP",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 21,
+    "label": "JNZ 0000",
+    "step": 1,
+    "a": 8,
+    "d": 184,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 22,
+    "label": "JNZ 0000",
+    "step": 2,
+    "a": 9,
+    "d": 0,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 23,
+    "label": "JNZ 0000",
+    "step": 3,
+    "a": 10,
+    "d": 0,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 24,
+    "label": "JNZ 0000",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 25,
+    "label": "JNZ 0000",
+    "step": 5,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 26,
+    "label": "LDI R0, 0F",
+    "step": 1,
+    "a": 11,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 27,
+    "label": "LDI R0, 0F",
+    "step": 2,
+    "a": 12,
+    "d": 15,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 28,
+    "label": "LDI R0, 0F",
+    "step": 3,
+    "a": null,
+    "d": 15,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 29,
+    "label": "LDI R0, 0F",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 30,
+    "label": "STA R0, 2028",
+    "step": 1,
+    "a": 13,
+    "d": 72,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 31,
+    "label": "STA R0, 2028",
+    "step": 2,
+    "a": 14,
+    "d": 40,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 32,
+    "label": "STA R0, 2028",
+    "step": 3,
+    "a": 15,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 33,
+    "label": "STA R0, 2028",
+    "step": 4,
+    "a": null,
+    "d": 15,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 34,
+    "label": "STA R0, 2028",
+    "step": 5,
+    "a": 8232,
+    "d": 15,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 35,
+    "label": "STA R0, 2028",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 36,
+    "label": "LDI R0, 1C",
+    "step": 1,
+    "a": 16,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 37,
+    "label": "LDI R0, 1C",
+    "step": 2,
+    "a": 17,
+    "d": 28,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 38,
+    "label": "LDI R0, 1C",
+    "step": 3,
+    "a": null,
+    "d": 28,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 39,
+    "label": "LDI R0, 1C",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 40,
+    "label": "STA R0, 2040",
+    "step": 1,
+    "a": 18,
+    "d": 72,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 41,
+    "label": "STA R0, 2040",
+    "step": 2,
+    "a": 19,
+    "d": 64,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 42,
+    "label": "STA R0, 2040",
+    "step": 3,
+    "a": 20,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 43,
+    "label": "STA R0, 2040",
+    "step": 4,
+    "a": null,
+    "d": 28,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 44,
+    "label": "STA R0, 2040",
+    "step": 5,
+    "a": 8256,
+    "d": 28,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 45,
+    "label": "STA R0, 2040",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 46,
+    "label": "LDI R0, 01",
+    "step": 1,
+    "a": 21,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 47,
+    "label": "LDI R0, 01",
+    "step": 2,
+    "a": 22,
+    "d": 1,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 48,
+    "label": "LDI R0, 01",
+    "step": 3,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 49,
+    "label": "LDI R0, 01",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 50,
+    "label": "STA R0, 2020",
+    "step": 1,
+    "a": 23,
+    "d": 72,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 51,
+    "label": "STA R0, 2020",
+    "step": 2,
+    "a": 24,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 52,
+    "label": "STA R0, 2020",
+    "step": 3,
+    "a": 25,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 53,
+    "label": "STA R0, 2020",
+    "step": 4,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 54,
+    "label": "STA R0, 2020",
+    "step": 5,
+    "a": 8224,
+    "d": 1,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 55,
+    "label": "STA R0, 2020",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 56,
+    "label": "LDA R0, 2018",
+    "step": 1,
+    "a": 26,
+    "d": 64,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 57,
+    "label": "LDA R0, 2018",
+    "step": 2,
+    "a": 27,
+    "d": 24,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 58,
+    "label": "LDA R0, 2018",
+    "step": 3,
+    "a": 28,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 59,
+    "label": "LDA R0, 2018",
+    "step": 4,
+    "a": 8216,
+    "d": 1,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 60,
+    "label": "LDA R0, 2018",
+    "step": 5,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 61,
+    "label": "LDA R0, 2018",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 62,
+    "label": "LDI R1, 01",
+    "step": 1,
+    "a": 29,
+    "d": 33,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 63,
+    "label": "LDI R1, 01",
+    "step": 2,
+    "a": 30,
+    "d": 1,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 64,
+    "label": "LDI R1, 01",
+    "step": 3,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 65,
+    "label": "LDI R1, 01",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 66,
+    "label": "MOV RA, R0",
+    "step": 1,
+    "a": 31,
+    "d": 192,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 67,
+    "label": "MOV RA, R0",
+    "step": 2,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 68,
+    "label": "MOV RA, R0",
+    "step": 3,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 69,
+    "label": "MOV RB, R1",
+    "step": 1,
+    "a": 32,
+    "d": 201,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 70,
+    "label": "MOV RB, R1",
+    "step": 2,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 71,
+    "label": "MOV RB, R1",
+    "step": 3,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 72,
+    "label": "CMP",
+    "step": 1,
+    "a": 33,
+    "d": 105,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 73,
+    "label": "CMP",
+    "step": 2,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 74,
+    "label": "CMP",
+    "step": 3,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 75,
+    "label": "CMP",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 76,
+    "label": "JNZ 001A",
+    "step": 1,
+    "a": 34,
+    "d": 184,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 77,
+    "label": "JNZ 001A",
+    "step": 2,
+    "a": 35,
+    "d": 26,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 78,
+    "label": "JNZ 001A",
+    "step": 3,
+    "a": 36,
+    "d": 0,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 79,
+    "label": "JNZ 001A",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 80,
+    "label": "JNZ 001A",
+    "step": 5,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 81,
+    "label": "LDX 2000",
+    "step": 1,
+    "a": 37,
+    "d": 216,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 82,
+    "label": "LDX 2000",
+    "step": 2,
+    "a": 38,
+    "d": 0,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 83,
+    "label": "LDX 2000",
+    "step": 3,
+    "a": 39,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 84,
+    "label": "LDX 2000",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 85,
+    "label": "LDI R0, 48",
+    "step": 1,
+    "a": 40,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 86,
+    "label": "LDI R0, 48",
+    "step": 2,
+    "a": 41,
+    "d": 72,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 87,
+    "label": "LDI R0, 48",
+    "step": 3,
+    "a": null,
+    "d": 72,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 88,
+    "label": "LDI R0, 48",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 89,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 42,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 90,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 72,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 91,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 72,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 92,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 93,
+    "label": "LDI R0, 45",
+    "step": 1,
+    "a": 43,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 94,
+    "label": "LDI R0, 45",
+    "step": 2,
+    "a": 44,
+    "d": 69,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 95,
+    "label": "LDI R0, 45",
+    "step": 3,
+    "a": null,
+    "d": 69,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 96,
+    "label": "LDI R0, 45",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 97,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 45,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 98,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 69,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 99,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 69,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 100,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 101,
+    "label": "LDI R0, 4C",
+    "step": 1,
+    "a": 46,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 102,
+    "label": "LDI R0, 4C",
+    "step": 2,
+    "a": 47,
+    "d": 76,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 103,
+    "label": "LDI R0, 4C",
+    "step": 3,
+    "a": null,
+    "d": 76,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 104,
+    "label": "LDI R0, 4C",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 105,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 48,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 106,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 76,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 107,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 76,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 108,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 109,
+    "label": "LDI R0, 4C",
+    "step": 1,
+    "a": 49,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 110,
+    "label": "LDI R0, 4C",
+    "step": 2,
+    "a": 50,
+    "d": 76,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 111,
+    "label": "LDI R0, 4C",
+    "step": 3,
+    "a": null,
+    "d": 76,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 112,
+    "label": "LDI R0, 4C",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 113,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 51,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 114,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 76,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 115,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 76,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 116,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 117,
+    "label": "LDI R0, 4F",
+    "step": 1,
+    "a": 52,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 118,
+    "label": "LDI R0, 4F",
+    "step": 2,
+    "a": 53,
+    "d": 79,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 119,
+    "label": "LDI R0, 4F",
+    "step": 3,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 120,
+    "label": "LDI R0, 4F",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 121,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 54,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 122,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 123,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 79,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 124,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 125,
+    "label": "LDI R0, 20",
+    "step": 1,
+    "a": 55,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 126,
+    "label": "LDI R0, 20",
+    "step": 2,
+    "a": 56,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 127,
+    "label": "LDI R0, 20",
+    "step": 3,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 128,
+    "label": "LDI R0, 20",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 129,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 57,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 130,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 131,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 32,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 132,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 133,
+    "label": "LDI R0, 57",
+    "step": 1,
+    "a": 58,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 134,
+    "label": "LDI R0, 57",
+    "step": 2,
+    "a": 59,
+    "d": 87,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 135,
+    "label": "LDI R0, 57",
+    "step": 3,
+    "a": null,
+    "d": 87,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 136,
+    "label": "LDI R0, 57",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 137,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 60,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 138,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 87,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 139,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 87,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 140,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 141,
+    "label": "LDI R0, 4F",
+    "step": 1,
+    "a": 61,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 142,
+    "label": "LDI R0, 4F",
+    "step": 2,
+    "a": 62,
+    "d": 79,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 143,
+    "label": "LDI R0, 4F",
+    "step": 3,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 144,
+    "label": "LDI R0, 4F",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 145,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 63,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 146,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 147,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 79,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 148,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 149,
+    "label": "LDI R0, 52",
+    "step": 1,
+    "a": 64,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 150,
+    "label": "LDI R0, 52",
+    "step": 2,
+    "a": 65,
+    "d": 82,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 151,
+    "label": "LDI R0, 52",
+    "step": 3,
+    "a": null,
+    "d": 82,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 152,
+    "label": "LDI R0, 52",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 153,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 66,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 154,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 82,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 155,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 82,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 156,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 157,
+    "label": "LDI R0, 4C",
+    "step": 1,
+    "a": 67,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 158,
+    "label": "LDI R0, 4C",
+    "step": 2,
+    "a": 68,
+    "d": 76,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 159,
+    "label": "LDI R0, 4C",
+    "step": 3,
+    "a": null,
+    "d": 76,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 160,
+    "label": "LDI R0, 4C",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 161,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 69,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 162,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 76,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 163,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 76,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 164,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 165,
+    "label": "LDI R0, 44",
+    "step": 1,
+    "a": 70,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 166,
+    "label": "LDI R0, 44",
+    "step": 2,
+    "a": 71,
+    "d": 68,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 167,
+    "label": "LDI R0, 44",
+    "step": 3,
+    "a": null,
+    "d": 68,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 168,
+    "label": "LDI R0, 44",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 169,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 72,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 170,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 68,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 171,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 68,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 172,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 173,
+    "label": "LDI R0, 20",
+    "step": 1,
+    "a": 73,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 174,
+    "label": "LDI R0, 20",
+    "step": 2,
+    "a": 74,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 175,
+    "label": "LDI R0, 20",
+    "step": 3,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 176,
+    "label": "LDI R0, 20",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 177,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 75,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 178,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 179,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 32,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 180,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 181,
+    "label": "LDI R0, 46",
+    "step": 1,
+    "a": 76,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 182,
+    "label": "LDI R0, 46",
+    "step": 2,
+    "a": 77,
+    "d": 70,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 183,
+    "label": "LDI R0, 46",
+    "step": 3,
+    "a": null,
+    "d": 70,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 184,
+    "label": "LDI R0, 46",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 185,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 78,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 186,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 70,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 187,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 70,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 188,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 189,
+    "label": "LDI R0, 52",
+    "step": 1,
+    "a": 79,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 190,
+    "label": "LDI R0, 52",
+    "step": 2,
+    "a": 80,
+    "d": 82,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 191,
+    "label": "LDI R0, 52",
+    "step": 3,
+    "a": null,
+    "d": 82,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 192,
+    "label": "LDI R0, 52",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 193,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 81,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 194,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 82,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 195,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 82,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 196,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 197,
+    "label": "LDI R0, 4F",
+    "step": 1,
+    "a": 82,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 198,
+    "label": "LDI R0, 4F",
+    "step": 2,
+    "a": 83,
+    "d": 79,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 199,
+    "label": "LDI R0, 4F",
+    "step": 3,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 200,
+    "label": "LDI R0, 4F",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 201,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 84,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 202,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 203,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 79,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 204,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 205,
+    "label": "LDI R0, 4D",
+    "step": 1,
+    "a": 85,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 206,
+    "label": "LDI R0, 4D",
+    "step": 2,
+    "a": 86,
+    "d": 77,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 207,
+    "label": "LDI R0, 4D",
+    "step": 3,
+    "a": null,
+    "d": 77,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 208,
+    "label": "LDI R0, 4D",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 209,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 87,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 210,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 77,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 211,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 77,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 212,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 213,
+    "label": "LDI R0, 20",
+    "step": 1,
+    "a": 88,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 214,
+    "label": "LDI R0, 20",
+    "step": 2,
+    "a": 89,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 215,
+    "label": "LDI R0, 20",
+    "step": 3,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 216,
+    "label": "LDI R0, 20",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 217,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 90,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 218,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 219,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 32,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 220,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 221,
+    "label": "LDI R0, 38",
+    "step": 1,
+    "a": 91,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 222,
+    "label": "LDI R0, 38",
+    "step": 2,
+    "a": 92,
+    "d": 56,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 223,
+    "label": "LDI R0, 38",
+    "step": 3,
+    "a": null,
+    "d": 56,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 224,
+    "label": "LDI R0, 38",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 225,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 93,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 226,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 56,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 227,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 56,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 228,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 229,
+    "label": "LDI R0, 20",
+    "step": 1,
+    "a": 94,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 230,
+    "label": "LDI R0, 20",
+    "step": 2,
+    "a": 95,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 231,
+    "label": "LDI R0, 20",
+    "step": 3,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 232,
+    "label": "LDI R0, 20",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 233,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 96,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 234,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 235,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 32,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 236,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 237,
+    "label": "LDI R0, 42",
+    "step": 1,
+    "a": 97,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 238,
+    "label": "LDI R0, 42",
+    "step": 2,
+    "a": 98,
+    "d": 66,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 239,
+    "label": "LDI R0, 42",
+    "step": 3,
+    "a": null,
+    "d": 66,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 240,
+    "label": "LDI R0, 42",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 241,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 99,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 242,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 66,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 243,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 66,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 244,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 245,
+    "label": "LDI R0, 49",
+    "step": 1,
+    "a": 100,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 246,
+    "label": "LDI R0, 49",
+    "step": 2,
+    "a": 101,
+    "d": 73,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 247,
+    "label": "LDI R0, 49",
+    "step": 3,
+    "a": null,
+    "d": 73,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 248,
+    "label": "LDI R0, 49",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 249,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 102,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 250,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 73,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 251,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 73,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 252,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 253,
+    "label": "LDI R0, 54",
+    "step": 1,
+    "a": 103,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 254,
+    "label": "LDI R0, 54",
+    "step": 2,
+    "a": 104,
+    "d": 84,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 255,
+    "label": "LDI R0, 54",
+    "step": 3,
+    "a": null,
+    "d": 84,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 256,
+    "label": "LDI R0, 54",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 257,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 105,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 258,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 84,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 259,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 84,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 260,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 261,
+    "label": "LDI R0, 20",
+    "step": 1,
+    "a": 106,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 262,
+    "label": "LDI R0, 20",
+    "step": 2,
+    "a": 107,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 263,
+    "label": "LDI R0, 20",
+    "step": 3,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 264,
+    "label": "LDI R0, 20",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 265,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 108,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 266,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 32,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 267,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 32,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 268,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 269,
+    "label": "LDI R0, 43",
+    "step": 1,
+    "a": 109,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 270,
+    "label": "LDI R0, 43",
+    "step": 2,
+    "a": 110,
+    "d": 67,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 271,
+    "label": "LDI R0, 43",
+    "step": 3,
+    "a": null,
+    "d": 67,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 272,
+    "label": "LDI R0, 43",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 273,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 111,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 274,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 67,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 275,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 67,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 276,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 277,
+    "label": "LDI R0, 4F",
+    "step": 1,
+    "a": 112,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 278,
+    "label": "LDI R0, 4F",
+    "step": 2,
+    "a": 113,
+    "d": 79,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 279,
+    "label": "LDI R0, 4F",
+    "step": 3,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 280,
+    "label": "LDI R0, 4F",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 281,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 114,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 282,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 79,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 283,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 79,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 284,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 285,
+    "label": "LDI R0, 4D",
+    "step": 1,
+    "a": 115,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 286,
+    "label": "LDI R0, 4D",
+    "step": 2,
+    "a": 116,
+    "d": 77,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 287,
+    "label": "LDI R0, 4D",
+    "step": 3,
+    "a": null,
+    "d": 77,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 288,
+    "label": "LDI R0, 4D",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 289,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 117,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 290,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 77,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 291,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 77,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 292,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 293,
+    "label": "LDI R0, 50",
+    "step": 1,
+    "a": 118,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 294,
+    "label": "LDI R0, 50",
+    "step": 2,
+    "a": 119,
+    "d": 80,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 295,
+    "label": "LDI R0, 50",
+    "step": 3,
+    "a": null,
+    "d": 80,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 296,
+    "label": "LDI R0, 50",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 297,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 120,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 298,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 80,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 299,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 80,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 300,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 301,
+    "label": "LDI R0, 55",
+    "step": 1,
+    "a": 121,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 302,
+    "label": "LDI R0, 55",
+    "step": 2,
+    "a": 122,
+    "d": 85,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 303,
+    "label": "LDI R0, 55",
+    "step": 3,
+    "a": null,
+    "d": 85,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 304,
+    "label": "LDI R0, 55",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 305,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 123,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 306,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 85,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 307,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 85,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 308,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 309,
+    "label": "LDI R0, 54",
+    "step": 1,
+    "a": 124,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 310,
+    "label": "LDI R0, 54",
+    "step": 2,
+    "a": 125,
+    "d": 84,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 311,
+    "label": "LDI R0, 54",
+    "step": 3,
+    "a": null,
+    "d": 84,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 312,
+    "label": "LDI R0, 54",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 313,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 126,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 314,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 84,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 315,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 84,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 316,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 317,
+    "label": "LDI R0, 45",
+    "step": 1,
+    "a": 127,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 318,
+    "label": "LDI R0, 45",
+    "step": 2,
+    "a": 128,
+    "d": 69,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 319,
+    "label": "LDI R0, 45",
+    "step": 3,
+    "a": null,
+    "d": 69,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 320,
+    "label": "LDI R0, 45",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 321,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 129,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 322,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 69,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 323,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 69,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 324,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 325,
+    "label": "LDI R0, 52",
+    "step": 1,
+    "a": 130,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 326,
+    "label": "LDI R0, 52",
+    "step": 2,
+    "a": 131,
+    "d": 82,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 327,
+    "label": "LDI R0, 52",
+    "step": 3,
+    "a": null,
+    "d": 82,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 328,
+    "label": "LDI R0, 52",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 329,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 132,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 330,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 82,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 331,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 82,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 332,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 333,
+    "label": "LDI R0, 05",
+    "step": 1,
+    "a": 133,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 334,
+    "label": "LDI R0, 05",
+    "step": 2,
+    "a": 134,
+    "d": 5,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 335,
+    "label": "LDI R0, 05",
+    "step": 3,
+    "a": null,
+    "d": 5,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 336,
+    "label": "LDI R0, 05",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 337,
+    "label": "STA R0, 2008",
+    "step": 1,
+    "a": 135,
+    "d": 72,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 338,
+    "label": "STA R0, 2008",
+    "step": 2,
+    "a": 136,
+    "d": 8,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 339,
+    "label": "STA R0, 2008",
+    "step": 3,
+    "a": 137,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 340,
+    "label": "STA R0, 2008",
+    "step": 4,
+    "a": null,
+    "d": 5,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 341,
+    "label": "STA R0, 2008",
+    "step": 5,
+    "a": 8200,
+    "d": 5,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 342,
+    "label": "STA R0, 2008",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 343,
+    "label": "LDI R0, 01",
+    "step": 1,
+    "a": 138,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 344,
+    "label": "LDI R0, 01",
+    "step": 2,
+    "a": 139,
+    "d": 1,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 345,
+    "label": "LDI R0, 01",
+    "step": 3,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 346,
+    "label": "LDI R0, 01",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 347,
+    "label": "STA R0, 2010",
+    "step": 1,
+    "a": 140,
+    "d": 72,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 348,
+    "label": "STA R0, 2010",
+    "step": 2,
+    "a": 141,
+    "d": 16,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 349,
+    "label": "STA R0, 2010",
+    "step": 3,
+    "a": 142,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 350,
+    "label": "STA R0, 2010",
+    "step": 4,
+    "a": null,
+    "d": 1,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 351,
+    "label": "STA R0, 2010",
+    "step": 5,
+    "a": 8208,
+    "d": 1,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 352,
+    "label": "STA R0, 2010",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 353,
+    "label": "LDI R0, 0E",
+    "step": 1,
+    "a": 143,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 354,
+    "label": "LDI R0, 0E",
+    "step": 2,
+    "a": 144,
+    "d": 14,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 355,
+    "label": "LDI R0, 0E",
+    "step": 3,
+    "a": null,
+    "d": 14,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 356,
+    "label": "LDI R0, 0E",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 357,
+    "label": "STA R0, 2028",
+    "step": 1,
+    "a": 145,
+    "d": 72,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 358,
+    "label": "STA R0, 2028",
+    "step": 2,
+    "a": 146,
+    "d": 40,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 359,
+    "label": "STA R0, 2028",
+    "step": 3,
+    "a": 147,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 360,
+    "label": "STA R0, 2028",
+    "step": 4,
+    "a": null,
+    "d": 14,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 361,
+    "label": "STA R0, 2028",
+    "step": 5,
+    "a": 8232,
+    "d": 14,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 362,
+    "label": "STA R0, 2028",
+    "step": 6,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 363,
+    "label": "LDI R0, 41",
+    "step": 1,
+    "a": 148,
+    "d": 32,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 364,
+    "label": "LDI R0, 41",
+    "step": 2,
+    "a": 149,
+    "d": 65,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 365,
+    "label": "LDI R0, 41",
+    "step": 3,
+    "a": null,
+    "d": 65,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 366,
+    "label": "LDI R0, 41",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 367,
+    "label": "STAI R0",
+    "step": 1,
+    "a": 150,
+    "d": 88,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 368,
+    "label": "STAI R0",
+    "step": 2,
+    "a": null,
+    "d": 65,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 369,
+    "label": "STAI R0",
+    "step": 3,
+    "a": 8192,
+    "d": 65,
+    "rd": 1,
+    "wr": 0
+  },
+  {
+    "point": 370,
+    "label": "STAI R0",
+    "step": 4,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  },
+  {
+    "point": 371,
+    "label": "HLT",
+    "step": 1,
+    "a": 151,
+    "d": 0,
+    "rd": 0,
+    "wr": 1
+  },
+  {
+    "point": 372,
+    "label": "HLT",
+    "step": 2,
+    "a": null,
+    "d": null,
+    "rd": 1,
+    "wr": 1
+  }
+]

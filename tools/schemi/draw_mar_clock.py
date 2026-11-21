@@ -1,0 +1,110 @@
+"""Draw the 74HC377 MAR enable conditioner, with HCT input buffers and reset masking."""
+from pathlib import Path
+from html import escape
+ROOT=Path(__file__).resolve().parents[2]
+W,H=1900,1535
+s=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">',f'<rect width="{W}" height="{H}" fill="white"/>','<g font-family="Arial, sans-serif" fill="#182c43">']
+BLUE='#2063ab'; GREEN='#147655'; ORANGE='#a75c16'; GRAY='#526477'; RED='#a33737'
+def text(x,y,t,size=20,color='#182c43',bold=False):
+ s.append(f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" font-weight="{"bold" if bold else "normal"}">{escape(t)}</text>')
+def path(d,c=BLUE,w=3):s.append(f'<path d="{d}" fill="none" stroke="{c}" stroke-width="{w}" stroke-linejoin="round"/>')
+def box(x,y,w,h,fill='#f4f7fb'):
+ s.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="{fill}" stroke="#7b8996" stroke-width="1.5"/>')
+def inverter(x,y,name,inp,out,c=ORANGE):
+ s.append(f'<path d="M{x} {y-24} V{y+24} L{x+44} {y} Z" fill="white" stroke="{c}" stroke-width="2.5"/>')
+ s.append(f'<circle cx="{x+50}" cy="{y}" r="6" fill="white" stroke="{c}" stroke-width="2.5"/>')
+ text(x-8,y-45,name,18,c,True)
+ text(x-15,y+44,str(inp),18,c);text(x+57,y-12,str(out),18,c)
+ return x+56
+
+def and_gate(x,y,name,pina,pinb,piny):
+ # Inputs y and y+40; output y+20.
+ s.append(f'<path d="M{x} {y-25} H{x+40} A45 45 0 0 1 {x+40} {y+65} H{x} Z" fill="#edf4fc" stroke="{BLUE}" stroke-width="2.5"/>')
+ text(x,y-45,name,19,BLUE,True)
+ text(x-20,y-10,str(pina),17);text(x-20,y+63,str(pinb),17)
+ text(x+92,y+9,str(piny),17)
+text(55,48,'Clock MAR con il tuo 74HC377',34,bold=True)
+text(55,84,'Abilitazioni CU memorizzate alla discesa del clock; acquisizione MAR alla salita successiva.',23)
+text(55,118,'Numeri di pin fisici: U1 DIP-20; U2/U3 DIP-14. Alimentazione 5 V. Proposta da collaudare sulla CPU.',21,GRAY)
+# Parts and clock branch.
+box(55,160,1790,200)
+text(78,192,'CLOCK DEL 377',21,BLUE,True)
+text(78,230,'CK_CPU',23,BLUE,True)
+path('M78 265 H365',BLUE)
+end=inverter(365,265,'U2A',1,2,BLUE)
+path(f'M{end} 265 H650',GREEN)
+text(490,246,'/CK_CPU',23,GREEN,True)
+text(490,300,'→ U1 pin 11 (CLK)',21,GREEN)
+text(78,336,'Prelevare CK_CPU prima dei blocchi reset locali: deve poter pulsare anche mentre RESET è premuto.',19,GRAY)
+text(920,201,'U1 = 74HC377 (8 flip-flop, usati 2)',21,bold=True)
+text(920,235,'U2 = 74HCT14 (5 inverter usati su 6)',21,bold=True)
+text(920,269,'U3 = 74HCT08 (tutte e 4 le AND usate)',21,bold=True)
+text(920,313,'HCT14: adatta i livelli TTL delle EEPROM agli ingressi HC.',19,ORANGE)
+text(55,400,'INGRESSI CU E ADATTAMENTO DEI LIVELLI',20,ORANGE,True)
+text(1200,400,'RESET SULLE ABILITAZIONI',20,RED,True)
+# Shared 377 body, with its two used channels.
+box(780,435,300,470,'#eef8f3')
+text(837,475,'U1 - 74HC377',24,GREEN,True)
+text(810,620,'Lo stesso integrato',20,GREEN)
+text(810,650,'per entrambi i MAR',20,GREEN)
+text(815,799,'/G pin 1 → GND',20)
+text(815,885,'CLK pin 11 ← /CK_CPU',19,GREEN,True)
+path('M780 832 l12 10 l-12 10',GREEN,2)
+path('M665 842 H780',GREEN)
+text(655,821,'/CK_CPU',20,GREEN,True)
+for y,cu,which,d,q,b1,b2,bname,cname,ga,gb in [
+ (530,'CU1','BASSO',3,2,(3,4),(5,6),'U2B','U2C',(1,2,3),(4,5,6)),
+ (735,'CU2','ALTO',4,5,(9,8),(11,10),'U2D','U2E',(9,10,8),(12,13,11))]:
+ box(55,y-44,245,96,'#fff5e9')
+ text(72,y-10,cu+' - EEPROM',22,ORANGE,True)
+ text(72,y+22,'D2, pin 13 = MAR_'+('L' if cu=='CU1' else 'H')+'_WE',17,ORANGE)
+ path(f'M300 {y} H365',ORANGE)
+ end=inverter(365,y,bname,*b1)
+ path(f'M{end} {y} H540',ORANGE)
+ end=inverter(540,y,cname,*b2)
+ path(f'M{end} {y} H780',ORANGE)
+ text(650,y-14,'livelli CMOS',17,ORANGE)
+ text(792,y+28,f'D pin {d}',20,GREEN)
+ text(985,y+28,f'Q pin {q}',20,GREEN)
+ # First AND masks the stable enable with reset; final AND receives raw CK.
+ path(f'M1080 {y} H1220',GREEN)
+ and_gate(1220,y,'U3'+('A' if cu=='CU1' else 'C'),*ga)
+ path(f'M1130 {y+40} H1220',RED)
+ text(1090,y+94,'/RESET_CPU',18,RED,True)
+ path(f'M1305 {y+20} H1450',GREEN)
+ text(1332,y-4,'EN_OK',17,GREEN)
+ and_gate(1450,y+20,'U3'+('B' if cu=='CU1' else 'D'),*gb)
+ path(f'M1340 {y+60} H1450',BLUE)
+ text(1330,y+91,'CK_CPU',18,BLUE,True)
+ path(f'M1535 {y+40} H1640',BLUE)
+ box(1640,y-5,205,105)
+ text(1655,y+23,'MAR '+which,22,bold=True)
+ text(1655,y+55,'CK pin 11 *',21,BLUE,True)
+ text(1655,y+83,'* HC574/HCT574',15,GRAY)
+text(55,952,'Stessi nomi di rete = stesso filo: CK_CPU, /CK_CPU e /RESET_CPU. /RESET_CPU è 0 durante il reset.',20,bold=True)
+text(55,985,'Sostituire le AND locali con questa rete: non collegare insieme le uscite delle vecchie AND e di U3.',20,ORANGE,True)
+path('M55 1012 H1845',GRAY,1)
+text(55,1050,'ALIMENTAZIONE E PIN LIBERI',22,bold=True)
+text(55,1085,'U1: pin 20 → +5 V; pin 10 → GND; pin 1 (/G) → GND.',20)
+text(55,1118,'U2 e U3: pin 14 → +5 V; pin 7 → GND.',20)
+text(55,1151,'100 nF vicino a ciascun chip, fra VCC e GND.',20)
+text(55,1184,'U1: D inutilizzati 7, 8, 13, 14, 17, 18 → GND.',20)
+text(55,1217,'U1: Q inutilizzati 6, 9, 12, 15, 16, 19 scollegati.',20)
+text(55,1250,'U2: pin 13 → GND; pin 12 scollegato. U3: nessun gate libero.',20)
+text(1010,1050,'AVVIO / RESET: IL 377 NON HA CLEAR',22,RED,True)
+text(1010,1085,'1. CK basso; tenere /RESET_CPU a 0.',20)
+text(1010,1118,'2. Attendere CU stabile in T1: entrambi MAR_WE = 0.',20)
+text(1010,1151,'3. Con RESET ancora premuto, dare un impulso CK',20)
+text(1035,1180,'completo basso → alto → basso: U1 memorizza 0.',20)
+text(1010,1217,'4. CK basso; rilasciare RESET, poi avviare la CPU.',20)
+text(1010,1250,'Non rilasciare RESET con CK alto.',20,RED,True)
+box(55,1280,1790,160,'#fff8e9')
+text(78,1314,'COSA VERIFICARE',21,bold=True)
+text(78,1349,'Durante RESET i CK dei MAR restano bassi. A STA/T2 salva 00 nel MAR basso; a STA/T3 salva 20 nel MAR alto.',20)
+text(78,1382,'L’impulso sotto reset richiede PC e microstep mantenuti azzerati; anche /WE RAM deve essere inibito durante RESET.',20,RED)
+text(78,1415,'Verificare setup/hold dei dati e skew dei clock locali. La modifica non corregge gli altri clock CPU né /WE RAM.',20)
+text(55,1481,'Ipotesi: microstep aggiornato alla salita CK; CU stabile prima della discesa. Nessuna modifica a EEPROM o Tang.',20,GRAY)
+text(55,1515,'Fonti: TI SN74HC377, SN74HCT14, SN74HCT08 e SN74HC574. Revisione 15/11/2026.',17,GRAY)
+s.append('</g></svg>')
+for name in ['mar-clock-74hc377.svg','mar-clock-abilitazioni-memorizzate.svg']:
+ p=ROOT/'output/schemi'/name;p.write_text('\n'.join(s));print(p)

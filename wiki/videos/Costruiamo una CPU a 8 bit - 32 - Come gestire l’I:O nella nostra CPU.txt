@@ -1,0 +1,227 @@
+Salve a tutti e bentornati su questo
+nuovo video. Oggi continuiamo a
+costruire la CPU a 8 bit. Nel video di
+oggi proviamo a interfacciare la CPU con
+le periferiche di input e output e
+introduciamo questo argomento. Ma prima
+di iniziare vi ricordo di lasciare un mi
+piace, commentare questo video e
+iscrivervi al mio canale in modo da
+supportare il mio lavoro.
+Nel video di oggi voglio analizzare come
+possiamo gestire all'interno del nostro
+computer a 8 bit le periferiche di input
+e output. Ciò che voglio fare è una
+sorta di mappatura delle periferiche
+all'interno della del basso degli
+indirizzi. Questa procedura si chiama
+memory mapped io. In pratica tutto nasce
+da una considerazione. Ad oggi abbiamo
+noi un bass degli indirizzi a 16 bit. Di
+questi 16 bit utilizziamo 13 bit per
+gestire la parte di eprom perché
+comunque quando copiamo la eprom del
+codice all'interno della RAM, anche se
+la RAM ha più di 13 linee di indirizzo,
+in realtà la eprom si ferma a 13 linee
+di indirizzo. Che cosa vuol dire? Vuol
+dire che 2 elev 13 abbiamo circa 8 KB di
+RAM eprom indirizzabili. I restanti bit
+della base degli indirizzi sono
+inutilizzati.
+Se faccio io i conti, ho circa 56 KB che
+non vado mai a utilizzare di indirizzi
+liberi. La mia idea è quella di
+utilizzare questi indirizzi per andare a
+pilotare dei dispositivi di IO. Quindi,
+eh essenzialmente avremo che gli
+indirizzi che vanno da 0x00
+a 0x1f
+sono destinati alla memoria. Invece
+tutti gli indirizzi che vanno da 0x200
+a 0x FF FF sono destinati a mappare le
+periferiche di input e output. Qual è
+l'idea di questo approccio? L'idea di
+questo approccio è che utilizzando lo
+stesso bass, quindi riciclando lo stesso
+hardware e quindi evito di aggiungere
+troppa complessità, riesco a gestire
+degli indirizzi eh che sono destinati a
+delle periferiche di input e output. Ad
+oggi, analizzando come gestiamo la RAM,
+sappiamo che abbiamo un segnale bright
+enable a logica negata che va a
+scrivermi all'interno della RAM nel
+secondo macrostep quando ho
+un'operazione di scrittura. E poi c'ho
+l'output enable, sempre a logica negata,
+che va a mostrare all'interno del bass
+dati il contenuto della cella di memoria
+selezionata al basso degli indirizzi. Se
+io vado a fare questa mappatura
+dell'IioO all'interno del basso degli
+indirizzi, vado a riciclare questi due
+segnali per andare a fare letture o
+scritture all'interno di periferiche di
+output che sono selezionate dal basso
+degli indirizzi. L'idea qual è? L'idea è
+quella che eh in pratica per la nostra
+CPU io gestisco l'accesso alle alle
+periferiche di input e output come se
+sto facendo una lettura o una scrittura
+all'interno della RAM.
+Ora questa cosa in realtà è da testare
+perché eh siamo vincolati dalla dai
+macrostep che vanno a gestire lettura e
+scrittura all'interno della RAM. Se
+riusciamo a gestire le nostre
+periferiche di input e output con lo
+stesso timing, siamo a posto, quindi non
+dobbiamo neanche modificare il nostro
+set eh di istruzioni. Se invece ho
+qualche problema con i vari macrostep,
+posso sempre utilizzare ehm due
+istruzioni che avevamo riservato, ma non
+abbiamo mai utilizzato, che sono in e
+out.
+Per capire se una se il basso degli
+indirizzi sta pilotando la RAM oppure
+sta pilotando una periferica di input
+output, ricicliamo una parte di hardware
+che abbiamo visto qualche video fa. Se
+vi ricordate io avevo collegato delle
+porte OR tra A15, A14 e A13, cioè i bit
+più significativi.
+Quando questi 3 bit erano tutti e tre a
+zero, andavo ad abilitare la RAM, o
+meglio, facevo un OR col segnale Bright
+enable. La mia idea è che questi 3 bit,
+l'or tra questi 3 bit andare ad
+abilitare il chip di RAM o il chip delle
+periferiche di input e output. E quindi
+in questo modo noi riusciamo a fare una
+prima decodifica degli indirizzi eh
+grossolana leggendo soltanto questi
+primi 3 bit e già abbiamo la porta OR
+che fa questa logica.
+Ora il segnale eh che ne scaturisce di
+enable oltre a essere mandato
+direttamente al chip enable della RAM
+sarà anche mandato a un 74238.
+Il 74238 è un decodificatore de
+multiplexer. In sostanza l'idea qual è?
+che io vado a collegare all'interno
+degli ingressi A, B e C del 74238
+i 3 bit più bassi, quindi meno
+significativi del basso degli indirizzi.
+Andando a variare la combinazione di
+questi indirizzi, mi si andrà ad
+attivare uno di questi selettori. Ogni
+selettore poi sarà and sarà collegato a
+una determinata periferica di input e
+output. In questo modo riesco ehm
+tenendo in considerazione i bit meno
+significativi a decidere a quale
+periferica di input output eh è
+destinata l'operazione che devo
+eseguire. Quindi, tra virgolette, eh a
+ognuno di questo andrò a collegare poi
+un dispositivo di input output, che ne
+so, una scheda video, un una tastiera,
+un timer e così via. Quindi in questo
+modo dovremmo aver gestito anche tutta
+questa parte di circuito.
+Ho ripreso questa slide che avevo
+disegnato un paio di video fa in cui ho
+l'or tra i bit più significativi a 16, a
+15, a 14 e poi andavo anche a mettere in
+OR il segnale Wright enable della
+control Unit destinato alla RAM.
+Quest'ultimo mi andava a generare il
+segnale bright enable della RAM. La
+modifica che devo fare qua è staccare
+quest'ultima porta logica, quest'ultimo
+OR e questo segnale, andarlo a
+utilizzare per il abilitare la RAM, il
+chip enable e la RAM, perché la RAM c'ha
+un chip enable che per ora abbiamo
+sempre forzato a massa, ora sarà
+pilotato da questor. Questo segnale qua
+invece sarà anche collegato al decoder
+multiplexer che abbiamo appena appena
+visto per selezionare la periferica di
+input o output. Quindi, che cosa
+succede? Succede che quando questo
+valore è a zero, avrò il chip di RAM
+abilitato. Quando invece è a uno, avrò
+il chip eh che mi abilita una periferica
+di input output.
+Invece il segnale enable a questo punto
+che gestisce la la control unit può
+essere utilizzato sia nella RAM sia
+nelle periferiche di input e output,
+tanto quando è abilitata una sarà
+disabilitata l'altra e quindi non
+abbiamo nessun problema e nessun
+conflitto. E questo è anche un vantaggio
+di questo approccio. Con due segnali che
+già gestisce la Control Unit, io riesco
+a gestire le perferiche di input e
+output senza introdurre nuovi segnali
+che vanno a complicarmi la control Unit.
+Vediamo adesso le modifiche che ho fatto
+all'interno della board della nostra
+CPU. Partiamo da questa da questa scheda
+che ho collegato. In pratica mi serve a
+riportare il bass degli indirizzi, dato
+che comunque c'era molto affollamento in
+questa zona di cavi ed era difficile
+fare altri collegamenti e dato che le
+nostre periferiche di input e output di
+fatto utilizzeranno il bass degli
+indirizzi. Ho ho riportato tutto
+all'interno di questa basetta, così ho
+altri pin dove andare a collegare altri
+cavetti per eh collegare i vari
+dispositivi di IO.
+Da questa basetta poi partono questi tre
+cavi, sono verdi e questi tre cavi sono
+i bit meno significativi del bass degli
+indirizzi che vanno agli ingressi del
+74238
+che è il nostro decoder multiplexer che
+mi va poi ad abilitare un un dispositivo
+di IO selezionato su questi 3 bit. Dal
+74238 ho collegato ovviamente su ogni
+uscita anche questi LED. agio 0 1 2 3 e
+così via. In realtà potremmo arrivare
+fino a 8, però al momento mi sono
+fermato a cinque, anche perché non
+utilizzeremo mai tutte queste linee di
+io e quindi qua eh mi si accenderà un
+LED quando avrò abilitato un determinato
+dispositivo di input output. Poi ci sono
+tutti gli altri collegamenti, ma la cosa
+importante è l'enable. L'enable
+di questo integrato viene viene preso
+dall'OR dei dei bit più significativi
+del bass degli indirizzi che poi vanno
+anche a pilotare le enable della RAM.
+Diciamo che la RAM sarà abilitato, il
+CPU RAM quando sarà a zero, l'enable,
+invece questo qua sarà abilitato quando
+sarà a un, quindi con lo stesso segnale
+vado a pilotarli entrambi.
+Diciamo che per il momento è un po'
+tutto. Nel prossimo video proviamo
+effettivamente a fare qualche test e
+magari a provare a collegargli qualche
+dispositivo da io costruire qualcosa per
+testare effettivamente lo scambio di
+dati con questo questa tipologia di
+dispositivi.
+Direi che possiamo chiudere questo
+video. Vi ricordo di lasciare un mi
+piace, commentare questo video e
+iscrivervi al mio canale in modo da
+supportare il mio lavoro.

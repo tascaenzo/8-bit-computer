@@ -212,9 +212,10 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                        uop == UOP_MOV_RA_RN || uop == UOP_MOV_RB_RN ||
                        uop == UOP_MOV_RN_RA)) ||
         (step == 3 && (uop == UOP_CMP || uop == UOP_LDI || uop == UOP_LDX ||
-                       uop == UOP_LDA_IDX || uop == UOP_STA_IDX)) ||
+                       uop == UOP_LDA_IDX)) ||
         (step == 4 && is_jump(uop)) ||
-        (step == 5 && (uop == UOP_LDA || uop == UOP_STA)))
+        (step == 5 && (uop == UOP_LDA || uop == UOP_STA_IDX)) ||
+        (step == 7 && uop == UOP_STA))
         return ADDRESS_NONE | CTRL_NEXT_FETCH;
 
     /*
@@ -261,17 +262,22 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                          CTRL_RF_RW
                    : ADDRESS_NONE;
     case UOP_STA:
-        /* T2/T3 formano MAR, T4 salva Rn in MDR, T5 scrive la memoria. */
+        /* T2/T3 formano MAR, T4 salva Rn in MDR.
+         * T5 prepara i bus senza scrivere, T6 scrive, T7 chiude /WE
+         * mantenendo gli stessi bus. Solo T8 li rilascia e torna al fetch.
+         * Questa separazione non sostituisce la qualificazione hardware
+         * di /WE contro reset e transitori delle uscite EEPROM.
+         */
         if (step == 1)
             return READ_ADDRESS_LOW;
         if (step == 2)
             return READ_ADDRESS_HIGH;
         if (step == 3)
             return ADDRESS_NONE | CTRL_RF_EN | CTRL_MDR_WE;
-        return step == 4
-                   ? ADDRESS_WORD(CPU8_ADDR_SEL_MAR) |
-                         CTRL_MDR_OE | CTRL_RAM_WE
-                   : ADDRESS_NONE;
+        if (step >= 4 && step <= 6)
+            return ADDRESS_WORD(CPU8_ADDR_SEL_MAR) | CTRL_MDR_OE |
+                   (step == 5 ? CTRL_RAM_WE : 0u);
+        return ADDRESS_NONE;
     case UOP_ALU:
         /* RA/RB restano invariati mentre ALU -> MDR salva risultato e flag.
          * Prima di ciascuna cattura, una fase prepara il dato senza scrivere.
@@ -325,13 +331,15 @@ ControlWord microcode_word(uint8_t step, MicroOp uop, CpuFlags flags,
                          CTRL_RF_RW
                    : ADDRESS_NONE;
     case UOP_STA_IDX:
-        /* STA Rn, [IDX]: prima Rn -> MDR, poi MDR -> RAM selezionata da IDX. */
+        /* T2 salva Rn in MDR; T3 prepara IDX/MDR, T4 scrive,
+         * T5 chiude /WE conservando IDX/MDR, T6 rilascia e torna a T1.
+         */
         if (step == 1)
             return ADDRESS_NONE | CTRL_RF_EN | CTRL_MDR_WE;
-        return step == 2
-                   ? ADDRESS_WORD(CPU8_ADDR_SEL_IDX) |
-                         CTRL_MDR_OE | CTRL_RAM_WE
-                   : ADDRESS_NONE;
+        if (step >= 2 && step <= 4)
+            return ADDRESS_WORD(CPU8_ADDR_SEL_IDX) | CTRL_MDR_OE |
+                   (step == 3 ? CTRL_RAM_WE : 0u);
+        return ADDRESS_NONE;
     default:
         /* Tutti i salti condividono il fetch dell'indirizzo a 16 bit. */
         if (is_jump(uop))

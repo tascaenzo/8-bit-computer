@@ -1,26 +1,66 @@
-# Scheda video CPU 8-bit — Tang Nano 9K
+# Video HDMI e tastiera PS/2 sulla Tang Nano 9K
 
-> **Architettura aggiornata — 21 ottobre 2026:** il [bus memoria e I/O](../../docs/io-bus.md) sceglie RAM CPU da 8 KiB selezionata tramite chip enable e richieste `/RD` e `/WR` condivise. RTL e bitstream qui descritti conservano la precedente mappa video; decoder, pinout e contratto temporale vanno verificati e adeguati alla nuova interfaccia.
+Il video usa l'ID I/O `000` (Y0 del 74238) e la tastiera l'ID `001` (Y1).
+La Tang riceve A3–A15; A0–A2 sono decodificati dal 74238.
+I registri della stessa periferica distano 8 indirizzi, senza alias di A3.
+La RAM CPU rimane a 8 KiB e le periferiche usano le richieste condivise `/RD`
+e `/WR`. Il bitstream implementa la [mappa I/O corrente](../../docs/io-bus.md).
 
-Progetto RTL completo per il sottosistema video. Bitstream generato con
-Yosys/nextpnr/Apicula; non ancora provato su una Tang collegata alla CPU.
+- HDMI in modalità video DVI, 640 × 480 a 60 Hz, senza audio.
+- Testo a 16 colori di primo piano e 16 di sfondo, 80 × 60 caratteri da 8 × 8 pixel.
+  VRAM: 16 KiB caratteri + 16 KiB attributi, passo di riga 128.
+- Cursore lampeggiante, cancellazione, ritorno a capo e scorrimento automatici.
+  La posizione è `riga * 128 + colonna`.
+- Video e ricezione PS/2 funzionano con il clock FPGA anche a CPU ferma.
+- Tastiera PS/2 Set 2 con mappa US QWERTY, Shift, Caps Lock, frecce, un evento
+  in attesa e flag di errore. Il timer resta da implementare.
 
-## Funzioni
+| Selezione | Indirizzo CPU | Accesso | Funzione |
+| --- | --- | --- | --- |
+| Y0 | `0x2000` | W | VIDEO_DATA: scrive carattere e colore, con avanzamento configurabile |
+| Y0 | `0x2018` | R | VIDEO_STATUS: bit 0 READY, bit 1 BUSY |
+| Y0 | `0x2020` | W | VIDEO_CMD: clear, home, newline, scroll, carriage return |
+| Y0 | `0x2028` | R/W | VIDEO_COLOR: sfondo alto / testo basso, 4 bit ciascuno |
+| Y0 | `0x2030` | R/W | VIDEO_CURSOR_X: colonna 0–79 |
+| Y0 | `0x2038` | R/W | VIDEO_CURSOR_Y: riga 0–59 |
+| Y0 | `0x2040` | R/W | VIDEO_CONTROL: cursore, blink, avanzamento, wrap, scroll |
+| Y1 | `0x2001` | R | KEY_DATA: legge un evento o zero se vuoto |
+| Y1 | `0x2009` | R | KEY_STATUS: pronto, trabocco, parità e frame |
+| Y1 | `0x2011` | W | KEY_CTRL: bit 0 cancella il trabocco, bit 1 gli errori di ricezione |
 
-- HDMI in modalita' video DVI, senza audio: 640 × 480, 60 Hz, pixel clock 25,2 MHz.
-- Testo bianco su nero, 80 × 60 caratteri da 8 × 8 pixel.
-- VRAM 16 KiB a `0x4000–0x7FFF`, 128 × 128 celle, un byte per cella.
-- `indirizzo = 0x4000 + riga * 128 + colonna`; coordinate a partire da zero.
-- ASCII stampabile `0x20–0x7E`; altri codici visualizzati come celle vuote,
-  ma conservati integralmente e rileggibili dalla CPU.
-- Letture e scritture tramite `LDA`/`STA` e `LDAI`/`STAI`, senza auto-incremento IDX.
-- Inizializzazione a spazio dopo reset; video nero fino al completamento.
-- Una sola scrittura per strobe, nessuna risposta fuori dal range video.
-- CPU ferma: HDMI continua a visualizzare la VRAM.
+La posizione si imposta solo con CURSOR_X/Y. Gli indirizzi `0x2008` e
+`0x2010` sono riservati: scritture ignorate, letture in alta impedenza.
+Gli altri indirizzi restano invariati. I vecchi programmi che usavano PTR_L/H
+vanno aggiornati e il bitstream va rigenerato e caricato sulla Tang.
 
-Tastiera e timer `0xFF00–0xFF0F` non sono inclusi in questa build video e
-non producono una risposta sul bus. La loro specifica rimane separata.
-La RAM di sistema deve essere esclusa dal range video da un decoder TTL locale.
+L'ingresso BOOT_RUN della Tang è **1 in BOOT e 0 in RUN**.
+Questa polarità non modifica la selezione dei banchi delle EEPROM della CU. Durante BOOT lo schermo mostra «Enzo Tasca», «8 BIT COMPUTER»
+e «BOOTING...» in un pannello a colori con indicatore animato, senza limite di tempo. In RUN l'overlay scompare e viene
+mostrata la VRAM della CPU. Non esiste più il timer di avvio di tre secondi.
+L'overlay non modifica la VRAM. In BOOT la FPGA isola il bus CPU e mantiene
+READY basso; in RUN READY indica che la VRAM è inizializzata.
+
+BOOT_RUN entra su J6-2 / GPIO 86, **banca 1,8 V**: CPU → U4 B2 (pin 20),
+U4 A2 (pin 4) → resistenza 3,3 kΩ → GPIO 86, con 3,9 kΩ dal GPIO a GND.
+Usare resistenze all'1%. Seguire il [cablaggio dettagliato](../../docs/cablaggio-tang-video-ps2.md#ingresso-bootrun-e-schermata-di-avvio).
+La [specifica dei registri video](../../docs/video-registers.md) descrive comandi,
+colori, controlli e gestione BUSY. Vedi la [specifica PS/2](../../docs/io-ps2-timer.md)
+per i codici evento.
+
+## Reset condiviso con la CPU
+
+**/CPU_RESET su GPIO 85, J6-3: 0 = RESET, 1 = normale.** Passa per U4 B3
+(pin 19) → A3 (pin 5), poi un partitore 3,3 kΩ / 3,9 kΩ verso GND, come
+BOOT_RUN: il GPIO lavora a **1,8 V**. Rimuovere il vecchio filo U4 B3 → GND.
+Vedi il [cablaggio completo](../../docs/cablaggio-tang-video-ps2.md#reset-della-cpu-condiviso-con-la-fpga).
+
+Reset esterno, pulsante a bordo e perdita di lock PLL azzerano lo stesso core.
+Il bus si isola subito; il rilascio è sincronizzato a quattro cicli pixel.
+Si ripristinano VRAM vuota, attributi 0F, cursore/puntatore, registri video ed
+eventi/errori PS/2. La cancellazione VRAM richiede circa 0,65 ms: attendere
+almeno 1 ms o READY prima del primo accesso video CPU. BOOT_RUN continua a
+selezionare la schermata BOOTING: il reset da solo non cambia modalità.
+Il bitstream deve essere caricato sulla Tang per attivare questo nuovo ingresso.
 
 ## Build e test
 
@@ -29,15 +69,16 @@ Dalla radice del repository:
 ```sh
 make -C hardware/tang-nano-9k-video test
 make -C hardware/tang-nano-9k-video bitstream
+make -C hardware/tang-nano-9k-video preview
 ```
 
 Strumenti richiesti: `iverilog`, `vvp`, `yosys`, `nextpnr-himbaechel` con backend
-Gowin e `gowin_pack` (Apicula), presenti in OSS CAD Suite. Il submodule vendor
-deve essere inizializzato, se si parte da un clone nuovo:
+Gowin e `gowin_pack` (Apicula), presenti in OSS CAD Suite.
 
-```sh
-git submodule update --init --recursive
-```
+`vendor/hdmi/` contiene la PLL, il divisore di clock, l'encoder TMDS e
+l'header incluso dall'encoder. I file provengono dall'[esempio HDMI Sipeed
+al commit c3b7957](https://github.com/sipeed/TangNano-9K-example/tree/c3b795799f23de91982be52db4273a8eea100cdb/hdmi)
+e mantengono le intestazioni originali.
 
 File generato: **`build/cpu8_video.fs`**. Log: `build/synth.log`, `build/pnr.log`;
 report di timing: `build/timing.json`. Device: `GW1NR-LV9QN88PC6/I5`, family
@@ -51,213 +92,77 @@ hanno lo stesso pinout e differiscono nella dichiarazione delle coppie HDMI.
 Il pin 55 e' usato come GPIO: disabilitare SSPI anche nelle opzioni Gowin IDE.
 La build Makefile passa i flag `sspi_as_gpio` a nextpnr e al packer.
 
-## Pinout CPU
+## Pinout e contratto del bus
 
-Assegnazione derivata dallo
-[schema ufficiale Sipeed](https://dl.sipeed.com/fileList/TANG/Nano%209K/2_Schematic/Tang_Nano_9k_3672_Schematic.pdf).
-Tutti i pin CPU elencati appartengono a banche a 3,3 V. I numeri QN88
-identificano il pin del chip FPGA; J5/J6 identificano il connettore nello schema,
-non una numerazione da indovinare contando dal lato USB. Verificare le
-serigrafie della propria revisione, che non e' ancora nota.
+Seguire il [cablaggio filo per filo](../../docs/cablaggio-tang-video-ps2.md).
+J5-5 e J5-6 sono Y0 e Y1, J5-7 e J5-8 sono PS/2 CLK e DATA. A4–A15 sono
+su J5-9…J5-20; A3 entra su J6-21 (GPIO 31) tramite U4.
+Usare quattro NH245: U1/U2/U4 per gli ingressi, U3 per i dati. Il pulsante di reset e LED1 a bordo usano GPIO a 1,8 V;
+LED1 acceso indica che il video è pronto per la CPU. Il bus CPU e i segnali PS/2 adattati usano
+GPIO a 3,3 V. Tenere liberi i connettori microSD e display che condividono GPIO.
 
-| Segnale | Pin FPGA QN88 | Connettore schema Sipeed |
-| --- | ---: | --- |
-| `A0` | 25 | J5-5 |
-| `A1` | 26 | J5-6 |
-| `A2` | 27 | J5-7 |
-| `A3` | 28 | J5-8 |
-| `A4` | 29 | J5-9 |
-| `A5` | 30 | J5-10 |
-| `A6` | 33 | J5-11 |
-| `A7` | 34 | J5-12 |
-| `A8` | 40 | J5-13 |
-| `A9` | 35 | J5-14 |
-| `A10` | 41 | J5-15 |
-| `A11` | 42 | J5-16 |
-| `A12` | 51 | J5-17 |
-| `A13` | 53 | J5-18 |
-| `A14` | 54 | J5-19 |
-| `A15` | 55 | J5-20 |
-| `D0` | 38 | J5-1 |
-| `D1` | 37 | J5-2 |
-| `D2` | 36 | J5-3 |
-| `D3` | 39 | J5-4 |
-| `D4` | 56 | J5-21 |
-| `D5` | 57 | J5-22 |
-| `D6` | 48 | J6-19 |
-| `D7` | 49 | J6-20 |
-| `/RD` | 77 | J6-10 |
-| `/WR` | 76 | J6-11 |
-| `CPU_ENABLE` | 31 | J6-21 |
-| `/OE_DATA` | 32 | J6-22 |
-| `DIR_DATA` | 63 | J6-1 |
-| `video_ready_n` | 10 | LED1 onboard, banca 1,8 V |
+La FPGA accetta un ciclo quando esattamente una selezione e uno strobe
+sono attivi e l'indirizzo del registro è valido. Per il primo collaudo usare
+una finestra di almeno 1 µs con indirizzo e selezione stabili, oltre al dato
+stabile in scrittura. Mantenere il dato scritto e l'indirizzo fino al termine
+dello strobe. Campionare il dato letto dopo almeno 1 µs dall'inizio del ciclo
+selezionato. Fra due accessi lasciare almeno 1 µs senza richiesta valida per
+la Tang. Una fase con entrambi i select bassi conta come inattiva anche
+quando /RD è basso per un accesso alla RAM.
 
-Il clock locale e' il pin FPGA 52, gia' collegato all'oscillatore a 27 MHz.
-`resetn` usa il pulsante sul pin 4, nella banca a **1,8 V**, ed e' configurato
-come `LVCMOS18`: non collegarlo al reset TTL a 5 V o 3,3 V. Per sospendere
-l'interfaccia CPU usare `CPU_ENABLE=0`; il reset del pulsante cancella la VRAM.
-Il rilascio reset e' sincronizzato al pixel clock e dipende dal lock PLL.
-HDMI usa i pin gia' cablati a bordo 68–75. Non sono GPIO disponibili al bus CPU.
-J6-23 e' GND; J6-24 e' +3V3 nello schema citato. Usare massa comune.
+Il decoder aspetta otto cicli dopo aver acquisito la richiesta. In lettura
+prepara il dato per un ciclo prima di abilitare il traduttore verso la CPU.
+La disabilitazione fisica dipende dai segnali di bus effettivi, dal reset e
+dal lock della PLL. Verificare sul banco i ritardi dei traduttori e il tempo
+di rilascio prima che un altro dispositivo inizi a pilotare D7–D0.
 
-Non collegare una scheda microSD o un display RGB/SPI contemporaneamente:
-questi segnali condividono GPIO del bus. Le resistenze onboard delle linee
-microSD restano presenti e devono essere considerate nell'interfaccia.
-Nessun pin JTAG, MODE0/1 o flash SPI viene usato come linea dati CPU.
+## Primo collaudo
 
-## Interfaccia elettrica scelta: SN74LVC8T245PWR
-
-La build corrente usa **quattro SN74LVC8T245PWR** su adattatori
-**TSSOP-24, passo 0,65 mm → foro passante passo 2,54 mm**. Il codice PWR
-identifica il package PW, non SOP generico. La numerazione dell'adattatore
-va verificata rispetto al chip, vista dall'alto.
-
-- VCCA=3,3 V e porte A verso FPGA; VCCB=5 V e porte B verso CPU.
-- Due chip traducono A0–A15 del bus indirizzi CPU; DIR=0, B → A.
-- Un chip traduce RD, WR e CPU_ENABLE; DIR=0, B → A.
-- Il quarto traduce D0–D7 con DIR e /OE comandati dalla FPGA.
-- Rimuovere i partitori e l'HCT244 del precedente progetto dalle linee sostituite.
-
-| Accesso selezionato | DIR_DATA | /OE_DATA | GPIO dati FPGA |
-| --- | ---: | ---: | --- |
-| Scrittura CPU → VRAM | 0 | 0 dopo preparazione | Ingresso |
-| Lettura VRAM → CPU | 1 | 0 dopo dato pronto | Uscita |
-| Inattivo, indirizzo RAM/riservato, reset o ciclo invalido | Stabile / irrilevante | 1 | Alta impedenza |
-
-Il pin FPGA 32/J6-22 controlla /OE del traduttore dati; il pin
-63/J6-1 controlla DIR. DIR cambia mentre /OE e' alto. In ricezione il
-traduttore viene abilitato prima di campionare D; in trasmissione la FPGA
-prepara i dati per un clock prima di abilitare le uscite verso CPU.
-Il rilascio di /OE e' inoltre qualificato dagli strobe fisici e dall'enable.
-
-**Il pin 63 non e' piu' VIDEO_READY.** Per aggiungere DIR senza occupare un
-GPIO a 1,8 V del bus, VIDEO_READY e' ora mostrato dal **LED1 onboard**,
-GPIO 10 a 1,8 V, attivo basso: LED acceso = memoria pronta. Non collegare
-questa linea al bus CPU o al traduttore configurato a 3,3 V.
-Il reset sul pin 4 resta nel dominio a 1,8 V.
-
-Mettere un pull-up esterno da 10 kΩ verso **VCCA=3,3 V** su /OE di ciascun
-chip, e un pull-down da 10 kΩ su DIR del chip dati. Prima della configurazione
-questi resistori tengono disabilitato il traduttore dati e definita la direzione.
-I tre chip a direzione fissa devono essere abilitati con /OE basso dopo
-che le alimentazioni sono stabili: per il primo prototipo usare un jumper
-comune verso GND, lasciando i rispettivi pull-up verso 3,3 V.
-Tenere la CPU ferma mentre si abilita quel jumper, poi avviarla dopo LED1.
-Per una futura abilitazione automatica usare un permesso di alimentazioni
-valide: non il /OE_DATA, che dipende dall'indirizzo della transazione.
-
-CPU_ENABLE e' un permesso globale, non il select della RAM. Il suo ingresso
-FPGA deve essere definito basso mentre il traduttore controlli e' disabilitato,
-per esempio con pull-down da 10 kΩ sul lato FPGA. Per tenere definiti i dati
-quando entrambi i lati sono in alta impedenza, usare bias deboli (ad esempio
-47 kΩ verso la rispettiva alimentazione su ciascun lato), tenendo conto
-di quelli eventualmente gia' presenti sulla board CPU. Il datasheet richiede
-livelli definiti agli ingressi anche quando le uscite sono disabilitate.
-
-Ogni chip richiede tutti i GND collegati e condensatori 100 nF vicini a
-VCCA e VCCB. Lo [schema di cablaggio](../../docs/video-cablaggio.md) riporta
-il pinout completo TSSOP-24 e i collegamenti canale per canale.
-
-## Contratto temporale del bus
-
-I valori seguenti si riferiscono ai segnali **gia' adattati ai pin FPGA**:
-
-| Requisito | Minimo / limite |
-| --- | --- |
-| Durata `/WR=0` o `/RD=0` | 1 µs |
-| Pausa fra transazioni, entrambi gli strobe alti | 1 µs |
-| Indirizzo valido, e dato valido in scrittura | Entro 100 ns dall'asserzione dello strobe |
-| Stabilita' indirizzo/dato scritto | Fino al rilascio dello strobe e per altri 100 ns |
-| Campionamento del dato letto dalla CPU | Almeno 1 µs dopo `/RD=0`, includendo ritardo del traduttore esterno |
-| Inizio accessi dopo reset FPGA | Dopo LED1 acceso (memoria pronta), con bus prima inattivo per 1 µs |
-
-Indirizzo e dati attraversano due registri di acquisizione; dopo la
-sincronizzazione dello strobe il ricevitore aspetta otto cicli, inclusi
-preparazione DIR, abilitazione del traduttore e acquisizione dei dati,
-prima di catturare la transazione. La coerenza della parola dipende dalla
-finestra di stabilita' sopra: la sincronizzazione indipendente dei bit,
-da sola, non sarebbe sufficiente. Non si usa `CLK_CPU` per campionare:
-il ricevitore lavora nel dominio pixel clock. Non e' richiesta una linea ACK,
-ma strobi piu' brevi di questo contratto non sono supportati.
-
-Il rilascio del pin dati e dell'OE esterno e' qualificato direttamente da
-`/RD`, `/WR`, indirizzo, enable, reset e PLL lock: non aspetta la catena
-sincronizzata. Il turnaround di 1 µs consente anche la disabilitazione fisica
-dello SN74LVC8T245 prima che un altro dispositivo piloti il bus. Entrambi gli
-strobe bassi sono invalidi; per riprendere serve una fase inattiva.
-
-Il reset riempie 16.384 celle a un byte per pixel clock: circa **650 µs**
-dopo il rilascio del reset interno, oltre al tempo di lock PLL. Durante
-il riempimento gli accessi sono ignorati e LED1 e' spento. Uno strobe
-iniziato durante il riempimento non viene accettato automaticamente alla fine:
-serve prima tornare al bus inattivo.
-
-## Esempio CPU
-
-[video_idx.asm](../../examples/assembly/video_idx.asm) scrive `HELLO WORLD FROM 8 BIT COMPUTER` nella
-prima riga e `A` in riga 2, colonna 5; poi rilegge `A` in R1 e ferma la CPU.
-Assemblaggio dalla radice del repository:
+Caricare in SRAM con CPU scollegata e monitor sulla porta HDMI:
 
 ```sh
-make -C tools/assembler
-tools/assembler/build/cpu8asm examples/assembly/video_idx.asm -o /tmp/cpu8-video-idx
+openFPGALoader -b tangnano9k hardware/tang-nano-9k-video/build/cpu8_video.fs
 ```
 
-IDX non si incrementa automaticamente nella ISA attuale. L'esempio ricarica
-l'indirizzo con `LDX`; non richiede nuove istruzioni o modifiche alla CU.
-La scrittura alla colonna 79 non avanza alla riga successiva: la nuova riga
-inizia 128 byte dopo la precedente.
+Con i traduttori abilitati e BOOT_RUN a 1, verificare la schermata BOOTING.
+Passare a RUN (BOOT_RUN=0): lo schermo mostra la VRAM e LED1 si accende
+quando il video è pronto. Eseguire sulla CPU:
 
-## Caricamento per il primo test
+```asm
+.code 0x0000
+LDX 0x2000
+LDI R0, 0x43
+STAI R0
+LDI R0, 0x49
+STAI R0
+HLT
+```
 
-Con cablaggio verificato e CPU inizialmente scollegata, caricare in SRAM:
+Il video deve mostrare CI dall'angolo in alto a sinistra dopo un reset
+FPGA. Per la tastiera, leggere KEY_STATUS (0x2009) dopo aver premuto un
+tasto e poi KEY_DATA (0x2001). Una seconda lettura di KEY_DATA restituisce
+zero se non è arrivato un nuovo evento.
+
+I test simulano il bus con ritardo del traduttore, accessi video, eventi
+PS/2, colori per cella, cursore, clear/scroll, isolamento durante BUSY e rilascio del bus. Il renderer e TMDS hanno test separati.
+Il file generato va ancora caricato e collaudato sulla scheda fisica.
+
+## Prova di compatibilità TV
+
+`make bitstream-720p-hdmi` genera `build/cpu8_video_720p_hdmi.fs`.
+Usa 1280 × 720 a 60 Hz con un AVI InfoFrame per fotogramma (VIC 4).
+La schermata di avvio segue BOOT_RUN anche in questa modalità. Per il collaudo caricare il file
+in SRAM con openFPGALoader, come per il bitstream base.
+
+## Debug del bus via USB
+
+La build include telemetria USB-UART a 115200 baud, circa 10 campioni/s,
+con livelli di bus, ultimo evento accettato e puntatore video.
+A CPU ferma posso confrontare il campione con un punto del PDF Hello World:
 
 ```sh
-openFPGALoader -b tangnano9k build/cpu8_video.fs
+python3 hardware/tang-nano-9k-video/tools/debug_read.py --point 4
 ```
 
-Questo comando non e' stato eseguito in questa sessione. La programmazione
-SRAM e' temporanea e si perde togliendo alimentazione. Collegare il monitor
-alla porta HDMI onboard: dopo il reset deve agganciare 640 × 480 a 60 Hz e
-mostrare nero. Poi collegare l'interfaccia di livello, abilitarla a CPU ferma e mantenere bus inattivo,
-attendere LED1 acceso e avviare il programma demo sulla CPU.
-Non programmare permanentemente la flash prima del collaudo SRAM.
-
-## Validazione e limiti
-
-Verifica aggiornata il 14 ottobre 2026 per SN74LVC8T245:
-
-- Decoder esaustivo: 524.288 combinazioni di indirizzo, enable e strobe.
-- Core: reset/clear, lettura e scrittura, una scrittura per strobe lungo,
-  estremi di range, alias fuori range, cicli invalidi e rilascio immediato OE.
-  Modello digitale LVC8T245 con ritardo di 12 ns, strobi minimi da 1 µs,
-  cambio DIR con /OE alto e setup dati prima della trasmissione verificati.
-- Renderer: un fotogramma completo 800 × 525, 307.200 pixel attivi,
-  glifo A in tre posizioni, codice non supportato, passo 128 e sincronismi.
-- TMDS vendor: quattro simboli di controllo e decodifica dei 256 byte possibili.
-- Demo assemblata con l'assembler C ed eseguita nel simulatore CPU: testo,
-  cella `0x4105` e R1=`0x41` verificati.
-- Lint del core con Verilator: passato.
-- Sintesi, place/route e pack: completati. Utilizzo: 467 LUT4, 303 DFF,
-  17/26 blocchi BSRAM. Timing interno pixel clock: PASS a 25,2 MHz;
-  limite stimato dal report post-route circa 109 MHz (non un clock d'uso).
-
-La toolchain emette warning sulle sezioni non usate delle porte RAM durante
-il mapping Yosys, e due warning nextpnr sul routing dedicato di due rami
-di `addr_i[9]`. Nella build aggiornata non compare il precedente warning
-sul routing di `clk_5x`. Il router completa tramite risorse globali/
-generali e non riporta errori; gli avvisi sono conservati nei log.
-Il report interno non verifica metastabilita', ritardi del cablaggio TTL,
-traduttori reali o integrita' del segnale HDMI. Il funzionamento elettrico e la
-serializzazione HDMI devono ancora essere provati sulla Tang fisica.
-
-Le scritture durante una scansione possono cambiare un carattere nel frame
-corrente: non c'e' doppio buffer. Una collisione di lettura video e scrittura
-CPU puo' produrre un transitorio locale; il frame successivo legge la nuova
-cella. Non usare il risultato di una lettura durante una scrittura CPU
-simultanea: il protocollo lo vieta.
-
-Il font e l'encoder TMDS derivano dal core SVO incluso nel submodule Sipeed.
-`rtl/cpu8_font.v` conserva la licenza originale ISC di Clifford Wolf;
-`vendor/.../svo_tmds.v` rimane invariato.
+Vedi la [guida al debug USB](tools/README.md). Il canale usa il pin interno 17
+verso BL702 e non richiede modifiche al cablaggio CPU.

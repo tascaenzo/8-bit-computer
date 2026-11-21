@@ -4,10 +4,10 @@
 Uso: python3 tests/audit_rom_timing.py /tmp/cpu8-audit/microcode
 Verifica parole stabili e sequenze ISA; NON simula ritardi elettrici.
 Exit 0: controlli logici passati; i rischi temporali restano segnalati.
-Mappa fisica fissata alla revisione verificata il 2026-09-28.
+Mappa fisica del 2026-09-28; sequenze STA/STAI aggiornate al 2026-11-15.
 """
 import hashlib
-import sys
+import argparse
 from pathlib import Path
 
 
@@ -16,7 +16,14 @@ def require(ok, message):
         raise AssertionError(message)
 
 
-prefix = sys.argv[1]
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('prefix')
+parser.add_argument('--mar-prepare', action='store_true',
+                    help='verifica la variante sperimentale con preparazione MAR')
+parser.add_argument('--idx-prepare', action='store_true',
+                    help='verifica LDX con preparazione basso/alto e ritorno T6')
+args = parser.parse_args()
+prefix = args.prefix
 roms = [Path(f"{prefix}-rom{i}.bin").read_bytes() for i in range(3)]
 require(all(len(r) == 8192 for r in roms), "Dimensione ROM errata")
 
@@ -60,6 +67,14 @@ jumps = {0xa0: lambda f: True, 0xb0: lambda f: f & 2,
 
 
 def expected(op, flags):
+    if args.mar_prepare:
+        mar_prefix = [fetch, w(1, 'RO'), low, w(1, 'RO'), high]
+        if 0x40 <= op <= 0x47:
+            return mar_prefix + [w(2, 'RO MW'), w(3, 'MO RE RW'), end]
+        if 0x48 <= op <= 0x4f:
+            return mar_prefix + [w(3, 'RE MW'), w(2, 'MO WW'), w(2, 'MO NF')]
+        if op in jumps:
+            return mar_prefix + [w(2, 'PL') if jumps[op](flags) else w(3), end]
     if op in (0, 1):
         return [fetch, w(3, 'SYS'), end]
     if 0x20 <= op <= 0x27:
@@ -67,11 +82,13 @@ def expected(op, flags):
     if 0x40 <= op <= 0x47:
         return [fetch, low, high, w(2, 'RO MW'), w(3, 'MO RE RW'), end]
     if 0x48 <= op <= 0x4f:
-        return [fetch, low, high, w(3, 'RE MW'), w(2, 'MO WW'), end]
+        return [fetch, low, high, w(3, 'RE MW'), w(2, 'MO'),
+                w(2, 'MO WW'), w(2, 'MO'), end]
     if 0x50 <= op <= 0x57:
         return [fetch, w(0, 'RO MW'), w(3, 'MO RE RW'), end]
     if 0x58 <= op <= 0x5f:
-        return [fetch, w(3, 'RE MW'), w(0, 'MO WW'), end]
+        return [fetch, w(3, 'RE MW'), w(0, 'MO'), w(0, 'MO WW'),
+                w(0, 'MO'), end]
     if 0x60 <= op <= 0x67 or op == 0x78:
         return [fetch, w(3, 'AO'), w(3, 'AO MW FW'), w(3, 'MO'),
                 w(3, 'MO RA ABW'), w(3, 'MO NF')]
@@ -87,6 +104,9 @@ def expected(op, flags):
     if 0xd0 <= op <= 0xd7:
         return [fetch, w(3, 'RA RE RW'), end]
     if op == 0xd8:
+        if args.idx_prepare:
+            return [fetch, w(1, 'RO'), w(1, 'RO XL PI'), w(1, 'RO'),
+                    w(1, 'RO XH PI'), end]
         return [fetch, w(1, 'RO XL PI'), w(1, 'RO XH PI'), end]
     return None
 

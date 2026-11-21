@@ -1,6 +1,6 @@
 # Indice delle specifiche FPGA
 
-> **Architettura aggiornata — 21 ottobre 2026:** il riferimento corrente e il [bus memoria e I/O](io-bus.md): chip enable della RAM dalla OR dei tre bit alti e richieste `/RD` e `/WR` condivise. La mappa sotto e il decoder della precedente implementazione sono da adeguare; non sono previsti `IO_ENABLE` da EEPROM o direzione su A4.
+> **Architettura aggiornata — 21 ottobre 2026:** il riferimento corrente e il [bus memoria e I/O](io-bus.md): chip enable della RAM dalla OR dei tre bit alti e richieste `/RD` e `/WR` condivise. Il decoder della build video + PS/2 usa gli indirizzi riportati qui sotto.
 
 > **Versione:** 1.0
 > **Data:** 3 settembre 2026
@@ -10,6 +10,7 @@ sottosistemi video, tastiera e timer. Le specifiche inizialmente raccolte in
 questo file sono state divise per rendere indipendenti firmware, test e
 cablaggio dei due blocchi.
 
+- [Registri video a colori](video-registers.md): comandi, palette e cursore correnti.
 - [Specifica video HDMI](video-hdmi.md): VRAM, formato delle celle, protocollo
   di bus e uscita HDMI.
 - [Specifica I/O, PS/2 e timer](io-ps2-timer.md): registri memory-mapped,
@@ -21,13 +22,14 @@ La CPU espone `A[15:0]`, `D[7:0]`, `/RD`, `/WR` e `CLK_CPU`. Le periferiche
 sono **memory-mapped**: il software usa `LDA` e `STA`, non le istruzioni `IN`
 e `OUT`.
 
-| Intervallo | Proprietario | Riferimento |
+| Indirizzi | Proprietario | Selezione |
 | --- | --- | --- |
-| `0x0000-0x3FFF` | RAM/ROM di sistema | piattaforma CPU |
-| `0x4000-0x7FFF` | VRAM Tang Nano 9K | [video](video-hdmi.md#3-mappa-e-semantica-della-vram) |
-| `0x8000-0xFEFF` | riservato | espansioni future |
-| `0xFF00-0xFF0F` | registri Tang Nano 9K | [I/O](io-ps2-timer.md#2-mappa-dei-registri) |
-| `0xFF10-0xFFFF` | riservato | espansioni future |
+| `0x0000–0x1FFF` | RAM di sistema | `/CE_RAM = 0` |
+| `0x2000–0x2040`, passo 8 | Video | ID `000`, Y0 |
+| `0x2001`, `0x2009`, `0x2011` | Tastiera PS/2 | ID `001`, Y1 |
+
+La [mappa I/O corrente](io-bus.md#selezione-delle-periferiche-e-indirizzi)
+è implementata nel decoder RTL della Tang. Il timer attende l'assegnazione di un ID.
 
 La Tang abilita le proprie uscite su `D[7:0]` soltanto per una lettura del suo
 spazio di indirizzi. Durante ogni scrittura la CPU rimane l'unico pilota del
@@ -38,8 +40,8 @@ bus dati.
 La CPU TTL e la Tang Nano 9K non devono essere collegate pin-a-pin. Tutti i
 segnali CPU -> FPGA passano attraverso traslatori di livello da 5 V a 3,3 V;
 `D[7:0]` usa inoltre un transceiver bidirezionale con uscita disabilitabile.
-Il suo `OE` e' controllato da `FPGA_D_OE` e puo' essere attivo solo in una
-lettura FPGA selezionata. Le masse devono essere comuni.
+La FPGA abilita il transceiver verso la CPU soltanto durante una lettura valida.
+Durante una scrittura selezionata il transceiver può trasportare dati verso la FPGA. Le masse devono essere comuni.
 
 I pin concreti del connettore 2x24 e le rispettive banche I/O non fanno parte
 di questa ABI: vanno assegnati nel file `.cst` dopo verifica sullo schema della

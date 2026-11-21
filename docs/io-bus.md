@@ -93,7 +93,7 @@ dispositivo selezionato deve rispondere. Per le periferiche le condizioni
 logiche sono, con selezione positiva:
 
 ```text
-SELECT_i = ACCESS_OK AND FUORI_RAM AND NOT A3 AND (DEVICE_ID == i)
+SELECT_i = ACCESS_OK AND FUORI_RAM AND (DEVICE_ID == i)
 READ_i = SELECT_i AND NOT(/RD)
 WRITE_i = SELECT_i AND NOT(/WR)
 ```
@@ -109,12 +109,14 @@ scrittura e non identifica da solo lo spazio di indirizzi.
 
 ## Selezione delle periferiche e indirizzi
 
-Si riserva il nibble basso `A3–A0` alla selezione I/O: `A2–A0` selezionano
-**8 periferiche**, mentre `A3` e riservato e deve valere zero. Il decoder
-deve includere questa condizione nell'abilitazione: con `A3=1` nessuna
-periferica risponde. Ignorare A3 produrrebbe invece indirizzi duplicati.
-Questa scelta non cambia il principio di selezione della RAM: A3 e un
-normale bit di indirizzo durante gli accessi alla RAM.
+A2–A0 selezionano **8 periferiche** tramite A, B e C del 74238.
+Il risultato della OR A15/A14/A13 abilita G1 del decoder e disabilita
+/CE della RAM. Nel cablaggio base, i due enable attivi bassi del 74238
+sono a GND. Eventuali interblocchi di boot/reset già presenti vanno mantenuti.
+
+A3–A15 raggiungono la Tang e selezionano il registro interno. A0–A2
+raggiungono soltanto il 74238 per selezionare la periferica. Tutti i bit
+di indirizzo hanno quindi una funzione; non ci sono alias dovuti ad A3.
 
 La mappa concordata e:
 
@@ -122,8 +124,8 @@ La mappa concordata e:
 | --- | --- |
 | `A15–A13` | OR per distinguere RAM e spazio I/O. |
 | `A2–A0` | ID della periferica, da 0 a 7. |
-| `A3` | Riservato a zero nello spazio I/O; con A3=1 nessuna periferica selezionata. |
-| `A15–A4` | Indirizzo interno ricevuto dalla periferica, con vincolo di essere fuori RAM. |
+| `A3` | Bit meno significativo del registro interno della periferica. |
+| `A15–A3` | Indirizzo interno ricevuto dalla periferica, con vincolo di essere fuori RAM. |
 | `D7–D0` | Byte completo trasferito. |
 | `/RD`, `/WR` | Direzione e richiesta di accesso. |
 
@@ -134,13 +136,27 @@ cioe indirizzi diversi che selezionano la stessa posizione.
 Nel primo intervallo I/O `0x2000–0x3FFF`, la convenzione di indirizzamento e:
 
 ```text
-indirizzo = 0x2000 + (offset << 4) + device_id
+indirizzo = 0x2000 + (offset << 3) + device_id
 ```
 
-Qui `offset=0..511`, `device_id=0..7`. Posizioni consecutive della stessa
-periferica distano 16 (`0x10`); lettura e scrittura usano esattamente lo stesso indirizzo.
-Per esempio, ID 2 ha i primi tre offset a `0x2002`, `0x2012` e `0x2022`.
-La convenzione non assegna ID o registri effettivi ai dispositivi.
+Qui `offset=0..1023`, `device_id=0..7`. Posizioni consecutive della stessa
+periferica distano 8 (`0x08`); lettura e scrittura usano esattamente lo stesso indirizzo.
+Per esempio, ID 2 ha i primi tre offset a `0x2002`, `0x200A` e `0x2012`.
+Assegnazioni per la Tang Nano 9K (dettagli in [registri video](video-registers.md)):
+
+| A2–A0 | 74238 | Periferica | Registri |
+| --- | --- | --- | --- |
+| `000` | Y0 | Video | `0x2000` DATA, `0x2018` STATUS. `0x2008` e `0x2010` riservati. `0x2020` CMD, `0x2028` COLOR, `0x2030` CURSOR_X, `0x2038` CURSOR_Y, `0x2040` CONTROL. |
+| `001` | Y1 | Tastiera PS/2 | `0x2001` DATA, `0x2009` STATUS, `0x2011` CTRL. |
+| `010–111` | Y2–Y7 | Disponibili | Timer e altre espansioni da assegnare. |
+
+Video e tastiera condividono sulla Tang un solo transceiver dati. Con Y0
+e Y1 già qualificati dal decoder esterno, i segnali CPU → FPGA sono
+`A15–A3` (13), Y0/Y1 (2) e `/RD` e `/WR` (2), per un totale di 17.
+Si aggiunge BOOT_RUN come diciottesimo ingresso: 1 isola il bus CPU e
+mostra la schermata BOOTING, 0 abilita il funzionamento RUN.
+Servono tre NH245 per questi ingressi e un quarto NH245 per il bus dati.
+Il pinout fisico e il timing restano da verificare.
 
 ## Assembly e uso di IDX
 
@@ -193,7 +209,7 @@ La precedente finestra video `0x4000–0x7FFF` e i registri `0xFF00–0xFF0F`
 non vanno considerati la nuova mappa definitiva. Lo spazio fuori RAM rimane
 disponibile per il decoder delle periferiche. Il video puo esporre registri
 di comando, puntatore e dati, mantenendo la VRAM da 16 KiB interna alla FPGA;
-protocollo, ID e mappa registri restano da definire. Il rendering HDMI puo
+ID e indirizzi sono riportati nella tabella sopra. Il decoder RTL video e tastiera usa questa mappa. Il timing resta da collaudare sulla CPU reale. Il rendering HDMI puo
 continuare indipendentemente dagli accessi CPU.
 
 | Parte | Stato al 21 ottobre 2026 |
@@ -202,9 +218,9 @@ continuare indipendentemente dagli accessi CPU.
 | `RAM_OE` e `RAM_WE` come `/RD` e `/WR` generali | Scelta concordata; nessun nuovo bit EEPROM. |
 | ROM2 D7 | Rimane libero e riservato. |
 | Istruzioni di accesso | `LDA`/`STA`, `LDAI`/`STAI` gia previste. |
-| Numero di periferiche | Concordato: 8 ID su A0–A2; A3 riservato a zero e controllato dal decoder. |
+| Numero di periferiche | Concordato: 8 ID su A0–A2. A3–A15 per il registro interno, senza alias di A3. |
 | Decoder, timing e cablaggio periferiche | Da definire e verificare. |
-| RTL video, pinout e bitstream | Implementazione precedente, da adeguare alla nuova selezione e mappa. |
+| RTL video, pinout e bitstream | Nuova selezione e mappa implementate in RTL. Cablaggio e timing da collaudare. |
 | Simulatore ed esempi precedenti | Da adeguare alle periferiche e alla nuova mappa. |
 
 Riferimenti precedenti: [video](video-hdmi.md), [tastiera e timer](io-ps2-timer.md)

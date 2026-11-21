@@ -1,133 +1,146 @@
 `timescale 1ns/1ps
-// Bundled-data bus: address/data must remain stable throughout each strobe.
-// Eight settle cycles include transceiver direction setup and data acquisition.
+// CPU holds selection, address and write data stable during the strobe.
+// cpu_addr is the physical A15..A3 bus. The 74238 decodes A2..A0.
+// Adjacent registers of one peripheral are eight CPU addresses apart.
 module cpu8_video_bus (
-    input wire clk, resetn, memory_ready,
-    input wire [15:0] cpu_addr,
+    input wire clk, resetn,
+    input wire [12:0] cpu_addr,
     input wire [7:0] cpu_data,
-    input wire cpu_rd_n, cpu_wr_n, cpu_enable,
-    input wire [7:0] memory_data,
-    output reg [13:0] memory_addr,
-    output reg [7:0] write_data,
-    output reg write_enable,
-    output wire data_oe,
-    output wire buffer_dir,
-    output wire buffer_oe_n,
-    output wire [7:0] read_data
+    input wire cpu_rd_n, cpu_wr_n, video_select, key_select,
+    input wire video_ready,
+    input wire [7:0] video_status, video_register_data,
+    input wire [7:0] key_data, key_status,
+    output wire [3:0] reg_id,
+    output wire [7:0] write_data,
+    output wire write_enable, key_take, read_accepted,
+    output wire data_oe, buffer_dir, buffer_oe_n,
+    output reg [7:0] read_data
 );
-    (* async_reg = "true" *) reg [15:0] addr_meta, addr_sync;
+    localparam NONE=0, VIDEO_DATA=1,
+               VIDEO_STATUS=4, KEY_DATA=5, KEY_STATUS=6, KEY_CTRL=7, VIDEO_CMD=8, VIDEO_COLOR=9, CURSOR_X=10,
+               CURSOR_Y=11, VIDEO_CONTROL=12;
+    function [3:0] decode;
+        input [1:0] selection;
+        input [12:0] address;
+        input rd_n, wr_n;
+        begin
+            decode = NONE;
+            if (rd_n && !wr_n) begin
+                if (selection == 2'b10) begin
+                    case (address)
+                        13'h400: decode = VIDEO_DATA;
+                        13'h404: decode = VIDEO_CMD;
+                        13'h405: decode = VIDEO_COLOR;
+                        13'h406: decode = CURSOR_X;
+                        13'h407: decode = CURSOR_Y;
+                        13'h408: decode = VIDEO_CONTROL;
+                        default: decode = NONE;
+                    endcase
+                end else if (selection == 2'b01 && address == 13'h402)
+                    decode = KEY_CTRL;
+            end else if (!rd_n && wr_n) begin
+                if (selection == 2'b10) begin
+                    case(address)
+                        13'h403: decode = VIDEO_STATUS;
+                        13'h405: decode = VIDEO_COLOR;
+                        13'h406: decode = CURSOR_X;
+                        13'h407: decode = CURSOR_Y;
+                        13'h408: decode = VIDEO_CONTROL;
+                        default: decode = NONE;
+                    endcase
+                end
+                else if (selection == 2'b01) begin
+                    case (address)
+                        13'h400: decode = KEY_DATA;
+                        13'h401: decode = KEY_STATUS;
+                        default: decode = NONE;
+                    endcase
+                end
+            end
+        end
+    endfunction
+
+    (* async_reg = "true" *) reg [16:0] request_meta, request_sync;
     (* async_reg = "true" *) reg [7:0] data_meta, data_sync;
-    (* async_reg = "true" *) reg [2:0] ctrl_meta, ctrl_sync;
-    wire enabled = ctrl_sync[2];
-    wire rd_n = ctrl_sync[1];
-    wire wr_n = ctrl_sync[0];
-    wire idle = rd_n && wr_n;
-    wire read_cycle = !rd_n && wr_n;
-    wire write_cycle = rd_n && !wr_n;
-
-    localparam DISARMED=0, IDLE=1, SETTLE=2, READ_WAIT=3, HOLD=4, READ_ARM=5;
-    reg [2:0] state;
-    reg [2:0] delay_count;
-    reg reading;
-    reg response_valid;
-    reg [15:0] transaction_addr;
-    reg [7:0] response;
-
     always @(posedge clk) begin
         if (!resetn) begin
-            addr_meta <= 0; addr_sync <= 0;
+            request_meta <= 17'h00003; request_sync <= 17'h00003;
             data_meta <= 0; data_sync <= 0;
-            ctrl_meta <= 3'b011; ctrl_sync <= 3'b011;
         end else begin
-            addr_meta <= cpu_addr; addr_sync <= addr_meta;
+            request_meta <= {cpu_addr,video_select,key_select,cpu_rd_n,cpu_wr_n};
+            request_sync <= request_meta;
             data_meta <= cpu_data; data_sync <= data_meta;
-            ctrl_meta <= {cpu_enable,cpu_rd_n,cpu_wr_n};
-            ctrl_sync <= ctrl_meta;
         end
     end
 
+    localparam IDLE=0, SETTLE=1, READ_ARM=2, HOLD=3;
+    reg [1:0] state;
+    reg [2:0] delay_count;
+    reg reading, response_valid;
+    reg [16:0] transaction;
+    reg [3:0] target;
+    wire [3:0] decoded = decode(request_sync[3:2], request_sync[16:4],
+                               request_sync[1], request_sync[0]);
+    wire physical_match = {cpu_addr,video_select,key_select,cpu_rd_n,cpu_wr_n} == transaction;
+    wire settled = resetn && physical_match && request_sync == transaction;
+    // Accept once, after allowing the B->A translator and data synchronizer to settle.
+    assign write_enable = settled && state == SETTLE && !reading &&
+                          delay_count == 7 && decoded == target;
+    assign write_data = data_sync;
+    assign reg_id = target;
+    // Zero is the empty-buffer sentinel. A key arriving after an empty
+    // response was captured belongs to the next read.
+    assign read_accepted = settled && state == READ_ARM;
+    assign key_take = settled && state == READ_ARM &&
+                      target == KEY_DATA && read_data != 0;
+
     always @(posedge clk) begin
-        write_enable <= 0;
-        if (!resetn || !memory_ready || !enabled) begin
-            state <= DISARMED;
-            delay_count <= 0;
-            response_valid <= 0;
-            memory_addr <= 0;
-            transaction_addr <= 0;
-            write_data <= 0;
-            response <= 0;
+        if (!resetn) begin
+            state <= IDLE;
             reading <= 0;
+            response_valid <= 0;
+            target <= NONE;
+            transaction <= 0;
+            delay_count <= 0;
+            read_data <= 0;
         end else begin
             case (state)
-                DISARMED: if (idle) state <= IDLE;
-                IDLE: begin
+                IDLE: if (decoded != NONE) begin
                     response_valid <= 0;
-                    if (read_cycle || write_cycle) begin
-                        reading <= read_cycle;
-                        delay_count <= 0;
-                        state <= SETTLE;
-                    end else if (!idle) state <= DISARMED;
+                    transaction <= request_sync;
+                    target <= decoded;
+                    reading <= !request_sync[1];
+                    delay_count <= 0;
+                    state <= request_sync[3:2] == 2'b10 && request_sync[1] &&
+                             !video_ready ? HOLD : SETTLE;
                 end
-                SETTLE: begin
-                    if ((reading && !read_cycle) || (!reading && !write_cycle))
-                        state <= DISARMED;
-                    else if (delay_count == 7) begin
-                        transaction_addr <= addr_sync;
-                        memory_addr <= addr_sync[13:0];
-                        if (addr_sync[15:14] != 2'b01) state <= HOLD;
-                        else if (reading) begin
-                            delay_count <= 0;
-                            state <= READ_WAIT;
-                        end else begin
-                            write_data <= data_sync;
-                            write_enable <= 1;
-                            state <= HOLD;
-                        end
-                    end else delay_count <= delay_count + 1'b1;
-                end
-                READ_WAIT: begin
-                    if (!read_cycle) state <= DISARMED;
-                    else if (delay_count == 1) begin
-                        response <= memory_data;
+                SETTLE: if (request_sync != transaction) state <= IDLE;
+                else if (delay_count == 7) begin
+                    state <= HOLD;
+                    if (reading && settled) begin
+                        case (target)
+                            VIDEO_STATUS: read_data <= video_status;
+                            KEY_DATA: read_data <= key_data;
+                            KEY_STATUS: read_data <= key_status;
+                            default: read_data <= video_register_data;
+                        endcase
                         response_valid <= 1;
                         state <= READ_ARM;
-                    end else delay_count <= delay_count + 1'b1;
-                end
-                READ_ARM: begin
-                    // FPGA data is driven for one clock with the translator
-                    // disabled, before enabling the external A -> B outputs.
-                    if (read_cycle) state <= HOLD;
-                    else begin
-                        response_valid <= 0;
-                        state <= DISARMED;
                     end
-                end
-                HOLD: if (idle) begin
-                    response_valid <= 0;
-                    state <= IDLE;
-                end else if ((!reading && !write_cycle) || (reading && !read_cycle)) begin
-                    response_valid <= 0;
-                    state <= DISARMED;
-                end
-                default: state <= DISARMED;
+                end else delay_count <= delay_count + 1'b1;
+                READ_ARM: if (settled) state <= HOLD;
+                          else state <= IDLE;
+                HOLD: if (request_sync != transaction) state <= IDLE;
             endcase
         end
     end
 
-    // Asynchronous release/interlock: never wait for a synchronizer to stop
-    // driving the physical bus. CPU must still allow buffer turn-around time.
-    assign data_oe = resetn && memory_ready && cpu_enable && response_valid &&
-                     !cpu_rd_n && cpu_wr_n && (cpu_addr == transaction_addr);
-    assign read_data = response;
-    // A = FPGA (3.3 V), B = CPU (5 V). DIR: 0 B->A, 1 A->B.
-    // Direction changes only when IDLE accepts a new transaction, while OE
-    // is high. Writes enable reception BEFORE sampling the CPU data.
     assign buffer_dir = reading;
-    wire receive_window = !reading &&
-        ((state == SETTLE && delay_count >= 2) || state == HOLD);
-    wire receive_enable = resetn && memory_ready && cpu_enable && enabled &&
-        cpu_rd_n && !cpu_wr_n && (cpu_addr[15:14] == 2'b01) &&
-        (addr_sync[15:14] == 2'b01) && receive_window;
-    wire transmit_enable = reading && state == HOLD && data_oe;
-    assign buffer_oe_n = !(receive_enable || transmit_enable);
+    // Qualify with live controls so the physical bus is released without
+    // waiting for the FPGA synchronizer after the CPU ends the read.
+    assign data_oe = resetn && physical_match && reading && response_valid &&
+                     (state == READ_ARM || state == HOLD);
+    wire receive_enable = settled && !reading &&
+                          state == SETTLE && delay_count >= 2;
+    assign buffer_oe_n = !(receive_enable || (data_oe && state == HOLD));
 endmodule
